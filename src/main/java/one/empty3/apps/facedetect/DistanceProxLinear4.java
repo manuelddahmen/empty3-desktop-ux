@@ -79,10 +79,10 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         //while (maxDist > eps && (stepNewPoints || firstStep)) {
         int occ = -1;
         int oldoccc = 0;
-        double surfaceOccupied = 0.0;
-        double surfaceOccupiedOld = 0.0;
+        double surfaceOccupied = 0.1;
+        double surfaceOccupiedOld = 0.01;
         int step = 0;
-        while (/*surfaceOccupied >= surfaceOccupiedOld * 1.000000001 && */occ != oldoccc) {
+        while (surfaceOccupied/surfaceOccupiedOld >=  0.001 && occ != oldoccc) {
             oldoccc = occ;
             stepNewPoints = false;
             firstStep = false;

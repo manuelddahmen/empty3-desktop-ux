@@ -82,7 +82,7 @@ public class DistanceProxLinear42 extends DistanceBezier2 {
         double surfaceOccupied = 0.0;
         double surfaceOccupiedOld = 0.0;
         int step = 0;
-        while (/*surfaceOccupied >= surfaceOccupiedOld * 1.000000001 && */occ != oldoccc) {
+        while (surfaceOccupied >= surfaceOccupiedOld * 1.01 && occ != oldoccc) {
             oldoccc = occ;
             stepNewPoints = false;
             firstStep = false;

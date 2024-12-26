@@ -350,10 +350,21 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     private void distanceLinear4(ActionEvent e) {
         //editPolygonsMappings2.iTextureMorphMove.setDistanceABclass(DistanceProxLinear3.class);
-        editPolygonsMappings2.distanceABClass = DistanceProxLinear4.class;
+        editPolygonsMappings2.distanceABClass =  DistanceProxLinear4.class;
         //editPolygonsMappings2.hasChangedAorB = true;
     }
 
+    private void menuItem4Plus(ActionEvent e) {
+        String name = ((JButton) (e.getSource())).getName();
+        try {
+            Class<?> aClass = Class.forName(" one.empty3.apps.facedetect.DistanceProxLinear" + name);
+            editPolygonsMappings2.distanceABClass = (Class<? extends DistanceAB>) aClass;
+            editPolygonsMappings2.hasChangedAorB = true;
+
+        } catch (ClassNotFoundException|ClassCastException ex) {
+            ex.printStackTrace();
+        }
+    }
     private void optimizeGrid(ActionEvent e) {
         if (e.getSource() instanceof JCheckBoxMenuItem r) {
 
@@ -657,17 +668,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
         // TODO add your code here
     }
 
-    private void menuItem4Plus(ActionEvent e) {
-        String name = ((JButton) (e.getSource())).getName();
-        try {
-            Class<?> aClass = Class.forName(" one.empty3.apps.facedetect.DistanceProxLinear" + name);
-            editPolygonsMappings2.distanceABClass = (Class<? extends DistanceAB>) aClass;
-            editPolygonsMappings2.hasChangedAorB = true;
-
-        } catch (ClassNotFoundException|ClassCastException ex) {
-            ex.printStackTrace();
-        }
-    }
 
 
     private void initComponents() {

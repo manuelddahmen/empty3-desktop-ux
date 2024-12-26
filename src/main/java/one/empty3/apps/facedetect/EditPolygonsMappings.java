@@ -829,7 +829,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
                 Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in model view", pointsInImage.size());
             } catch (IOException | RuntimeException ex) {
-                throw new RuntimeException(ex);
+                Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", ex);
             }
         } else {
             Logger.getAnonymousLogger().log(Level.INFO, "Loaded image first before points", pointsInImage.size());
