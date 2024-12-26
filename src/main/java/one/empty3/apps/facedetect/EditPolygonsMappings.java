@@ -950,7 +950,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             });
             dataWriter.close();
         } catch (FileNotFoundException e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", ex);
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not found ", e);
         }
     }
 
