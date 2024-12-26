@@ -44,7 +44,7 @@ import java.awt.*;
 
 public class VecMeshEditor implements Runnable {
     private final VecMeshEditorGui vecMeshEditorGui;
-    private Rotate rotate;
+    public Rotate rotate;
     private boolean runningDisplay = false;
     private ZBufferImpl zBuffer;
     private Scene scene;

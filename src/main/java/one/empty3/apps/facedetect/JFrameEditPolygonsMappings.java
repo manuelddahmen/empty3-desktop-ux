@@ -30,9 +30,14 @@ import java.awt.*;
 
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
+import one.empty3.apps.facedetect.vecmesh.Rotate;
+import one.empty3.apps.facedetect.vecmesh.VecMeshEditor;
+import one.empty3.apps.facedetect.vecmesh.VecMeshEditorGui;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
+import one.empty3.library.Camera;
 import one.empty3.library.Config;
 import one.empty3.library.Point3D;
+import one.empty3.library.Rotation;
 import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Color;
@@ -58,6 +63,15 @@ import java.util.logging.Logger;
  * @author manue
  */
 public class JFrameEditPolygonsMappings extends JFrame {
+
+    public void vakidateCameraPosition(VecMeshEditor model) {
+        Rotate rotate = model.rotate;
+        //editPolygonsMappings2.model.getRotation().setElem(new Rotation(rotate.getRotationMatrix());
+        Camera camera = new Camera();
+        camera.setMatrice(rotate.getRotationMatrix());
+        camera.setLookat(rotate.getRepresentable().getOrig());
+        editPolygonsMappings2.testHumanHeadTexturing.camera();
+    }
 
     public class MyFilter implements Filter {
         public boolean isLoggable(LogRecord record) {
@@ -336,7 +350,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     private void distanceLinear4(ActionEvent e) {
         //editPolygonsMappings2.iTextureMorphMove.setDistanceABclass(DistanceProxLinear3.class);
-        editPolygonsMappings2.distanceABClass = DistanceProxLinear42.class;
+        editPolygonsMappings2.distanceABClass = DistanceProxLinear4.class;
         //editPolygonsMappings2.hasChangedAorB = true;
     }
 
@@ -636,7 +650,23 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void buttonBougerCamera(ActionEvent e) {
+        VecMeshEditorGui vecMesh = new VecMeshEditorGui();
+    }
+
+    private void buttonRenderNow(ActionEvent e) {
         // TODO add your code here
+    }
+
+    private void menuItem4Plus(ActionEvent e) {
+        String name = ((JButton) (e.getSource())).getName();
+        try {
+            Class<?> aClass = Class.forName(" one.empty3.apps.facedetect.DistanceProxLinear" + name);
+            editPolygonsMappings2.distanceABClass = (Class<? extends DistanceAB>) aClass;
+            editPolygonsMappings2.hasChangedAorB = true;
+
+        } catch (ClassNotFoundException|ClassCastException ex) {
+            ex.printStackTrace();
+        }
     }
 
 
@@ -693,9 +723,18 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuItemDistLinearProx2 = new JRadioButtonMenuItem();
         menuItemDistLinearProx3 = new JRadioButtonMenuItem();
         menuItemDistanceLinear4 = new JRadioButtonMenuItem();
+        menu9 = new JMenu();
+        menuItem2 = new JMenuItem();
+        menuItem13 = new JMenuItem();
+        menuItem14 = new JMenuItem();
+        menuItem15 = new JMenuItem();
+        menuItem16 = new JMenuItem();
+        menuItem17 = new JMenuItem();
+        menuItem18 = new JMenuItem();
         button2 = new JButton();
         button1 = new JButton();
         button3 = new JButton();
+        button4 = new JButton();
         menu8 = new JMenu();
         editPolygonsMappings2 = new EditPolygonsMappings();
         menu3 = new JMenu();
@@ -1003,6 +1042,47 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItemDistanceLinear4.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemDistanceLinear4.text"));
                 menuItemDistanceLinear4.addActionListener(e -> distanceLinear4(e));
                 menu5.add(menuItemDistanceLinear4);
+
+                //======== menu9 ========
+                {
+                    menu9.setText(bundle.getString("JFrameEditPolygonsMappings.menu9.text"));
+
+                    //---- menuItem2 ----
+                    menuItem2.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem2.text"));
+                    menuItem2.addActionListener(e -> menuItem4Plus(e));
+                    menu9.add(menuItem2);
+
+                    //---- menuItem13 ----
+                    menuItem13.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem13.text"));
+                    menuItem13.addActionListener(e -> menuItem4Plus(e));
+                    menu9.add(menuItem13);
+
+                    //---- menuItem14 ----
+                    menuItem14.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem14.text"));
+                    menuItem14.addActionListener(e -> menuItem4Plus(e));
+                    menu9.add(menuItem14);
+
+                    //---- menuItem15 ----
+                    menuItem15.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem15.text"));
+                    menuItem15.addActionListener(e -> menuItem4Plus(e));
+                    menu9.add(menuItem15);
+
+                    //---- menuItem16 ----
+                    menuItem16.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem16.text"));
+                    menuItem16.addActionListener(e -> menuItem4Plus(e));
+                    menu9.add(menuItem16);
+
+                    //---- menuItem17 ----
+                    menuItem17.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem17.text"));
+                    menuItem17.addActionListener(e -> menuItem4Plus(e));
+                    menu9.add(menuItem17);
+
+                    //---- menuItem18 ----
+                    menuItem18.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem18.text"));
+                    menuItem18.addActionListener(e -> menuItem4Plus(e));
+                    menu9.add(menuItem18);
+                }
+                menu5.add(menu9);
             }
             menuBar1.add(menu5);
         }
@@ -1022,6 +1102,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
         button3.setText(bundle.getString("JFrameEditPolygonsMappings.button3.text"));
         button3.addActionListener(e -> buttonRenduFil(e));
         contentPane.add(button3, "cell 0 0");
+
+        //---- button4 ----
+        button4.setText(bundle.getString("JFrameEditPolygonsMappings.button4.text"));
+        button4.addActionListener(e -> buttonRenderNow(e));
+        contentPane.add(button4, "cell 0 0");
 
         //======== menu8 ========
         {
@@ -1112,9 +1197,18 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JRadioButtonMenuItem menuItemDistLinearProx2;
     private JRadioButtonMenuItem menuItemDistLinearProx3;
     private JRadioButtonMenuItem menuItemDistanceLinear4;
+    private JMenu menu9;
+    private JMenuItem menuItem2;
+    private JMenuItem menuItem13;
+    private JMenuItem menuItem14;
+    private JMenuItem menuItem15;
+    private JMenuItem menuItem16;
+    private JMenuItem menuItem17;
+    private JMenuItem menuItem18;
     private JButton button2;
     private JButton button1;
     private JButton button3;
+    private JButton button4;
     private JMenu menu8;
     EditPolygonsMappings editPolygonsMappings2;
     private JMenu menu3;

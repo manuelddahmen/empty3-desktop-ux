@@ -26,6 +26,7 @@
 
 package one.empty3.apps.facedetect.vecmesh;
 
+import one.empty3.apps.facedetect.JFrameEditPolygonsMappings;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.library.*;
@@ -61,6 +62,7 @@ public class VecMeshEditorGui extends JFrame {
     private static final int TYPE_CONTAINER_CLASS_VEC_HEIGHT_MAP = 0;
     private static final int TYPE_CONTAINER_CLASS_VORONOI_HEIGHTS = 1;
     private static int instanceCount = 0;
+    private JFrameEditPolygonsMappings parent;
     private BufferedImage texture;
     private File currentFile;
     private Class<? extends Representable> defaultClassRepresentable = Tubulaire3.class;
@@ -74,6 +76,11 @@ public class VecMeshEditorGui extends JFrame {
     private File fileTexture = null;
     private int containerClassType = 0;
 
+
+    public VecMeshEditorGui(JFrameEditPolygonsMappings parent) {
+        this();
+        this.parent = parent;
+    }
     public VecMeshEditorGui() {
         initComponents();
 
@@ -385,6 +392,10 @@ public class VecMeshEditorGui extends JFrame {
 
     private void menuItemEditMeshHeightsForm(ActionEvent e) {
 
+    }
+
+    private void ok(ActionEvent e) {
+        parent.vakidateCameraPosition(model);
     }
 
     private void initComponents() {
@@ -723,6 +734,7 @@ public class VecMeshEditorGui extends JFrame {
 
                 //---- okButton ----
                 okButton.setText(bundle.getString("VecMeshEditorGui.okButton.text"));
+                okButton.addActionListener(e -> ok(e));
                 buttonBar.add(okButton, "cell 34 0");
 
                 //---- cancelButton ----

@@ -44,6 +44,13 @@ new FormModel {
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 0"
 			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button4"
+				"text": new FormMessage( null, "JFrameEditPolygonsMappings.button4.text" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonRenderNow", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 0"
+			} )
 			add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 				name: "menu8"
 				"text": new FormMessage( null, "JFrameEditPolygonsMappings.menu8.text" )
@@ -324,6 +331,45 @@ new FormModel {
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemDistanceLinear4.text" )
 						"$buttonGroup": new FormReference( "buttonGroup2" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "distanceLinear4", true ) )
+					} )
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "menu9"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menu9.text" )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem2"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem2.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem4Plus", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem13"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem13.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem4Plus", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem14"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem14.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem4Plus", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem15"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem15.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem4Plus", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem16"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem16.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem4Plus", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem17"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem17.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem4Plus", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem18"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem18.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem4Plus", true ) )
+						} )
 					} )
 				} )
 			}

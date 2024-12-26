@@ -184,8 +184,8 @@ public class TextureMorphMove extends ITexture {
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear3.class)) {
                     distanceAB = new DistanceProxLinear3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
                             bDimReal, editPanel.opt1, editPanel.optimizeGrid);
-                } else if (distanceMap.isAssignableFrom(DistanceProxLinear42.class)) {
-                    distanceAB = new DistanceProxLinear42(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
+                } else if (distanceMap.isAssignableFrom(DistanceProxLinear4.class)) {
+                    distanceAB = new DistanceProxLinear4(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
                             bDimReal, editPanel.opt1, editPanel.optimizeGrid);
                 } else if (distanceMap.isAssignableFrom(DistanceBezier3.class)) {
                     distanceAB = new DistanceBezier3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
