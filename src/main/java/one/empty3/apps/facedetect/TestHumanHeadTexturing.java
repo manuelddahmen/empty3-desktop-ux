@@ -172,8 +172,11 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                          };
         for (int i = 0; i < tris.length; i+=2) {
             boolean fail = false;
-            for(int j = i; j<i+2; j++) {
+            for (int j = 0; j < 3; j++) {
                 if (tris[i].getSommet().getElem(j)==null) {
+                    fail = true;
+                }
+                if (tris[i + 1].getSommet().getElem(j) == null) {
                     fail = true;
                 }
             }

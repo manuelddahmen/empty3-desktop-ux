@@ -24,7 +24,7 @@
  * Created by JFormDesigner on Thu Dec 28 17:19:26 CET 2023
  */
 
-package one.empty3.apps.vecmesh;
+package one.empty3.apps.facedetect.vecmesh;
 
 import one.empty3.library.Point;
 import one.empty3.libs.*;

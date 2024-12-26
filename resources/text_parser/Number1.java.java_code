@@ -1,0 +1,23 @@
+package one.empty3;
+
+class Number1 {
+    Double ar;
+    double ar1;
+    double ar2;
+    void empty() {
+    }
+
+    double func1(Double a, Double b, Double c) {
+        Double d = c + b / a;
+        d = d + 1;
+        return d;
+    }
+
+    Double br;
+
+    double func2(Double a, Double b, Double c) {
+        Double d = c + b * a;
+        d = d + 1;
+        return d;
+    }
+}

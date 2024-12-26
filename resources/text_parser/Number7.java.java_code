@@ -1,0 +1,13 @@
+package one.empty3;
+
+class Number7 {
+    double[] x = new double[10];
+
+    double[] arrayToZeroes() {
+        double d = 0;
+        for (double d1 : x) {
+            x[d1] = d;
+        }
+        return x;
+    }
+}

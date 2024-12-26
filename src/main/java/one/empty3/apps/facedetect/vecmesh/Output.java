@@ -20,7 +20,7 @@
  *
  */
 
-package one.empty3.apps.vecmesh;
+package one.empty3.apps.facedetect.vecmesh;
 
 import javax.swing.*;
 import java.util.logging.Level;

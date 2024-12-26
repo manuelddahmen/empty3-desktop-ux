@@ -1,0 +1,28 @@
+package one.empty3;
+
+class Number2 {
+    Double ar;
+
+    double func1(Double a, Double b, Double c) {
+        Double d = c + b / a;
+        if (d < 0)
+            d = -d / 2;
+        else
+            d = d * 2;
+        d = d + 1;
+        return d;
+    }
+
+    Double br;
+
+    double func2(Double a, Double b, Double c) {
+        Double d = c + b * a;
+        if (d < 0)
+            d = -d / 2;
+        else
+            d = d * 2;
+
+        d = d + 1;
+        return d;
+    }
+}
