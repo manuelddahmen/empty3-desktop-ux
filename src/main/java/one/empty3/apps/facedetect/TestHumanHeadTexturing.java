@@ -162,7 +162,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     }
 
     private void addEyePolygons(Scene scene, E3Model model) {
-        TRI[] tris = new TRI[2];
+        TRI[] tris;
         HashMap<String, Point3D> modp = editPolygonsMappings.pointsInModel;
         tris = new TRI[] {
                 new TRI(modp.get("RIGHT_EYE_RIGHT_CORNER"), modp.get("RIGHT_EYE_BOTTOM_BOUNDARY"), modp.get("RIGHT_EYE_TOP_BOUNDARY")),

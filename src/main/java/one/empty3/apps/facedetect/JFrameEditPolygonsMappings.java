@@ -355,9 +355,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void menuItem4Plus(ActionEvent e) {
-        String name = ((JButton) (e.getSource())).getName();
         try {
-            Class<?> aClass = Class.forName(" one.empty3.apps.facedetect.DistanceProxLinear" + name);
+            String name = ((JMenuItem) (e.getSource())).getText();
+            Class<?> aClass = Class.forName("one.empty3.apps.facedetect.DistanceProxLinear" + name);
             editPolygonsMappings2.distanceABClass = (Class<? extends DistanceAB>) aClass;
             editPolygonsMappings2.hasChangedAorB = true;
 

@@ -82,7 +82,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         double surfaceOccupied = 0.1;
         double surfaceOccupiedOld = 0.01;
         int step = 0;
-        while (surfaceOccupied/surfaceOccupiedOld >=  0.001 && occ != oldoccc) {
+        while (occ != oldoccc) {
             oldoccc = occ;
             stepNewPoints = false;
             firstStep = false;
@@ -121,7 +121,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                 }
                 int m = 0;
                 int checked = 0;
-                int CHECKED_MAX = 2;
+                int CHECKED_MAX = 3;
                 while (checked < CHECKED_MAX && !candidatesA.isEmpty() && candidatesA.size() - m > 0) {
                     int indexA = candidatesA.size() - m - 1;
                     int indexB = candidatesB.size() - m - 1;
