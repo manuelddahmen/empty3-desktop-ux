@@ -11,7 +11,7 @@ plugins {
 //"empty3-desktop-ux"
 
 group = 'one.empty3'
-version = '2024.12.25'
+version = '2024.12.27'
 
 kotlin {
     jvmToolchain(21)
@@ -288,13 +288,13 @@ signing {
     sign configurations.archives
 }
 
-def versionName = '2024.12.25'
+def versionName = '2024.12.27'
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-desktop-ux'
-            version = '2024.12.25'
+            version = '2024.12.27'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -394,8 +394,8 @@ jreleaser {
         name = 'empty3-desktop-ux'
         java.artifactId = 'empty3-desktop-ux'
         java.groupId = 'one.empty3'
-        java.version = '2024.12.25'
-        version = '2024.12.25'
+        java.version = '2024.12.27'
+        version = '2024.12.27'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
