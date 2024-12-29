@@ -1002,4 +1002,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     }
 
 
+    public Representable getModel() {
+        return model;
+    }
 }

@@ -186,4 +186,16 @@ public class VecMeshEditor implements Runnable {
     public Scene getScene() {
         return scene;
     }
+
+    public Rotate getRotate() {
+        return rotate;
+    }
+
+    public void setRotate(Rotate rotate) {
+        this.rotate = rotate;
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
+    }
 }

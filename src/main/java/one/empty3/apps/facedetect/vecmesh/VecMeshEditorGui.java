@@ -34,12 +34,10 @@ import one.empty3.library.core.export.ObjExport;
 import one.empty3.library.core.export.STLExport;
 import one.empty3.library.core.tribase.Plan3D;
 import one.empty3.library.core.tribase.Tubulaire3;
+import one.empty3.library.objloader.E3Model;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -62,7 +60,7 @@ public class VecMeshEditorGui extends JFrame {
     private static final int TYPE_CONTAINER_CLASS_VEC_HEIGHT_MAP = 0;
     private static final int TYPE_CONTAINER_CLASS_VORONOI_HEIGHTS = 1;
     private static int instanceCount = 0;
-    private JFrameEditPolygonsMappings parent;
+    private JFrameEditPolygonsMappings parent2;
     private BufferedImage texture;
     private File currentFile;
     private Class<? extends Representable> defaultClassRepresentable = Tubulaire3.class;
@@ -79,7 +77,11 @@ public class VecMeshEditorGui extends JFrame {
 
     public VecMeshEditorGui(JFrameEditPolygonsMappings parent) {
         this();
-        this.parent = parent;
+        this.parent2 = parent;
+        this.model.rotate = parent.getRotate();
+        representableClass = E3Model.class;
+        this.model.getScene().getObjets().setElem(parent.getEditPolygonsMappings2().getModel());
+        getZBuffer().scene().add(parent.getEditPolygonsMappings2().getModel());
     }
     public VecMeshEditorGui() {
         initComponents();
@@ -251,25 +253,25 @@ public class VecMeshEditorGui extends JFrame {
     }
 
     private void renderPoints(ActionEvent e) {
-        zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_POINTS);
+        getZBuffer().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_POINTS);
     }
 
     private void renderLines(ActionEvent e) {
-        zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
+        getZBuffer().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
     }
 
     private void renderQuadsCol(ActionEvent e) {
-        zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
+        getZBuffer().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
 
     }
 
     private void renderQuadsTextured(ActionEvent e) {
-        zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
+        getZBuffer().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
 
     }
 
     private void renderAll(ActionEvent e) {
-        zBuffer.setDisplayType(ZBufferImpl.DISPLAY_ALL);
+        getZBuffer().setDisplayType(ZBufferImpl.DISPLAY_ALL);
 
     }
 
@@ -395,7 +397,9 @@ public class VecMeshEditorGui extends JFrame {
     }
 
     private void ok(ActionEvent e) {
-        parent.vakidateCameraPosition(model);
+        parent2.validateCameraPosition(model);
+        this.setVisible(false);
+        this.dispose();
     }
 
     private void initComponents() {

@@ -23,34 +23,6 @@ new FormModel {
 				"JavaCodeGenerator.variableGetter": true
 			}
 			addEvent( new FormEvent( "java.awt.event.WindowListener", "windowClosing", "thisWindowClosing", true ) )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button2"
-				"text": new FormMessage( null, "JFrameEditPolygonsMappings.button2.text" )
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonBougerCamera", true ) )
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0"
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button1"
-				"text": new FormMessage( null, "JFrameEditPolygonsMappings.button1.text" )
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonRenduPlein", true ) )
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0"
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button3"
-				"text": new FormMessage( null, "JFrameEditPolygonsMappings.button3.text" )
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonRenduFil", true ) )
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0"
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button4"
-				"text": new FormMessage( null, "JFrameEditPolygonsMappings.button4.text" )
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonRenderNow", true ) )
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 0"
-			} )
 			add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 				name: "menu8"
 				"text": new FormMessage( null, "JFrameEditPolygonsMappings.menu8.text" )
@@ -371,6 +343,11 @@ new FormModel {
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem4Plus", true ) )
 						} )
 					} )
+				} )
+				add( new FormComponent( "javax.swing.JMenuItem" ) {
+					name: "menuItem9"
+					"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem9.text" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ok", true ) )
 				} )
 			}
 		}, new FormLayoutConstraints( null ) {

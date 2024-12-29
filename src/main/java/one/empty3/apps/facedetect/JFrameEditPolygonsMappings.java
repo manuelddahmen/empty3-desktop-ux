@@ -27,25 +27,22 @@
 package one.empty3.apps.facedetect;
 
 import java.awt.*;
-
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
 import one.empty3.apps.facedetect.vecmesh.Rotate;
 import one.empty3.apps.facedetect.vecmesh.VecMeshEditor;
 import one.empty3.apps.facedetect.vecmesh.VecMeshEditorGui;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
+import one.empty3.apps.feature.snakes.Matrix;
 import one.empty3.library.Camera;
 import one.empty3.library.Config;
 import one.empty3.library.Point3D;
-import one.empty3.library.Rotation;
 import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Color;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-
-import one.empty3.libs.*;
 
 import java.awt.Dimension;
 import java.awt.event.*;
@@ -64,13 +61,19 @@ import java.util.logging.Logger;
  */
 public class JFrameEditPolygonsMappings extends JFrame {
 
-    public void vakidateCameraPosition(VecMeshEditor model) {
-        Rotate rotate = model.rotate;
+    private Rotate rotate;
+
+    public void validateCameraPosition(VecMeshEditor model) {
+        rotate = model.rotate;
         //editPolygonsMappings2.model.getRotation().setElem(new Rotation(rotate.getRotationMatrix());
-        Camera camera = new Camera();
-        camera.setMatrice(rotate.getRotationMatrix());
-        camera.setLookat(rotate.getRepresentable().getOrig());
-        editPolygonsMappings2.testHumanHeadTexturing.camera();
+        //Camera camera = new Camera();
+        //camera.setMatrice(rotate.getRotationMatrix());
+        //camera.setLookat(rotate.getRepresentable().getOrig());
+        if(rotate==null)
+            return;
+        editPolygonsMappings2.model.setVectX(rotate.getRotationMatrix().mult(editPolygonsMappings2.model.getVectX()));
+        editPolygonsMappings2.model.setVectY(rotate.getRotationMatrix().mult(editPolygonsMappings2.model.getVectY()));
+        editPolygonsMappings2.model.setVectZ(rotate.getRotationMatrix().mult(editPolygonsMappings2.model.getVectZ()));
     }
 
     public class MyFilter implements Filter {
@@ -660,14 +663,14 @@ public class JFrameEditPolygonsMappings extends JFrame {
         // TODO add your code here
     }
 
-    private void buttonBougerCamera(ActionEvent e) {
+    private void ok(ActionEvent e) {
         VecMeshEditorGui vecMesh = new VecMeshEditorGui();
+        vecMesh.setVisible(true);
     }
 
     private void buttonRenderNow(ActionEvent e) {
         // TODO add your code here
     }
-
 
 
     private void initComponents() {
@@ -731,10 +734,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuItem16 = new JMenuItem();
         menuItem17 = new JMenuItem();
         menuItem18 = new JMenuItem();
-        button2 = new JButton();
-        button1 = new JButton();
-        button3 = new JButton();
-        button4 = new JButton();
+        menuItem9 = new JMenuItem();
         menu8 = new JMenu();
         editPolygonsMappings2 = new EditPolygonsMappings();
         menu3 = new JMenu();
@@ -1085,28 +1085,13 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menu5.add(menu9);
             }
             menuBar1.add(menu5);
+
+            //---- menuItem9 ----
+            menuItem9.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem9.text"));
+            menuItem9.addActionListener(e -> ok(e));
+            menuBar1.add(menuItem9);
         }
         setJMenuBar(menuBar1);
-
-        //---- button2 ----
-        button2.setText(bundle.getString("JFrameEditPolygonsMappings.button2.text"));
-        button2.addActionListener(e -> buttonBougerCamera(e));
-        contentPane.add(button2, "cell 0 0");
-
-        //---- button1 ----
-        button1.setText(bundle.getString("JFrameEditPolygonsMappings.button1.text"));
-        button1.addActionListener(e -> buttonRenduPlein(e));
-        contentPane.add(button1, "cell 0 0");
-
-        //---- button3 ----
-        button3.setText(bundle.getString("JFrameEditPolygonsMappings.button3.text"));
-        button3.addActionListener(e -> buttonRenduFil(e));
-        contentPane.add(button3, "cell 0 0");
-
-        //---- button4 ----
-        button4.setText(bundle.getString("JFrameEditPolygonsMappings.button4.text"));
-        button4.addActionListener(e -> buttonRenderNow(e));
-        contentPane.add(button4, "cell 0 0");
 
         //======== menu8 ========
         {
@@ -1205,10 +1190,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuItem menuItem16;
     private JMenuItem menuItem17;
     private JMenuItem menuItem18;
-    private JButton button2;
-    private JButton button1;
-    private JButton button3;
-    private JButton button4;
+    private JMenuItem menuItem9;
     private JMenu menu8;
     EditPolygonsMappings editPolygonsMappings2;
     private JMenu menu3;
@@ -1222,5 +1204,21 @@ public class JFrameEditPolygonsMappings extends JFrame {
     public void dispose() {
         super.dispose();
         System.exit(0);
+    }
+
+    public Rotate getRotate() {
+        return rotate;
+    }
+
+    public void setRotate(Rotate rotate) {
+        this.rotate = rotate;
+    }
+
+    public EditPolygonsMappings getEditPolygonsMappings2() {
+        return editPolygonsMappings2;
+    }
+
+    public void setEditPolygonsMappings2(EditPolygonsMappings editPolygonsMappings2) {
+        this.editPolygonsMappings2 = editPolygonsMappings2;
     }
 }
