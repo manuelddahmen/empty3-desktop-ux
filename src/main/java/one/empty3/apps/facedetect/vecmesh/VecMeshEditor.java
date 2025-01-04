@@ -147,6 +147,6 @@ public class VecMeshEditor implements Runnable {
     }
 
     public void setRepresentable(E3Model model) {
-        this.rotate = new Rotate(model, this.vecMeshEditorGui.panelGraphics);
+        this.rotate = new Rotate(model, this.vecMeshEditorGui.getPanelGraphics());
     }
 }
