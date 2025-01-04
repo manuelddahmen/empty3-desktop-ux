@@ -37,6 +37,7 @@ import one.empty3.apps.feature.snakes.Matrix;
 import one.empty3.library.Camera;
 import one.empty3.library.Config;
 import one.empty3.library.Point3D;
+import one.empty3.library.Scene;
 import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Color;
@@ -51,6 +52,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -664,12 +666,36 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void ok(ActionEvent e) {
-        VecMeshEditorGui vecMesh = new VecMeshEditorGui();
-        vecMesh.setVisible(true);
+        VecMeshEditor vecMesh = new VecMeshEditor(this);
+        vecMesh.setScene(new Scene());
+        vecMesh.getScene().add(getEditPolygonsMappings2().model);
+        new Thread(vecMesh).start();
     }
 
     private void buttonRenderNow(ActionEvent e) {
         // TODO add your code here
+    }
+
+    private synchronized void moveLinesDown(ActionEvent e) {
+        int selectedPointNo = editPolygonsMappings2.selectedPointNo;
+        final HashMap<String, Point3D> pointsInModel = editPolygonsMappings2.pointsInModel;
+        final HashMap<String, Point3D> pointsInImage = editPolygonsMappings2.pointsInImage;
+        if(selectedPointNo>=0 && selectedPointNo<editPolygonsMappings2.pointsInModel.size()) {
+            final int[] i = {0};
+            synchronized (pointsInModel) {
+                pointsInModel.forEach(new BiConsumer<String, Point3D>() {
+                    @Override
+                    public void accept(String s, Point3D point3D) {
+                        if (i[0] == selectedPointNo) {
+                            pointsInModel.remove(s);
+                            pointsInImage.remove(s);
+                        }
+                        i[0]++;
+                    }
+                });
+            }
+        }
+
     }
 
 
@@ -862,6 +888,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                 //---- menuItemMoveLinesDown ----
                 menuItemMoveLinesDown.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemMoveLinesDown.text"));
+                menuItemMoveLinesDown.addActionListener(e -> moveLinesDown(e));
                 menu1.add(menuItemMoveLinesDown);
 
                 //---- menuItemMoveLinesLeft ----

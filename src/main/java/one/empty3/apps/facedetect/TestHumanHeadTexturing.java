@@ -124,9 +124,9 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             scene.add(editPolygonsMappings.model);
             addEyePolygons(scene, editPolygonsMappings.model);
         }
-        if (editPolygonsMappings.model != null && editPolygonsMappings.image != null && editPolygonsMappings.textureWired) {
+        if (editPolygonsMappings!=null&&editPolygonsMappings.model != null && editPolygonsMappings.image != null && editPolygonsMappings.textureWired) {
             editPolygonsMappings.model.texture(new ImageTexture(new Image(editPolygonsMappings.image)));
-        } else if (editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
+        } else if (editPolygonsMappings!=null&&editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
             editPolygonsMappings.model.texture(editPolygonsMappings.iTextureMorphMove);
             editPolygonsMappings.iTextureMorphMove.setConvHullAB();
         } else {
@@ -181,8 +181,8 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 }
             }
             if(!fail) {
-                tris[i].texture(new ColorTexture(Color.BLUE.getRGB()));
-                tris[i + 1].texture(new ColorTexture(Color.BLUE.getRGB()));
+                tris[i].texture(new ColorTexture(0xFF000000));
+                tris[i + 1].texture(new ColorTexture(0xFF000000));
                 scene.add(tris[i]);
                 scene.add(tris[i + 1]);
             }

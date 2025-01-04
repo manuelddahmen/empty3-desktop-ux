@@ -130,6 +130,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemMoveLinesDown"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemMoveLinesDown.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "moveLinesDown", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemMoveLinesLeft"

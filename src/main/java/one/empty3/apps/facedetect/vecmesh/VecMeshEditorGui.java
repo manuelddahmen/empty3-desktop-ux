@@ -75,16 +75,10 @@ public class VecMeshEditorGui extends JFrame {
     private int containerClassType = 0;
 
 
-    public VecMeshEditorGui(JFrameEditPolygonsMappings parent) {
-        this();
-        this.parent2 = parent;
-        this.model.rotate = parent.getRotate();
-        representableClass = E3Model.class;
-        this.model.getScene().getObjets().setElem(parent.getEditPolygonsMappings2().getModel());
-        getZBuffer().scene().add(parent.getEditPolygonsMappings2().getModel());
-    }
-    public VecMeshEditorGui() {
+
+    public VecMeshEditorGui(E3Model model) {
         initComponents();
+
 
 
         config = new Config();
@@ -97,6 +91,9 @@ public class VecMeshEditorGui extends JFrame {
 
         instanceCount++;
         Logger.getAnonymousLogger().log(Level.INFO, "Instance==1 : " + (instanceCount == 1));
+
+        setVisible(true);
+
     }
 
     private void menuItemSave(ActionEvent e) {
@@ -398,6 +395,13 @@ public class VecMeshEditorGui extends JFrame {
 
     private void ok(ActionEvent e) {
         parent2.validateCameraPosition(model);
+        model.setRunningDisplay(false);
+        this.setVisible(false);
+        this.dispose();
+    }
+
+    private void cancel(ActionEvent e) {
+        model.setRunningDisplay(false);
         this.setVisible(false);
         this.dispose();
     }
@@ -451,7 +455,7 @@ public class VecMeshEditorGui extends JFrame {
         buttonOutput = new JLabel();
 
         //======== this ========
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         var contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
@@ -561,7 +565,10 @@ public class VecMeshEditorGui extends JFrame {
 
                 //---- menuItemRenderPoints ----
                 menuItemRenderPoints.setText(bundle.getString("VecMeshEditorGui.menuItemRenderPoints.text"));
-                menuItemRenderPoints.addActionListener(e -> renderPoints(e));
+                menuItemRenderPoints.addActionListener(e -> {
+			renderPoints(e);
+			renderPoints(e);
+		});
                 menu2.add(menuItemRenderPoints);
 
                 //---- menuItemRenderLines ----
@@ -743,6 +750,7 @@ public class VecMeshEditorGui extends JFrame {
 
                 //---- cancelButton ----
                 cancelButton.setText(bundle.getString("VecMeshEditorGui.cancelButton.text"));
+                cancelButton.addActionListener(e -> cancel(e));
                 buttonBar.add(cancelButton, "cell 35 0");
 
                 //---- buttonOutput ----
@@ -827,11 +835,11 @@ public class VecMeshEditorGui extends JFrame {
     public ZBufferImpl getZBuffer() {
         if (zBuffer == null || zBuffer.la() != getPanelGraphics().getWidth() ||
                 zBuffer.ha() != getPanelGraphics().getHeight()) {
-            ZBufferImpl zBuffer1 = zBuffer;
             zBuffer = new ZBufferImpl(getPanelGraphics().getWidth(),
                     getPanelGraphics().getHeight());
-            if (zBuffer1 != null) {
-                zBuffer.setDisplayType(zBuffer1.getDisplayType());
+            zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_POINTS);
+            if (zBuffer != null) {
+                zBuffer.setDisplayType(zBuffer.getDisplayType());
             } else {
                 zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
             }

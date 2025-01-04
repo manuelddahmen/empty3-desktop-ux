@@ -219,36 +219,39 @@ public class TextureMorphMove extends ITexture {
     }
 
     public void setConvHullAB() {
-
-        Map<String, Point3D> hashMapA = editPanel.pointsInImage;
-        Map<String, Point3D> hashMapB = editPanel.pointsInModel;
-        ArrayList<Point3D> aConv = new ArrayList<Point3D>();
-        int i = 0;
-        for (Map.Entry<String, Point3D> stringPoint3DEntry : hashMapA.entrySet()) {
-            aConv.add(stringPoint3DEntry.getValue());
-            i++;
-        }
-        i = 0;
-        List<Point3D> bConv = new ArrayList<>();
-        for (Map.Entry<String, Point3D> stringPoint3DEntry : hashMapA.entrySet()) {
-            bConv.add(stringPoint3DEntry.getValue());
-            i++;
-        }
-        if (aConv.size() >= 3 && bConv.size() >= 3) {
-            List<Point3D> convexHullA = ConvHull.convexHull(aConv, aConv.size());
-            List<Point3D> convexHullB = ConvHull.convexHull(bConv, bConv.size());
-            if (convexHullA != null && convexHullB != null) {
-                try {
-                    editPanel.iTextureMorphMove.setConvHullA(convexHullA);
-                    editPanel.iTextureMorphMove.setConvHullB(convexHullB);
-
-                } catch (RuntimeException ex) {
-                    Logger.getAnonymousLogger().log(Level.WARNING, "setConvHullA|N failed due to :" + ex.getMessage());
-                }
-                if (distanceAB != null)
-                    distanceAB.setInvalidArray(false);
-                return;
+        try {
+            Map<String, Point3D> hashMapA = editPanel.pointsInImage;
+            Map<String, Point3D> hashMapB = editPanel.pointsInModel;
+            ArrayList<Point3D> aConv = new ArrayList<Point3D>();
+            int i = 0;
+            for (Map.Entry<String, Point3D> stringPoint3DEntry : hashMapA.entrySet()) {
+                aConv.add(stringPoint3DEntry.getValue());
+                i++;
             }
+            i = 0;
+            List<Point3D> bConv = new ArrayList<>();
+            for (Map.Entry<String, Point3D> stringPoint3DEntry : hashMapA.entrySet()) {
+                bConv.add(stringPoint3DEntry.getValue());
+                i++;
+            }
+            if (aConv.size() >= 3 && bConv.size() >= 3) {
+                List<Point3D> convexHullA = ConvHull.convexHull(aConv, aConv.size());
+                List<Point3D> convexHullB = ConvHull.convexHull(bConv, bConv.size());
+                if (convexHullA != null && convexHullB != null) {
+                    try {
+                        editPanel.iTextureMorphMove.setConvHullA(convexHullA);
+                        editPanel.iTextureMorphMove.setConvHullB(convexHullB);
+
+                    } catch (RuntimeException ex) {
+                        Logger.getAnonymousLogger().log(Level.WARNING, "setConvHullA|N failed due to :" + ex.getMessage());
+                    }
+                    if (distanceAB != null)
+                        distanceAB.setInvalidArray(false);
+                    return;
+                }
+            }
+        } catch (RuntimeException ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Error : ", ex);
         }
         return;
     }
