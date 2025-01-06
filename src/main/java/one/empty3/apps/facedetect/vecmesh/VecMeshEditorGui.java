@@ -76,11 +76,11 @@ public class VecMeshEditorGui extends JFrame {
 
 
 
-    public VecMeshEditorGui(E3Model model) {
+    public VecMeshEditorGui(E3Model model, JFrameEditPolygonsMappings parent2) {
         initComponents();
 
 
-
+        this.parent2 = parent2;
         config = new Config();
 
         currentFile = new File(config.getDefaultCodeVecMesh());

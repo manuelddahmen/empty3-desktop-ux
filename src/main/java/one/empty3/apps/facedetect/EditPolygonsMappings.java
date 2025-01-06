@@ -96,6 +96,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public HashMap<String, Point3D> pointsInModel = new HashMap<>();
     public HashMap<String, Point3D> pointsInImage = new HashMap<>();
     BufferedImage image;
+    File imageFileRight;
     public int distanceABdimSize = 25;
     public Class<? extends DistanceAB> distanceABClass = DistanceProxLinear2.class;
     public boolean opt1 = false;
@@ -1004,5 +1005,19 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     public Representable getModel() {
         return model;
+    }
+
+    public void loadImageRight(File selectedFile) {
+        try {
+            image = ImageIO.read(selectedFile);
+        } catch (IOException e) {
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", e);
+        }
+        if (image != null && testHumanHeadTexturing != null) {
+            testHumanHeadTexturing.setJpgRight(image);
+            imageFileRight = selectedFile;
+        }
+
+        Logger.getAnonymousLogger().log(Level.INFO, "Loaded image");
     }
 }

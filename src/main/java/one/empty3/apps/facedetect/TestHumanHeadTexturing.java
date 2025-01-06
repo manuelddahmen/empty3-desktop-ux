@@ -48,6 +48,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     private Rectangle rectangleFace;
     private BufferedImage trueFace;
     private BufferedImage jpgFile;
+    protected BufferedImage jpgFileRight;
     private E3Model objFile;
     private EditPolygonsMappings editPolygonsMappings;
     protected ArrayList<BufferedImage> zBufferImages = new ArrayList<BufferedImage>();
@@ -162,29 +163,26 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     }
 
     private void addEyePolygons(Scene scene, E3Model model) {
-        TRI[] tris;
+        E3Model.FaceWithUv[] quads = new E3Model.FaceWithUv[2];
         HashMap<String, Point3D> modp = editPolygonsMappings.pointsInModel;
-        tris = new TRI[] {
-                new TRI(modp.get("RIGHT_EYE_RIGHT_CORNER"), modp.get("RIGHT_EYE_BOTTOM_BOUNDARY"), modp.get("RIGHT_EYE_TOP_BOUNDARY")),
-                new TRI(modp.get("RIGHT_EYE_LEFT_CORNER"), modp.get("RIGHT_EYE_TOP_BOUNDARY"), modp.get("RIGHT_EYE_BOTTOM_BOUNDARY")),
-                new TRI(modp.get("LEFT_EYE_LEFT_CORNER"),modp.get("LEFT_EYE_TOP_BOUNDARY"),   modp.get("LEFT_EYE_BOTTOM_BOUNDARY")),
-                new TRI(modp.get("LEFT_EYE_RIGHT_CORNER"), modp.get("LEFT_EYE_BOTTOM_BOUNDARY"), modp.get("LEFT_EYE_TOP_BOUNDARY"))
-                         };
-        for (int i = 0; i < tris.length; i+=2) {
-            boolean fail = false;
-            for (int j = 0; j < 3; j++) {
-                if (tris[i].getSommet().getElem(j)==null) {
-                    fail = true;
+        if(model!=null && !modp.isEmpty()) {
+            quads = new E3Model.FaceWithUv[]{
+                    model.new FaceWithUv(new Polygon(
+                            new Point3D[]{modp.get("RIGHT_EYE_RIGHT_CORNER"), modp.get("RIGHT_EYE_TOP_BOUNDARY"), modp.get("RIGHT_EYE_BOTTOM_BOUNDARY"),
+                                    modp.get("RIGHT_EYE_LEFT_CORNER")}, model.texture()), new double[]{0, 0, 0, 0, 0, 0, 0, 0}),//???
+                    model.new FaceWithUv(new Polygon(
+                            new Point3D[]{modp.get("LEFT_EYE_LEFT_CORNER"), modp.get("LEFT_EYE_TOP_BOUNDARY"), modp.get("LEFT_EYE_BOTTOM_BOUNDARY"),
+                                    modp.get("LEFT_EYE_RIGHT_CORNER")}, model.texture()), new double[]{0, 0, 0, 0, 0, 0, 0, 0})};//???
+            for (int i = 0; i < quads.length; i++) {
+                boolean fail = false;
+                for (int j = 0; j < 4; j++) {
+                    if (quads[i].getPolygon().getPoints().getElem(j) == null) {
+                        fail = true;
+                    }
                 }
-                if (tris[i + 1].getSommet().getElem(j) == null) {
-                    fail = true;
+                if (!fail) {
+                    scene.add(quads[i]);
                 }
-            }
-            if(!fail) {
-                tris[i].texture(new ColorTexture(0xFF000000));
-                tris[i + 1].texture(new ColorTexture(0xFF000000));
-                scene.add(tris[i]);
-                scene.add(tris[i + 1]);
             }
         }
     }
@@ -197,7 +195,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     }
 
 
-    public static TestHumanHeadTexturing startAll(EditPolygonsMappings editPolygonsMappings, BufferedImage jpg, E3Model obj, Resolution resolution) {
+    public static TestHumanHeadTexturing startAll(EditPolygonsMappings editPolygonsMappings, BufferedImage jpg, BufferedImage jpgRight, E3Model obj, Resolution resolution) {
         Logger.getAnonymousLogger().log(Level.INFO, "Jpg Obj Mapping...");
         if (instance != null) {
             instance.stop();
@@ -239,10 +237,12 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 editPolygonsMappings.iTextureMorphMove.setConvHullAB();
                 editPolygonsMappings.iTextureMorphMove.distanceAB.aDimReduced = editPolygonsMappings.aDimReduced;
                 editPolygonsMappings.iTextureMorphMove.distanceAB.bDimReduced = editPolygonsMappings.bDimReduced;
+
             }
             editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
             testHumanHeadTexturing.setJpg(jpg);
+            testHumanHeadTexturing.setJpgRight(jpgRight);
             testHumanHeadTexturing.setObj(obj);
             testHumanHeadTexturing.loop(true);
             testHumanHeadTexturing.setMaxFrames(Integer.MAX_VALUE);
@@ -264,6 +264,9 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     protected void setJpg(BufferedImage jpgFile) {
         this.jpgFile = jpgFile;
+    }
+    public void setJpgRight(BufferedImage image) {
+        this.jpgFileRight = image;
     }
 
     public BufferedImage getJpgFile() {
@@ -301,4 +304,5 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     public BufferedImage zBufferImage() {
         return getJpgFile();
     }
+
 }

@@ -69,7 +69,7 @@ public class Rotate {
             public void mousePressed(MouseEvent e) {
                 handleMouseDown(e);
                 handleMouseMove(e);
-                zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
+                //zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
 
             }
 

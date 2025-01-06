@@ -167,7 +167,7 @@ tasks.withType(JavaCompile).configureEach {
 dependencies {
     implementation "one.empty3.libs:partial-desktop:0.0.5"
     implementation "one.empty3.libs:commons-mp:0.0.6"
-    implementation "one.empty3:empty3-library-mp:2025.1.25"
+    implementation "one.empty3:empty3-library-mp:2025.1.4"
 //    implementation files("../empty3-library-mp/build/libs/empty3-library-mp.jar")
     //implementation 'org.springframework.boot:spring-boot-starter:3.3.2'
     //testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.1'

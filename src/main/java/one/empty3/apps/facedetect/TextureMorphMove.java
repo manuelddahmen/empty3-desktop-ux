@@ -251,7 +251,7 @@ public class TextureMorphMove extends ITexture {
                 }
             }
         } catch (RuntimeException ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Error : ", ex);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Unknown Error (not blocking) : ", ex);
         }
         return;
     }

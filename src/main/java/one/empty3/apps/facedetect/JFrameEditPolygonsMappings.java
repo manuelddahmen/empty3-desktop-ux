@@ -27,6 +27,7 @@
 package one.empty3.apps.facedetect;
 
 import java.awt.*;
+
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
 import one.empty3.apps.facedetect.vecmesh.Rotate;
@@ -66,12 +67,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private Rotate rotate;
 
     public void validateCameraPosition(VecMeshEditor model) {
-        rotate = model.rotate;
-        //editPolygonsMappings2.model.getRotation().setElem(new Rotation(rotate.getRotationMatrix());
-        //Camera camera = new Camera();
-        //camera.setMatrice(rotate.getRotationMatrix());
-        //camera.setLookat(rotate.getRepresentable().getOrig());
-        if(rotate==null)
+        if (model != null) {
+            rotate = model.rotate;
+        }
+        if (rotate == null)
             return;
         editPolygonsMappings2.model.setVectX(rotate.getRotationMatrix().mult(editPolygonsMappings2.model.getVectX()));
         editPolygonsMappings2.model.setVectY(rotate.getRotationMatrix().mult(editPolygonsMappings2.model.getVectY()));
@@ -143,6 +142,20 @@ public class JFrameEditPolygonsMappings extends JFrame {
             System.exit(-1);
         }
     }
+
+    private void loadImageRight(ActionEvent e) {
+        JFileChooser loadImage = new JFileChooser();
+        if (lastDirectory != null)
+            loadImage.setCurrentDirectory(lastDirectory);
+        int ret = loadImage.showOpenDialog(this);
+        if (ret == JFileChooser.APPROVE_OPTION) {
+            editPolygonsMappings2.loadImageRight(loadImage.getSelectedFile());
+            lastDirectory = loadImage.getCurrentDirectory();
+        } else if (ret == JFileChooser.ERROR_OPTION) {
+            System.exit(-1);
+        }
+    }
+
 
     private void menuItemAdd3DModel(ActionEvent e) {
         JFileChooser add3DModel = new JFileChooser();
@@ -355,7 +368,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     private void distanceLinear4(ActionEvent e) {
         //editPolygonsMappings2.iTextureMorphMove.setDistanceABclass(DistanceProxLinear3.class);
-        editPolygonsMappings2.distanceABClass =  DistanceProxLinear4.class;
+        editPolygonsMappings2.distanceABClass = DistanceProxLinear4.class;
         //editPolygonsMappings2.hasChangedAorB = true;
     }
 
@@ -366,10 +379,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
             editPolygonsMappings2.distanceABClass = (Class<? extends DistanceAB>) aClass;
             editPolygonsMappings2.hasChangedAorB = true;
 
-        } catch (ClassNotFoundException|ClassCastException ex) {
+        } catch (ClassNotFoundException | ClassCastException ex) {
             ex.printStackTrace();
         }
     }
+
     private void optimizeGrid(ActionEvent e) {
         if (e.getSource() instanceof JCheckBoxMenuItem r) {
 
@@ -680,7 +694,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         int selectedPointNo = editPolygonsMappings2.selectedPointNo;
         final HashMap<String, Point3D> pointsInModel = editPolygonsMappings2.pointsInModel;
         final HashMap<String, Point3D> pointsInImage = editPolygonsMappings2.pointsInImage;
-        if(selectedPointNo>=0 && selectedPointNo<editPolygonsMappings2.pointsInModel.size()) {
+        if (selectedPointNo >= 0 && selectedPointNo < editPolygonsMappings2.pointsInModel.size()) {
             final int[] i = {0};
             synchronized (pointsInModel) {
                 pointsInModel.forEach(new BiConsumer<String, Point3D>() {
@@ -698,13 +712,13 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     }
 
-
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         ResourceBundle bundle = ResourceBundle.getBundle("one.empty3.library.core.testing.Bundle");
         menuBar1 = new JMenuBar();
         menu2 = new JMenu();
         menuItem1 = new JMenuItem();
+        menuItem19 = new JMenuItem();
         menuItemChargeVideoDirectory = new JMenuItem();
         menuItem4 = new JMenuItem();
         menuItem3 = new JMenuItem();
@@ -807,6 +821,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItem1.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem1.text"));
                 menuItem1.addActionListener(e -> menuItemLoadImage(e));
                 menu2.add(menuItem1);
+
+                //---- menuItem19 ----
+                menuItem19.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem19.text"));
+                menuItem19.addActionListener(e -> loadImageRight(e));
+                menu2.add(menuItem19);
 
                 //---- menuItemChargeVideoDirectory ----
                 menuItemChargeVideoDirectory.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemChargeVideoDirectory.text"));
@@ -1162,6 +1181,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuBar menuBar1;
     private JMenu menu2;
     private JMenuItem menuItem1;
+    private JMenuItem menuItem19;
     private JMenuItem menuItemChargeVideoDirectory;
     private JMenuItem menuItem4;
     private JMenuItem menuItem3;

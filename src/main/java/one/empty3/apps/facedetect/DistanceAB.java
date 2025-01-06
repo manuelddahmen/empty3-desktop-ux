@@ -31,6 +31,7 @@ import one.empty3.libs.*;
 
 import java.awt.Dimension;
 import java.awt.geom.Dimension2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,11 @@ public abstract class DistanceAB {
     protected double right;
     protected double bottom;
     public int distanceABdimSize = 25;
+    protected BufferedImage jpgRight;
+
+    public void setJpgRight(BufferedImage jpgFileRight) {
+        this.jpgRight = jpgFileRight;
+    }
 
     static class Rectangle2 {
         public double getX1() {

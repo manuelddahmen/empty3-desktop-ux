@@ -58,6 +58,11 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemLoadImage", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItem19"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem19.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadImageRight", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemChargeVideoDirectory"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemChargeVideoDirectory.text" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "chargeVideoDirectory", true ) )

@@ -57,7 +57,8 @@ public class VecMeshEditor implements Runnable {
         this.parent2 = parent;
         this.rotate = parent.getRotate();
         this.model = parent.getEditPolygonsMappings2().getModel();
-        this.vecMeshEditorGui = new VecMeshEditorGui((E3Model) parent2.getEditPolygonsMappings2().getModel());
+        this.vecMeshEditorGui = new VecMeshEditorGui((E3Model) parent2.getEditPolygonsMappings2().getModel(),
+                parent2);
 
     }
 
