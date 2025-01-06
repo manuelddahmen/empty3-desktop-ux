@@ -96,7 +96,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public HashMap<String, Point3D> pointsInModel = new HashMap<>();
     public HashMap<String, Point3D> pointsInImage = new HashMap<>();
     BufferedImage image;
-    File imageFileRight;
+    BufferedImage imageFileRight;
     public int distanceABdimSize = 25;
     public Class<? extends DistanceAB> distanceABClass = DistanceProxLinear2.class;
     public boolean opt1 = false;
@@ -267,7 +267,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             if (testHumanHeadTexturing.threadTest != null)
                 TestHumanHeadTexturing.threadTest.interrupt();
         }
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, model, null);
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, null);
         hasChangedAorB = true;
     }
 
@@ -448,13 +448,24 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             testHumanHeadTexturing.setJpg(image);
             imageFile = selectedFile;
         }
-
         Logger.getAnonymousLogger().log(Level.INFO, "Loaded image");
-
     }
+        public void loadImageRight(File selectedFile) {
+            try {
+                imageFileRight = ImageIO.read(selectedFile);
+            } catch (IOException e) {
+                Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", e);
+            }
+            if (imageFileRight != null && testHumanHeadTexturing != null) {
+                testHumanHeadTexturing.setJpgRight(imageFileRight);
+            }
+
+            Logger.getAnonymousLogger().log(Level.INFO, "Loaded image");
+        }
+
 
     public void run() {
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, model, TestObjet.HD1080);
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, TestObjet.HD1080);
         hasChangedAorB = true;
         boolean firstTime = true;
         AtomicBoolean oneMore = new AtomicBoolean(true);
@@ -509,7 +520,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                     if (pointsInModel != null && pointsInImage != null && !pointsInImage.isEmpty() && !pointsInModel.isEmpty()) {
 
                                         if (pointsInImage != null && pointsInImage.size() >= 3 && pointsInModel != null && pointsInModel.size() >= 3) {
-                                            iTextureMorphMove.setConvHullAB();
+                                            //iTextureMorphMove.setConvHullAB();
                                         }
                                         if (iTextureMorphMove.distanceAB != null && !iTextureMorphMove.distanceAB.isInvalidArray()) {
                                             // Display 3D scene
@@ -997,7 +1008,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         threadTextureCreation = null;
         threadDistanceIsNotRunning = true;
         testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this,
-                image, model, TestObjet.HD1080);
+                image, imageFileRight, model, TestObjet.HD1080);
         renderingStopped = true;
         hasChangedAorB = true;
     }
@@ -1007,17 +1018,4 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         return model;
     }
 
-    public void loadImageRight(File selectedFile) {
-        try {
-            image = ImageIO.read(selectedFile);
-        } catch (IOException e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", e);
-        }
-        if (image != null && testHumanHeadTexturing != null) {
-            testHumanHeadTexturing.setJpgRight(image);
-            imageFileRight = selectedFile;
-        }
-
-        Logger.getAnonymousLogger().log(Level.INFO, "Loaded image");
-    }
 }

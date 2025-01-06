@@ -32,7 +32,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
     private Point3D[][] imageAB;
     private List<Point3D> pointsB;
     private List<Point3D> pointsA;
-
+    boolean[][] checkedList;
     private static final int MAX_SUB_ITERE_X = 10;
 
     /***
@@ -61,7 +61,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         List<Point3D> newA = new ArrayList<>();
         List<Point3D> newB = new ArrayList<>();
         double eps = 1. / Math.min(aDimReal.getWidth(), aDimReal.getHeight());
-        boolean[][] checkedList = new boolean[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
+        checkedList = new boolean[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
         Point3D[][] pointAdded = new Point3D[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
         int[][] gen = new int[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
         ;

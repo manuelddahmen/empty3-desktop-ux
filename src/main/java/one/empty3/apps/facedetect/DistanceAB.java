@@ -43,7 +43,7 @@ public abstract class DistanceAB {
     protected double right;
     protected double bottom;
     public int distanceABdimSize = 25;
-    protected BufferedImage jpgRight;
+    BufferedImage jpgRight;
 
     public void setJpgRight(BufferedImage jpgFileRight) {
         this.jpgRight = jpgFileRight;

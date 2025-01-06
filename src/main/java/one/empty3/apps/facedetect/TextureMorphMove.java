@@ -68,7 +68,7 @@ public class TextureMorphMove extends ITexture {
 
         if (distanceAB == null)
             return 0;
-        if (distanceAB instanceof DistanceIdent dei) {
+        if (distanceAB instanceof DistanceIdent) {
             Point3D narcissism = distanceAB.findAxPointInB(u, v);
 
             Point3D point3D = new Point3D(narcissism.getX() * editPanel.image.getWidth(), narcissism.getY() * editPanel.image.getHeight(), 0.0);
@@ -110,6 +110,15 @@ public class TextureMorphMove extends ITexture {
                     } else if (ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
                         */
                     int rgb = editPanel.image.getRGB(x, y);
+
+
+                    if(distanceAB instanceof DistanceProxLinear4 dist4 ) {
+                        x = (int) (u*dist4.bDimReal.getWidth());
+                        y = (int) (v*dist4.bDimReal.getHeight());
+                        if (dist4.jpgRight != null && !dist4.checkedList[x][y]) {
+                            return editPanel.imageFileRight.getRGB(x, y);
+                        }
+                    }
                     return rgb;
                     //}
                     //} else {
@@ -119,7 +128,9 @@ public class TextureMorphMove extends ITexture {
                     //    }
                     //}
                 } else {
-                    return Color.RED.getRGB();
+                    int x = (int) (u*distanceAB.aDimReal.getWidth());
+                    int y = (int) (v*distanceAB.aDimReal.getHeight());
+                    return editPanel.image.getRGB(x, y);
 
                 }
             } catch (RuntimeException e) {
@@ -219,6 +230,7 @@ public class TextureMorphMove extends ITexture {
     }
 
     public void setConvHullAB() {
+        /*
         try {
             Map<String, Point3D> hashMapA = editPanel.pointsInImage;
             Map<String, Point3D> hashMapB = editPanel.pointsInModel;
@@ -253,6 +265,8 @@ public class TextureMorphMove extends ITexture {
         } catch (RuntimeException ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Unknown Error (not blocking) : ", ex);
         }
+
+         */
         return;
     }
 

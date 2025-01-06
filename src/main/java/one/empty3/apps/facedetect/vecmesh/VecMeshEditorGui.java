@@ -394,16 +394,20 @@ public class VecMeshEditorGui extends JFrame {
     }
 
     private void ok(ActionEvent e) {
-        parent2.validateCameraPosition(model);
-        model.setRunningDisplay(false);
-        this.setVisible(false);
-        this.dispose();
+        if(model!=null) {
+            parent2.validateCameraPosition(model);
+            model.setRunningDisplay(false);
+            this.setVisible(false);
+            this.dispose();
+        }
     }
 
     private void cancel(ActionEvent e) {
-        model.setRunningDisplay(false);
-        this.setVisible(false);
-        this.dispose();
+        if(model!=null) {
+            model.setRunningDisplay(false);
+            this.setVisible(false);
+            this.dispose();
+        }
     }
 
     private void initComponents() {

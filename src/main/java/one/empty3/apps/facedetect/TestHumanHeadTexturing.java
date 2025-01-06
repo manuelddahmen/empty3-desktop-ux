@@ -131,7 +131,6 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             editPolygonsMappings.model.texture(editPolygonsMappings.iTextureMorphMove);
             editPolygonsMappings.iTextureMorphMove.setConvHullAB();
         } else {
-            Logger.getAnonymousLogger().log(Level.WARNING, "setConvHullAB:: model or texture null on render thread");
         }
         if (!scene().getObjets().getData1d().isEmpty()) {
             z().scene(scene);
@@ -237,6 +236,8 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 editPolygonsMappings.iTextureMorphMove.setConvHullAB();
                 editPolygonsMappings.iTextureMorphMove.distanceAB.aDimReduced = editPolygonsMappings.aDimReduced;
                 editPolygonsMappings.iTextureMorphMove.distanceAB.bDimReduced = editPolygonsMappings.bDimReduced;
+                if(editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 &&jpgRight!=null)
+                    editPolygonsMappings.iTextureMorphMove.distanceAB.jpgRight = jpgRight;
 
             }
             editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
@@ -267,6 +268,8 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     }
     public void setJpgRight(BufferedImage image) {
         this.jpgFileRight = image;
+        if(editPolygonsMappings.iTextureMorphMove!=null && editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4)
+            editPolygonsMappings.iTextureMorphMove.distanceAB.jpgRight = image;
     }
 
     public BufferedImage getJpgFile() {
