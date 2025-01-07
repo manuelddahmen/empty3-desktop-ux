@@ -233,11 +233,10 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 editPolygonsMappings.iTextureMorphMove.distanceAB.optimizeGrid = editPolygonsMappings.optimizeGrid;
                 editPolygonsMappings.iTextureMorphMove.distanceAB.typeShape = editPolygonsMappings.typeShape;
                 editPolygonsMappings.iTextureMorphMove.distanceAB.refineMatrix = editPolygonsMappings.refineMatrix;
-                editPolygonsMappings.iTextureMorphMove.setConvHullAB();
                 editPolygonsMappings.iTextureMorphMove.distanceAB.aDimReduced = editPolygonsMappings.aDimReduced;
                 editPolygonsMappings.iTextureMorphMove.distanceAB.bDimReduced = editPolygonsMappings.bDimReduced;
                 if(editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 &&jpgRight!=null)
-                    editPolygonsMappings.iTextureMorphMove.distanceAB.jpgRight = jpgRight;
+                    editPolygonsMappings.iTextureMorphMove.distanceAB.jpgRight = editPolygonsMappings.imageFileRight;
 
             }
             editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;

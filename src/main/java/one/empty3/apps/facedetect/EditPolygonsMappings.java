@@ -528,10 +528,12 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                                 iTextureMorphMove.distanceAB.setModel(model);
                                                 model.texture(iTextureMorphMove);
                                             }
+                                            if(iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 d4 && imageFileRight!=null) {
+                                                d4.jpgRight = imageFileRight;
+                                            }
                                         } else {
                                             Logger.getAnonymousLogger().log(Level.INFO, "Invalid array in DistanceAB");
                                         }
-
                                         l = System.nanoTime() - l;
                                         Logger.getAnonymousLogger().log(Level.INFO, "Distance calculation finished" + (l / 1000000.0));
                                     }
@@ -772,7 +774,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
             }
 
-
+            hasChangedAorB = true;
         } catch (FileNotFoundException e) {
             Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not found ", e);
         }

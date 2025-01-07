@@ -273,7 +273,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
             );
 
              */
-            TextureMorphMove textureMorphMove = editPolygonsMappings2.iTextureMorphMove;
             E3Model model = editPolygonsMappings2.model;
             File defaultFileOutput = config.getDefaultFileOutput();
             SaveTexture saveTexture = new SaveTexture(resolutionOut, editPolygonsMappings2.image, model);
@@ -1016,7 +1015,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                 //---- checkBoxMenuItemTypeShapePolyogns ----
                 checkBoxMenuItemTypeShapePolyogns.setText(bundle.getString("JFrameEditPolygonsMappings.checkBoxMenuItemTypeShapePolyogns.text"));
-                checkBoxMenuItemTypeShapePolyogns.setSelected(true);
                 checkBoxMenuItemTypeShapePolyogns.addActionListener(e -> checkBoxMenuItemPoly(e));
                 menu5.add(checkBoxMenuItemTypeShapePolyogns);
 
@@ -1086,6 +1084,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                 //---- menuItemDistanceLinear4 ----
                 menuItemDistanceLinear4.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemDistanceLinear4.text"));
+                menuItemDistanceLinear4.setSelected(true);
                 menuItemDistanceLinear4.addActionListener(e -> distanceLinear4(e));
                 menu5.add(menuItemDistanceLinear4);
 

@@ -243,7 +243,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
     }
 
     private Point3D findAxPointInBa12(double u, double v) {
-        double distance = Double.MAX_VALUE;
+        /*double distance = Double.MAX_VALUE;
         Point3D currentDist = new Point3D(u, v, 0.0);
         int j = 0;
         double dist = distance;
@@ -255,6 +255,13 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
             }
 
         }
-        return pointsA.get(j);
+        return pointsA.get(j);*/
+        Point3D seached = new Point3D(u*bDimReal.getWidth(), v*bDimReal.getHeight(), 0.0);
+        for (int i = 0; i < pointsB.size(); i++) {
+            Point3D currentB = pointsB.get(i);
+            if((int)(double)seached.getX()==(int)(double)currentB.getX()&&(int)(double)seached.getY()==(int)(double)currentB.getY())
+                return pointsA.get(i);
+        }
+        return null;
     }
 }

@@ -112,11 +112,11 @@ public class TextureMorphMove extends ITexture {
                     int rgb = editPanel.image.getRGB(x, y);
 
 
-                    if(distanceAB instanceof DistanceProxLinear4 dist4 ) {
-                        x = (int) (u*dist4.bDimReal.getWidth());
-                        y = (int) (v*dist4.bDimReal.getHeight());
-                        if (dist4.jpgRight != null && !dist4.checkedList[x][y]) {
-                            return editPanel.imageFileRight.getRGB(x, y);
+                    if(distanceAB instanceof DistanceProxLinear4 dist4 &&dist4.jpgRight != null) {
+                        x = (int) (u*dist4.jpgRight.getWidth());
+                        y = (int) (v*dist4.jpgRight.getHeight());
+                        if (!dist4.checkedList[x][y]) {
+                            return dist4.jpgRight.getRGB(x, y);
                         }
                     }
                     return rgb;
@@ -128,9 +128,15 @@ public class TextureMorphMove extends ITexture {
                     //    }
                     //}
                 } else {
-                    int x = (int) (u*distanceAB.aDimReal.getWidth());
-                    int y = (int) (v*distanceAB.aDimReal.getHeight());
-                    return editPanel.image.getRGB(x, y);
+                    if(distanceAB instanceof DistanceProxLinear4 dist4 && dist4.jpgRight!=null) {
+                        int x = (int) (u * dist4.jpgRight.getWidth());
+                        int y = (int) (v * dist4.jpgRight.getHeight());
+                        return editPanel.imageFileRight.getRGB(x, y);
+                    } else {
+                        int x1 = (int) (u*distanceAB.aDimReal.getWidth());
+                        int y1 = (int) (v*distanceAB.aDimReal.getHeight());
+                        return editPanel.image.getRGB(x1, y1);
+                    }
 
                 }
             } catch (RuntimeException e) {
@@ -140,17 +146,14 @@ public class TextureMorphMove extends ITexture {
             int y = (int) (Math.max(0, Math.min(v * ((double) editPanel.image.getHeight() - 1), (double) editPanel.image.getHeight() - 1)));
             return Color.GREEN.getRGB();*/
         }
-        int x = (int) (Math.max(0, Math.min(u * ((double) editPanel.image.getWidth() - 1), (double) editPanel.image.getWidth() - 1)));
-        int y = (int) (Math.max(0, Math.min(v * ((double) editPanel.image.getHeight() - 1), (double) editPanel.image.getHeight() - 1)));
-        //int rgb = editPanel.image.getRGB(x, y);
-        int rgb = Color.YELLOW.getRGB();
-        return rgb;
+
+
+        int x1 = (int) (u*distanceAB.aDimReal.getWidth());
+        int y1 = (int) (v*distanceAB.aDimReal.getHeight());
+        return editPanel.image.getRGB(x1, y1);
 
     }
 
-    //public void setEditOPanel(EditPolygonsMappings editPolygonsMappings) {
-    //    this.editPanel = editPolygonsMappings;
-    //}
 
     public void setDistanceABclass(Class<? extends DistanceAB> distanceMap) {
         Dimension bDimReal;
@@ -198,6 +201,8 @@ public class TextureMorphMove extends ITexture {
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear4.class)) {
                     distanceAB = new DistanceProxLinear4(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
                             bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    if(editPanel.imageFileRight!=null)
+                        distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceBezier3.class)) {
                     distanceAB = new DistanceBezier3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
                             bDimReal, editPanel.opt1, editPanel.optimizeGrid);
