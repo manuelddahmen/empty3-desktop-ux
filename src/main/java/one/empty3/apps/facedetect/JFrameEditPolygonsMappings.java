@@ -961,6 +961,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItemAddPlane.addActionListener(e -> {
 			photoPlaneRepresentable(e);
 			addPlane(e);
+			addPlane(e);
 		});
                 menu6.add(menuItemAddPlane);
             }
