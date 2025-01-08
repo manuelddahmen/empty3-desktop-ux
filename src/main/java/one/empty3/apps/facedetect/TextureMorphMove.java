@@ -24,7 +24,6 @@ package one.empty3.apps.facedetect;
 
 import java.awt.Color;
 
-import one.empty3.apps.feature.ConvHull;
 import one.empty3.library.*;
 import one.empty3.library.core.testing.Resolution;
 import org.jetbrains.annotations.NotNull;
@@ -102,7 +101,7 @@ public class TextureMorphMove extends ITexture {
                     int yLeft = (int) (Math.max(0, Math.min(p.getY(), (double) editPanel.image.getHeight() - 1)));
 
                     if(distanceAB instanceof DistanceProxLinear43 dist4 &&dist4.jpgRight != null) {
-                        if(dist4.checkedList[xLeft][xLeft]) {
+                        if(dist4.checkedListA[xLeft][xLeft]) {
                             int xRight = (int) (Math.max(0, Math.min(((double) axPointInB.getX() * editPanel.imageFileRight.getWidth()), (double) editPanel.imageFileRight.getWidth() - 1)));
                             int yRight = (int) (Math.max(0, Math.min(((double) axPointInB.getY() * editPanel.imageFileRight.getHeight()), (double) editPanel.imageFileRight.getHeight() - 1)));
                             return dist4.jpgRight.getRGB(xRight, yRight);

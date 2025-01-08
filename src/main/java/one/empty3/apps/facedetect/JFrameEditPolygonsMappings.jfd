@@ -57,10 +57,19 @@ new FormModel {
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem1.text" )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemLoadImage", true ) )
 					} )
-					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItem19"
-						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem19.text" )
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadImageRight", true ) )
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "menu10"
+						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menu10.text" )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem19"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem19.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadImageRight", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem20"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem20.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemModifiedVertex3", true ) )
+						} )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemChargeVideoDirectory"

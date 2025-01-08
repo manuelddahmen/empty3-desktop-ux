@@ -713,13 +713,25 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     }
 
+    private void menuItemModifiedVertex3(ActionEvent e) {
+        JFileChooser loadImageDeformed = new JFileChooser();
+        if (lastDirectory != null)
+            loadImageDeformed.setCurrentDirectory(lastDirectory);
+        if (loadImageDeformed.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            editPolygonsMappings2.loadTxt3(loadImageDeformed.getSelectedFile());
+        }
+        lastDirectory = loadImageDeformed.getCurrentDirectory();
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         ResourceBundle bundle = ResourceBundle.getBundle("one.empty3.library.core.testing.Bundle");
         menuBar1 = new JMenuBar();
         menu2 = new JMenu();
         menuItem1 = new JMenuItem();
+        menu10 = new JMenu();
         menuItem19 = new JMenuItem();
+        menuItem20 = new JMenuItem();
         menuItemChargeVideoDirectory = new JMenuItem();
         menuItem4 = new JMenuItem();
         menuItem3 = new JMenuItem();
@@ -823,10 +835,21 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItem1.addActionListener(e -> menuItemLoadImage(e));
                 menu2.add(menuItem1);
 
-                //---- menuItem19 ----
-                menuItem19.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem19.text"));
-                menuItem19.addActionListener(e -> loadImageRight(e));
-                menu2.add(menuItem19);
+                //======== menu10 ========
+                {
+                    menu10.setText(bundle.getString("JFrameEditPolygonsMappings.menu10.text"));
+
+                    //---- menuItem19 ----
+                    menuItem19.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem19.text"));
+                    menuItem19.addActionListener(e -> loadImageRight(e));
+                    menu10.add(menuItem19);
+
+                    //---- menuItem20 ----
+                    menuItem20.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem20.text"));
+                    menuItem20.addActionListener(e -> menuItemModifiedVertex3(e));
+                    menu10.add(menuItem20);
+                }
+                menu2.add(menu10);
 
                 //---- menuItemChargeVideoDirectory ----
                 menuItemChargeVideoDirectory.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemChargeVideoDirectory.text"));
@@ -1186,7 +1209,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuBar menuBar1;
     private JMenu menu2;
     private JMenuItem menuItem1;
+    private JMenu menu10;
     private JMenuItem menuItem19;
+    private JMenuItem menuItem20;
     private JMenuItem menuItemChargeVideoDirectory;
     private JMenuItem menuItem4;
     private JMenuItem menuItem3;

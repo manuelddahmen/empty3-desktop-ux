@@ -95,6 +95,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     boolean notMenuOpen = true;
     public HashMap<String, Point3D> pointsInModel = new HashMap<>();
     public HashMap<String, Point3D> pointsInImage = new HashMap<>();
+    public HashMap<String, Point3D> points3 = new HashMap<>();
     BufferedImage image;
     BufferedImage imageFileRight;
     public int distanceABdimSize = 25;
@@ -1020,4 +1021,79 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         return model;
     }
 
+    public void loadTxt3(File selectedFile) {
+        outTxtType = SINGLE;
+        if (image != null && model != null) {
+            points3 = new HashMap<>();
+            try {
+                Scanner bufferedReader = new Scanner(new FileReader(selectedFile));
+                String line = "";
+                while (bufferedReader.hasNextLine()) {
+                    line = bufferedReader.nextLine().trim();
+                    String landmarkType;
+                    double x;
+                    double y;
+                    if (!line.isEmpty()) {
+                        if (Character.isLetter(line.charAt(0))) {
+                            landmarkType = line;
+                            // X
+                            line = bufferedReader.nextLine().trim();
+                            x = Double.parseDouble(line);
+                            // Y
+                            line = bufferedReader.nextLine().trim();
+                            y = Double.parseDouble(line);
+                            // Blank line
+                            line = bufferedReader.nextLine().trim();
+
+                            points3.put(landmarkType, new Point3D(x, y, 0.0));
+                        }
+                    }
+                }
+                pointsInImage.forEach(new BiConsumer<String, Point3D>() {
+                    @Override
+                    public void accept(String s, Point3D point3D) {
+                        if (!points3.containsKey(s)) {
+                            points3.put(s, point3D);
+                        }
+                    }
+                });
+                pointsInModel.forEach(new BiConsumer<String, Point3D>() {
+                    @Override
+                    public void accept(String s, Point3D point3D) {
+                        if (!points3.containsKey(s)) {
+                            points3.put(s, point3D);
+                        }
+                    }
+                });
+                points3.forEach(new BiConsumer<String, Point3D>() {
+                    @Override
+                    public void accept(String s, Point3D point3D) {
+                        if (!pointsInImage.containsKey(s)) {
+                            pointsInImage.put(s, point3D);
+                        }
+                    }
+                });
+                points3.forEach(new BiConsumer<String, Point3D>() {
+                    @Override
+                    public void accept(String s, Point3D point3D) {
+                        if (!pointsInModel.containsKey(s)) {
+                            pointsInModel.put(s, point3D);
+                        }
+                    }
+                });
+
+                Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in image", pointsInModel.size());
+                bufferedReader.close();
+
+                hasChangedAorB = true;
+
+            } catch (IOException | RuntimeException ex) {
+                Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", ex);
+            }
+        } else {
+            Logger.getAnonymousLogger().log(Level.INFO, "Load image and model first before points", pointsInModel.size());
+        }
+
+
+    }
 }
