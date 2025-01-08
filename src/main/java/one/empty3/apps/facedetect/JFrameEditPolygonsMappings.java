@@ -425,7 +425,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void menuItem13(ActionEvent e) {
-        // TODO add your code here
+        editPolygonsMappings2.distanceABClass = DistanceProxLinear43.class;
+        ///editPolygonsMappings2.hasChangedAorB = true;
+
     }
 
     private void editPolygonsMappings2MouseDragged(MouseEvent e) {
@@ -1100,7 +1102,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                     //---- menuItem13 ----
                     menuItem13.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem13.text"));
-                    menuItem13.addActionListener(e -> menuItem4Plus(e));
+                    menuItem13.addActionListener(e -> {
+			menuItem4Plus(e);
+			menuItem13(e);
+		});
                     menu9.add(menuItem13);
 
                     //---- menuItem14 ----

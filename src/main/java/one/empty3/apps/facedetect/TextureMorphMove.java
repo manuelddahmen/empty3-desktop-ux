@@ -101,14 +101,16 @@ public class TextureMorphMove extends ITexture {
                     int xLeft = (int) (Math.max(0, Math.min(p.getX(), (double) editPanel.image.getWidth() - 1)));
                     int yLeft = (int) (Math.max(0, Math.min(p.getY(), (double) editPanel.image.getHeight() - 1)));
 
-                    if(distanceAB instanceof DistanceProxLinear4 dist4 &&dist4.jpgRight != null) {
-                        int xRight = (int) (Math.max(0, Math.min(((double) axPointInB.getX()*editPanel.imageFileRight.getWidth()), (double) editPanel.imageFileRight.getWidth() - 1)));
-                        int yRight = (int) (Math.max(0, Math.min(((double) axPointInB.getY()*editPanel.imageFileRight.getHeight()), (double) editPanel.imageFileRight.getHeight() - 1)));
-                        if (dist4.checkedList[xLeft][yLeft]) {
+                    if(distanceAB instanceof DistanceProxLinear43 dist4 &&dist4.jpgRight != null) {
+                        if(dist4.checkedList[xLeft][xLeft]) {
+                            int xRight = (int) (Math.max(0, Math.min(((double) axPointInB.getX() * editPanel.imageFileRight.getWidth()), (double) editPanel.imageFileRight.getWidth() - 1)));
+                            int yRight = (int) (Math.max(0, Math.min(((double) axPointInB.getY() * editPanel.imageFileRight.getHeight()), (double) editPanel.imageFileRight.getHeight() - 1)));
                             return dist4.jpgRight.getRGB(xRight, yRight);
+                        } else {
+                            return dist4.jpgRight.getRGB(xLeft, yLeft);
                         }
                     }
-                    return editPanel.image.getRGB((int)(u*(editPanel.image.getWidth()-1)), (int)(v*(editPanel.image.getHeight()-1)));
+                    return editPanel.image.getRGB(xLeft, yLeft);
                     //}
                     //} else {
                     //    if (ConvHull.convexHullTestPointIsInside(polyConvB, new Point3D((double) x, (double) y, 0.0))) {
