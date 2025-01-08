@@ -331,7 +331,6 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "menuItem13"
 							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem13.text" )
-							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem4Plus", true ) )
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem13", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {

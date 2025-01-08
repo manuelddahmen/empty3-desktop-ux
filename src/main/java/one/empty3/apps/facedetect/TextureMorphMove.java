@@ -101,13 +101,13 @@ public class TextureMorphMove extends ITexture {
                     int yLeft = (int) (Math.max(0, Math.min(p.getY(), (double) editPanel.image.getHeight() - 1)));
 
                     if(distanceAB instanceof DistanceProxLinear43 dist4 &&dist4.jpgRight != null) {
-                        if(dist4.checkedListA[xLeft][xLeft]) {
-                            int xRight = (int) (Math.max(0, Math.min(((double) axPointInB.getX() * editPanel.imageFileRight.getWidth()), (double) editPanel.imageFileRight.getWidth() - 1)));
-                            int yRight = (int) (Math.max(0, Math.min(((double) axPointInB.getY() * editPanel.imageFileRight.getHeight()), (double) editPanel.imageFileRight.getHeight() - 1)));
-                            return dist4.jpgRight.getRGB(xRight, yRight);
-                        } else {
-                            return dist4.jpgRight.getRGB(xLeft, yLeft);
-                        }
+                        int xRight = (int) (Math.max(0, Math.min(((double) axPointInB.getX() * editPanel.imageFileRight.getWidth()), (double) editPanel.imageFileRight.getWidth() - 1)));
+                        int yRight = (int) (Math.max(0, Math.min(((double) axPointInB.getY() * editPanel.imageFileRight.getHeight()), (double) editPanel.imageFileRight.getHeight() - 1)));
+                         if(dist4.checkedListC[xLeft][xLeft]) {
+                             return dist4.jpgRight.getRGB(xRight, yRight);
+                         } else if(dist4.checkedListA[xLeft][xLeft]) {
+                             return dist4.jpgRight.getRGB(xRight, yRight);
+                             }
                     }
                     return editPanel.image.getRGB(xLeft, yLeft);
                     //}

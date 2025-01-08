@@ -39,7 +39,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
     boolean[][] checkedListA;
     private static final int MAX_SUB_ITERE_X = 10;
     private List<Point3D> pointsC;
-    private boolean[][] checkedListC;
+    boolean[][] checkedListC;
 
     /***
      * Algorithme Chercher le poil dans la tête pressée d'Ariane
@@ -140,7 +140,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
                         distCand = norm;
                         candidatesA.add(pointsA.get(k));
                         candidatesB.add(pointsB.get(k));
-                        candidatesB.add(pointsC.get(k));
+                        candidatesC.add(pointsC.get(k));
                     }
 
                 }
@@ -150,10 +150,10 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
                 while (checked < CHECKED_MAX && !candidatesA.isEmpty() && candidatesA.size() - m > 0) {
                     int indexA = candidatesA.size() - m - 1;
                     int indexB = candidatesB.size() - m - 1;
-                    int indexC = candidatesB.size() - m - 1;
+                    int indexC = candidatesC.size() - m - 1;
                     Point3D candidateA = candidatesA.get(indexA);
                     Point3D candidateB = candidatesB.get(indexB);
-                    Point3D candidateC = candidatesC.get(indexB);
+                    Point3D candidateC = candidatesC.get(indexC);
 
                     Point3D pC = (pointsC.get(i).plus(candidateC)).mult(0.5);
                     Point3D pB = (pointsB.get(i).plus(candidateB)).mult(0.5);
@@ -174,7 +174,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
                         stepNewPoints = true;
                         newA.add(pA);
                         newB.add(pB);
-                        newB.add(pC);
+                        newC.add(pC);
                         imageAB[j1][j2] = pA;
                         imageCB[j1][j2] = pA;
                         gen[i1][i2] = iteration;
@@ -189,7 +189,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
             }
             pointsA.addAll(newA);
             pointsB.addAll(newB);
-            pointsC.addAll(newB);
+            pointsC.addAll(newC);
 
             newA.clear();
             newB.clear();
@@ -280,10 +280,10 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
     }
 
     private Point3D findAxPointInBa12(double u, double v) {
-        Point3D seachedB = new Point3D(u*(bDimReal.getWidth()-1), v*(bDimReal.getHeight()-1), 0.0);
+        Point3D searchedB = new Point3D(u*(bDimReal.getWidth()-1), v*(bDimReal.getHeight()-1), 0.0);
         for (int i = 0; i < pointsB.size(); i++) {
             Point3D currentB = pointsB.get(i).multDot(new Point3D(bDimReal.getWidth()-1, bDimReal.getHeight()-1, 0.0));
-            if((int)(double)(seachedB.getX())==(int)(double)(currentB.getX())&&(int)(double)(seachedB.getY())==(int)(double)(currentB.getY()))
+            if((int)(double)(searchedB.getX())==(int)(double)(currentB.getX())&&(int)(double)(searchedB.getY())==(int)(double)(currentB.getY()))
                 return pointsA.get(i);
         }
         return null;
