@@ -236,13 +236,13 @@ new FormModel {
 						name: "checkBoxMenuItemTypeShapePolyogns"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.checkBoxMenuItemTypeShapePolyogns.text" )
 						"$buttonGroup": new FormReference( "buttonGroup1" )
+						"selected": true
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "checkBoxMenuItemPoly", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "checkBoxMenuItemTypeShapeBezier"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.checkBoxMenuItemTypeShapeBezier.text" )
 						"$buttonGroup": new FormReference( "buttonGroup1" )
-						"selected": true
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "checkBoxMenuItemBezier", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
@@ -296,6 +296,7 @@ new FormModel {
 						name: "menuItemDistLinearProx2"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemDistLinearProx2.text" )
 						"$buttonGroup": new FormReference( "buttonGroup2" )
+						"selected": true
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemLinearProx2", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
@@ -308,7 +309,6 @@ new FormModel {
 						name: "menuItemDistanceLinear4"
 						"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItemDistanceLinear4.text" )
 						"$buttonGroup": new FormReference( "buttonGroup2" )
-						"selected": true
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "distanceLinear4", true ) )
 					} )
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {

@@ -29,12 +29,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DistanceProxLinear4 extends DistanceBezier2 {
+public class DistanceProxLinear43 extends DistanceBezier2 {
     private Point3D[][] imageAB;
     private List<Point3D> pointsB;
     private List<Point3D> pointsA;
     boolean[][] checkedList;
     private static final int MAX_SUB_ITERE_X = 10;
+    private boolean[][] checkedListRight;
 
     /***
      * Algorithme Chercher le poil dans la tête pressée d'Ariane
@@ -45,7 +46,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
      * @param opt1
      * @param optimizeGrid
      */
-    public DistanceProxLinear4(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
+    public DistanceProxLinear43(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
@@ -63,12 +64,12 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
         List<Point3D> newB = new ArrayList<>();
         double eps = 1. / Math.min(aDimReal.getWidth(), aDimReal.getHeight());
         checkedList = new boolean[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
-       /* if(jpgRight!=null) {
+        if(jpgRight!=null) {
             checkedListRight = new boolean[(int) jpgRight.getWidth()][(int) jpgRight.getHeight()];
             for (int i = 0; i < checkedListRight.length; i++) {
                 Arrays.fill(checkedListRight[i], false);
             }
-        }*/
+        }
         Point3D[][] pointAdded = new Point3D[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
         int[][] gen = new int[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
         ;
@@ -248,6 +249,19 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
     }
 
     private Point3D findAxPointInBa12(double u, double v) {
+        /*double distance = Double.MAX_VALUE;
+        Point3D currentDist = new Point3D(u, v, 0.0);
+        int j = 0;
+        double dist = distance;
+        for (int i = 0; i < pointsB.size(); i++) {
+            Point3D currentB = pointsB.get(i);
+            if ((dist = Point3D.distance(currentDist, currentB)) < distance) {
+                distance = dist;
+                j = i;
+            }
+
+        }
+        return pointsA.get(j);*/
         Point3D seached = new Point3D(u*(bDimReal.getWidth()-1), v*(bDimReal.getHeight()-1), 0.0);
         for (int i = 0; i < pointsB.size(); i++) {
             Point3D currentB = pointsB.get(i).multDot(new Point3D(bDimReal.getWidth()-1, bDimReal.getHeight()-1, 0.0));

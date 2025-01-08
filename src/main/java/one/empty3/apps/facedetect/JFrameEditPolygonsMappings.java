@@ -1016,12 +1016,12 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                 //---- checkBoxMenuItemTypeShapePolyogns ----
                 checkBoxMenuItemTypeShapePolyogns.setText(bundle.getString("JFrameEditPolygonsMappings.checkBoxMenuItemTypeShapePolyogns.text"));
+                checkBoxMenuItemTypeShapePolyogns.setSelected(true);
                 checkBoxMenuItemTypeShapePolyogns.addActionListener(e -> checkBoxMenuItemPoly(e));
                 menu5.add(checkBoxMenuItemTypeShapePolyogns);
 
                 //---- checkBoxMenuItemTypeShapeBezier ----
                 checkBoxMenuItemTypeShapeBezier.setText(bundle.getString("JFrameEditPolygonsMappings.checkBoxMenuItemTypeShapeBezier.text"));
-                checkBoxMenuItemTypeShapeBezier.setSelected(true);
                 checkBoxMenuItemTypeShapeBezier.addActionListener(e -> checkBoxMenuItemBezier(e));
                 menu5.add(checkBoxMenuItemTypeShapeBezier);
 
@@ -1075,6 +1075,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                 //---- menuItemDistLinearProx2 ----
                 menuItemDistLinearProx2.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemDistLinearProx2.text"));
+                menuItemDistLinearProx2.setSelected(true);
                 menuItemDistLinearProx2.addActionListener(e -> menuItemLinearProx2(e));
                 menu5.add(menuItemDistLinearProx2);
 
@@ -1085,7 +1086,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                 //---- menuItemDistanceLinear4 ----
                 menuItemDistanceLinear4.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemDistanceLinear4.text"));
-                menuItemDistanceLinear4.setSelected(true);
                 menuItemDistanceLinear4.addActionListener(e -> distanceLinear4(e));
                 menu5.add(menuItemDistanceLinear4);
 
