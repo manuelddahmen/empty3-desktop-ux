@@ -11,16 +11,16 @@ plugins {
 //"empty3-desktop-ux"
 
 group = 'one.empty3'
-version = '2024.12.27'
+version = '2025.1.10'
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(22)
 }
-sourceCompatibility = 21
-targetCompatibility = 21
+sourceCompatibility = 22
+targetCompatibility = 22
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 21
+    options.release = 22
 }
 
 configurations {
@@ -171,14 +171,22 @@ dependencies {
 //    implementation files("../empty3-library-mp/build/libs/empty3-library-mp.jar")
     //implementation 'org.springframework.boot:spring-boot-starter:3.3.2'
     //testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.1'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
+
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
+    testImplementation platform('org.junit:junit-bom:5.10.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testImplementation 'junit:junit:4.13.2'
+
+    implementation 'org.junit.platform:junit-platform-launcher:1.9.2'
+    implementation platform('org.junit:junit-bom:5.10.3')
+    implementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    implementation 'junit:junit:4.13.2'
+
     implementation("com.github.sarxos:webcam-capture:0.3.12")
     implementation group: 'commons-net', name: 'commons-net', version: '3.9.0'
     implementation("org.jdom:jdom2:2.0.6.1")
     implementation("xom:xom:1.3.9")
     implementation 'org.apache.groovy:groovy:4.0.14'
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2r'
     def jogl = '2.3.2'
     implementation "org.jogamp.jogl:jogl-all:$jogl"
     implementation group: 'org.jogamp.gluegen', name: 'gluegen-rt-main', version: "$jogl"
@@ -189,7 +197,6 @@ dependencies {
     implementation 'com.jetbrains.intellij.java:java-gui-forms-rt:203.7148.30'
     implementation("com.miglayout:miglayout:3.7.4")
     implementation("org.jcodec:jcodec-javase:0.2.5")
-    implementation 'junit:junit:4.13.2'
     implementation 'com.google.android.gms:play-services-vision:20.1.3'
     implementation platform('com.google.cloud:libraries-bom:26.43.0')
     implementation 'com.google.cloud:google-cloud-vision'
@@ -203,11 +210,12 @@ dependencies {
     implementation "com.google.http-client:google-http-client-jackson2:1.44.2"
     implementation("org.jdesktop:beansbinding:1.2.1")
 }
-
+/*
 test {
     useJUnitPlatform()
+    use
 }
-
+*/
 tasks.register('javadocJar', Jar) {
     dependsOn javadoc
     archiveClassifier = "javadoc"
@@ -288,13 +296,13 @@ signing {
     //sign configurations.archives
 }
 
-def versionName = '2024.12.27'
+def versionName = '2025.1.10'
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-desktop-ux'
-            version = '2024.12.27'
+            version = '2025.1.10'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -310,7 +318,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-desktop-ux"
-                version '2024.12.27'
+                version '2025.1.10'
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -394,8 +402,8 @@ jreleaser {
         name = 'empty3-desktop-ux'
         java.artifactId = 'empty3-desktop-ux'
         java.groupId = 'one.empty3'
-        java.version = '2024.12.27'
-        version = '2024.12.27'
+        java.version = '2025.1.10'
+        version = '2025.1.10'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +

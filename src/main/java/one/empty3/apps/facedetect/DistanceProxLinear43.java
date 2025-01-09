@@ -288,4 +288,13 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         }
         return null;
     }
+     Point3D findAxPointInBa13(double u, double v) {
+        Point3D searchedC = new Point3D(u*(cDimReal.getWidth()-1), v*(cDimReal.getHeight()-1), 0.0);
+        for (int i = 0; i < pointsB.size(); i++) {
+            Point3D currentB = pointsB.get(i).multDot(new Point3D(bDimReal.getWidth()-1, bDimReal.getHeight()-1, 0.0));
+            if((int)(double)(searchedC.getX())==(int)(double)(currentB.getX())&&(int)(double)(searchedC.getY())==(int)(double)(currentB.getY()))
+                return pointsC.get(i);
+        }
+        return null;
+    }
 }

@@ -68,9 +68,9 @@ public class TextureMorphMove extends ITexture {
         if (distanceAB == null)
             return 0;
         if (distanceAB instanceof DistanceIdent) {
-            Point3D narcissism = distanceAB.findAxPointInB(u, v);
+            Point3D ident = distanceAB.findAxPointInB(u, v);
 
-            Point3D point3D = new Point3D(narcissism.getX() * editPanel.image.getWidth(), narcissism.getY() * editPanel.image.getHeight(), 0.0);
+            Point3D point3D = new Point3D(ident.getX() * editPanel.image.getWidth(), ident.getY() * editPanel.image.getHeight(), 0.0);
 
             int x = (int) (Math.max(0, Math.min(point3D.getX(), (double) editPanel.image.getWidth() - 1)));
             int y = (int) (Math.max(0, Math.min((point3D.getY()), (double) editPanel.image.getHeight() - 1)));
@@ -101,13 +101,16 @@ public class TextureMorphMove extends ITexture {
                     int yLeft = (int) (Math.max(0, Math.min(p.getY(), (double) editPanel.image.getHeight() - 1)));
 
                     if(distanceAB instanceof DistanceProxLinear43 dist4 &&dist4.jpgRight != null) {
-                        int xRight = (int) (Math.max(0, Math.min(((double) axPointInB.getX() * editPanel.imageFileRight.getWidth()), (double) editPanel.imageFileRight.getWidth() - 1)));
-                        int yRight = (int) (Math.max(0, Math.min(((double) axPointInB.getY() * editPanel.imageFileRight.getHeight()), (double) editPanel.imageFileRight.getHeight() - 1)));
-                         if(dist4.checkedListC[xLeft][xLeft]) {
-                             return dist4.jpgRight.getRGB(xRight, yRight);
-                         } else if(dist4.checkedListA[xLeft][xLeft]) {
-                             return dist4.jpgRight.getRGB(xRight, yRight);
-                             }
+                        Point3D c = dist4.findAxPointInBa13(u, v);
+                        if(c!=null) {
+                            c = c.multDot(new Point3D((double) dist4.jpgRight.getWidth(), (double) dist4.jpgRight.getHeight(), 0.0));
+                            int x3 = (int) (Math.max(0, Math.min(c.getX(), (double) editPanel.imageFileRight.getWidth() - 1)));
+                            int y3 = (int) (Math.max(0, Math.min(c.getY(), (double) editPanel.imageFileRight.getHeight() - 1)));
+                            //if(dist4.checkedListC[x3][y3]) {
+                                return dist4.jpgRight.getRGB(x3, y3);
+                            //}
+
+                        }
                     }
                     return editPanel.image.getRGB(xLeft, yLeft);
                     //}
@@ -118,6 +121,19 @@ public class TextureMorphMove extends ITexture {
                     //    }
                     //}
                 } else {
+                    if(distanceAB instanceof DistanceProxLinear43 dist4) {
+                        Point3D c = dist4.findAxPointInBa13(u, v);
+                        if(c!=null) {
+                            c = c.multDot(new Point3D((double) dist4.jpgRight.getWidth(), (double) dist4.jpgRight.getHeight(), 0.0));
+                            int x3 = (int) (Math.max(0, Math.min(c.getX(), (double) editPanel.imageFileRight.getWidth() - 1)));
+                            int y3 = (int) (Math.max(0, Math.min(c.getY(), (double) editPanel.imageFileRight.getHeight() - 1)));
+                            //if(dist4.checkedListC[x3][y3]) {
+                                return dist4.jpgRight.getRGB(x3, y3);
+                            //}
+
+                        }
+
+                    }
                     int x1 = (int) (u*(editPanel.image.getWidth()-1));
                     int y1 = (int) (v*(editPanel.image.getHeight()-1));
                     return editPanel.image.getRGB(x1, y1);
@@ -140,9 +156,13 @@ public class TextureMorphMove extends ITexture {
         } else {
             bDimReal = new Dimension(editPanel.panelModelView.getWidth(), editPanel.panelModelView.getHeight());
         }
-
+        Dimension cDimReal = null;
+        if(editPanel.imageFileRight!=null) {
+            cDimReal = new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight());
+        }
         List<Point3D> lA = new ArrayList<>();
         List<Point3D> lB = new ArrayList<>();
+        List<Point3D> lC = new ArrayList<>();
         /**
          * Double A, B avec ai correspond à bi ( en se servant des HashMap)
          * **/
@@ -156,6 +176,8 @@ public class TextureMorphMove extends ITexture {
                             if (s.equals(sB)) {
                                 lA.add(editPanel.pointsInImage.get(s));
                                 lB.add(editPanel.pointsInModel.get(s));
+                                if(editPanel.points3.get(s)!=null)
+                                    lC.add(editPanel.points3.get(s));
                             }
                         }
                     });
@@ -177,6 +199,16 @@ public class TextureMorphMove extends ITexture {
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear4.class)) {
                     distanceAB = new DistanceProxLinear4(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
                             bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    if(editPanel.imageFileRight!=null)
+                        distanceAB.jpgRight = editPanel.imageFileRight;
+                } else if (distanceMap.isAssignableFrom(DistanceProxLinear42.class)) {
+                    distanceAB = new DistanceProxLinear42(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
+                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    if(editPanel.imageFileRight!=null)
+                        distanceAB.jpgRight = editPanel.imageFileRight;
+                } else if (distanceMap.isAssignableFrom(DistanceProxLinear43.class)) {
+                    distanceAB = new DistanceProxLinear43(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
+                            bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid);
                     if(editPanel.imageFileRight!=null)
                         distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceBezier3.class)) {
