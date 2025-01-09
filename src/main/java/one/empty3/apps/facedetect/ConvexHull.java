@@ -18,6 +18,10 @@ public class ConvexHull {
         this.list = list;
         this.mask = new boolean[(int) dimension2D.getWidth()][(int) dimension2D.getHeight()];
 
+        for (int i = 0; i < list.size(); i++) {
+            list.set(i, list.get(i).multDot(new Point3D(dimension2D.getWidth(), dimension2D.getHeight(), 0.0)));
+        }
+
         for (int i = 0; i < mask.length; i++) {
             for (int j = 0; j < mask[i].length; j++) {
                 mask[i][j] = false;
