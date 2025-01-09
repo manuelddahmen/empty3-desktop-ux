@@ -50,13 +50,14 @@ public class ConvexHull {
                     Point3D t = list.get(i).moins(current==null?c:current).norme1();
                     double at = Math.atan2(t.getY(),t.getX());
                     if(at>a&&at<angleCurrent) {
-                        at = a;
-                        angleCurrent = a;
+                        a = at;
+                        angleCurrent = at;
                         current = t;
                     }
-                }
+                } else
+                    break;
             }
-            if(current==first)
+            if(current==first ||current==null)
                 break;
             p.add(current);
         }
