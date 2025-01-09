@@ -12,6 +12,8 @@ public class ConvexHull {
     private final List<Point3D> list;
     private final boolean[][] mask;
     List<Point3D> p = new ArrayList<>();
+    private Image image;
+
     public ConvexHull(List<Point3D> list, Dimension2D dimension2D) {
         this.list = list;
         this.mask = new boolean[(int) dimension2D.getWidth()][(int) dimension2D.getHeight()];
@@ -24,7 +26,7 @@ public class ConvexHull {
         createConvexHull();
     }
 
-    private void createConvexHull() {
+    public void createConvexHull() {
         double maxY = 0;
         Point3D first = null;
         for(int i=0; i<list.size(); i++) {
@@ -69,8 +71,16 @@ public class ConvexHull {
         }
 
         Graphics graphics = image.getGraphics();
-        graphics.fillPolygon();
+        graphics.setColor(Color.WHITE);
+        graphics.fillPolygon(xPoints, yPoints, p.size());
 
+        this.image = image;
+    }
 
+    public boolean testIfIn(int x, int y) {
+        if(x>=0&&x<image.getWidth()&&y>=0&&y<image.getHeight()) {
+            return image.getRgb(x, y)==0xFFFFFFFF;
+        }
+        return false;
     }
 }

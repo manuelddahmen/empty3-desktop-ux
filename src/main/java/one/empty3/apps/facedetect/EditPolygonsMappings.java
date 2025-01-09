@@ -29,7 +29,6 @@ package one.empty3.apps.facedetect;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.morph.Main;
-import one.empty3.apps.feature.ConvHull;
 import one.empty3.library.*;
 import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.objloader.E3Model;
@@ -38,7 +37,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import one.empty3.library.Point;
-import one.empty3.libs.*;
 import one.empty3.libs.Color;
 
 import java.awt.*;
@@ -113,6 +111,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     private File modelFile;
     private Thread threadDisplay;
     Thread threadTextureCreation;
+    ConvexHull convexHull3;
 
 
     public EditPolygonsMappings(Window owner) {
@@ -1093,6 +1092,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         } else {
             Logger.getAnonymousLogger().log(Level.INFO, "Load image and model first before points", pointsInModel.size());
         }
+        convexHull3 = new ConvexHull(points3.values().stream().toList(), new Dimension(imageFileRight.getWidth(), imageFileRight.getHeight()));
 
 
     }
