@@ -107,7 +107,7 @@ public class TextureMorphMove extends ITexture {
                             int x3 = (int) (Math.max(0, Math.min(c.getX(), (double) editPanel.imageFileRight.getWidth() - 1)));
                             int y3 = (int) (Math.max(0, Math.min(c.getY(), (double) editPanel.imageFileRight.getHeight() - 1)));
                             //if(dist4.checkedListC[x3][y3]) {
-                            if(editPanel.convexHull3.testIfIn(x3, y3)) {
+                            if(editPanel.convexHull3!=null &&editPanel.convexHull3.testIfIn(x3, y3)) {
                                 return dist4.jpgRight.getRGB(x3, y3);
                             }
                             //}
@@ -129,7 +129,7 @@ public class TextureMorphMove extends ITexture {
                             c = c.multDot(new Point3D((double) dist4.jpgRight.getWidth(), (double) dist4.jpgRight.getHeight(), 0.0));
                             int x3 = (int) (Math.max(0, Math.min(c.getX(), (double) editPanel.imageFileRight.getWidth() - 1)));
                             int y3 = (int) (Math.max(0, Math.min(c.getY(), (double) editPanel.imageFileRight.getHeight() - 1)));
-                            if(editPanel.convexHull3.testIfIn(x3, y3)) {
+                            if(editPanel.convexHull3!=null &&editPanel.convexHull3.testIfIn(x3, y3)) {
                                 return dist4.jpgRight.getRGB(x3, y3);
                             }
 
