@@ -1,5 +1,6 @@
 package one.empty3.apps.facedetect;
 
+import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.Point3D;
 import one.empty3.libs.Image;
 
@@ -81,6 +82,8 @@ public class ConvexHull {
         graphics.fillPolygon(xPoints, yPoints, p.size());
 
         this.image = image;
+
+        image.saveToFile("./convexHull.jpg");
     }
 
     public boolean testIfIn(int x, int y) {

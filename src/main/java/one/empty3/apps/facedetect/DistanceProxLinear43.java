@@ -305,7 +305,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         double dist = Double.MAX_VALUE;
         for (int i = 0; i < pointsB.size(); i++) {
             if(pointsB.get(i).moins(searchedB).norme()<dist) {
-                found = pointsB.get(i);
+                found = pointsA.get(i);
                 dist = pointsB.get(i).moins(searchedB).norme();
             }
         }
@@ -317,7 +317,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         double dist = Double.MAX_VALUE;
         for (int i = 0; i < pointsB.size(); i++) {
             if(pointsB.get(i).moins(searchedC).norme()<dist) {
-                found = pointsB.get(i);
+                found = pointsC.get(i);
                 dist = pointsB.get(i).moins(searchedC).norme();
             }
         }

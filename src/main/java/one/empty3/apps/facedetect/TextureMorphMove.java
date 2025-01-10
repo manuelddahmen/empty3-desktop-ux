@@ -55,7 +55,9 @@ public class TextureMorphMove extends ITexture {
         this.editPanel = editPanel;
         if (distanceABclass != null) {
             setDistanceABclass(distanceABclass);
-            setConvHullAB();
+            if(distanceABclass.equals(DistanceProxLinear43.class))
+                editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(),
+                        new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
         }
     }
 
@@ -109,6 +111,8 @@ public class TextureMorphMove extends ITexture {
                             //if(dist4.checkedListC[x3][y3]) {
                             if(editPanel.convexHull3!=null &&editPanel.convexHull3.testIfIn(x3, y3)) {
                                 return dist4.jpgRight.getRGB(x3, y3);
+                            } else if (editPanel.convexHull3==null) {
+                                return Color.RED.getRGB();
                             }
                             //}
 
@@ -131,6 +135,8 @@ public class TextureMorphMove extends ITexture {
                             int y3 = (int) (Math.max(0, Math.min(c.getY(), (double) editPanel.imageFileRight.getHeight() - 1)));
                             if(editPanel.convexHull3!=null &&editPanel.convexHull3.testIfIn(x3, y3)) {
                                 return dist4.jpgRight.getRGB(x3, y3);
+                            } else if (editPanel.convexHull3==null) {
+                                return Color.RED.getRGB();
                             }
 
                         }
@@ -211,6 +217,8 @@ public class TextureMorphMove extends ITexture {
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear43.class)) {
                     distanceAB = new DistanceProxLinear43(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
                             bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(),
+                            new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
                     if(editPanel.imageFileRight!=null)
                         distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceBezier3.class)) {
