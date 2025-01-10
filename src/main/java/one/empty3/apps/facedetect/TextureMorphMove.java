@@ -61,8 +61,6 @@ public class TextureMorphMove extends ITexture {
         }
     }
 
-    private TextureMorphMove() {
-    }
 
     @Override
     public int getColorAt(double u, double v) {

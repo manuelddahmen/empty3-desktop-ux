@@ -165,7 +165,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    implementation "one.empty3.libs:partial-desktop:0.0.5"
+    implementation "one.empty3.libs:partial-desktop:0.0.8"
     implementation "one.empty3.libs:commons-mp:0.0.6"
     implementation "one.empty3:empty3-library-mp:2025.1.4"
 //    implementation files("../empty3-library-mp/build/libs/empty3-library-mp.jar")
