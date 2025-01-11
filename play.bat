@@ -1,0 +1,2 @@
+ call ./gradlew.bat jar
+ call java -cp build/libs/empty3-desktop-ux-1.0.jar --add-exports java.base/java.lang=ALL-UNNAMED --add-exports java.desktop/sun.awt=ALL-UNNAMED --add-exports java.desktop/sun.java2d=ALL-UNNAMED one.empty3.apps.opad.PanelGraphics

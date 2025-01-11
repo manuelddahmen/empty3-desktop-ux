@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Apache 2 License" pattern="(*.java||*.xml||*.kt||file[empty3-desktop-ux*]:*//*||file[empty3-desktop-ux]:*/||ext:*/)&amp;&amp;!ext:*" />
+</component>
