@@ -450,18 +450,19 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         }
         Logger.getAnonymousLogger().log(Level.INFO, "Loaded image");
     }
-        public void loadImageRight(File selectedFile) {
-            try {
-                imageFileRight = ImageIO.read(selectedFile);
-            } catch (IOException e) {
-                Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", e);
-            }
-            if (imageFileRight != null && testHumanHeadTexturing != null) {
-                testHumanHeadTexturing.setJpgRight(imageFileRight);
-            }
 
-            Logger.getAnonymousLogger().log(Level.INFO, "Loaded image");
+    public void loadImageRight(File selectedFile) {
+        try {
+            imageFileRight = ImageIO.read(selectedFile);
+        } catch (IOException e) {
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", e);
         }
+        if (imageFileRight != null && testHumanHeadTexturing != null) {
+            testHumanHeadTexturing.setJpgRight(imageFileRight);
+        }
+
+        Logger.getAnonymousLogger().log(Level.INFO, "Loaded image");
+    }
 
 
     public void run() {
@@ -528,7 +529,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                                 iTextureMorphMove.distanceAB.setModel(model);
                                                 model.texture(iTextureMorphMove);
                                             }
-                                            if(iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 d4 && imageFileRight!=null) {
+                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 d4 && imageFileRight != null) {
                                                 d4.jpgRight = imageFileRight;
                                             }
                                         } else {
@@ -926,7 +927,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 hasChangedAorB = true;
 
             } catch (IOException | RuntimeException ex) {
-              Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", ex);
+                Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", ex);
             }
         } else {
             Logger.getAnonymousLogger().log(Level.INFO, "Load image and model first before points", pointsInModel.size());

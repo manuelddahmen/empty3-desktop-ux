@@ -57,7 +57,8 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         this.cDimReal = cDimReal;
         imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
         imageCB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
-        init_1();
+        if(cDimReal!=null && C.size()>0)
+            init_1();
     }
 
     int nIteration0 = 7;
@@ -312,13 +313,13 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         return found;
     }
     Point3D findAxPointInBa13(double u, double v) {
-        Point3D searchedC = new Point3D(u, v, 0.0);
+        Point3D searchedB = new Point3D(u, v, 0.0);
         Point3D found = Point3D.O0;
         double dist = Double.MAX_VALUE;
         for (int i = 0; i < pointsB.size(); i++) {
-            if(pointsB.get(i).moins(searchedC).norme()<dist) {
+            if(pointsB.get(i).moins(searchedB).norme()<dist) {
                 found = pointsC.get(i);
-                dist = pointsB.get(i).moins(searchedC).norme();
+                dist = pointsB.get(i).moins(searchedB).norme();
             }
         }
         return found;
