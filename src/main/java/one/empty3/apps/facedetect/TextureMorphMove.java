@@ -112,10 +112,11 @@ public class TextureMorphMove extends ITexture {
                             if(editPanel.convexHull3!=null &&editPanel.convexHull3.testIfIn(x3, y3)) {
                                 markA = true;
                                 return dist4.jpgRight.getRGB(x3, y3);
-                            } else if (editPanel.convexHull3==null) {
-                                return Color.RED.getRGB();
                             }
                         }
+                        int x1 = (int) (u*(editPanel.image.getWidth()-1));
+                        int y1 = (int) (v*(editPanel.image.getHeight()-1));
+                        return editPanel.image.getRGB(x1, y1);
                     }
                     return editPanel.image.getRGB(xLeft, yLeft);
                 } else {

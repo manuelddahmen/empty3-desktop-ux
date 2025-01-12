@@ -3,6 +3,7 @@
  */
 package one.empty3.apps.facedetect;
 
+import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
@@ -157,8 +158,10 @@ public class ConvexHull {
    }
 
     public boolean testIfIn(int x, int y) {
+        double[] rgb1 = Lumiere.getDoubles(mask.getRGB(x, y));
+        double[] rgb2 = Lumiere.getDoubles(Color.WHITE.getRGB());
         if(x>=0&&x<mask.getWidth()&&y>=0&&y<mask.getHeight()) {
-            return Point3D.fromColor(new one.empty3.libs.Color(mask.getRGB(x,y))).norme()>Math.sqrt(3)-0.1;
+            return rgb1[0] == rgb2[0] && rgb1[1] == rgb2[1] && rgb1[2] == rgb2[2];
         }
         return false;
     }
