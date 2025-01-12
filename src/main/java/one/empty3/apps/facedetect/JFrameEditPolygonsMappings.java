@@ -472,7 +472,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
         editPolygonsMappings2.iTextureMorphMove = new TextureMorphMove(editPolygonsMappings2, editPolygonsMappings2.distanceABClass);
 
         if (editPolygonsMappings2.pointsInImage.size() >= 3 && editPolygonsMappings2.pointsInModel.size() >= 3) {
-            editPolygonsMappings2.iTextureMorphMove.setConvHullAB();
         }
         editPolygonsMappings2.threadDistanceIsNotRunning = true;
         editPolygonsMappings2.hasChangedAorB = true;

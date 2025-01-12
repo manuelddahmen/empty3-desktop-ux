@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,10 +159,13 @@ public class ConvexHull {
    }
 
     public boolean testIfIn(int x, int y) {
-        double[] rgb1 = Lumiere.getDoubles(mask.getRGB(x, y));
+        //x = mask.getWidth()-1-x;
+        //y = mask.getHeight()-1-y;
+        double[] rgb1 = Lumiere.getDoubles(mask.getRGB(x,y));
         double[] rgb2 = Lumiere.getDoubles(Color.WHITE.getRGB());
         if(x>=0&&x<mask.getWidth()&&y>=0&&y<mask.getHeight()) {
-            return rgb1[0] == rgb2[0] && rgb1[1] == rgb2[1] && rgb1[2] == rgb2[2];
+            return rgb1[0] == rgb2[0] && rgb1[1] == rgb2[1] && rgb1[2] == rgb2[2] && rgb1[0] >= 0.9
+                    && rgb1[1] >= 0.9 && rgb1[2] >= 0.9 && rgb2[0] >= 0.9 && rgb2[1] >= 0.9 && rgb2[2] >= 0.9;
         }
         return false;
     }

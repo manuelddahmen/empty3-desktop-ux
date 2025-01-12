@@ -26,7 +26,6 @@ import java.awt.Color;
 
 import one.empty3.library.*;
 import one.empty3.library.core.testing.Resolution;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.Dimension;
 import java.util.*;
@@ -37,10 +36,10 @@ import java.util.logging.Logger;
 
 public class TextureMorphMove extends ITexture {
     private static final int WHITE = Color.WHITE.getRGB();
-    private EditPolygonsMappings editPanel;
+    private final EditPolygonsMappings editPanel;
     public int selectedPointNo = -1;
     protected DistanceAB distanceAB;
-    private int GRAY = Color.GRAY.getRGB();
+    private final int GRAY = Color.GRAY.getRGB();
     private Class<? extends DistanceBezier2> distanceABclass;
     private List<Point3D> polyConvA;
     private List<Point3D> polyConvB;
@@ -85,6 +84,8 @@ public class TextureMorphMove extends ITexture {
         }
 
         if (editPanel.image != null) {
+            int x1 = (int) (u*(editPanel.image.getWidth()-1));
+            int y1 = (int) (v*(editPanel.image.getHeight()-1));
             if (distanceAB.getClass().isAssignableFrom(DistanceBezier3.class))
                 ;
             else if ((distanceAB.sAij == null || distanceAB.sBij == null) && !distanceAB.getClass().isAssignableFrom(DistanceBezier3.class)) {
@@ -114,16 +115,12 @@ public class TextureMorphMove extends ITexture {
                                 return dist4.jpgRight.getRGB(x3, y3);
                             }
                         }
-                        int x1 = (int) (u*(editPanel.image.getWidth()-1));
-                        int y1 = (int) (v*(editPanel.image.getHeight()-1));
-                        return editPanel.image.getRGB(x1, y1);
+                    } else if(!(distanceAB instanceof DistanceProxLinear43)) {
+                        return editPanel.image.getRGB(xLeft, yLeft);
                     }
-                    return editPanel.image.getRGB(xLeft, yLeft);
-                } else {
-                    int x1 = (int) (u*(editPanel.image.getWidth()-1));
-                    int y1 = (int) (v*(editPanel.image.getHeight()-1));
-                    return editPanel.image.getRGB(x1, y1);
                 }
+                return editPanel.image.getRGB(x1, y1);
+
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
@@ -230,52 +227,5 @@ public class TextureMorphMove extends ITexture {
         }
     }
 
-    public void setConvHullAB() {
-        /*
-        try {
-            Map<String, Point3D> hashMapA = editPanel.pointsInImage;
-            Map<String, Point3D> hashMapB = editPanel.pointsInModel;
-            ArrayList<Point3D> aConv = new ArrayList<Point3D>();
-            int i = 0;
-            for (Map.Entry<String, Point3D> stringPoint3DEntry : hashMapA.entrySet()) {
-                aConv.add(stringPoint3DEntry.getValue());
-                i++;
-            }
-            i = 0;
-            List<Point3D> bConv = new ArrayList<>();
-            for (Map.Entry<String, Point3D> stringPoint3DEntry : hashMapA.entrySet()) {
-                bConv.add(stringPoint3DEntry.getValue());
-                i++;
-            }
-            if (aConv.size() >= 3 && bConv.size() >= 3) {
-                List<Point3D> convexHullA = ConvHull.convexHull(aConv, aConv.size());
-                List<Point3D> convexHullB = ConvHull.convexHull(bConv, bConv.size());
-                if (convexHullA != null && convexHullB != null) {
-                    try {
-                        editPanel.iTextureMorphMove.setConvHullA(convexHullA);
-                        editPanel.iTextureMorphMove.setConvHullB(convexHullB);
 
-                    } catch (RuntimeException ex) {
-                        Logger.getAnonymousLogger().log(Level.WARNING, "setConvHullA|N failed due to :" + ex.getMessage());
-                    }
-                    if (distanceAB != null)
-                        distanceAB.setInvalidArray(false);
-                    return;
-                }
-            }
-        } catch (RuntimeException ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Unknown Error (not blocking) : ", ex);
-        }
-
-         */
-        return;
-    }
-
-    public void setConvHullA(@NotNull List<Point3D> polyConvA) {
-        this.polyConvA = polyConvA;
-    }
-
-    public void setConvHullB(@NotNull List<Point3D> polyConvB) {
-        this.polyConvB = polyConvB;
-    }
 }

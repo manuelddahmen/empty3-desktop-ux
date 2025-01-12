@@ -22,13 +22,11 @@
 
 package one.empty3.apps.facedetect;
 
-import one.empty3.feature.PixM;
 import one.empty3.library.*;
 import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.core.testing.TestObjetStub;
 import one.empty3.library.objloader.E3Model;
-import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
 import java.awt.image.BufferedImage;
@@ -51,16 +49,12 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     protected BufferedImage jpgFileRight;
     private E3Model objFile;
     private EditPolygonsMappings editPolygonsMappings;
-    protected ArrayList<BufferedImage> zBufferImages = new ArrayList<BufferedImage>();
+    protected ArrayList<BufferedImage> zBufferImages = new ArrayList<>();
 
     public TestHumanHeadTexturing() {
         instance = this;
     }
 
-
-    public void setImageIn(PixM face) {
-        this.trueFace = face.getImage();
-    }
 
     @Override
     public void ginit() {
@@ -129,7 +123,6 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             editPolygonsMappings.model.texture(new ImageTexture(new Image(editPolygonsMappings.image)));
         } else if (editPolygonsMappings!=null&&editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
             editPolygonsMappings.model.texture(editPolygonsMappings.iTextureMorphMove);
-            editPolygonsMappings.iTextureMorphMove.setConvHullAB();
         } else {
         }
         if (!scene().getObjets().getData1d().isEmpty()) {

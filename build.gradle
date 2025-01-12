@@ -167,10 +167,9 @@ tasks.withType(JavaCompile).configureEach {
 dependencies {
     implementation "one.empty3.libs:partial-desktop:0.0.10"
     implementation "one.empty3.libs:commons-mp:0.0.6"
-    implementation "one.empty3:empty3-library-mp:2025.1.11"
-//    implementation files("../empty3-library-mp/build/libs/empty3-library-mp.jar")
-    //implementation 'org.springframework.boot:spring-boot-starter:3.3.2'
-    //testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.1'
+    implementation "one.empty3:empty3-library-mp:2025.1.11 call ./gradlew.bat jar\n" +
+            " REM call java -cp build/libs/empty3-desktop-ux-1.0.jar --add-exports java.base/java.lang=ALL-UNNAMED --add-exports java.desktop/sun.awt=ALL-UNNAMED --add-exports java.desktop/sun.java2d=ALL-UNNAMED one.empty3.apps.opad.PanelGraphics\n" +
+            "call java -cp build/libs/empty3-desktop-ux-1.0.jar --add-exports java.base/java.lang=ALL-UNNAMED --add-exports java.desktop/sun.awt=ALL-UNNAMED --add-exports java.desktop/sun.java2d=ALL-UNNAMED one.empty3.apps.facedetect.JFrameEditPolygonsMappings"
 
     testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
     testImplementation platform('org.junit:junit-bom:5.10.3')
