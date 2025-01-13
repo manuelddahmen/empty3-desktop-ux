@@ -302,24 +302,28 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
 
     private Point3D findAxPointInBa12(double u, double v) {
         Point3D searchedB = new Point3D(u, v, 0.0);
-        Point3D found = Point3D.O0;
-        double dist = Double.MAX_VALUE;
-        for (int i = 0; i < pointsB.size(); i++) {
-            if(pointsB.get(i).moins(searchedB).norme()<dist) {
-                found = pointsA.get(i);
-                dist = pointsB.get(i).moins(searchedB).norme();
+        Point3D found = searchedB;
+        if(pointsB!=null&&pointsA!=null) {
+            double dist = Double.MAX_VALUE;
+            for (int i = 0; i < pointsB.size(); i++) {
+                if (pointsB.get(i).moins(searchedB).norme() < dist) {
+                    found = pointsA.get(i);
+                    dist = pointsB.get(i).moins(searchedB).norme();
+                }
             }
         }
-        return found;
+        return searchedB;
     }
     Point3D findAxPointInBa13(double u, double v) {
         Point3D searchedB = new Point3D(u, v, 0.0);
-        Point3D found = Point3D.O0;
-        double dist = Double.MAX_VALUE;
-        for (int i = 0; i < pointsB.size(); i++) {
-            if(pointsB.get(i).moins(searchedB).norme()<dist) {
-                found = pointsC.get(i);
-                dist = pointsB.get(i).moins(searchedB).norme();
+        Point3D found = searchedB;
+        if(pointsB!=null&&pointsC!=null) {
+            double dist = Double.MAX_VALUE;
+            for (int i = 0; i < pointsB.size(); i++) {
+                if (pointsB.get(i).moins(searchedB).norme() < dist) {
+                    found = pointsC.get(i);
+                    dist = pointsB.get(i).moins(searchedB).norme();
+                }
             }
         }
         return found;

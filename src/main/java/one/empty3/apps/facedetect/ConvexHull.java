@@ -159,8 +159,6 @@ public class ConvexHull {
    }
 
     public boolean testIfIn(int x, int y) {
-        //x = mask.getWidth()-1-x;
-        //y = mask.getHeight()-1-y;
         double[] rgb1 = Lumiere.getDoubles(mask.getRGB(x,y));
         double[] rgb2 = Lumiere.getDoubles(Color.WHITE.getRGB());
         if(x>=0&&x<mask.getWidth()&&y>=0&&y<mask.getHeight()) {

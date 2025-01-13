@@ -57,7 +57,12 @@ public class TextureMorphMove extends ITexture {
             if(distanceABclass.equals(DistanceProxLinear43.class) && editPanel.imageFileRight!=null)
                 editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(),
                         new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
-        }
+            }
+        if(!editPanel.pointsInImage.isEmpty())
+            editPanel.convexHull1 = new ConvexHull(editPanel.pointsInImage.values().stream().toList(), new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()));
+        if(!editPanel.pointsInModel.isEmpty())
+            editPanel.convexHull2 = new ConvexHull(editPanel.pointsInModel.values().stream().toList(), new Dimension(editPanel.panelPicture.getWidth(), editPanel.panelPicture.getHeight()));
+
     }
 
 
@@ -110,7 +115,9 @@ public class TextureMorphMove extends ITexture {
                             int x3 = (int) (Math.max(0, Math.min(c.getX(), (double) editPanel.imageFileRight.getWidth() - 1)));
                             int y3 = (int) (Math.max(0, Math.min(c.getY(), (double) editPanel.imageFileRight.getHeight() - 1)));
                             //if(dist4.checkedListC[x3][y3]) {
-                            if(editPanel.convexHull3!=null &&editPanel.convexHull3.testIfIn(x3, y3)) {
+                            if(/*editPanel.convexHull3!=null &&editPanel.convexHull3.testIfIn(x3, y3)*/
+                            /*&&*/editPanel.convexHull1!=null &&editPanel.convexHull1.testIfIn(xLeft, yLeft)
+                            /*&&editPanel.convexHull2!=null &&editPanel.convexHull2.testIfIn(x1, y1)*/) {
                                 markA = true;
                                 return dist4.jpgRight.getRGB(x3, y3);
                             }

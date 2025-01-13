@@ -76,6 +76,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public boolean hdTextures = false;
     public boolean textureWired = false;
     private final int mode = EDIT_POINT_POSITION;
+    public ConvexHull convexHull1;
+    public ConvexHull convexHull2;
     int selectedPointNo = -1;
     protected E3Model model;
     protected TestHumanHeadTexturing testHumanHeadTexturing;
@@ -1085,6 +1087,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in image", pointsInModel.size());
                 bufferedReader.close();
 
+
+
                 hasChangedAorB = true;
 
             } catch (IOException | RuntimeException ex) {
@@ -1093,8 +1097,6 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         } else {
             Logger.getAnonymousLogger().log(Level.INFO, "Load image and model first before points", pointsInModel.size());
         }
-        convexHull3 = new ConvexHull(points3.values().stream().toList(), new Dimension(imageFileRight.getWidth(), imageFileRight.getHeight()));
-
 
     }
 }
