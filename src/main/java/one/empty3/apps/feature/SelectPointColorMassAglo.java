@@ -24,7 +24,7 @@ package one.empty3.apps.feature;
 import one.empty3.feature.*;
 
 
-import one.empty3.apps.feature.FilterPixM;
+import matrix.FilterPixM;
 
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point;
@@ -37,7 +37,7 @@ public class SelectPointColorMassAglo extends FilterPixM {
     private double[] rgb;
 
     public SelectPointColorMassAglo(BufferedImage image) {
-        super(image);
+        super(new Image(image));
     }
 
     public double[] getColor(int x, int y) {

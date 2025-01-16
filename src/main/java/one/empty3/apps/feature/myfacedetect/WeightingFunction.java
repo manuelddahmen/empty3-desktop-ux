@@ -22,7 +22,7 @@
 
 package one.empty3.feature.Myfacedetect;
 
-import one.empty3.apps.feature.FilterPixM;
+import matrix.FilterPixM;
 import one.empty3.feature.PixM;
 
 public class WeightingFunction extends FilterPixM {

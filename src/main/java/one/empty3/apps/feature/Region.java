@@ -26,7 +26,7 @@ import one.empty3.feature.*;
 
 
 import one.empty3.apps.feature.AreaDescriptor;
-import one.empty3.apps.feature.FilterPixM;
+import matrix.FilterPixM;
 
 import one.empty3.library.Point;
 import one.empty3.libs.*;

@@ -25,7 +25,7 @@ package one.empty3.apps.feature;
 import one.empty3.feature.*;
 
 
-import one.empty3.apps.feature.FilterPixM;
+import matrix.FilterPixM;
 import one.empty3.feature.M;
 import one.empty3.feature.M3;
 import one.empty3.feature.PixM;

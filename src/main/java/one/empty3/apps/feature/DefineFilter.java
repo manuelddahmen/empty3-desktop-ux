@@ -24,7 +24,7 @@ package one.empty3.apps.feature;
 import one.empty3.feature.*;
 
 
-import one.empty3.apps.feature.FilterPixM;
+import matrix.FilterPixM;
 
 public class DefineFilter extends FilterPixM {
 

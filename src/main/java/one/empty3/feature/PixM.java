@@ -22,8 +22,7 @@
 
 package one.empty3.feature;
 
-import one.empty3.apps.feature.FilterPixM;
-import one.empty3.feature.M;
+import matrix.FilterPixM;
 import one.empty3.apps.feature.V;
 import one.empty3.library.ITexture;
 import one.empty3.library.LineSegment;
@@ -694,5 +693,8 @@ public class PixM extends M {
         }
         return image;
 
+    }
+    public Image getImage2() {
+        return new Image(getImage());
     }
 }
