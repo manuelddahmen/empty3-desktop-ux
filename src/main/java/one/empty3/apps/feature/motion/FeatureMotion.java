@@ -24,7 +24,7 @@ package one.empty3.apps.feature.motion;
 
 import one.empty3.apps.feature.FeatureMatch;
 import one.empty3.feature.Motion;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.library.Lumiere;
 
 import one.empty3.libs.*;

@@ -23,7 +23,7 @@
 package one.empty3.apps.feature;
 
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 
 /*
  * Prendre pour points d'intérêt les zones denses en intensité

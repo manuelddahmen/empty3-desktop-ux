@@ -23,7 +23,7 @@
 package one.empty3.feature.Myfacedetect;
 
 import one.empty3.apps.feature.myfacedetect.WeightingFunction;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 

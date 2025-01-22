@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import one.empty3.library.core.lighting.Colors;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 import one.empty3.ImageIO;

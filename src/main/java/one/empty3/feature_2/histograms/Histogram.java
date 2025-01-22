@@ -22,7 +22,7 @@ package one.empty3.feature_2.histograms;
 
 import one.empty3.ImageIO;
 import one.empty3.io.ProcessFile;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.library.Point3D;
 
 

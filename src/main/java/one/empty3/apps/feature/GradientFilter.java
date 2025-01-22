@@ -26,7 +26,7 @@ import one.empty3.feature.*;
 
 
 import one.empty3.apps.feature.FilterMatPixM;
-import one.empty3.matrix.M3;
+import one.empty3.feature.M3;
 
 public class GradientFilter extends FilterMatPixM {
 
@@ -48,9 +48,9 @@ public class GradientFilter extends FilterMatPixM {
 
 
     @Override
-    public one.empty3.matrix.M3 filter(one.empty3.matrix.M3 source) {
+    public one.empty3.feature.M3 filter(one.empty3.feature.M3 source) {
         initGNormalise();
-        one.empty3.matrix.M3 copy = source.copy();
+        one.empty3.feature.M3 copy = source.copy();
         for (int j = 0; j < copy.lines; j++) {
             for (int i = 0; i < copy.columns
                     ; i++) {
@@ -82,7 +82,7 @@ public class GradientFilter extends FilterMatPixM {
      *
      */
     @Override
-    public void element(one.empty3.matrix.M3 source, one.empty3.matrix.M3 copy, int i, int j, int ii, int ij) {
+    public void element(one.empty3.feature.M3 source, one.empty3.feature.M3 copy, int i, int j, int ii, int ij) {
         double d = 1.0;
         double v = source.get(i, j, ii, ij);
         if (ii == 0 && ij == 0) {
@@ -122,7 +122,7 @@ public class GradientFilter extends FilterMatPixM {
      * @return copy norm
      */
 
-    public one.empty3.matrix.M3 norm(one.empty3.matrix.M3 image, one.empty3.matrix.M3 copy) {
+    public one.empty3.feature.M3 norm(one.empty3.feature.M3 image, one.empty3.feature.M3 copy) {
         for (int i = 0; i < image.columns
                 ; i++)
             for (int j = 0; j < image.lines; j++) {
@@ -144,7 +144,7 @@ public class GradientFilter extends FilterMatPixM {
         return copy;
     }
 
-    public one.empty3.matrix.M3 mean(one.empty3.matrix.M3 image, M3 copy) {
+    public one.empty3.feature.M3 mean(one.empty3.feature.M3 image, M3 copy) {
         double[] sum = new double[copy.getCompCount()];
         for (int i = 0; i < image.columns
                 ; i++)

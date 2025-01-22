@@ -23,7 +23,7 @@
 package one.empty3.apps.feature;
 
 
-import one.empty3.matrix.FilterPixM;
+import one.empty3.feature.FilterPixM;
 
 public class Region extends AreaDescriptor {
     public Region(int x, int y, int sizeX, int sizeY) {

@@ -21,7 +21,7 @@
 package one.empty3.feature_2;
 
 import one.empty3.feature_2.motion.Motion;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.libs.Image;
 
 public

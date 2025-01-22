@@ -23,8 +23,8 @@
 package one.empty3.apps.feature;
 
 
-import one.empty3.matrix.M3;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.M3;
+import one.empty3.feature.PixM;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.io.ProcessFile;
 
@@ -64,7 +64,7 @@ public class ExtractIntensityInfo extends
 
         one.empty3.apps.feature.GradientFilter gradientMask = new GradientFilter(pixMOriginal.getColumns()
                 , pixMOriginal.getLines());
-        one.empty3.matrix.M3 imgForGrad = new one.empty3.matrix.M3(pixMOriginal,
+        one.empty3.feature.M3 imgForGrad = new one.empty3.feature.M3(pixMOriginal,
                 2, 2);
         M3 filter = gradientMask.filter(imgForGrad);
         PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);

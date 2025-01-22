@@ -23,10 +23,10 @@
 package one.empty3.apps.feature;
 
 
-import one.empty3.matrix.FilterPixM;
+import one.empty3.feature.FilterPixM;
 import one.empty3.feature.M;
-import one.empty3.matrix.M3;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.M3;
+import one.empty3.feature.PixM;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -66,7 +66,7 @@ public class MIMmops {
     }
 
 
-    public one.empty3.feature.M matGrad(PixM image, one.empty3.matrix.M3 gradientX, M3 gradientY) {
+    public one.empty3.feature.M matGrad(PixM image, one.empty3.feature.M3 gradientX, M3 gradientY) {
         one.empty3.feature.M matGrad = null;
         // image :  smoothes
         // image : gradientX M3(w, h, 2, 1)

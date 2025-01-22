@@ -23,8 +23,8 @@
 package one.empty3.apps.feature;
 
 
-import one.empty3.matrix.FilterPixM;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.FilterPixM;
+import one.empty3.feature.PixM;
 
 public class GaussFilterPixM extends FilterPixM {
     private final PixM in;

@@ -22,7 +22,7 @@
 
 package one.empty3.apps.feature.kmeansbinary;
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

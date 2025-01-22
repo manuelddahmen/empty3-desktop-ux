@@ -23,8 +23,8 @@
 package one.empty3.apps.feature;
 
 
-import one.empty3.matrix.M3;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.M3;
+import one.empty3.feature.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
@@ -59,8 +59,8 @@ public class Transform1 extends ProcessFile {
         }
         logger.info("file loaded");
         GradientFilter gradientMask = new GradientFilter(pixMOriginal.getColumns(), pixMOriginal.getLines());
-        one.empty3.matrix.M3 imgForGrad = new one.empty3.matrix.M3(pixMOriginal, 2, 2);
-        one.empty3.matrix.M3 filter = gradientMask.filter(imgForGrad);
+        one.empty3.feature.M3 imgForGrad = new one.empty3.feature.M3(pixMOriginal, 2, 2);
+        one.empty3.feature.M3 filter = gradientMask.filter(imgForGrad);
         PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);
         logger.info("gradient computed");
 

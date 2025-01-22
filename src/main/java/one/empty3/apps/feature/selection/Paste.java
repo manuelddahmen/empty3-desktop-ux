@@ -22,7 +22,7 @@
 
 package one.empty3.apps.feature.selection;
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.ParametricCurve;

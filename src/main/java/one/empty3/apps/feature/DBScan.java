@@ -23,7 +23,7 @@
 package one.empty3.apps.feature;
 
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.apps.feature.kmeans.MakeDataset;
 import one.empty3.apps.feature.kmeans.ReadDataset;

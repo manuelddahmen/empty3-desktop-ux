@@ -54,7 +54,7 @@ public class PixM extends M implements Serializable, Serialisable {
         super(distances);
     }
 
-    public static one.empty3.matrix.PixM getPixM(Image image, double maxRes) {
+    public static one.empty3.feature.PixM getPixM(Image image, double maxRes) {
         double f = (double)1.0F;
         if (maxRes < (double)image.getWidth() && maxRes < (double)image.getHeight()) {
             f = (double)1.0F / (double)Math.max(image.getWidth(), image.getHeight()) * maxRes;
@@ -66,7 +66,7 @@ public class PixM extends M implements Serializable, Serialisable {
 
         double columns2 = (double)1.0F * (double)image.getWidth() * f;
         double lines2 = (double)1.0F * (double)image.getHeight() * f;
-        one.empty3.matrix.PixM pixM = new one.empty3.matrix.PixM((int)columns2, (int)lines2);
+        one.empty3.feature.PixM pixM = new one.empty3.feature.PixM((int)columns2, (int)lines2);
 
         for(int i = 0; i < (int)columns2; ++i) {
             for(int j = 0; j < (int)lines2; ++j) {
@@ -108,8 +108,8 @@ public class PixM extends M implements Serializable, Serialisable {
 
     }
 
-    public  one.empty3.matrix.PixM getColorsRegion(int x, int y, int w, int h, int sizeX, int sizeY) {
-         one.empty3.matrix.PixM subimage = new  one.empty3.matrix.PixM(sizeX, sizeY);
+    public  one.empty3.feature.PixM getColorsRegion(int x, int y, int w, int h, int sizeX, int sizeY) {
+         one.empty3.feature.PixM subimage = new  one.empty3.feature.PixM(sizeX, sizeY);
 
         for(int i = x; i < x + w; ++i) {
             for(int j = y; j < y + h; ++j) {
@@ -126,7 +126,7 @@ public class PixM extends M implements Serializable, Serialisable {
         return subimage;
     }
 
-    public void colorsRegion(int x, int y, int w, int h,  one.empty3.matrix.PixM subimage, int subImageCopyMode) {
+    public void colorsRegion(int x, int y, int w, int h,  one.empty3.feature.PixM subimage, int subImageCopyMode) {
         for(int i = x; i < x + w; ++i) {
             for(int j = y; j < y + h; ++j) {
                 for(int c = 0; c < this.getCompCount(); ++c) {
@@ -140,8 +140,8 @@ public class PixM extends M implements Serializable, Serialisable {
 
     }
 
-    public one.empty3.matrix.PixM applyFilter(FilterPixM filter) {
-        one.empty3.matrix.PixM c = new one.empty3.matrix.PixM(this.getColumns(), this.getLines());
+    public one.empty3.feature.PixM applyFilter(FilterPixM filter) {
+        one.empty3.feature.PixM c = new one.empty3.feature.PixM(this.getColumns(), this.getLines());
 
         for(int comp = 0; comp < this.getCompCount(); ++comp) {
             this.setCompNo(comp);
@@ -171,8 +171,8 @@ public class PixM extends M implements Serializable, Serialisable {
 
         return c;
     }
-    public  one.empty3.matrix.PixM pasteSubImage(int x, int y, int w, int h) {
-         one.empty3.matrix.PixM p2 = new  one.empty3.matrix.PixM(w, h);
+    public  one.empty3.feature.PixM pasteSubImage(int x, int y, int w, int h) {
+         one.empty3.feature.PixM p2 = new  one.empty3.feature.PixM(w, h);
 
         for(int i = x; i < x + w; ++i) {
             for(int j = y; j < y + h; ++j) {
@@ -203,7 +203,7 @@ public class PixM extends M implements Serializable, Serialisable {
     }
 
 
-    public one.empty3.matrix.PixM normalize(double min, double max) {
+    public one.empty3.feature.PixM normalize(double min, double max) {
         double[] maxRgbai = new double[3];
         double[] meanRgbai = new double[3];
         double[] minRgbai = new double[3];
@@ -243,7 +243,7 @@ public class PixM extends M implements Serializable, Serialisable {
             }
         }
 
-        one.empty3.matrix.PixM image = new one.empty3.matrix.PixM(this.getColumns(), this.getLines());
+        one.empty3.feature.PixM image = new one.empty3.feature.PixM(this.getColumns(), this.getLines());
 
         for(int i = 0; i < image.getColumns(); ++i) {
             for(int j = 0; j < image.getLines(); ++j) {
@@ -259,7 +259,7 @@ public class PixM extends M implements Serializable, Serialisable {
         return image;
     }
 
-    public  one.empty3.matrix.PixM normalize(double inMin, double inMax, double min, double max) {
+    public  one.empty3.feature.PixM normalize(double inMin, double inMax, double min, double max) {
         double[] maxRgbai = new double[3];
         double[] meanRgbai = new double[3];
         double[] minRgbai = new double[3];
@@ -274,7 +274,7 @@ public class PixM extends M implements Serializable, Serialisable {
             minRgbai[i] = (double)0.0F;
         }
 
-         one.empty3.matrix.PixM image = new  one.empty3.matrix.PixM(this.getColumns(), this.getLines());
+         one.empty3.feature.PixM image = new  one.empty3.feature.PixM(this.getColumns(), this.getLines());
 
         for(int i = 0; i < image.getColumns(); ++i) {
             for(int j = 0; j < image.getLines(); ++j) {
@@ -290,11 +290,11 @@ public class PixM extends M implements Serializable, Serialisable {
         return image;
     }
 
-    public one.empty3.matrix.PixM subSampling(double div) {
+    public one.empty3.feature.PixM subSampling(double div) {
         double columns2 = (double)1.0F * (double)this.getColumns() / div;
         double lines2 = (double)1.0F * (double)this.getLines() / div;
         double cli2 = (double)1.0F / div;
-        one.empty3.matrix.PixM pixM = new one.empty3.matrix.PixM((int)columns2, (int)lines2);
+        one.empty3.feature.PixM pixM = new one.empty3.feature.PixM((int)columns2, (int)lines2);
 
         for(int c = 0; c < this.getCompCount(); ++c) {
             this.setCompNo(c);
@@ -324,8 +324,8 @@ public class PixM extends M implements Serializable, Serialisable {
 
         return m / (double)p;
     }
-    public one.empty3.matrix.PixM copySubImage(int x, int y, int w, int h) {
-        one.empty3.matrix.PixM p2 = new one.empty3.matrix.PixM(w, h);
+    public one.empty3.feature.PixM copySubImage(int x, int y, int w, int h) {
+        one.empty3.feature.PixM p2 = new one.empty3.feature.PixM(w, h);
 
         for(int i = x; i <= x + w; ++i) {
             for(int j = y; j <= y + h; ++j) {
@@ -340,7 +340,7 @@ public class PixM extends M implements Serializable, Serialisable {
         return p2;
     }
 
-    public void colorsRegionWithMask(int x, int y, int w, int h,  one.empty3.matrix.PixM subimage,  one.empty3.matrix.PixM addMask) {
+    public void colorsRegionWithMask(int x, int y, int w, int h,  one.empty3.feature.PixM subimage,  one.empty3.feature.PixM addMask) {
         for(int i = x; i < x + w; ++i) {
             for(int j = y; j < y + h; ++j) {
                 for(int c = 0; c < this.getCompCount(); ++c) {
@@ -395,8 +395,8 @@ public class PixM extends M implements Serializable, Serialisable {
 
         return image;
     }
-    public void setRegionCopy(one.empty3.matrix.M3 original, int ii, int ij, int iStart, int jStart, int iEnd, int jEnd,
-                              one.empty3.matrix.PixM pixM, int iPaste, int jPaste) {
+    public void setRegionCopy(one.empty3.feature.M3 original, int ii, int ij, int iStart, int jStart, int iEnd, int jEnd,
+                              one.empty3.feature.PixM pixM, int iPaste, int jPaste) {
         for (int c = 0; c < getCompCount(); c++) {
             original.setCompNo(c);
             pixM.setCompNo(c);
@@ -415,8 +415,8 @@ public class PixM extends M implements Serializable, Serialisable {
         }
     }
     @Override
-    public one.empty3.matrix.PixM copy() {
-        one.empty3.matrix.PixM pixM = new one.empty3.matrix.PixM(this.getColumns(), this.getLines());
+    public one.empty3.feature.PixM copy() {
+        one.empty3.feature.PixM pixM = new one.empty3.feature.PixM(this.getColumns(), this.getLines());
 
         for(int i = 0; i < this.getColumns(); ++i) {
             for(int j = 0; j < this.getLines(); ++j) {

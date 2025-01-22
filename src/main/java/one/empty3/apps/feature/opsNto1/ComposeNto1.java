@@ -22,7 +22,7 @@
 
 package one.empty3.apps.feature.opsNto1;
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;

@@ -23,8 +23,8 @@
 package one.empty3.apps.feature;
 
 
-import one.empty3.matrix.M3;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.M3;
+import one.empty3.feature.PixM;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class Linear {
     public static final int TYPE_2D_2D = 1;
 
     private PixM[] images;
-    private one.empty3.matrix.M3[] imagesM;
+    private one.empty3.feature.M3[] imagesM;
 
     public Linear(PixM... images) {
         type = TYPE_2D_2D;

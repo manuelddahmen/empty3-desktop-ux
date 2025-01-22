@@ -26,7 +26,7 @@ package one.empty3.apps.feature.kmeansbinary;
  * Class for Kmeans Clustering implemetation
  */
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.library.core.lighting.Colors;
 
 import javax.imageio.ImageIO;

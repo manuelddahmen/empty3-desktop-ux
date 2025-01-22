@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import one.empty3.library.Lumiere;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.library.Point3D;
 
 public class SelectionImpl extends Selection {

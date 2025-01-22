@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import one.empty3.ImageIO;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.ITexture;
 import one.empty3.library.Lumiere;

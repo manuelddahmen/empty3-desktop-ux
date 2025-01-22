@@ -22,7 +22,7 @@
 
 package one.empty3.test.testfeatures;
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.feature.WriteFile;
 import org.junit.jupiter.api.Test;
 

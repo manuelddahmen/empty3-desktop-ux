@@ -22,7 +22,7 @@
 
 package one.empty3.apps.feature.tryocr;
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.library.Point3D;
 
 import java.util.HashMap;

@@ -22,8 +22,8 @@ package one.empty3.feature_2;
 
 import one.empty3.libs.Color;
 
-import one.empty3.matrix.M3;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.M3;
+import one.empty3.feature.PixM;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.io.ProcessFile;
 

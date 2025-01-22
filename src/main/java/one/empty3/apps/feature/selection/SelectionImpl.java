@@ -24,7 +24,7 @@ package one.empty3.apps.feature.selection;
 
 //import one.empty3.feature.MultiLinkList;
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 

@@ -24,7 +24,7 @@ package one.empty3.feature;
 
 import one.empty3.apps.feature.InterfaceMatrix;
 import one.empty3.library.Point3D;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 
 import java.util.PrimitiveIterator;
 import java.util.Random;
@@ -138,7 +138,7 @@ public class M implements InterfaceMatrix {
         return;
     }
 
-    public M(one.empty3.matrix.PixM pix) {
+    public M(one.empty3.feature.PixM pix) {
         this.lines = pix.getLines();
         this.columns
                 = pix.getColumns();
@@ -497,7 +497,7 @@ public class M implements InterfaceMatrix {
     }
 
     public void setRegionCopy(M3 original, int ii, int ij, int iStart, int jStart, int iEnd, int jEnd,
-                              one.empty3.matrix.PixM pixM, int iPaste, int jPaste) {
+                              one.empty3.feature.PixM pixM, int iPaste, int jPaste) {
         for (int c = 0; c < getCompCount(); c++) {
             original.setCompNo(c);
             pixM.setCompNo(c);
@@ -516,8 +516,8 @@ public class M implements InterfaceMatrix {
         }
     }
 
-    public void setRegionCopy(one.empty3.matrix.PixM original, int iStart, int jStart, int iEnd, int jEnd,
-                              one.empty3.matrix.PixM pixM, int iPaste, int jPaste) {
+    public void setRegionCopy(one.empty3.feature.PixM original, int iStart, int jStart, int iEnd, int jEnd,
+                              one.empty3.feature.PixM pixM, int iPaste, int jPaste) {
     }
 
     public void setRegionCopy(PixM original, int iStart, int jStart, int iEnd, int jEnd,

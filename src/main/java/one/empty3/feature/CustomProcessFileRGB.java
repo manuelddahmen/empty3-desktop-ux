@@ -27,7 +27,7 @@ import one.empty3.library.Lumiere;
 import one.empty3.library.StructureMatrix;
 import one.empty3.library1.shader.Vec;
 import one.empty3.library1.tree.ListInstructions;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -56,7 +56,7 @@ public class CustomProcessFileRGB extends ProcessFile {
 
     @Override
     public boolean process(final File in, final File out) {
-        one.empty3.matrix.PixM pixIn;
+        one.empty3.feature.PixM pixIn;
         if (isImage(in)) {
             BufferedImage readIn = null;
             try {
@@ -64,8 +64,8 @@ public class CustomProcessFileRGB extends ProcessFile {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            pixIn = one.empty3.matrix.PixM.getPixM(readIn, maxRes);
-            one.empty3.matrix.PixM pix = pixIn;
+            pixIn = one.empty3.feature.PixM.getPixM(readIn, maxRes);
+            one.empty3.feature.PixM pix = pixIn;
             PixM pixOut = pixIn.copy();
             HashMap<String, String> currentVecs = new HashMap<>();
             HashMap<String, Double> currentVars = new HashMap<>();

@@ -22,7 +22,7 @@
 
 package one.empty3.apps.facedetectV0.facedetect;
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.ZBufferImpl;

@@ -22,7 +22,7 @@
 
 package one.empty3.apps.feature.gui;
 
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.feature.Motion;
 
 import java.awt.image.BufferedImage;

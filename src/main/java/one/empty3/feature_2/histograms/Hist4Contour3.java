@@ -23,7 +23,7 @@ package one.empty3.feature_2.histograms;
 import java.io.File;
 
 import one.empty3.io.ProcessFile;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.library.Point3D;
 
 public class Hist4Contour3 extends ProcessFile {

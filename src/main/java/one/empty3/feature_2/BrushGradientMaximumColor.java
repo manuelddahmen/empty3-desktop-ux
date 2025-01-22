@@ -26,7 +26,7 @@ import java.io.File;
 import java.util.Objects;
 
 import one.empty3.feature.M;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.libs.Image;
 

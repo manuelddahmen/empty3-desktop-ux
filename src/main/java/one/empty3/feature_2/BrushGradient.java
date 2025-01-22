@@ -20,8 +20,8 @@
 
 package one.empty3.feature_2;
 
-import one.empty3.matrix.FilterPixM;
-import one.empty3.matrix.PixM;
+import one.empty3.feature.FilterPixM;
+import one.empty3.feature.PixM;
 import one.empty3.library.Point3D;
 
 /*
