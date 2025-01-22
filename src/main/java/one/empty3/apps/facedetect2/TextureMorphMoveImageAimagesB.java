@@ -22,7 +22,6 @@
 
 package one.empty3.apps.facedetect2;
 
-import javaAnd.awt.Color;
 import one.empty3.apps.facedetect.DistanceAB;
 import one.empty3.apps.facedetect.DistanceProxLinear1;
 import one.empty3.apps.facedetect.DistanceProxLinear2;

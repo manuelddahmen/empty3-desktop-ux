@@ -44,32 +44,26 @@ public class IdentNullProcess extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        try {
-            PixM pixM = null;
-            pixM = PixM.getPixM(javax.imageio.ImageIO.read(in), maxRes);
+        PixM pixM = null;
+        pixM = PixM.getPixM(in, maxRes);
 
 
-            double l = (double) getProperties().getProperty("luminanceFactor");
-            double r = (double) getProperties().getProperty("redFactor");
-            double g = (double) getProperties().getProperty("blueFactor");
-            double b = (double) getProperties().getProperty("greenFactor");
+        double l = (double) getProperties().getProperty("luminanceFactor");
+        double r = (double) getProperties().getProperty("redFactor");
+        double g = (double) getProperties().getProperty("blueFactor");
+        double b = (double) getProperties().getProperty("greenFactor");
 
 
-            for (int i = 0; i < pixM.getColumns(); i++) {
-                for (int j = 0; j < pixM.getLines(); j++) {
-                    pixM.set(pixM.index(i,j), pixM.getInt(i,j));
-                }
+        for (int i = 0; i < pixM.getColumns(); i++) {
+            for (int j = 0; j < pixM.getLines(); j++) {
+                pixM.set(pixM.index(i,j), pixM.getInt(i,j));
             }
-
-            Image image = pixM.getImage2();
-            image.saveFile(out);
-            addSource(out);
-            return true;
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-            return false;
         }
+
+        Image image = pixM.getImage2();
+        image.saveFile(out);
+        addSource(out);
+        return true;
 
     }
 

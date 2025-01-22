@@ -22,15 +22,18 @@
 
 package one.empty3.matrix;
 
-import one.empty3.ImageIO;
 import one.empty3.feature.FilterPixM;
 import one.empty3.feature.M3;
 import org.jetbrains.annotations.NotNull;
 
 import one.empty3.libs.*;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PixM extends  one.empty3.feature.PixM {
 
@@ -74,13 +77,20 @@ public class PixM extends  one.empty3.feature.PixM {
     }
 
     public static PixM getPixM(File in, double res) {
-        Image image = new Image(ImageIO.read(in));
-        return one.empty3.matrix.PixM.getPixM(image, res);
+        Image image = null;
+        try {
+            image = new Image(ImageIO.read(in));
+        } catch (IOException e) {
+            Logger.getLogger(PixM.class.getName()).log(Level.SEVERE,
+                    "Error constructing PixM: IOException", e);
+        }
+        assert image != null;
+        return getPixM(image, res);
     }
 
     public static PixM getPixM(BufferedImage img, double res) {
         Image image = new Image(img);
-        return one.empty3.matrix.PixM.getPixM(image, res);
+        return getPixM(image, res);
     }
 
 

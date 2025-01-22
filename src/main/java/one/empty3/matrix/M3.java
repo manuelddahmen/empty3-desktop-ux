@@ -26,10 +26,10 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import one.empty3.library.Lumiere;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
-import static javaAnd.awt.Color.getColorComponents;
 
 public class M3 {
     public static PrimitiveIterator.OfDouble r = new Random().doubles().iterator();
@@ -148,11 +148,11 @@ public class M3 {
 
     public M3(Image image, int columns, int lines, int columnsIn, int linesIn) {
         this(columns, lines, columnsIn, linesIn);
-        float[] colorComponents = new float[getCompCount()];
+        double[] colorComponents = new double[getCompCount()];
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
                 int rgb = image.getRgb((int) (1.0 * i / columns * image.getWidth()), (int) (1.0 * j / lines * image.getHeight()));
-                colorComponents = getColorComponents(new Color(rgb));
+                colorComponents = Lumiere.getDoubles(rgb);
                 for (int ii = 0; ii < columnsIn; ii++)
                     for (int ij = 0; ij < linesIn; ij++) {
                         for (int com = 0; com < getCompCount(); com++) {
@@ -169,11 +169,11 @@ public class M3 {
         this(image.getWidth(), image.getHeight(), columnsIn, linesIn);
         this.image = image;
 
-        float[] colorComponents = new float[getCompCount()];
+        double[] colorComponents = new double[getCompCount()];
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < lines; j++) {
                 int rgb = image.getRgb(i, j);
-                colorComponents = getColorComponents(new Color(rgb));
+                colorComponents = Lumiere.getDoubles(rgb);
                 for (int ii = 0; ii < columnsIn; ii++)
                     for (int ij = 0; ij < linesIn; ij++) {
                         for (int com = 0; com < getCompCount(); com++) {
