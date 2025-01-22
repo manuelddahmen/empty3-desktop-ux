@@ -22,15 +22,11 @@
 
 package one.empty3.feature.Myfacedetect;
 
-import one.empty3.feature.PixM;
-import one.empty3.feature.Myfacedetect.Face;
-import one.empty3.feature.Myfacedetect.IMyDetector;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Point2D;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class Detector implements IMyDetector {

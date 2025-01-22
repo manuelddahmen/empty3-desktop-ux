@@ -22,11 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
-import one.empty3.apps.feature.TextDialog;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Lumiere;
 import one.empty3.library.StructureMatrix;
@@ -60,7 +57,7 @@ public class CustomProcessFileRGB extends ProcessFile {
 
     @Override
     public boolean process(final File in, final File out) {
-        one.empty3.feature.PixM pixIn;
+        PixM pixIn;
         if (isImage(in)) {
             BufferedImage readIn = null;
             try {
@@ -68,8 +65,8 @@ public class CustomProcessFileRGB extends ProcessFile {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            pixIn = one.empty3.feature.PixM.getPixM(readIn, maxRes);
-            one.empty3.feature.PixM pix = pixIn;
+            pixIn = PixM.getPixM(readIn, maxRes);
+            PixM pix = pixIn;
             PixM pixOut = pixIn.copy();
             HashMap<String, String> currentVecs = new HashMap<>();
             HashMap<String, Double> currentVars = new HashMap<>();

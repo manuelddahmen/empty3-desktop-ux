@@ -22,12 +22,10 @@
 
 package one.empty3.apps.feature.lbp;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Point3D;
 
 import one.empty3.library.Point;
-import one.empty3.libs.*;
-import java.awt.Dimension;
 
 public class OriginalLBP {
     private final PixM pixM;

@@ -54,7 +54,7 @@ public class TextureImgTache extends TextureImg {
     float actuB;
 
     public TextureImgTache(HashMap<Point2D, Color> colors) {
-        super(new Image(100, 100, Image.TYPE_INT_ARGB));
+        super(new Image(100, 100, Image.TYPE_INT_RGB));
         map = colors;
     }
 

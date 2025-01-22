@@ -23,8 +23,8 @@ package one.empty3.feature_2;
 
 import java.io.File;
 
-import matrix.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 public class GradMultProcess extends ProcessFile {

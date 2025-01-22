@@ -24,10 +24,10 @@ package one.empty3.test.testfeatures;
 
 
 import one.empty3.apps.feature.*;
-import one.empty3.feature.*;
-import one.empty3.feature.M3;
+import one.empty3.matrix.M3;
 import one.empty3.feature.WriteFile;
 import one.empty3.libs.Image;
+import one.empty3.matrix.PixM;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
@@ -51,9 +51,9 @@ public class TestMatGrad {
             if (!fileStr.endsWith(".jpg"))
                 continue;
             File file = new File("resources/" + fileStr);
-            PixM pixMOriginal = null;
+            one.empty3.matrix.PixM pixMOriginal = null;
             try {
-                pixMOriginal = PixM.getPixM(new one.empty3.libs.Image(new Image(ImageIO.read(file.getAbsoluteFile()))), 500.0);
+                pixMOriginal = one.empty3.matrix.PixM.getPixM(new one.empty3.libs.Image(new Image(ImageIO.read(file.getAbsoluteFile()))), 500.0);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 continue;
@@ -64,23 +64,23 @@ public class TestMatGrad {
             GradientFilter gradientMask = new GradientFilter(pixMOriginal.getColumns(), pixMOriginal.getLines());
             M3 imgForGrad = new M3(pixMOriginal, 2, 2);
             M3 filter = gradientMask.filter(imgForGrad);
-            PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);
+            one.empty3.matrix.PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);
             logger.info("gradient computed");
 
 //                    image1 = null;
 
             // Zero. +++Zero orientation variation.
             Linear linear = new Linear(imagesMatrix[1][0], imagesMatrix[0][0],
-                    new PixM(pixMOriginal.getColumns(), pixMOriginal.getLines()));
+                    new one.empty3.matrix.PixM(pixMOriginal.getColumns(), pixMOriginal.getLines()));
             linear.op2d2d(new char[]{'*'}, new int[][]{{1, 0}}, new int[]{2});
-            PixM smoothedGrad = linear.getImages()[2].normalize(0., 1.);
+            one.empty3.matrix.PixM smoothedGrad = linear.getImages()[2].normalize(0., 1.);
             logger.info("dot outter product");
-            PixM pext = pixMOriginal;
+            one.empty3.matrix.PixM pext = pixMOriginal;
             LocalExtrema le =
                     new LocalExtrema(imagesMatrix[1][0].getColumns(),
                             imagesMatrix[1][0].getLines(),
                             3, 0);
-            PixM plext = le.filter(new M3(pext,
+            one.empty3.matrix.PixM plext = le.filter(new M3(pext,
                     1, 1)
             ).getImagesMatrix()[0][0].normalize(0., 1.);
             logger.info("local maximum");
@@ -91,7 +91,7 @@ public class TestMatGrad {
                     new LocalExtrema(imagesMatrix[1][0].getColumns(),
                             imagesMatrix[1][0].getLines(),
                             5, 0);
-            PixM plext2 = le2.filter(new M3(pext,
+            one.empty3.matrix.PixM plext2 = le2.filter(new M3(pext,
                     1, 1)
             ).getImagesMatrix()[0][0].normalize(0., 1.);
             logger.info("local maximum 5x5");
@@ -101,7 +101,7 @@ public class TestMatGrad {
                     new LocalExtrema(imagesMatrix[1][0].getColumns(),
                             imagesMatrix[1][0].getLines(),
                             19, 3);
-            PixM plext3 = le3.filter(new M3(pext,
+            one.empty3.matrix.PixM plext3 = le3.filter(new M3(pext,
                     1, 1)
             ).getImagesMatrix()[0][0].normalize(0., 1.);
             logger.info("local maximum 20x20");
@@ -111,13 +111,13 @@ public class TestMatGrad {
                     = new AfterGradientBeforeExtremum(3);
             M3 anglesTangente = a.filter(new M3(
 
-                    new PixM[][]
+                    new one.empty3.matrix.PixM[][]
                             {{
                                     pext, imagesMatrix[0][0], imagesMatrix[1][0]
                             }}
             ));
             logger.info("angles tangentes");
-            PixM pix = smoothedGrad;
+            one.empty3.matrix.PixM pix = smoothedGrad;
             IntuitiveRadialGradient i
                     = new IntuitiveRadialGradient(pix);
             i.setMax(2., 5., 2, 4);

@@ -29,9 +29,9 @@
 
 package one.empty3.feature_2;
 
-import matrix.FilterMatPixM;
-import matrix.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.FilterMatPixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 
 
 public class LocalExtrema extends FilterMatPixM {

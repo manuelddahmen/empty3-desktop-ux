@@ -22,11 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.IsleFilterPixM;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import java.io.File;
@@ -44,7 +41,7 @@ public class IsleProcess extends ProcessFile {
 
         File file = in;
 
-        one.empty3.feature.PixM pix = null;
+        PixM pix = null;
         BufferedImage img = null;
         try {
             img = ImageIO.read(file);

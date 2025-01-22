@@ -22,10 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import matrix.FilterPixM;
+import one.empty3.matrix.FilterPixM;
 import one.empty3.library.*;
 
 /*

@@ -23,15 +23,13 @@
 package one.empty3.apps.feature;
 
 
-import one.empty3.feature.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 import one.empty3.libs.Color;
 
 import java.awt.*;
@@ -134,27 +132,27 @@ public class SimilarPatchVolume {
 
 //                    image2 = getImageFromDir(filename2);
                 //   GradientFilter gradientMask = new GradientFilter(image1.getWidth(), image1.getHeight());
-                one.empty3.feature.PixM pixMOriginal = one.empty3.feature.PixM.getPixM(image1, 500);
+                PixM pixMOriginal = PixM.getPixM(image1, 500);
                 image1 = null;
                 one.empty3.apps.feature.GradientFilter gradientMask = new GradientFilter(pixMOriginal.getColumns()
                         , pixMOriginal.getLines());
-                one.empty3.feature.M3 imgForGrad = new one.empty3.feature.M3(pixMOriginal,
+                one.empty3.matrix.M3 imgForGrad = new one.empty3.matrix.M3(pixMOriginal,
                         2, 2);
-                one.empty3.feature.M3 filter = gradientMask.filter(imgForGrad);
-                one.empty3.feature.PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);
+                one.empty3.matrix.M3 filter = gradientMask.filter(imgForGrad);
+                PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);
 
 
 //                    image1 = null;
 
                 // Zero. +++Zero orientation variation.
                 one.empty3.apps.feature.Linear linear = new Linear(imagesMatrix[1][0], imagesMatrix[0][0],
-                        new one.empty3.feature.PixM(pixMOriginal.getColumns()
+                        new PixM(pixMOriginal.getColumns()
                                 , pixMOriginal.getLines()));
                 linear.op2d2d(new char[]{'*'}, new int[][]{{1, 0}}, new int[]{2});
-                one.empty3.feature.PixM smoothedGrad = linear.getImages()[2];
+                PixM smoothedGrad = linear.getImages()[2];
                 int iteratesAngleGrad = 12;
-                one.empty3.feature.M3 filter3 = new AfterGradientBeforeExtremum(iteratesAngleGrad).filter(new one.empty3.feature.M3(smoothedGrad, 1, 1));
-                one.empty3.feature.PixM[][] afterGradientAngular = filter3.getImagesMatrix();
+                one.empty3.matrix.M3 filter3 = new AfterGradientBeforeExtremum(iteratesAngleGrad).filter(new one.empty3.matrix.M3(smoothedGrad, 1, 1));
+                PixM[][] afterGradientAngular = filter3.getImagesMatrix();
                 /* try {
                  work(directory, image1, filename1 + "/original.jpg");
                  } catch (IOException e) {
@@ -164,16 +162,16 @@ public class SimilarPatchVolume {
                 for (int angleIncr = 0; angleIncr < iteratesAngleGrad; angleIncr++) {
                     double angle = 2 * Math.PI * angleIncr / iteratesAngleGrad;
                     for (double sigma = 0.8; sigma < 2.0; sigma += 0.2) {
-                        one.empty3.feature.PixM pixM = afterGradientAngular[angleIncr][0].applyFilter(new GaussFilterPixM(afterGradientAngular[angleIncr][0], 4, sigma));
+                        PixM pixM = afterGradientAngular[angleIncr][0].applyFilter(new GaussFilterPixM(afterGradientAngular[angleIncr][0], 4, sigma));
 
 
                         for (int size = 1; size <= 16; size *= 2) {
                             //
-                            one.empty3.feature.M3 smoothedGradM3 = new one.empty3.feature.M3(pixM.subSampling(size), 1, 1);
+                            one.empty3.matrix.M3 smoothedGradM3 = new one.empty3.matrix.M3(pixM.subSampling(size), 1, 1);
                             // Search local maximum
                             one.empty3.apps.feature.LocalExtrema localExtrema = new one.empty3.apps.feature.LocalExtrema(smoothedGradM3.columns
                                     , smoothedGradM3.lines, 3, 0);
-                            one.empty3.feature.M3 filter2 = localExtrema.filter(smoothedGradM3);
+                            one.empty3.matrix.M3 filter2 = localExtrema.filter(smoothedGradM3);
                             PixM filter1 = filter2.getImagesMatrix()[0][0];
                             Logger.getAnonymousLogger().log(Level.INFO, "Original read image1");
                             work(directory, imagesMatrix[0][0].getImage(), filename1 + "/1/angle-" + angle + "/sigma" + sigma + "/size" + size + "gradient.jpg");
@@ -206,12 +204,12 @@ public class SimilarPatchVolume {
         }
     }
 
-    private void stream(one.empty3.feature.M3 smoothedGradM3, double angle, double sigma, int size, String prefixDir) {
+    private void stream(one.empty3.matrix.M3 smoothedGradM3, double angle, double sigma, int size, String prefixDir) {
         //int[] i = {0};
         Arrays.stream(smoothedGradM3.getImagesMatrix()).forEach(pixMS -> Arrays.stream(pixMS).forEach(pixM1 -> {
                     one.empty3.apps.feature.LocalExtrema localExtrema1 = new LocalExtrema(smoothedGradM3.columns
                             , smoothedGradM3.lines, 3, 0);
-                    one.empty3.feature.M3 extremaOrientedGrad = localExtrema1.filter(new M3(pixM1, 1, 1));
+                    one.empty3.matrix.M3 extremaOrientedGrad = localExtrema1.filter(new M3(pixM1, 1, 1));
                     try {
                         Logger.getAnonymousLogger().log(Level.INFO, "Gradient (gx,gy).(nx,ny)");
                         work(directory, pixM1.normalize(0, 1).getImage(), prefixDir + "/4/OrientedGradExtremum_1_sigma" + sigma + "angle" + angle + "size" + size + ".jpg");

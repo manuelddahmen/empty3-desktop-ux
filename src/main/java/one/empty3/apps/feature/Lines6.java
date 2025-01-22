@@ -22,10 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.selection.Paste;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.*;
@@ -33,7 +31,6 @@ import one.empty3.library.*;
 import javax.imageio.ImageIO;
 
 import one.empty3.library.Point;
-import one.empty3.libs.*;
 import one.empty3.libs.Color;
 
 import java.awt.*;
@@ -43,8 +40,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import java.util.Random;
 
@@ -58,7 +53,7 @@ public class Lines6 extends ProcessFile {
     ArrayList<Double> listTmpX = new ArrayList<>();
     ArrayList<Double> listTmpY = new ArrayList<>();
     ArrayList<Double> listTmpZ = new ArrayList<>();
-    private one.empty3.feature.PixM pixM;
+    private PixM pixM;
     private double pz;
     private double py;
     private double px;
@@ -104,9 +99,9 @@ public class Lines6 extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             pixM = null;
-            pixM = new one.empty3.feature.PixM(ImageIO.read(in));
+            pixM = new PixM(ImageIO.read(in));
             ArrayList<List<Point3D>> lists = new ArrayList<>();
-            one.empty3.feature.PixM o = new one.empty3.feature.PixM(pixM.getColumns(), pixM.getLines());
+            PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
             double valueDiff = 0.2;
 
@@ -299,7 +294,7 @@ public class Lines6 extends ProcessFile {
 
             Paste paste = new Paste();
 
-            one.empty3.feature.PixM stack = new PixM(
+            PixM stack = new PixM(
                     pixM.getColumns(), pixM.getLines()
                     //ImageIO.read(getStackItem(1))
             );

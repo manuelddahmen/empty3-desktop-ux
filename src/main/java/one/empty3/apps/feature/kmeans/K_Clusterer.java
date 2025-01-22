@@ -26,15 +26,13 @@ package one.empty3.apps.feature.kmeans;
  * Class for Kmeans Clustering implemetation
  */
 
-import one.empty3.feature.PixM;
-import one.empty3.apps.feature.kmeans.Distance;
-import one.empty3.apps.feature.kmeans.ReadDataset;
+import one.empty3.matrix.PixM;
 import one.empty3.library.core.lighting.Colors;
 
 import javax.imageio.ImageIO;
-import one.empty3.library.Point;
+
 import one.empty3.libs.*;
-import java.awt.Dimension;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,8 +42,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class K_Clusterer extends ReadDataset {
     private static final int K = 20;
@@ -66,7 +62,7 @@ public class K_Clusterer extends ReadDataset {
         final PixM pix;
         try {
             if (res > 0)
-                pix = PixM.getPixM(ImageIO.read(in), res);
+                pix = PixM.getPixM(in, res);
             else
                 pix = new PixM(ImageIO.read(in));
             PixM pix2 = new PixM(

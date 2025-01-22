@@ -22,10 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
@@ -35,18 +33,15 @@ import javax.imageio.ImageIO;
 import one.empty3.library.Point;
 import one.empty3.libs.*;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import java.util.Random;
 
 public class Lines extends ProcessFile {
-    private one.empty3.feature.PixM pixM;
+    private PixM pixM;
     private double pz;
     private double py;
     private double px;
@@ -160,8 +155,8 @@ public class Lines extends ProcessFile {
         listTmpY = new ArrayList<Double>();
         listTmpZ = new ArrayList<Double>();
         try {
-            pixM = new one.empty3.feature.PixM(ImageIO.read(in));
-            one.empty3.feature.PixM o = new PixM(pixM.getColumns(), pixM.getLines());
+            pixM = new PixM(ImageIO.read(in));
+            PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
             p = new int[pixM.getColumns()][pixM.getLines()];
             mapPoints = new Point3D[pixM.getColumns()][pixM.getLines()];

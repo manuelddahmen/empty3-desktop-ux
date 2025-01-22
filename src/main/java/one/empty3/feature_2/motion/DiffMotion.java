@@ -21,7 +21,7 @@
 package one.empty3.feature_2.motion;
 
 import one.empty3.feature_2.Linear;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.libs.Image;
 
 public abstract class DiffMotion extends Motion {

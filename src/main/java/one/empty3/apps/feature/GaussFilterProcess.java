@@ -22,11 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.GaussFilterPixM;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
@@ -41,12 +38,12 @@ public class GaussFilterProcess extends ProcessFile {
 
             return false;
 
-        one.empty3.feature.PixM pix = null;
+        PixM pix = null;
         BufferedImage img = null;
 
         try {
             img = ImageIO.read(in);
-            pix = one.empty3.feature.PixM.getPixM(img, maxRes);
+            pix = PixM.getPixM(img, maxRes);
 
         } catch (Exception ex) {
 
@@ -61,7 +58,7 @@ public class GaussFilterProcess extends ProcessFile {
 
         one.empty3.apps.feature.GaussFilterPixM th = new GaussFilterPixM(pix, 1);
 
-        one.empty3.feature.PixM pixRes = new one.empty3.feature.PixM(pix.getColumns(), pix.getLines());
+        PixM pixRes = new PixM(pix.getColumns(), pix.getLines());
         for (int c = 0; c < 3; c++) {
             th.setCompNo(c);
             pix.setCompNo(c);

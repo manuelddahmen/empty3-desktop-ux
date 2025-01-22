@@ -21,11 +21,9 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ObjectWithProperties;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
@@ -50,17 +48,17 @@ public class ProxyValue2 extends ProcessFile {
 
         if (!isImage(in))
             return false;
-        one.empty3.feature.PixM original = null;
+        PixM original = null;
 
         try {
-            original = one.empty3.feature.PixM.getPixM(ImageIO.read(in), maxRes);
+            original = PixM.getPixM(ImageIO.read(in), maxRes);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
             // assertTrue(false);
 
         }
-        one.empty3.feature.PixM copy = original.copy();
+        PixM copy = original.copy();
         for (int i = 0; i < original.getColumns()
 ; i++)
 
@@ -90,7 +88,7 @@ public class ProxyValue2 extends ProcessFile {
 
 
     public void searchFromTo(
-            one.empty3.feature.PixM original, one.empty3.feature.PixM copy, int i, int j, double min) {
+            PixM original, PixM copy, int i, int j, double min) {
         Point3D p = null;
         int i2 = i, j2 = j;
 
@@ -149,7 +147,7 @@ public class ProxyValue2 extends ProcessFile {
     }
 
 
-    public void copyPixel(one.empty3.feature.PixM m1, int i, int j,
+    public void copyPixel(PixM m1, int i, int j,
                           PixM m2, int i2, int j2) {
         for (int c = 0; c < 3; c++) {
 

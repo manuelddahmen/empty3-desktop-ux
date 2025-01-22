@@ -22,6 +22,7 @@
 
 package one.empty3.apps.facedetect;
 
+import androidx.annotation.NonNull;
 import one.empty3.library.Point3D;
 
 import java.awt.geom.Dimension2D;
@@ -45,7 +46,8 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
      * @param opt1
      * @param optimizeGrid
      */
-    public DistanceProxLinear4(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal,
+    public DistanceProxLinear4(@NonNull List<Point3D> A, @NonNull List<Point3D> B,
+                               @NonNull Dimension2D aDimReal, @NonNull Dimension2D bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];

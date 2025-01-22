@@ -21,12 +21,10 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.apps.feature.LocalExtrema;
-import one.empty3.feature.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
@@ -47,12 +45,12 @@ public class ExtremaProcess extends ProcessFile {
     }
 
     public boolean process(File in, File out) {
-        one.empty3.feature.PixM pix = null;
+        PixM pix = null;
         if (!isImage(in))
             return false;
 
         try {
-            pix = new one.empty3.feature.PixM(ImageIO.read(in));
+            pix = new PixM(ImageIO.read(in));
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -68,7 +66,7 @@ public class ExtremaProcess extends ProcessFile {
         PixM m = le.filter(new M3(pix, 1, 1)).getImagesMatrix()[0][0];
 
         try {
-            ImageIO.write(m.normalize(0, 1).getImage(), "jpg", out);
+            m.normalize(0, 1).getImage2().saveFile(out);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

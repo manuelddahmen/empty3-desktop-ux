@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 import java.util.Objects;
 
-import matrix.M3;
+import one.empty3.matrix.M3;
 
 public class FollowLines {
     private M3 traces;

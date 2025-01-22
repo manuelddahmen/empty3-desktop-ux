@@ -21,11 +21,9 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
-import one.empty3.apps.feature.TrueHarrisProcess;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
 
@@ -38,8 +36,8 @@ public class FeatureMatch extends ProcessFile {
     final Point3D point = new Point3D(1., 1., 1.);
     List<double[]> points1;
     List<double[]> points2;
-    one.empty3.feature.PixM img1copy;
-    one.empty3.feature.PixM img2copy;
+    PixM img1copy;
+    PixM img2copy;
 
     /***
      *
@@ -47,12 +45,12 @@ public class FeatureMatch extends ProcessFile {
      * @param img2
      * @return List of double[x1][y1][x2][y2]
      */
-    public List<double[]> match(one.empty3.feature.PixM img1, one.empty3.feature.PixM img2) {
+    public List<double[]> match(PixM img1, PixM img2) {
         TrueHarrisProcess trueHarrisProcess = new TrueHarrisProcess();
 
-        img1copy = new one.empty3.feature.PixM(img1.getColumns(), img1.getLines());
+        img1copy = new PixM(img1.getColumns(), img1.getLines());
         trueHarrisProcess.processMem(img1, img1copy);
-        img2copy = new one.empty3.feature.PixM(img2.getColumns(), img2.getLines());
+        img2copy = new PixM(img2.getColumns(), img2.getLines());
         trueHarrisProcess.processMem(img2, img2copy);
 
         points1 = features(img1copy);
@@ -98,7 +96,7 @@ public class FeatureMatch extends ProcessFile {
         return points;
     }
 
-    private List<double[]> features(one.empty3.feature.PixM img1copy) {
+    private List<double[]> features(PixM img1copy) {
 
         ArrayList<double[]> points = new ArrayList<>();
 
@@ -117,8 +115,4 @@ public class FeatureMatch extends ProcessFile {
         return false;
     }
 
-    @Override
-    public boolean processMem(one.empty3.feature.PixM in, PixM out) {
-        return super.processMem(in, out);
-    }
 }

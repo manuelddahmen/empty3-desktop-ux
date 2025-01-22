@@ -20,20 +20,17 @@
  *
  */
 
-package one.empty3.feature.Motion;
+package one.empty3.apps.feature.motion;
 
 import one.empty3.apps.feature.FeatureMatch;
-import one.empty3.feature.PixM;
-import one.empty3.feature.Motion.Motion;
+import one.empty3.feature.Motion;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Lumiere;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
-import java.awt.Dimension;
+
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class FeatureMotion extends Motion {

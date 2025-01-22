@@ -6,6 +6,7 @@ package one.empty3.apps.facedetect;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Dimension2D;

@@ -23,20 +23,17 @@
 package one.empty3.apps.feature.tryocr;
 
 import one.empty3.apps.feature.Linear;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.apps.feature.shape.Rectangle;
-import one.empty3.apps.feature.tryocr.FeatureLine;
-import one.empty3.apps.feature.tryocr.ResolutionCharacter;
 import one.empty3.library.ITexture;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.library.TextureCol;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
-import java.awt.Dimension;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
@@ -45,9 +42,6 @@ import java.util.logging.Logger;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ResolutionCharacter0 implements Runnable {
 

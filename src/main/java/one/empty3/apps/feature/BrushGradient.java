@@ -22,11 +22,9 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import matrix.FilterPixM;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.FilterPixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Point3D;
 
 /*
@@ -36,7 +34,7 @@ public class BrushGradient extends FilterPixM {
     double angle = 0.0;
     double length = 1.0;
     double large = 1.0;
-    one.empty3.feature.PixM m;
+    PixM m;
 
     public BrushGradient(PixM p) {
         super(p.getColumns()

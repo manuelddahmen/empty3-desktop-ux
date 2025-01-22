@@ -21,10 +21,9 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.kmeans.K_Clusterer;
 import one.empty3.apps.feature.kmeans.MakeDataset;
 import one.empty3.apps.feature.kmeans.ReadDataset;
@@ -35,8 +34,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class DBScanProcess extends ProcessFile {
@@ -61,7 +58,7 @@ public class DBScanProcess extends ProcessFile {
     int c = 0;
 
 
-    one.empty3.feature.PixM pix;
+    PixM pix;
 
     public void dbscan() {
 
@@ -131,13 +128,13 @@ public class DBScanProcess extends ProcessFile {
 
 
         try {
-            pix = one.empty3.feature.PixM
+            pix = PixM
                     .getPixM(ImageIO.read(in), 100);
         } catch (Exception ex1) {
             ex1.printStackTrace();
             return false;
         }
-        one.empty3.feature.PixM pix2 = new PixM(
+        PixM pix2 = new PixM(
                 pix.getColumns(),
                 pix.getLines()
         );

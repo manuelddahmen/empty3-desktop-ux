@@ -29,7 +29,7 @@ import java.util.function.BiConsumer;
 import one.empty3.libs.Image;
 import one.empty3.ImageIO;
 import one.empty3.io.ProcessFile;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Point3D;
 
 public class ClassificationAvgColors extends ProcessFile {

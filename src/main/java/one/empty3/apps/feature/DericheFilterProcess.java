@@ -21,18 +21,14 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class DericheFilterProcess extends ProcessFile {
@@ -40,7 +36,7 @@ public class DericheFilterProcess extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        one.empty3.feature.PixM pixM = null;
+        PixM pixM = null;
         try {
             pixM = PixM.getPixM(ImageIO.read(in), maxRes);
         } catch (IOException e) {

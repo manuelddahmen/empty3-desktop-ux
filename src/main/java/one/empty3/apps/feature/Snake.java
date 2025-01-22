@@ -22,14 +22,12 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
-
 
 import java.io.*;
 import java.util.*;
 
 import one.empty3.feature.M;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.*;
@@ -49,8 +47,8 @@ public class Snake extends ProcessFile {
     private CourbeParametriquePolynomialeBezier spline;
     private List<double[]> in, out;
 
-    one.empty3.feature.PixM pix;
-    one.empty3.feature.PixM pix3;
+    PixM pix;
+    PixM pix3;
 
     public void initCurve() {
         double c = (double) (pix.getColumns());
@@ -70,7 +68,7 @@ public class Snake extends ProcessFile {
         int[] cpt = new int[2];
         Point3D vecTan0, vecTan;
         Point3D vecNor0, vecNor;
-        one.empty3.feature.PixM pix2 = new one.empty3.feature.PixM(pix.getColumns(), pix.getLines());
+        PixM pix2 = new PixM(pix.getColumns(), pix.getLines());
         List<Point3D> p = spline.getCoefficients().getData1d();
 
         double sumOut = 0.0;
@@ -133,7 +131,7 @@ public class Snake extends ProcessFile {
 
     public boolean process(File in, File out) {
         try {
-            pix = one.empty3.feature.PixM.getPixM(ImageIO.read(in), 500);
+            pix = PixM.getPixM(ImageIO.read(in), 500);
             pix3 = new PixM(pix.getColumns(), pix.getLines());
         } catch (Exception ex) {
             ex.printStackTrace();

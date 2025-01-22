@@ -22,14 +22,9 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.GradientFilter;
-import one.empty3.apps.feature.Linear;
-import one.empty3.apps.feature.LocalExtrema;
-import one.empty3.feature.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
@@ -53,9 +48,9 @@ public class Transform1 extends ProcessFile {
         if (!in.getName().endsWith(".jpg"))
             return false;
         File file = in;
-        one.empty3.feature.PixM pixMOriginal = null;
+        PixM pixMOriginal = null;
         try {
-            pixMOriginal = one.empty3.feature.PixM.getPixM(ImageIO.read(file), 500.0);
+            pixMOriginal = PixM.getPixM(ImageIO.read(file), 500.0);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -64,18 +59,18 @@ public class Transform1 extends ProcessFile {
         }
         logger.info("file loaded");
         GradientFilter gradientMask = new GradientFilter(pixMOriginal.getColumns(), pixMOriginal.getLines());
-        one.empty3.feature.M3 imgForGrad = new one.empty3.feature.M3(pixMOriginal, 2, 2);
-        one.empty3.feature.M3 filter = gradientMask.filter(imgForGrad);
-        one.empty3.feature.PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);
+        one.empty3.matrix.M3 imgForGrad = new one.empty3.matrix.M3(pixMOriginal, 2, 2);
+        one.empty3.matrix.M3 filter = gradientMask.filter(imgForGrad);
+        PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);
         logger.info("gradient computed");
 
 //                    image1 = null;
 
         // Zero. +++Zero orientation variation.
         one.empty3.apps.feature.Linear linear = new Linear(imagesMatrix[1][0], imagesMatrix[0][0],
-                new one.empty3.feature.PixM(pixMOriginal.getColumns(), pixMOriginal.getLines()));
+                new PixM(pixMOriginal.getColumns(), pixMOriginal.getLines()));
         linear.op2d2d(new char[]{'*'}, new int[][]{{1, 0}}, new int[]{2});
-        one.empty3.feature.PixM smoothedGrad = linear.getImages()[2].normalize(0., 1.);
+        PixM smoothedGrad = linear.getImages()[2].normalize(0., 1.);
         logger.info("dot outter product");
         // PixM pext = pixMOriginal;
         LocalExtrema le =

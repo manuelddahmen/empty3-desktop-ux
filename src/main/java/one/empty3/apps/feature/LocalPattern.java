@@ -26,10 +26,10 @@ import one.empty3.feature.*;
 
 
 import one.empty3.apps.feature.FilterMatPixM;
-import one.empty3.feature.M3;
+import one.empty3.matrix.M3;
 
 public class LocalPattern extends FilterMatPixM {
-    private one.empty3.feature.M3 sr;
+    private one.empty3.matrix.M3 sr;
     public static String formulaXvLogical = "count(x==v)==columns()*lines()/2";
 
     /*
@@ -40,18 +40,18 @@ public class LocalPattern extends FilterMatPixM {
         comp4 => rgb' = rgb *(1-opacity) si x ! =-1
        
     */
-    public LocalPattern(one.empty3.feature.M3 searchReplace) {
+    public LocalPattern(one.empty3.matrix.M3 searchReplace) {
         this.sr = searchReplace;
 
     }
 
     /*
      */
-    public one.empty3.feature.M3 filter(
+    public one.empty3.matrix.M3 filter(
 
-            one.empty3.feature.M3 original
+            one.empty3.matrix.M3 original
     ) {
-        one.empty3.feature.M3 copy = new one.empty3.feature.M3(original.columns, original.lines, 1, 1);
+        one.empty3.matrix.M3 copy = new one.empty3.matrix.M3(original.columns, original.lines, 1, 1);
 
         for (int i = 0; i < original.columns; i++) {
 
@@ -116,12 +116,12 @@ public class LocalPattern extends FilterMatPixM {
 
 
     @Override
-    public void element(one.empty3.feature.M3 source, one.empty3.feature.M3 copy, int i, int j, int ii, int ij) {
+    public void element(one.empty3.matrix.M3 source, one.empty3.matrix.M3 copy, int i, int j, int ii, int ij) {
 
     }
 
     @Override
-    public one.empty3.feature.M3 norm(one.empty3.feature.M3 m3, M3 copy) {
+    public one.empty3.matrix.M3 norm(one.empty3.matrix.M3 m3, M3 copy) {
         return m3.copy();
     }
 } 

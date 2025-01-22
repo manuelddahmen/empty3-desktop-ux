@@ -37,7 +37,7 @@ public class Tubulaire4map extends Tubulaire3 {
 
     public Tubulaire4map() {
         super();
-        mapVolume.setElem(new Image(100, 100, BufferedImage.TYPE_INT_ARGB));
+        mapVolume.setElem(new Image(100, 100, BufferedImage.TYPE_INT_RGB));
     }
 
     public void updateBufferedImage(BufferedImage bufferedImage) {

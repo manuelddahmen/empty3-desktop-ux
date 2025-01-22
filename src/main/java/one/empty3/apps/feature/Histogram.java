@@ -22,16 +22,12 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 
 import javax.imageio.ImageIO;
 
 import one.empty3.library.Lumiere;
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 import one.empty3.libs.Color;
 
 import java.awt.*;
@@ -40,11 +36,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /*
  * radial density of region (x, y, r)
@@ -56,7 +47,7 @@ public class Histogram {
     private double min;
     private List<Circle> circles
             = new ArrayList<>();
-    private one.empty3.feature.PixM m = null;
+    private PixM m = null;
     private double levelMin;
 
     public class Circle {
@@ -83,7 +74,7 @@ public class Histogram {
     //private final int[][][] levels;
 
 
-    public Histogram(one.empty3.feature.PixM image, int levels, double min, double radiusIncr, double levelMin) {
+    public Histogram(PixM image, int levels, double min, double radiusIncr, double levelMin) {
         this.diffLevel = 1.0 / levels;
         this.min = min;
         this.radiusIncr = radiusIncr;

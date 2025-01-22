@@ -24,7 +24,7 @@ package one.empty3.apps.feature.tryocr;
 
 import one.empty3.csv.CsvWriter;
 import one.empty3.apps.feature.Linear;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.apps.feature.shape.Rectangle;
 import one.empty3.library.ITexture;
@@ -34,7 +34,6 @@ import one.empty3.library.TextureCol;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;

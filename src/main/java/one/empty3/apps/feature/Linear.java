@@ -21,11 +21,10 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -36,10 +35,10 @@ public class Linear {
     public static final int TYPE_2D = 0;
     public static final int TYPE_2D_2D = 1;
 
-    private one.empty3.feature.PixM[] images;
-    private one.empty3.feature.M3[] imagesM;
+    private PixM[] images;
+    private one.empty3.matrix.M3[] imagesM;
 
-    public Linear(one.empty3.feature.PixM... images) {
+    public Linear(PixM... images) {
         type = TYPE_2D_2D;
         this.imagesM = null;
         this.images = images;
@@ -54,12 +53,12 @@ public class Linear {
     public Linear(BufferedImage... bufferedImages) {
         type = TYPE_2D_2D;
         this.imagesM = null;
-        images = new one.empty3.feature.PixM[bufferedImages.length];
+        images = new PixM[bufferedImages.length];
         final int[] i = {0};
         Arrays.stream(bufferedImages).forEach(new Consumer<BufferedImage>() {
             @Override
             public void accept(BufferedImage bufferedImage) {
-                images[i[0]] = new one.empty3.feature.PixM(bufferedImage);
+                images[i[0]] = new PixM(bufferedImage);
                 i[0]++;
             }
         });
@@ -69,15 +68,15 @@ public class Linear {
     }
 
     public boolean op2d2d(char[] op, int[][] index, int[] indexRes) {
-        one.empty3.feature.PixM[] workingImages = null;
+        PixM[] workingImages = null;
         assert images != null;
         for (int x = 0; x < op.length; x++) {
-            workingImages = new one.empty3.feature.PixM[images.length];//.??N
+            workingImages = new PixM[images.length];//.??N
             //new PixM[index[x].length];//.??N
             for (int j = 0; j < index[x].length; j++) {
                 workingImages[j] = images[index[x][j]];
             }
-            one.empty3.feature.PixM pixM = new one.empty3.feature.PixM(workingImages[0].getColumns()
+            PixM pixM = new PixM(workingImages[0].getColumns()
 ,
                     workingImages[0].getLines());
             for (int m = 0; m < index[x].length; m++) {

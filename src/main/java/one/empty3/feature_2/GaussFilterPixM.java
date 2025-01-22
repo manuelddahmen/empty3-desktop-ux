@@ -20,8 +20,8 @@
 
 package one.empty3.feature_2;
 
-import matrix.FilterPixM;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.FilterPixM;
+import one.empty3.matrix.PixM;
 
 public class GaussFilterPixM extends FilterPixM {
     private final PixM in;

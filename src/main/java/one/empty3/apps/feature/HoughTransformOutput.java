@@ -52,7 +52,7 @@ public class HoughTransformOutput {
     static int imgHeight;
 
     public static void writeImage(int[][] imgArray, File outFile) throws Exception {
-        BufferedImage img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < imgWidth; i++) {
             for (int j = 0; j < imgHeight; j++) {
                 img.setRGB(i, j, new Color(Lumiere.getIntFromInts(255, 255, imgArray[i][j])).getRGB());
@@ -111,7 +111,7 @@ public class HoughTransformOutput {
     }
 
     public static void superimposeCircles(List<one.empty3.apps.feature.CircleHit> hits, double[][] sobelTotal, File out) throws Exception {
-        BufferedImage totalCircles = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage totalCircles = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
 
         BufferedImage total = changeBrightness(0.5f, scaledSobelResult(sobelTotal));
         totalCircles.getGraphics().drawImage(total, 0, 0, null);

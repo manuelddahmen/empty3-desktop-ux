@@ -18,7 +18,7 @@ package one.empty3.feature_2;//package one.empty3.feature20220726;
 //    static int imgHeight;
 //
 //    public static void writeImage(int[][] imgArray, File outFile) throws Exception {
-//        Image img = new one.empty3.libs.Color(imgWidth, imgHeight, one.empty3.libs.Color.TYPE_INT_ARGB);
+//        Image img = new one.empty3.libs.Color(imgWidth, imgHeight, one.empty3.libs.Color.TYPE_INT_RGB);
 //        for (int i = 0; i < imgWidth; i++) {
 //            for (int j = 0; j < imgHeight; j++) {
 //                img.setRGB(i, j, new Color(255, 255, 255, imgArray[i][j]).getRGB());
@@ -77,7 +77,7 @@ package one.empty3.feature_2;//package one.empty3.feature20220726;
 //    }
 /// *
 //    public static void superimposeCircles(List<CircleHit> hits, double[][] sobelTotal, File out) throws Exception {
-//        Image totalCircles = new one.empty3.libs.Color(imgWidth, imgHeight, one.empty3.libs.Color.TYPE_INT_ARGB);
+//        Image totalCircles = new one.empty3.libs.Color(imgWidth, imgHeight, one.empty3.libs.Color.TYPE_INT_RGB);
 //
 //        Image total = changeBrightness(0.5f, scaledSobelResult(sobelTotal));
 //        totalCircles.getGraphics().drawImage(total, 0, 0);

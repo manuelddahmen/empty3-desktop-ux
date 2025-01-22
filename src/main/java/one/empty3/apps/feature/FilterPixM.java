@@ -25,7 +25,7 @@
 //import one.empty3.feature.*;
 //
 //
-//import one.empty3.feature.PixM;
+//import one.empty3.matrix.PixM;
 //
 //import java.awt.image.BufferedImage;
 //

@@ -22,17 +22,15 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library1.tree.*;
 
 public class DirectMaskFilter {
-    one.empty3.feature.PixM m1;
-    one.empty3.feature.PixM m2;
+    PixM m1;
+    PixM m2;
 
-    public DirectMaskFilter(one.empty3.feature.PixM m1, one.empty3.feature.PixM m2) {
+    public DirectMaskFilter(PixM m1, PixM m2) {
 
         this.m1 = m1;
         this.m2 = m2;
@@ -41,8 +39,8 @@ public class DirectMaskFilter {
     /* (M3.p =) = p1x, p1y,
     
 , p2x, p2y,c1r,c2g b a, w, h, ww, wh */
-    public one.empty3.feature.PixM applyOperator(String[] formulaColorComps) {
-        one.empty3.feature.PixM m3 = new PixM(m1.getColumns()
+    public PixM applyOperator(String[] formulaColorComps) {
+        PixM m3 = new PixM(m1.getColumns()
                 , m1.getLines());
         AlgebraicTree[] treeA = new AlgebraicTree[formulaColorComps.length];
         try {

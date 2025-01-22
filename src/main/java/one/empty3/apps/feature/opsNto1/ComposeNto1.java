@@ -22,13 +22,11 @@
 
 package one.empty3.apps.feature.opsNto1;
 
-import one.empty3.feature.PixM;
-import one.empty3.apps.feature.opsNto1.Composer;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
 
 public class ComposeNto1 extends ProcessFile {
     public boolean addEntry(Composer composer, ProcessFile... processFiles) {
@@ -50,8 +48,4 @@ public class ComposeNto1 extends ProcessFile {
         return false;
     }
 
-    @Override
-    public boolean processMem(PixM in, PixM out) {
-        return super.processMem(in, out);
-    }
 }

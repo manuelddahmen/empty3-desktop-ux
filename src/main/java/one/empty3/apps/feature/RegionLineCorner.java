@@ -21,27 +21,19 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import java.util.logging.Logger;
 
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.libs.Color;
@@ -52,7 +44,7 @@ import one.empty3.libs.Color;
  */
 public class RegionLineCorner extends ProcessFile {
     public final int numLevels = 5;
-    private one.empty3.feature.PixM m = null;
+    private PixM m = null;
     private double[] max;
     private double[] min;
 
@@ -91,7 +83,7 @@ public class RegionLineCorner extends ProcessFile {
     }
 
     //private final int[][][] levels;
-    public void setM(one.empty3.feature.PixM m2) {
+    public void setM(PixM m2) {
         this.m = m2;
     }
 
@@ -147,8 +139,8 @@ public class RegionLineCorner extends ProcessFile {
         return 0.0;
     }
 
-    public one.empty3.feature.PixM reconstruct(List<List<Circle>> circle) {
-        one.empty3.feature.PixM rec = m.copy();
+    public PixM reconstruct(List<List<Circle>> circle) {
+        PixM rec = m.copy();
         return rec;
     }
 
@@ -284,7 +276,7 @@ public class RegionLineCorner extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             File directory = new File(out.getParent());
-            one.empty3.feature.PixM imageCoutours = PixM.getPixM(ImageIO.read(in), 500.0);
+            PixM imageCoutours = PixM.getPixM(ImageIO.read(in), 500.0);
             this.m = imageCoutours;
             BufferedImage file = m.getImage();
 

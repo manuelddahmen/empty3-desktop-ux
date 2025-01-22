@@ -22,11 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.HarrisToPointInterest;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
@@ -37,7 +34,7 @@ public class HarrisProcess extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             BufferedImage img = ImageIO.read(in);
-            one.empty3.feature.PixM m2 = PixM.getPixM(img, maxRes);
+            PixM m2 = PixM.getPixM(img, maxRes);
             HarrisToPointInterest h = new HarrisToPointInterest(2, 2);
 
             m2.applyFilter(h);

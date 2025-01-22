@@ -21,20 +21,19 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import matrix.FilterPixM;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.FilterPixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library.*;
 
 public class IntuitiveRadialGradient extends FilterPixM {
-    private one.empty3.feature.PixM pix;
+    private PixM pix;
     private int angles = 12;
     double rMaxPixel = 2.0, rMaxDiff = 5.0;
     private int angleCount = 2;
 
-    public IntuitiveRadialGradient(one.empty3.feature.PixM image) {
+    public IntuitiveRadialGradient(PixM image) {
         super(1, 1);
         this.pix = image;
     }
@@ -69,8 +68,8 @@ public class IntuitiveRadialGradient extends FilterPixM {
     }
 
 
-    public one.empty3.feature.PixM filter(one.empty3.feature.PixM o) {
-        one.empty3.feature.PixM c = new PixM(o.getColumns()
+    public PixM filter(PixM o) {
+        PixM c = new PixM(o.getColumns()
 , o.getLines());
 
         for (int comp = 0; comp < getCompCount(); comp++) {

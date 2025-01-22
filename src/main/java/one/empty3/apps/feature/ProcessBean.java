@@ -21,21 +21,16 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
-import one.empty3.apps.feature.SetSettings;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import org.apache.commons.net.ftp.FTPFile;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class ProcessBean extends Thread {
@@ -101,13 +96,13 @@ public class ProcessBean extends Thread {
     }
 
 
-    public one.empty3.feature.PixM getStack(int i) {
+    public PixM getStack(int i) {
         return listImage.get(i);
     }
 
     public void setImage(File fo) {
         try {
-            listImage.add(new one.empty3.feature.PixM(ImageIO.read(fo)));
+            listImage.add(new PixM(ImageIO.read(fo)));
         } catch (Exception ex) {
         }
 

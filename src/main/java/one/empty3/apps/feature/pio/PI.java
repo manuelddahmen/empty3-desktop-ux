@@ -22,10 +22,9 @@
 
 package one.empty3.apps.feature.pio;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 
 import java.io.File;
-import java.util.*;
 
 import one.empty3.library.Point3D;
 

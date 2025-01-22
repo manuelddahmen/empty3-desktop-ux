@@ -22,21 +22,18 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class DiffEnergy extends ProcessFile {
     static PrintWriter pw;
     double[] energy = new double[3];
-    private one.empty3.feature.PixM i2;
-    private one.empty3.feature.PixM i1;
+    private PixM i2;
+    private PixM i1;
 
     public DiffEnergy() {
         super();
@@ -44,7 +41,7 @@ public class DiffEnergy extends ProcessFile {
 
     public void setPixMS(int img1, int img2) {
         try {
-            i1 = one.empty3.feature.PixM.getPixM(ImageIO.read(getStackItem(img1)), maxRes);
+            i1 = PixM.getPixM(ImageIO.read(getStackItem(img1)), maxRes);
             i2 = PixM.getPixM(ImageIO.read(getStackItem(img2)), maxRes);
         } catch (Exception ex) {
         }

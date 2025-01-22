@@ -18,37 +18,143 @@
  *
  */
 
-package matrix;
+package one.empty3.matrix;
 
-
-
-
+import java.util.Arrays;
 import java.util.PrimitiveIterator;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.IntStream;
 
 import one.empty3.feature.MatrixFormatException;
-import one.empty3.feature.PixM;
+import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.libs.Image;
 
-public class M implements InterfaceMatrix {
+public class MBitmap /*implements InterfaceMatrix*/ {
+    public static int maxRes;
     public static PrimitiveIterator.OfDouble r = new Random().doubles().iterator();
-    public static final Double noValue = r.next();
+    public static final Double noValue = 0.0;
+    protected int compCount = 3;
     protected int columns;
     protected int lines;
-    double[] x;
     protected int compNo;
-    public int compCount = 3;
+    public int[] x;
 
-    public M(int c, int l) {
+    public MBitmap(int c, int l) {
+        try {
+            x = new int[c * l * 3];
+        } catch (OutOfMemoryError err1) {
+            Logger.getAnonymousLogger().log(Level.SEVERE, MBitmap.class.toString(), err1.getMessage());
+            c = maxRes;
+            l = (int) (1.0 * maxRes / c * l);
+            try {
+                x = new int[l * c * 3];
+            } catch (OutOfMemoryError err) {
+                err.printStackTrace();
+                x = new int[100 * 100 * 3];
+                l = 100;
+                c = 100;
+                Logger.getAnonymousLogger().log(Level.SEVERE, MBitmap.class.toString(), err.getMessage());
+            }
+        }
+        Arrays.fill(x, 0);
         this.lines = l;
         this.columns = c;
-        x = new double[l * c * compCount];
-        for (int i = 0; i < x.length; i++)
-            x[i] = 0.0;
+    }
+
+    public MBitmap(Image bitmap) {
+        this(bitmap.getWidth(), bitmap.getHeight());
+
+        double[] colorComponents = new double[3];
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < lines; j++) {
+                int rgb = bitmap.getRgb(
+                        (int) (1.0 * i / bitmap.getWidth() * columns),
+                        (int) (1.0 * j / bitmap.getHeight() * lines));
+                colorComponents = Lumiere.getDoubles(rgb);
+                for (int com = 0; com < getCompCount(); com++) {
+                    setCompNo(com);
+                    set(i, j, colorComponents[com]);
+                }
+            }
+        }
+
+    }
+//
+//    public MBitmap(Bitmap bitmap, int resMax) {
+//        bi
+//        this.bitmap = bitmap;
+//    }
+
+    public MBitmap(PixM pix) {
+        this(pix.getColumns(), pix.getLines());
+
+        for (int i = 0; i < getColumns(); i++) {
+            for (int j = 0; j < getLines(); j++) {
+                for (int c = 0; c < 3; c++) {
+                    setCompNo(c);
+                    pix.setCompNo(c);
+                    set(i, j, pix.get(i, j));
+                }
+            }
+        }
         //System.out.println("Columns=" + columns + "\n Lines = " + lines+ " \n Total size ="+x.length);
     }
 
+    public MBitmap(int cl) {
+        this(cl, cl);
+    }
+
+    public static double[] getVector(int add, double[]... vectors) {
+        int d = 0;
+        for (int i = 0; i < vectors.length; i++)
+            d += vectors[i].length;
+        d += add;
+        double[] f = new double[d];
+        int di = 0;
+        for (int i = 0; i < vectors.length; i++) {
+            for (double dou : vectors[i])
+                f[di++] = dou;
+        }
+        return f;
+    }
+
+    public static M repmat(double[][] dd, int nLine, int mColumn) {
+        M matrix = new M(nLine * dd.length, mColumn * dd[0].length);
+        for (int i = 0; i < nLine; i++) {
+            for (int j = 0; j < mColumn; j++) {
+                for (int ii = 0; ii < dd.length; i++)
+                    for (int ij = 0; ij < dd[0].length; ij++) {
+                        matrix.set(i * nLine + ii, j * mColumn + ij, dd[ii][ij]);
+                    }
+            }
+        }
+        return matrix;
+    }
+
+    public static M diag(double... d) {
+        M matrix = new M(d.length, d.length);
+        for (int i = 0; i < d.length; i++)
+            matrix.set(i, i, d[i]);
+        return matrix;
+    }
+
+    public static M diag(M d) {
+        M matrix = new M(d.getLines(), d.getColumns());
+        for (int i = 0; i < d.getLines(); i++)
+            matrix.set(i, i, d.get(i, i));
+        return matrix;
+    }
+
+    /*public static GMatrix diag(GMatrix square) {
+        GMatrix matrix = new GMatrix(square.getColumns());
+        for (int i = 0; i < matrix.getColumns(); i++)
+            matrix.set(i, i, square.get(i, i));
+
+        return matrix;
+    }*/
 
     public int getColumns() {
         return columns;
@@ -66,7 +172,7 @@ public class M implements InterfaceMatrix {
         this.lines = lines;
     }
 
-    public M plus(M m2) {
+    public MBitmap plus(M m2) {
         for (int i = 0; i < lines; i++)
             for (int j = 0; j < columns; j++) {
                 set(i, j, get(i, j));
@@ -78,42 +184,17 @@ public class M implements InterfaceMatrix {
         return null;
     }
 
-    /*public static GMatrix diag(GMatrix square) {
-        GMatrix matrix = new GMatrix(square.getColumns());
-        for (int i = 0; i < matrix.getColumns(); i++)
-            matrix.set(i, i, square.get(i, i));
-
-        return matrix;
-    }*/
-
     public double[] getValues(int i, int j) {
 
         double[] v = new double[getCompCount()];
 
         for (int d = 0; d < getCompCount(); d++) {
             setCompNo(d);
-            v[d] = get(i, j);
+            if (i >= 0 && i < getColumns() && j >= 0 && j < getLines()) {
+                v[d] = get(i, j);
+            }
         }
         return v;
-    }
-
-    @Override
-    public Image getBitmap() {
-        return null;
-    }
-
-    public static double[] getVector(int add, double[]... vectors) {
-        int d = 0;
-        for (int i = 0; i < vectors.length; i++)
-            d += vectors[i].length;
-        d += add;
-        double[] f = new double[d];
-        int di = 0;
-        for (int i = 0; i < vectors.length; i++) {
-            for (double dou : vectors[i])
-                f[di++] = dou;
-        }
-        return f;
     }
 
     public void setP(int i, int j, Point3D p) {
@@ -126,54 +207,40 @@ public class M implements InterfaceMatrix {
     public Point3D getP(int i, int j) {
         Point3D p = new Point3D();
 
-        for (int d = 0; d < 3; d++) {
+        IntStream.range(0, 3).filter(d -> i >= 0 && i < getColumns() && j >= 0 && j < getLines()).forEach(d -> {
             setCompNo(d);
             p.set(d, get(i, j));
-        }
+        });
         return p;
     }
 
     public void setValues(int i, int j, double... v) {
-        for (int d = 0; d < v.length; d++) {
+
+        IntStream.range(0, getCompCount()).forEach(d -> {
             setCompNo(d);
-            set(i, j, v[d]);
-        }
-        return;
-    }
-
-    public M(PixM pix) {
-        this.lines = pix.getLines();
-        this.columns = pix.getColumns();
-        x = new double[lines * columns * 3];
-        for (int c = 0; c < 3; c++) {
-            setCompNo(c);
-
-            for (int i = 0; i < pix.getColumns(); i++) {
-                for (int j = 0; j < pix.getLines(); j++) {
-                    set(i, j, pix.get(i, j));
-                }
+            if (d < v.length && i >= 0 && i < getColumns() && j >= 0 && j < getLines()) {
+                set(i, j, v[d]);
             }
-        }
-        //System.out.println("Columns=" + columns + "\n Lines = " + lines+ " \n Total size ="+x.length);
+        });
     }
 
+    double[] tmpColor = new double[compCount];
 
-    public void init(int l, int c) {
-        this.lines = l;
-        this.columns = c;
-        x = new double[l * c * compCount];
-    }
+    public void setValues(int i, int j, int color) {
 
+        tmpColor = Lumiere.getDoubles(color);
+        IntStream.range(0, getCompCount()).forEach(c -> {
+            setCompNo(c);
+            set(i, j, tmpColor[c]);
 
-    public M(int cl) {
-        this(cl, cl);
+        });
     }
 
     public double get(int column, int line) {
-        if (column >= 0 && column < columns && line >= 0 && line < lines && compNo >= 0 && compNo < compCount) {
-            return x[index(column, line)];
+        if (column >= 0 && column < columns && line >= 0 && line < lines && compNo >= 0 && compNo < compCount && x != null) {
+            return (((x[index(column, line)]))>>((2-compNo)*8))|0xff000000;
         } else
-            return noValue; // OutOfBound?
+            return r.next(); // OutOfBound?
     }
 
     public double getIntensity(int column, int line) {
@@ -186,13 +253,14 @@ public class M implements InterfaceMatrix {
         return Math.sqrt(i);
     }
 
-    public void getColor(int column, int line,
-                         float[] comps) {
+    public float[] getColor(int column, int line,
+                             float[] comps) {
         for (int c = 0; c < 3; c++) {
             setCompNo(c);
             comps[c] = (float) (get(column, line));
 
         }
+        return comps;
     }
 
     public int getCompNo() {
@@ -208,19 +276,17 @@ public class M implements InterfaceMatrix {
     }
 
     public void set(int column, int line, double d) {
-        if (column >= 0 && column < columns && line >= 0 && line < lines) {
-            x[index(column, line)] = d;
+        if (column >= 0 && column < columns && line >= 0 && line < lines && x != null) {
+            x[index(column, line)] = (int)( d*255);
         }
-
     }
 
-    @Override
     public void set(int column, int line, double... values) {
         setValues(column, line, values);
     }
 
-    public M tild() {
-        M m = new M(lines, columns);
+    public MBitmap tild() {
+        MBitmap m = new MBitmap(lines, columns);
         for (int i = 0; i < lines; i++)
             for (int j = 0; j < columns; j++)
                 for (int comp = 0; comp < getCompNo(); comp++)
@@ -231,7 +297,6 @@ public class M implements InterfaceMatrix {
     public double trace() {
         return tild().dot(this).trace();
     }
-
 
     public double diagonalSum() {
         double[] sums = new double[getCompCount()];
@@ -248,10 +313,10 @@ public class M implements InterfaceMatrix {
         return compCount;
     }
 
-    private M dot(M m) {
+    private MBitmap dot(MBitmap m) {
         if (!isSquare() || columns == m.getLines())
             throw new MatrixFormatException("determinant: not square matrix");
-        M res = new M(m.getColumns(), lines);
+        MBitmap res = new MBitmap(m.getColumns(), lines);
         for (int comp = 0; comp < getCompNo(); comp++) {
             res.setCompNo(comp);
             this.setCompNo(comp);
@@ -273,7 +338,7 @@ public class M implements InterfaceMatrix {
             throw new MatrixFormatException("determinant: not square matrix");
         int i, j, j1, j2;
         double det = 0;
-        M m = null;
+        MBitmap m = null;
 
         if (lines < 1) { /* Error */
             throw new MatrixFormatException("<1 determinant");
@@ -284,7 +349,7 @@ public class M implements InterfaceMatrix {
         } else {
             det = 0;
             for (j1 = 0; j1 < lines; j1++) {
-                m = new M(lines - 1);
+                m = new MBitmap(lines - 1);
                 for (i = 1; i < lines; i++) {
                     j2 = 0;
                     for (j = 0; j < lines; j++) {
@@ -307,12 +372,12 @@ public class M implements InterfaceMatrix {
     /*
        Find the cofactor matrix of a square matrix
     */
-    public M CoFactor() {
+    public MBitmap CoFactor() {
         if (!isSquare())
             throw new MatrixFormatException("determinant: not square matrix");
         int n = lines;
-        M a = this;
-        M b = new M(lines - 1);
+        MBitmap a = this;
+        MBitmap b = new MBitmap(lines - 1);
 
 
         int i, j, ii, jj, i1, j1;
@@ -416,30 +481,4 @@ public class M implements InterfaceMatrix {
                               M3 m3, int iPaste, int jPaste, int iiPaste, int ijPaste) {
     }
 
-    public static M repmat(double[][] dd, int nLine, int mColumn) {
-        M matrix = new M(nLine * dd.length, mColumn * dd[0].length);
-        for (int i = 0; i < nLine; i++) {
-            for (int j = 0; j < mColumn; j++) {
-                for (int ii = 0; ii < dd.length; i++)
-                    for (int ij = 0; ij < dd[0].length; ij++) {
-                        matrix.set(i * nLine + ii, j * mColumn + ij, dd[ii][ij]);
-                    }
-            }
-        }
-        return matrix;
-    }
-
-    public static M diag(double... d) {
-        M matrix = new M(d.length, d.length);
-        for (int i = 0; i < d.length; i++)
-            matrix.set(i, i, d[i]);
-        return matrix;
-    }
-
-    public static M diag(M d) {
-        M matrix = new M(d.getLines(), d.getColumns());
-        for (int i = 0; i < d.getLines(); i++)
-            matrix.set(i, i, d.get(i, i));
-        return matrix;
-    }
 }

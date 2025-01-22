@@ -22,15 +22,10 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.io.ProcessNFiles;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -42,10 +37,10 @@ public class ProcessPlusNormalize extends ProcessNFiles {
     @Override
     public boolean processFiles(File out, File... ins) {
         int n = ins.length;
-        one.empty3.feature.PixM[] arr = new one.empty3.feature.PixM[n];
+        PixM[] arr = new PixM[n];
         Dimension max = new Dimension();
         for (int i = 0; i < ins.length; i++) {
-            arr = new one.empty3.feature.PixM[]{new one.empty3.feature.PixM(Objects.requireNonNull(ImageIO.read(ins[i])))};
+            arr = new PixM[]{new PixM(Objects.requireNonNull(ImageIO.read(ins[i])))};
             if (arr[i].getColumns()
                     > max.width) {
                 max.setSize(arr[i].getColumns()
@@ -55,7 +50,7 @@ public class ProcessPlusNormalize extends ProcessNFiles {
                 max.setSize(max.width, arr[i].getLines());
             }
         }
-        one.empty3.feature.PixM pixM = new PixM(max.width, max.height);
+        PixM pixM = new PixM(max.width, max.height);
 
 
         for (int i = 0; i < pixM.getColumns()

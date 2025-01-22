@@ -26,7 +26,7 @@ import one.empty3.feature.*;
 
 
 import one.empty3.apps.feature.FilterMatPixM;
-import one.empty3.feature.M3;
+import one.empty3.matrix.M3;
 
 import one.empty3.library.Point;
 import one.empty3.libs.*;
@@ -45,8 +45,8 @@ public class AfterGradientBeforeExtremum extends FilterMatPixM {
     }
 
     @Override
-    public one.empty3.feature.M3 filter(one.empty3.feature.M3 maximumAndGradient00m01gx02gy) {
-        one.empty3.feature.M3 original = maximumAndGradient00m01gx02gy;
+    public one.empty3.matrix.M3 filter(one.empty3.matrix.M3 maximumAndGradient00m01gx02gy) {
+        one.empty3.matrix.M3 original = maximumAndGradient00m01gx02gy;
         /* Choisir les points filtrés min (noirs //ou monochromes -- toutes ou  composantes annulés)
          * et repérer les zones par régions (r,theta)
          * Réunir les zones par valeur et proximité.
@@ -55,12 +55,12 @@ public class AfterGradientBeforeExtremum extends FilterMatPixM {
          * FAUX
          */
 
-        one.empty3.feature.M3 filtered = original;
+        one.empty3.matrix.M3 filtered = original;
         int ii;
         int ij = 0;
         double itere = angles;
 
-        one.empty3.feature.M3 orientations = new one.empty3.feature.M3(original.columns, original.lines,
+        one.empty3.matrix.M3 orientations = new one.empty3.matrix.M3(original.columns, original.lines,
                 1, 1);
 
         double angle = 0;
@@ -95,12 +95,12 @@ public class AfterGradientBeforeExtremum extends FilterMatPixM {
     }
 
     @Override
-    public void element(one.empty3.feature.M3 source, one.empty3.feature.M3 copy, int i, int j, int ii, int ij) {
+    public void element(one.empty3.matrix.M3 source, one.empty3.matrix.M3 copy, int i, int j, int ii, int ij) {
 
     }
 
     @Override
-    public one.empty3.feature.M3 norm(one.empty3.feature.M3 m3, M3 copy) {
+    public one.empty3.matrix.M3 norm(one.empty3.matrix.M3 m3, M3 copy) {
         return null;
     }
 

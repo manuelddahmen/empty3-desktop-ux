@@ -23,10 +23,10 @@ package one.empty3.feature_2;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-import matrix.FilterPixM;
+import one.empty3.matrix.FilterPixM;
 import one.empty3.feature.M;
-import matrix.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 
 /*
  * Multi-Image Matching using Multi-Scale Oriented Patches

@@ -22,18 +22,11 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import matrix.FilterPixM;
+import one.empty3.matrix.FilterPixM;
 import one.empty3.library.Point3D;
-import one.empty3.library.Representable;
 import one.empty3.library.RepresentableConteneur;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
-import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.function.Consumer;
 

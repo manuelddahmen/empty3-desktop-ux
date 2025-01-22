@@ -32,7 +32,7 @@ import one.empty3.apps.feature.ClassSchemaBuilder;
 import one.empty3.apps.feature.ThreadEffectDisplay;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.apps.feature.gui.LastFrameMotion;
-import one.empty3.feature.Motion.DiffMotion;
+import one.empty3.apps.feature.motion.DiffMotion;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

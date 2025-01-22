@@ -21,10 +21,9 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 
 /*
  *  // 1. amplitude and scale featyre

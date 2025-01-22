@@ -29,7 +29,7 @@ import com.github.sarxos.webcam.WebcamLockException;
 import one.empty3.apps.feature.ClassSchemaBuilder;
 import one.empty3.apps.feature.RunEffect;
 import one.empty3.apps.feature.gui.LiveEffect;
-import one.empty3.feature.Motion.Motion;
+import one.empty3.feature.Motion;
 import one.empty3.library.Config;
 
 import javax.imageio.ImageIO;

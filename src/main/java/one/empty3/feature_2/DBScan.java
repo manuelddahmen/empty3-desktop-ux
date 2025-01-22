@@ -24,7 +24,7 @@ import one.empty3.libs.Color;
 
 import one.empty3.feature_2.kmeans.MakeDataset;
 import one.empty3.feature_2.kmeans.ReadDataset;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.core.lighting.Colors;
 

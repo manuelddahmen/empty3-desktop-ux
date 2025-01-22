@@ -22,6 +22,7 @@
 
 package one.empty3.apps.facedetect;
 
+import androidx.annotation.NonNull;
 import one.empty3.library.Point3D;
 import one.empty3.library.Polygons;
 import one.empty3.library.Representable;
@@ -44,7 +45,8 @@ public abstract class DistanceBezier2 extends DistanceAB {
         return new Point3D(model.uMin+(uvScaled.getX()*(model.uMax-model.uMin)),
                 model.vMin+(uvScaled.getX()*(model.vMax-model.vMin)),0.0);
     }
-    public DistanceBezier2(List<Point3D> A, List<Point3D> B, Dimension2D aDimReal, Dimension2D bDimReal, boolean opt1, boolean optimizeGrid) {
+    public DistanceBezier2(@NonNull List<Point3D> A, @NonNull List<Point3D> B,
+                           @NonNull Dimension2D aDimReal, @NonNull Dimension2D bDimReal, boolean opt1, boolean optimizeGrid) {
         super();
         this.opt1 = opt1;
         this.optimizeGrid = optimizeGrid;

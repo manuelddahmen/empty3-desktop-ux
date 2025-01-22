@@ -22,32 +22,20 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.GradientFilter;
-import one.empty3.apps.feature.Histogram2;
-import one.empty3.apps.feature.Linear;
-import one.empty3.feature.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
 
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import java.util.Objects;
 import java.util.function.Predicate;
 
 public class ExtractIntensityInfo extends
@@ -66,30 +54,30 @@ public class ExtractIntensityInfo extends
             img = ImageIO.read(in);
         } catch (Exception rx) {
         }
-        one.empty3.feature.PixM pix = one.empty3.feature.PixM.getPixM(img, -1);
+        PixM pix = PixM.getPixM(img, -1);
 
 
-        one.empty3.feature.PixM pixMOriginal = pix;
+        PixM pixMOriginal = pix;
 
         final BufferedImage[] img3 = new BufferedImage[]{pix.getImage()};
 
 
         one.empty3.apps.feature.GradientFilter gradientMask = new GradientFilter(pixMOriginal.getColumns()
                 , pixMOriginal.getLines());
-        one.empty3.feature.M3 imgForGrad = new one.empty3.feature.M3(pixMOriginal,
+        one.empty3.matrix.M3 imgForGrad = new one.empty3.matrix.M3(pixMOriginal,
                 2, 2);
         M3 filter = gradientMask.filter(imgForGrad);
-        one.empty3.feature.PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);
+        PixM[][] imagesMatrix = filter.getImagesMatrix();//.normalize(0, 1);
 
 
 //                    image1 = null;
 
         // Zero. +++Zero orientation variation.
         one.empty3.apps.feature.Linear linear = new Linear(imagesMatrix[1][0], imagesMatrix[0][0],
-                new one.empty3.feature.PixM(pixMOriginal.getColumns()
+                new PixM(pixMOriginal.getColumns()
                         , pixMOriginal.getLines()));
         linear.op2d2d(new char[]{'*'}, new int[][]{{1, 0}}, new int[]{2});
-        one.empty3.feature.PixM smoothedGrad = linear.getImages()[2];
+        PixM smoothedGrad = linear.getImages()[2];
 
 
         double min = 0.3;

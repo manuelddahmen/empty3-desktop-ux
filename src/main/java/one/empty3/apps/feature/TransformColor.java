@@ -22,10 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
@@ -37,7 +35,7 @@ public class TransformColor extends ProcessFile {
     public boolean process(File in, File out) {
         try {
 
-            one.empty3.feature.PixM pix = PixM.getPixM(ImageIO.read(in), maxRes);
+            PixM pix = PixM.getPixM(ImageIO.read(in), maxRes);
 
             for (int i = 0; i < pix.getColumns(); i++) {
                 for (int j = 0; j < pix.getLines(); j++) {

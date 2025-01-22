@@ -22,12 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.*;
-import one.empty3.feature.PixM;
-import one.empty3.apps.feature.app.replace.java.awt.Color;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.apps.feature.kmeans.MakeDataset;
 import one.empty3.apps.feature.kmeans.ReadDataset;
@@ -35,12 +31,9 @@ import one.empty3.io.ProcessFile;
 import one.empty3.library.core.lighting.Colors;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import java.util.Objects;
 
@@ -131,7 +124,7 @@ public class DBScan extends ProcessFile implements Algorithm {
             String s = in.getAbsoluteFile() + ".csv";
             MakeDataset makeDataset = new MakeDataset(in, new File(s), maxRes);
 
-            one.empty3.feature.PixM p = PixM.getPixM(Objects.requireNonNull(ImageIO.read(in)), maxRes);
+            PixM p = PixM.getPixM(Objects.requireNonNull(ImageIO.read(in)), maxRes);
             init(maxRes, minPoints);
             ReadDataset readDataset = new ReadDataset();
             readDataset.read(new File(s));

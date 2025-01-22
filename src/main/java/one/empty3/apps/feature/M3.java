@@ -21,20 +21,16 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import matrix.FilterPixM;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.FilterPixM;
+import one.empty3.matrix.PixM;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
-import java.awt.Dimension;
+
 import java.awt.image.BufferedImage;
 import java.util.PrimitiveIterator;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class M3 {
     public static PrimitiveIterator.OfDouble r = new Random().doubles().iterator();

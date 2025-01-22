@@ -4,9 +4,8 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.libs.Image;
-import one.empty3.ImageIO;
 import one.empty3.io.ProcessNFiles;
 
 public class Mix extends ProcessNFiles {

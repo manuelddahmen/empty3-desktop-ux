@@ -26,20 +26,13 @@ package one.empty3.apps.feature.kmeansbinary;
  * Class for Kmeans Clustering implemetation
  */
 
-import one.empty3.feature.PixM;
-import one.empty3.apps.feature.kmeansbinary.Distance;
-import one.empty3.apps.feature.kmeansbinary.DistanceFunctionBackground;
-import one.empty3.apps.feature.kmeansbinary.DistanceFunctionForeground;
-import one.empty3.apps.feature.kmeansbinary.ReadDataset;
+import one.empty3.matrix.PixM;
 import one.empty3.library.core.lighting.Colors;
 
 import javax.imageio.ImageIO;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
-import org.checkerframework.checker.units.qual.C;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,8 +42,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class K_Clusterer extends ReadDataset {
     private static final int K = 2;

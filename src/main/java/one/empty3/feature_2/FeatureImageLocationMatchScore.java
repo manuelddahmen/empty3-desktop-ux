@@ -22,7 +22,7 @@ package one.empty3.feature_2;
 
 import java.io.File;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 
 public class FeatureImageLocationMatchScore {
     // matrix size, matrix values, thresoldused, x, y, imageLocation, deltaE??

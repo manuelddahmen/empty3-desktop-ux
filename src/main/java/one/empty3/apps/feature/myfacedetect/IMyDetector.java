@@ -22,7 +22,7 @@
 
 package one.empty3.feature.Myfacedetect;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Point2D;
 
 public interface IMyDetector {

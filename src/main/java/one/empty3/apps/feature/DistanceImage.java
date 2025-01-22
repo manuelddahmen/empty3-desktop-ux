@@ -22,24 +22,22 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 
 import java.io.File;
 
 public class DistanceImage extends ProcessFile {
-    private one.empty3.feature.PixM p1, p2;
-    private one.empty3.feature.PixM outP;
-    private one.empty3.feature.PixM countImage;
+    private PixM p1, p2;
+    private PixM outP;
+    private PixM countImage;
 
     @Override
     public boolean process(File in, File out) {
 
-        outP = new one.empty3.feature.PixM(p1.getColumns()
+        outP = new PixM(p1.getColumns()
                 , p1.getLines());
 
         for (int i = 0; i < p1.getColumns(); i++) {
@@ -64,7 +62,7 @@ public class DistanceImage extends ProcessFile {
      * @param searchOn
      * @param origin
      */
-    private void searchProxymityFor(int i, int j, one.empty3.feature.PixM searchOn, PixM origin) {
+    private void searchProxymityFor(int i, int j, PixM searchOn, PixM origin) {
         int iMax2 = Math.max(Math.max(p1.getColumns()
                 - i, 0), p1.getColumns()
         );

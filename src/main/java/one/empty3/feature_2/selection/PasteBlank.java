@@ -27,7 +27,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import one.empty3.ImageIO;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.ITexture;

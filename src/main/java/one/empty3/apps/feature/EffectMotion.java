@@ -22,18 +22,16 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
-import one.empty3.feature.Motion.Motion;
+import one.empty3.matrix.PixM;
+import one.empty3.feature.Motion;
 
 import java.awt.image.BufferedImage;
 
 public
 class EffectMotion extends Motion {
     @Override
-    public BufferedImage process(one.empty3.feature.PixM frame1, PixM frame2) {
+    public BufferedImage process(PixM frame1, PixM frame2) {
         return frame2.getImage();
     }
 }

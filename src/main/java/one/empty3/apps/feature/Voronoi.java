@@ -21,10 +21,9 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
 
@@ -33,8 +32,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class Voronoi extends ProcessFile {
@@ -64,7 +61,7 @@ public class Voronoi extends ProcessFile {
         try {
             List<Point3D> points = new ArrayList<>();
             BufferedImage read = ImageIO.read(in);
-            one.empty3.feature.PixM pixM = one.empty3.feature.PixM.getPixM(read, maxRes);
+            PixM pixM = PixM.getPixM(read, maxRes);
             PixM pixMOut = pixM.copy();
             for (int i = 0; i < pixM.getColumns(); i++) {
                 for (int j = 0; j < pixM.getLines(); j++) {

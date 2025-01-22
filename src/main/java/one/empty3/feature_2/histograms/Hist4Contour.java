@@ -23,13 +23,12 @@
 package one.empty3.feature_2.histograms;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
+
 import one.empty3.io.ObjectWithProperties;
 import one.empty3.io.ProcessFile;
 import one.empty3.io.ProcessNFiles;
 import one.empty3.library.Point3D;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.libs.Image;
 
 public class Hist4Contour extends ProcessFile {

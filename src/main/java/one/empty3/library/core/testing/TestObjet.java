@@ -1066,7 +1066,7 @@ public abstract class TestObjet implements Test, Runnable {
         setRunning(false);
 
         if (img() == null) {
-            ri = new Image(getResx(), getResy(), BufferedImage.TYPE_INT_ARGB);
+            ri = new Image(getResx(), getResy(), BufferedImage.TYPE_INT_RGB);
         } else {
             afterRender();
 

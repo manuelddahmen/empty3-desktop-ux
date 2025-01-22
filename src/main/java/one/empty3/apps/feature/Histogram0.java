@@ -22,10 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
 
@@ -74,7 +72,7 @@ public class Histogram0 extends ProcessFile {
         return 0.0;
     }
 
-    public Circle getLevel(Circle c, one.empty3.feature.PixM m) {
+    public Circle getLevel(Circle c, PixM m) {
         // I mean. Parcourir le cercle
         // mesurer I / numPoints
         // for(int i=Math.sqrt()
@@ -106,9 +104,9 @@ public class Histogram0 extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        one.empty3.feature.PixM inP;
+        PixM inP;
         try {
-            inP = one.empty3.feature.PixM.getPixM(ImageIO.read(in), maxRes);
+            inP = PixM.getPixM(ImageIO.read(in), maxRes);
         } catch (IOException e) {
             e.printStackTrace();
             return false;

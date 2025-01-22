@@ -21,22 +21,20 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
 
 public class GradProcess2 extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         try {
-            one.empty3.feature.PixM pixM = one.empty3.feature.PixM.getPixM(ImageIO.read(in), maxRes);
-            one.empty3.feature.PixM pixMout = new PixM(pixM.getColumns(), pixM.getLines());
+            PixM pixM = PixM.getPixM(ImageIO.read(in), maxRes);
+            PixM pixMout = new PixM(pixM.getColumns(), pixM.getLines());
 
             for(int x=0; x<pixM.getColumns(); x++)
                 for(int y=0; y<pixM.getColumns(); y++)

@@ -21,19 +21,17 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
-import one.empty3.apps.feature.SelectPointColorMassAglo;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Lumiere;
 import one.empty3.library.core.lighting.Colors;
 
 import javax.imageio.ImageIO;
-import one.empty3.library.Point;
+
 import one.empty3.libs.*;
-import java.awt.Dimension;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
@@ -50,7 +48,7 @@ public class Classification extends ProcessFile {
     public boolean process(final File in, final File out) {
         if (!in.getName().endsWith(".jpg"))
             return false;
-        one.empty3.feature.PixM selectPointColorMassAglo = null;
+        PixM selectPointColorMassAglo = null;
         BufferedImage read = null;
         try {
             read = ImageIO.read(in);

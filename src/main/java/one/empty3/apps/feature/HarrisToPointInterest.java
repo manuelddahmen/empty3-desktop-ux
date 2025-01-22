@@ -22,19 +22,16 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import matrix.FilterPixM;
-import one.empty3.apps.feature.LocalExtrema;
-import one.empty3.feature.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.FilterPixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Point3D;
 
 import java.util.*;
 
 public class HarrisToPointInterest extends FilterPixM {
-    private one.empty3.feature.PixM m;
+    private PixM m;
 
     public HarrisToPointInterest(int c, int l) {
         super(c, l);

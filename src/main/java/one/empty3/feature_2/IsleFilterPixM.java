@@ -22,8 +22,8 @@ package one.empty3.feature_2;
 
 import one.empty3.libs.Color;
 
-import matrix.FilterPixM;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.FilterPixM;
+import one.empty3.matrix.PixM;
 
 public class IsleFilterPixM
         extends FilterPixM {

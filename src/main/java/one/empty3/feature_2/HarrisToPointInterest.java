@@ -20,9 +20,9 @@
 
 package one.empty3.feature_2;
 
-import matrix.FilterPixM;
-import matrix.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.FilterPixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Point3D;
 
 import java.util.*;

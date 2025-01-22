@@ -22,11 +22,9 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 
 import java.awt.image.BufferedImage;
 
@@ -37,7 +35,7 @@ public class VectorsImage extends M3 {
 
     public VectorsImage(BufferedImage image1) {
         this(image1.getWidth(), image1.getHeight(), 2, 1);
-        one.empty3.feature.PixM pixM = new PixM(image1);
+        PixM pixM = new PixM(image1);
         //M3 gradientDoubleValuesMap =pixM.applyFilter(new GradientFilter(image1));
         // construire les vecteurs
     }

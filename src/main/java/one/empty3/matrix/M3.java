@@ -18,7 +18,7 @@
  *
  */
 
-package matrix;
+package one.empty3.matrix;
 
 
 import java.util.PrimitiveIterator;
@@ -26,7 +26,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import one.empty3.feature.PixM;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 

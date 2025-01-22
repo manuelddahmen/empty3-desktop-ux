@@ -21,21 +21,17 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
-
 
 
 import java.io.File;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ObjectWithProperties;
 import one.empty3.library.Point3D;
 import one.empty3.io.ProcessFile;
 
 
 import javax.imageio.ImageIO;
-
-import one.empty3.apps.feature.*;
 
 import java.util.logging.*;
 
@@ -54,19 +50,19 @@ public class ProxyValue extends ProcessFile {
         if (!isImage(in))
             return false;
         File file = in;
-        one.empty3.feature.PixM original = null;
+        PixM original = null;
 
         p = (int) getProperties().getProperty("p");
 
         try {
-            original = one.empty3.feature.PixM.getPixM(ImageIO.read(in), maxRes);
+            original = PixM.getPixM(ImageIO.read(in), maxRes);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
             // assertTrue(false);
 
         }
-        one.empty3.feature.PixM copy = new one.empty3.feature.PixM(original.getColumns()
+        PixM copy = new PixM(original.getColumns()
 , original.getLines());
 
 
@@ -104,7 +100,7 @@ public class ProxyValue extends ProcessFile {
 
 
     public void searchFromTo(
-            one.empty3.feature.PixM original, one.empty3.feature.PixM copy, int i, int j, double min) {
+            PixM original, PixM copy, int i, int j, double min) {
         Point3D p1 = null;
         int i2 = i, j2 = j;
         
@@ -162,7 +158,7 @@ public class ProxyValue extends ProcessFile {
         return;
     }
 
-    public void copyPixel(one.empty3.feature.PixM m1, int i, int j,
+    public void copyPixel(PixM m1, int i, int j,
                           PixM m2, int i2, int j2) {
         for (int c = 0; c < 3; c++) {
 

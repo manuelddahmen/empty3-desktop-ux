@@ -22,13 +22,10 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
-
 
 import javax.imageio.ImageIO;
 
-import one.empty3.feature.PixM;
-import one.empty3.apps.feature.TrueHarris;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import java.io.File;
@@ -44,12 +41,12 @@ public class TrueHarrisProcess extends ProcessFile {
 
         File file = in;
 
-        one.empty3.feature.PixM pix = null;
+        PixM pix = null;
         BufferedImage img = null;
 
         try {
             img = ImageIO.read(file);
-            pix = one.empty3.feature.PixM.getPixM(img, maxRes);
+            pix = PixM.getPixM(img, maxRes);
 
         } catch (Exception ex) {
 
@@ -63,7 +60,7 @@ public class TrueHarrisProcess extends ProcessFile {
         }
 
         one.empty3.apps.feature.TrueHarris th = new TrueHarris(pix);
-        one.empty3.feature.PixM pixM = new one.empty3.feature.PixM(pix.getImage());
+        PixM pixM = new PixM(pix.getImage());
         for (int c = 0; c < 3; c++) {
             th.setCompNo(c);
             pixM.setCompNo(c);

@@ -22,7 +22,7 @@
 
 package one.empty3.apps.feature.selection;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.ParametricCurve;
@@ -32,8 +32,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import java.util.function.Consumer;
 

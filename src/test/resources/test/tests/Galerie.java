@@ -22,7 +22,7 @@
 
 package one.empty3.test.tests;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.*;
 import one.empty3.library.core.extra.VoronoiImageTexture;

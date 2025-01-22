@@ -22,7 +22,7 @@
 
 package one.empty3.apps.feature.selection;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
@@ -30,8 +30,6 @@ import one.empty3.library.Point3D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /*

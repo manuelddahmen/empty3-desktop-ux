@@ -20,6 +20,8 @@
 
 package one.empty3.feature_2;
 
+import one.empty3.matrix.PixM;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public abstract class ProcessEval {
     private int width = 24;
     private int height = 24;
     private ArrayList<File> files = new ArrayList<>();
-    private ArrayList<one.empty3.feature.PixM> pixMaps = new ArrayList<>();
+    private ArrayList<PixM> pixMaps = new ArrayList<>();
     private ArrayList<double[]> features = new ArrayList<>();
     private double[] x;
     private double[] y;

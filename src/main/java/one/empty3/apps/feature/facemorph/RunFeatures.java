@@ -22,9 +22,9 @@
 
 package one.empty3.apps.feature.facemorph;
 
-import one.empty3.feature.PixM;
+import one.empty3.apps.feature.myfacedetect.WeightingFunction;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
-import one.empty3.feature.Myfacedetect.WeightingFunction;
 import one.empty3.io.ProcessFile;
 
 import java.io.File;

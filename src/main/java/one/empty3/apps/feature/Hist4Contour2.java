@@ -21,10 +21,9 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ObjectWithProperties;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
@@ -81,7 +80,7 @@ public class Hist4Contour2 extends ProcessFile {
         return 0.0;
     }
 
-    public Circle getLevel(Circle c, one.empty3.feature.PixM m) {
+    public Circle getLevel(Circle c, PixM m) {
         // I mean. Parcourir le cercle
         // mesurer I / numPoints
         // for(int i=Math.sqrt()
@@ -123,17 +122,17 @@ public class Hist4Contour2 extends ProcessFile {
         if (!isImage(in)) {
             return false;
         }
-        one.empty3.feature.PixM inP;
+        PixM inP;
         try {
-            inP = one.empty3.feature.PixM.getPixM(ImageIO.read(in), maxRes);
+            inP = PixM.getPixM(ImageIO.read(in), maxRes);
         } catch (IOException e) {
             return false;
         }
 
 
         double max = 0.0;
-        one.empty3.feature.PixM outP = new one.empty3.feature.PixM(inP.getColumns(), inP.getLines());
-        one.empty3.feature.PixM outP0 = new PixM(inP.getColumns(), inP.getLines());
+        PixM outP = new PixM(inP.getColumns(), inP.getLines());
+        PixM outP0 = new PixM(inP.getColumns(), inP.getLines());
         double maxR = Math.min(inP.getLines(), inP.getColumns()) * fractMax;
         Circle c = null;
         Point3D maxP = Point3D.O0.mult(1);

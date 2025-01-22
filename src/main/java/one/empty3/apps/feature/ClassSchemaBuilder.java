@@ -22,6 +22,7 @@
 
 package one.empty3.apps.feature;
 
+import one.empty3.apps.feature.facemorph.RunFeatures;
 import one.empty3.feature.*;
 
 
@@ -37,7 +38,6 @@ import one.empty3.apps.feature.TreeDiagram;
 import one.empty3.apps.feature.TreeNodeDiagram;
 import one.empty3.apps.feature.TrueHarrisProcess;
 import one.empty3.apps.feature.Voronoi;
-import one.empty3.apps.feature.facemorph.RunFeatures;
 import one.empty3.apps.feature.gui.LiveEffect;
 import one.empty3.apps.feature.histograms.Histogram;
 import one.empty3.apps.feature.histograms.*;
@@ -57,6 +57,7 @@ import one.empty3.libs.*;
 import one.empty3.libs.Color;
 
 import java.awt.*;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -1100,11 +1101,10 @@ public class ClassSchemaBuilder extends JFrame implements Serializable {
 
         try {
             listProcessClasses.add(one.empty3.apps.feature.Classification.class.newInstance());
-            listProcessClasses.add(CornerDetectProcess.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.CornerDetectProcess.class.newInstance());
             listProcessClasses.add(one.empty3.apps.feature.CurveFitting.class.newInstance());
             listProcessClasses.add(one.empty3.apps.feature.DBScanProcess.class.newInstance());
             listProcessClasses.add(DericheFilterProcess.class.newInstance());
-            listProcessClasses.add(one.empty3.apps.feature.DiffEnergy.class.newInstance());
             listProcessClasses.add(one.empty3.apps.feature.Draw.class.newInstance());
             listProcessClasses.add(one.empty3.apps.feature.ExtremaProcess.class.newInstance());
             listProcessClasses.add(GaussFilterProcess.class.newInstance());
@@ -1130,16 +1130,15 @@ public class ClassSchemaBuilder extends JFrame implements Serializable {
             listProcessClasses.add(one.empty3.apps.feature.Lines5.class.newInstance());
             listProcessClasses.add(one.empty3.apps.feature.Lines5colors.class.newInstance());
             listProcessClasses.add(one.empty3.apps.feature.Lines6.class.newInstance());
-            listProcessClasses.add(LocalExtremaProcess.class.newInstance());
-            listProcessClasses.add(MagnitudeProcess.class.newInstance());
-            listProcessClasses.add(ProxyValue.class.newInstance());
-            listProcessClasses.add(ProxyValue2.class.newInstance());
-            listProcessClasses.add(ReadLines.class.newInstance());
-            listProcessClasses.add(RegionLineCorner.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.LocalExtremaProcess.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.MagnitudeProcess.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.ProxyValue.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.ProxyValue2.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.RegionLineCorner.class.newInstance());
             listProcessClasses.add(SelectColor.class.newInstance());
-            listProcessClasses.add(Transform1.class.newInstance());
-            listProcessClasses.add(TrueHarrisProcess.class.newInstance());
-            listProcessClasses.add(Voronoi.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.Transform1.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.TrueHarrisProcess.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.Voronoi.class.newInstance());
             listProcessClasses.add(HighlightFeatures.class.newInstance());
             listProcessClasses.add(RunFeatures.class.newInstance());
             //listProcessClasses.add(GFG.class.newInstance());

@@ -22,13 +22,9 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.GradientFilter;
-import one.empty3.apps.feature.Linear;
-import one.empty3.feature.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
@@ -45,12 +41,12 @@ public class GradProcess extends ProcessFile {
         //if (!in.getName().endsWith(".jpg"))
         //    return false;
         File file = in;
-        one.empty3.feature.PixM pix;
+        PixM pix;
         try {
-            pix = one.empty3.feature.PixM.getPixM(ImageIO.read(file), maxRes);
+            pix = PixM.getPixM(ImageIO.read(file), maxRes);
             GradientFilter gf = new GradientFilter(pix.getColumns(),
                     pix.getLines());
-            one.empty3.feature.PixM[][] imagesMatrix = gf.filter(
+            PixM[][] imagesMatrix = gf.filter(
                     new M3(
                             pix, 2, 2)
             ).getImagesMatrix();

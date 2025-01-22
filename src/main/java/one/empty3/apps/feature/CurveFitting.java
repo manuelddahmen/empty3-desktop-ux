@@ -22,11 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.CourbeN11;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.java.awt.Color;
 import one.empty3.apps.feature.shape.Rectangle;
 import one.empty3.io.ProcessFile;
@@ -38,20 +35,13 @@ import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
 import javax.imageio.ImageIO;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,7 +61,7 @@ public class CurveFitting extends ProcessFile {
      *     Vu dans Dr Lingrand, et R. Szeliski.
      */
 
-    one.empty3.feature.PixM pix = null;
+    PixM pix = null;
     private double lambda1 = 0.01, lambda2 = 0.01, lambda3 = 1.0;
     double[] outAvg = new double[]{0, 0, 0}, inAvg = new double[]{0, 0, 0};
     private double arcLength;
@@ -80,8 +70,8 @@ public class CurveFitting extends ProcessFile {
     private CourbeParametriquePolynomialeBezier curveInitial;
     private double[][] deltaE;
     private HashMap<Integer, List<Integer>> border;
-    private one.empty3.feature.PixM inPix;
-    private one.empty3.feature.PixM outPix;
+    private PixM inPix;
+    private PixM outPix;
 
     public void init() {
         border = new HashMap<>();
@@ -257,14 +247,14 @@ public class CurveFitting extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         try {
-            pix = one.empty3.feature.PixM.getPixM(ImageIO.read(in), maxRes);
+            pix = PixM.getPixM(ImageIO.read(in), maxRes);
 
 
             init();
 
 
-            inPix = new one.empty3.feature.PixM(pix.getImage());
-            outPix = new one.empty3.feature.PixM(pix.getImage());
+            inPix = new PixM(pix.getImage());
+            outPix = new PixM(pix.getImage());
 
             curveInitial = new CourbeN11();
 
@@ -322,7 +312,7 @@ public class CurveFitting extends ProcessFile {
             double e = E();
             //curveResult = modify();
 
-            one.empty3.feature.PixM p = new one.empty3.feature.PixM(pix.getColumns(), pix.getLines());
+            PixM p = new PixM(pix.getColumns(), pix.getLines());
 
             curvePoints.setIncrU(1. / maxRes / curvePoints.getCoefficients().data1d.size());
 

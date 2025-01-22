@@ -20,7 +20,7 @@
 
 package one.empty3.feature_2;
 
-import matrix.FilterPixM;
+import one.empty3.matrix.FilterPixM;
 import one.empty3.libs.Image;
 import one.empty3.libs.Color;
 

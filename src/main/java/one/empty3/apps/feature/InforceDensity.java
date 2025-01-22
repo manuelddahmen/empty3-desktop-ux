@@ -22,11 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.Histogram;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 
 /*
  * Prendre pour points d'intérêt les zones denses en intensité

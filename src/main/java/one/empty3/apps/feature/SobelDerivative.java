@@ -22,15 +22,12 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 
 /*
@@ -67,7 +64,7 @@ public class SobelDerivative extends ProcessFile {
 
     }
 
-    public double filter(one.empty3.feature.PixM p, int x, int y) {
+    public double filter(PixM p, int x, int y) {
         int dy = (int) (lines / 2);
         int dX = (int) (columns / 2);
         double sumX = 0, sumY = 0;
@@ -83,7 +80,7 @@ public class SobelDerivative extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         try {
-            one.empty3.feature.PixM p = one.empty3.feature.PixM.getPixM(Objects.requireNonNull(ImageIO.read(in)), maxRes);
+            PixM p = PixM.getPixM(Objects.requireNonNull(ImageIO.read(in)), maxRes);
             PixM pOut = p.copy();
             for (int j = 0; j < p.getLines(); j++) {
                 for (int i = 0; i < p.getColumns(); i++) {

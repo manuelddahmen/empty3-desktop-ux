@@ -22,7 +22,7 @@
 
 package one.empty3.apps.feature.selection;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.ITexture;
@@ -30,9 +30,6 @@ import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

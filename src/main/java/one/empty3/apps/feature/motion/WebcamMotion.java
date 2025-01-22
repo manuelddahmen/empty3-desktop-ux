@@ -20,14 +20,13 @@
  *
  */
 
-package one.empty3.feature.Motion;
+package one.empty3.apps.feature.motion;
 
-import one.empty3.feature.PixM;
-import one.empty3.feature.Motion.Motion;
+import one.empty3.matrix.PixM;
 
 import java.awt.image.BufferedImage;
 
-public class WebcamMotion extends Motion {
+public class WebcamMotion extends one.empty3.feature.Motion {
 
     @Override
     public BufferedImage process(PixM frame1, PixM frame2) {

@@ -22,10 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.*;
 import one.empty3.library.Point;
@@ -34,7 +32,6 @@ import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
 import javax.imageio.ImageIO;
 
-import one.empty3.libs.*;
 import one.empty3.libs.Color;
 
 import java.awt.*;
@@ -44,8 +41,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -58,7 +53,7 @@ public class Lines3 extends ProcessFile {
     ArrayList<Double> listTmpX = new ArrayList<>();
     ArrayList<Double> listTmpY = new ArrayList<>();
     ArrayList<Double> listTmpZ = new ArrayList<>();
-    private one.empty3.feature.PixM pixM;
+    private PixM pixM;
     private double pz;
     private double py;
     private double px;
@@ -106,10 +101,10 @@ public class Lines3 extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             pixM = null;
-            pixM = new one.empty3.feature.PixM(ImageIO.read(in));
+            pixM = new PixM(ImageIO.read(in));
             ArrayList<List<Point3D>> lists = new ArrayList<>();
             lists.add(new ArrayList<>());
-            one.empty3.feature.PixM o = new one.empty3.feature.PixM(pixM.getColumns(), pixM.getLines());
+            PixM o = new PixM(pixM.getColumns(), pixM.getLines());
             int[][] p = new int[pixM.getColumns()][pixM.getLines()];
 
             for (double levels : Arrays.asList(0.4/*, 0.6, 0.8*/)) {
@@ -291,7 +286,7 @@ public class Lines3 extends ProcessFile {
                 });
             });
 
-            one.empty3.feature.PixM img3 = new PixM(pixM.getColumns(), pixM.getLines());
+            PixM img3 = new PixM(pixM.getColumns(), pixM.getLines());
             list3.forEach(p3s -> {
                 Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
                 double xA;

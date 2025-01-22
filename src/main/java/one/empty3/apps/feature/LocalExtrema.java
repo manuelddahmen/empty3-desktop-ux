@@ -21,13 +21,10 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.apps.feature.AreaDescriptor;
-import one.empty3.apps.feature.FilterMatPixM;
-import one.empty3.feature.M3;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.M3;
+import one.empty3.matrix.PixM;
 
 import java.util.ArrayList;
 
@@ -69,8 +66,8 @@ public class LocalExtrema extends FilterMatPixM {
     }
 
     @Override
-    public one.empty3.feature.M3 filter(one.empty3.feature.M3 original) {
-        one.empty3.feature.M3 copy = new one.empty3.feature.M3(original.columns
+    public one.empty3.matrix.M3 filter(one.empty3.matrix.M3 original) {
+        one.empty3.matrix.M3 copy = new one.empty3.matrix.M3(original.columns
 , original.lines,
                 1, 1);
         for (int i = 0; i < original.columns
@@ -121,19 +118,19 @@ public class LocalExtrema extends FilterMatPixM {
         return copy;
     }
 
-    private double lambda1dot2div1sum2(one.empty3.feature.M3 original, int compNo, int i, int j) {
-        one.empty3.feature.PixM pixM = new PixM(3, 3);
+    private double lambda1dot2div1sum2(one.empty3.matrix.M3 original, int compNo, int i, int j) {
+        PixM pixM = new PixM(3, 3);
         pixM.setRegionCopy(original, 0, 0, i - 1, j - 1, i + 1, j + 1, pixM, 0, 0);
         return pixM.determinant() / pixM.diagonalSum();
     }
 
     @Override
-    public void element(one.empty3.feature.M3 source, one.empty3.feature.M3 copy, int i, int j, int ii, int ij) {
+    public void element(one.empty3.matrix.M3 source, one.empty3.matrix.M3 copy, int i, int j, int ii, int ij) {
 
     }
 
     @Override
-    public one.empty3.feature.M3 norm(one.empty3.feature.M3 m3, M3 copy) {
+    public one.empty3.matrix.M3 norm(one.empty3.matrix.M3 m3, M3 copy) {
         return m3.copy();
     }
 

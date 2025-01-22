@@ -22,16 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.AreaDescriptor;
-import matrix.FilterPixM;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
-import java.awt.Dimension;
+import one.empty3.matrix.FilterPixM;
 
 public class Region extends AreaDescriptor {
     public Region(int x, int y, int sizeX, int sizeY) {

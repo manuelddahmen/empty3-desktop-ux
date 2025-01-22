@@ -21,14 +21,13 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import matrix.FilterPixM;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.FilterPixM;
+import one.empty3.matrix.PixM;
 
 public class GaussFilterPixM extends FilterPixM {
-    private final one.empty3.feature.PixM in;
+    private final PixM in;
     public double sigma = 0.8;
 
     public GaussFilterPixM() {
@@ -36,7 +35,7 @@ public class GaussFilterPixM extends FilterPixM {
         in = null;
     }
 
-    public GaussFilterPixM(one.empty3.feature.PixM in, int squareSize) {
+    public GaussFilterPixM(PixM in, int squareSize) {
         super(squareSize, squareSize);
         this.in = in;
     }

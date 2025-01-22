@@ -21,17 +21,14 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 
 import one.empty3.library.Lumiere;
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 import one.empty3.libs.Color;
 
 import java.awt.*;
@@ -40,9 +37,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -88,7 +82,7 @@ public class Histogram3 extends ProcessFile {
 
     }
 
-    public Circle getLevel(one.empty3.feature.PixM m, Circle c) {
+    public Circle getLevel(PixM m, Circle c) {
         // I mean. Parcourir le cercle
         // mesurer I / numPoints
         // for(int i=Math.sqrt()
@@ -123,7 +117,7 @@ public class Histogram3 extends ProcessFile {
     }
 
 
-    public List<Circle> getPointsOfInterest(one.empty3.feature.PixM m, final double rMin0, double iMin) {
+    public List<Circle> getPointsOfInterest(PixM m, final double rMin0, double iMin) {
         ArrayList<Circle> circles;
         circles = new ArrayList<>();
 
@@ -175,7 +169,7 @@ public class Histogram3 extends ProcessFile {
         init();
 
         try {
-            one.empty3.feature.PixM m = new one.empty3.feature.PixM(ImageIO.read(in));
+            PixM m = new PixM(ImageIO.read(in));
             BufferedImage image = m.getImage();
 
 

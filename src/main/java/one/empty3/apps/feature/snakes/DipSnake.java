@@ -23,15 +23,13 @@
 package one.empty3.apps.feature.snakes;
 
 import one.empty3.feature.M;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.ParametricCurve;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 
 /*

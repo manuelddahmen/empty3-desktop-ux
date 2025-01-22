@@ -24,7 +24,7 @@ import one.empty3.io.ProcessFile;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Point;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 

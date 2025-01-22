@@ -21,26 +21,22 @@
  */
 
 package one.empty3.apps.feature;
-import one.empty3.feature.*;
 
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 
 import javax.imageio.ImageIO;
 
 import one.empty3.library.Lumiere;
-import one.empty3.library.Point;
 import one.empty3.libs.*;
-import java.awt.Dimension;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /*
@@ -49,7 +45,7 @@ import java.util.logging.Logger;
  */
 public class Histogram2 extends ProcessFile {
     private int numLevels = 10;
-    private one.empty3.feature.PixM m = null;
+    private PixM m = null;
     private double[] max;
     private double[] min;
 
@@ -76,7 +72,7 @@ public class Histogram2 extends ProcessFile {
     }
 
     //private final int[][][] levels;
-    public void setM(one.empty3.feature.PixM m2) {
+    public void setM(PixM m2) {
         this.m = m2;
     }
 
@@ -195,7 +191,7 @@ public class Histogram2 extends ProcessFile {
     public boolean process(File in, File out) {
         try {
             File directory = new File(out.getParent());
-            one.empty3.feature.PixM imageCoutours = new one.empty3.feature.PixM(ImageIO.read(in));
+            PixM imageCoutours = new PixM(ImageIO.read(in));
             this.m = imageCoutours;
             BufferedImage file = m.getImage();
 

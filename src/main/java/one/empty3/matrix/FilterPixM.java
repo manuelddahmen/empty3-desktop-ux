@@ -18,9 +18,8 @@
  *
  */
 
-package matrix;
+package one.empty3.matrix;
 
-import one.empty3.feature.PixM;
 import one.empty3.libs.Image;
 
 public abstract class FilterPixM extends PixM {

@@ -22,14 +22,12 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ObjectWithProperties;
 import one.empty3.io.ProcessFile;
+import one.empty3.libs.Image;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -47,7 +45,7 @@ public class IdentNullProcess extends ProcessFile {
     @Override
     public boolean process(File in, File out) {
         try {
-            one.empty3.feature.PixM pixM = null;
+            PixM pixM = null;
             pixM = PixM.getPixM(javax.imageio.ImageIO.read(in), maxRes);
 
 
@@ -57,20 +55,14 @@ public class IdentNullProcess extends ProcessFile {
             double b = (double) getProperties().getProperty("greenFactor");
 
 
-            for (int i = 0; i < pixM.getColumns()
-                    ; i++) {
+            for (int i = 0; i < pixM.getColumns(); i++) {
                 for (int j = 0; j < pixM.getLines(); j++) {
-                    pixM.setCompNo(0);
-                    pixM.set(i, j, pixM.get(i, j) * l * r);
-                    pixM.setCompNo(1);
-                    pixM.set(i, j, pixM.get(i, j) * l * g);
-                    pixM.setCompNo(2);
-                    pixM.set(i, j, pixM.get(i, j) * l * b);
+                    pixM.set(pixM.index(i,j), pixM.getInt(i,j));
                 }
             }
 
-            BufferedImage image = pixM.getImage();
-            one.empty3.apps.feature.app.replace.javax.imageio.ImageIO.write(image, "jpg", out);
+            Image image = pixM.getImage2();
+            image.saveFile(out);
             addSource(out);
             return true;
         } catch (

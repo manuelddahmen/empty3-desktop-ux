@@ -22,23 +22,19 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.FeatureImageLocationMatchScore;
-import one.empty3.apps.feature.HarrisToPointInterest;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
 import java.util.*;
 import java.io.File;
 
-public class FeatureDescriptor extends one.empty3.feature.PixM {
+public class FeatureDescriptor extends PixM {
 
 
-    private one.empty3.feature.PixM m;
-    private one.empty3.feature.PixM pi;
+    private PixM m;
+    private PixM pi;
     private List<Point3D> poi;
 
     public FeatureDescriptor() {
@@ -53,7 +49,7 @@ public class FeatureDescriptor extends one.empty3.feature.PixM {
         return true;
     }
 
-    public void setPixM(one.empty3.feature.PixM m) {
+    public void setPixM(PixM m) {
         this.m = m;
         HarrisToPointInterest h = new HarrisToPointInterest(
                 m.getColumns()
@@ -70,7 +66,7 @@ public class FeatureDescriptor extends one.empty3.feature.PixM {
 
         for (File file : set) {
             try {
-                one.empty3.feature.PixM pm = new PixM(ImageIO.read(file));
+                PixM pm = new PixM(ImageIO.read(file));
                 for (FeatureDescriptor f : fd) {
                     f.setPixM(pm);
                     for (int i = 0; i < poi.size(); i++) {

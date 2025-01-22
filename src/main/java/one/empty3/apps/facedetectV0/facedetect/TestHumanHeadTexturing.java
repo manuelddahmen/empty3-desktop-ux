@@ -22,16 +22,13 @@
 
 package one.empty3.apps.facedetectV0.facedetect;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.ZBufferImpl;
 import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.core.testing.TestObjetStub;
 import one.empty3.library.objloader.E3Model;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

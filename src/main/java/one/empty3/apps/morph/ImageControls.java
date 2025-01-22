@@ -360,7 +360,7 @@ public class ImageControls implements Runnable {
 
     private void drawSceneOnScreen(ZBuffer zBuffer) {
         if (zBuffer != null) {
-           /* BufferedImage image = new BufferedImage(resX, resY, BufferedImage.TYPE_INT_ARGB);
+           /* BufferedImage image = new BufferedImage(resX, resY, BufferedImage.TYPE_INT_RGB);
 
             Graphics2D graphics = image.createGraphics();
             Composite c = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, .5f);

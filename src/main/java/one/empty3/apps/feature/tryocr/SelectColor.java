@@ -22,13 +22,12 @@
 
 package one.empty3.apps.feature.tryocr;
 
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.apps.feature.app.replace.java.awt.Color;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.io.ProcessFile;
 
 import java.io.File;
-import java.io.IOException;
 
 public class SelectColor extends ProcessFile {
     private Color color = new Color(255, 255, 255);

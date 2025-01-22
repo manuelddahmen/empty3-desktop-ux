@@ -22,10 +22,8 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.ITexture;
@@ -34,10 +32,6 @@ import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -51,9 +45,9 @@ public class MyContours extends ProcessFile {
      * @param img Image sur laquelle dessiner
      * @param col Couleur ou texture de dessin
      */
-    public one.empty3.feature.PixM pasteList(one.empty3.feature.PixM img, ITexture col) {
+    public PixM pasteList(PixM img, ITexture col) {
 
-        final one.empty3.feature.PixM res = new one.empty3.feature.PixM(img.getColumns(), img.getLines());
+        final PixM res = new PixM(img.getColumns(), img.getLines());
         for (int i = 0; i < img.getColumns() * img.getLines(); i++) {
 
             int ix = (i % img.getColumns());
@@ -99,11 +93,11 @@ public class MyContours extends ProcessFile {
         return new Point3D(x + Math.cos(a) * r, y + Math.sin(a) * r, 0.0);
     }
 
-    public boolean checkPointColorEquals(one.empty3.feature.PixM img, int x, int y, int x1, int y1) {
+    public boolean checkPointColorEquals(PixM img, int x, int y, int x1, int y1) {
         return img.getP(x, y).moins(img.getP(x1, y1)).norme() < 0.3;
     }
 
-    private double[] lookForColor(one.empty3.feature.PixM img, int x, int y, double[] search) {
+    private double[] lookForColor(PixM img, int x, int y, double[] search) {
         Point3D searchP = new Point3D(search);
         double[] colorProxy = new double[]{0., 0., 0.};
         Point3D c0 = img.getP(x, y);
@@ -151,7 +145,7 @@ public class MyContours extends ProcessFile {
             if (!in.getAbsolutePath().endsWith("jpg"))
                 return false;
             BufferedImage read = ImageIO.read(in);
-            one.empty3.feature.PixM pixM = one.empty3.feature.PixM.getPixM(read, maxRes);
+            PixM pixM = PixM.getPixM(read, maxRes);
             PixM pixM1 = pasteList(pixM, new ColorTexture(java.awt.Color.BLACK.getRGB()));
             ImageIO.write(pixM1.normalize(0, 1).getImage(), "jpg", out);
             return true;

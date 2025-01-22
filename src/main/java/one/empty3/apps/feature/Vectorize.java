@@ -22,19 +22,15 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
 
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +41,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Vectorize extends ProcessFile {
-    private one.empty3.feature.PixM pixM;
+    private PixM pixM;
     private double distMax = 40.;
     private final Random random = new Random();
     Point3D[][] mapPoints;
@@ -67,8 +63,8 @@ public class Vectorize extends ProcessFile {
             BufferedImage read = ImageIO.read(in);
             if (read == null)
                 return false;
-            pixM = new one.empty3.feature.PixM(read);
-            one.empty3.feature.PixM o = new PixM(pixM.getColumns(), pixM.getLines());
+            pixM = new PixM(read);
+            PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
             p = new int[pixM.getColumns()][pixM.getLines()];
             mapPoints = new Point3D[pixM.getColumns()][pixM.getLines()];

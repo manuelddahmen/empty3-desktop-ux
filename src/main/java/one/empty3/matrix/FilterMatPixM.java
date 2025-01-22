@@ -2,7 +2,7 @@
  * Copyright (c) 2024.
  *
  *
- *  Copyright 2012-2023 Manuel Daniel Dahmen
+ *  Copyright 2023 Manuel Daniel Dahmen
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,29 +18,22 @@
  *
  */
 
-package matrix;
+package one.empty3.matrix;
 
+public abstract class FilterMatPixM {
+/*
+    public int getCompNo() {
+        return compNo;
+    }
 
-import one.empty3.libs.Image;
+    public void setCompNo(int compNo) {
+        this.compNo = compNo;
+    }
+*/
 
-public interface InterfaceMatrix {
+    public abstract M3 filter(M3 original);
 
-    public void init(int columns, int lines);
-//    public void init(Bitmap bitmap);
-//    public void init(PixM bitmap);
+    public abstract void element(M3 source, M3 copy, int i, int j, int ii, int ij);
 
-
-    public void setCompNo(int no);
-
-    public int getCompNo();
-
-    public void set(int column, int line, double values);
-
-    public void set(int column, int line, double... values);
-
-    public double get(int column, int line);
-
-    public double[] getValues(int column, int line);
-
-    Image getBitmap();
+    public abstract M3 norm(M3 m3, M3 copy);
 }

@@ -22,18 +22,14 @@
 
 package one.empty3.apps.feature;
 
-import one.empty3.feature.*;
 
-
-import one.empty3.apps.feature.KMeans;
-import one.empty3.feature.PixM;
+import one.empty3.matrix.PixM;
 import one.empty3.io.ProcessFile;
 import one.empty3.library.Point3D;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -51,8 +47,8 @@ public class ClassificationAvgColors extends ProcessFile {
             // Processed by "classification
             // Non filtered image
             BufferedImage original = ImageIO.read(in);
-            one.empty3.feature.PixM pixMoriginal = new one.empty3.feature.PixM(original);
-            one.empty3.feature.PixM toProcess = new PixM(original);
+            PixM pixMoriginal = new PixM(original);
+            PixM toProcess = new PixM(original);
             Map<Integer, double[]> c = classification.k_clusterer.centroids;
             Map<Integer, Point3D> sum = new HashMap<>();
             Map<Integer, Integer> count = new HashMap<>();
