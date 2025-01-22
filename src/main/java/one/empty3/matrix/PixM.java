@@ -24,6 +24,7 @@ package one.empty3.matrix;
 
 import one.empty3.feature.FilterPixM;
 import one.empty3.feature.M3;
+import one.empty3.library.Serialisable;
 import org.jetbrains.annotations.NotNull;
 
 import one.empty3.libs.*;
@@ -32,10 +33,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PixM extends  one.empty3.feature.PixM {
+public class PixM extends M implements Serializable, Serialisable {
 
     public PixM(int l, int c) {
         super(l, c);

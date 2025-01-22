@@ -44,9 +44,9 @@ public class IdentNullProcess extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
+
         PixM pixM = null;
         pixM = PixM.getPixM(in, maxRes);
-
 
         double l = (double) getProperties().getProperty("luminanceFactor");
         double r = (double) getProperties().getProperty("redFactor");
