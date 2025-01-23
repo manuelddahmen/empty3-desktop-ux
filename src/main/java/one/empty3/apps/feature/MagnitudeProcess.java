@@ -58,7 +58,7 @@ public class MagnitudeProcess extends ProcessFile {
             one.empty3.apps.feature.Linear res = new Linear(linearProd1.getImages()[2], linearProd2.getImages()[2],
                     new PixM(pix.getColumns(), pix.getLines()));
             res.op2d2d(new char[]{'+'}, new int[][]{{1, 0}}, new int[]{2});
-            ImageIO.write(res.getImages()[2].normalize(0.0, 1.0).getImage(), "jpg", out);
+            new one.empty3.libs.Image(res.getImages()[2].normalize(0.0, 1.0).getImage()).saveFile( out);
 
             return true;
         } catch (Exception ex) {

@@ -67,12 +67,8 @@ public class PartMatch extends ProcessFile {
                         double sign = Math.signum(prod2(pb.moins(pa), pb.moins(p)));
                         pixM.setValues(i, j, sign, sign, sign);
                     }
-                try {
-                    ImageIO.write(pixM.normalize(0, 1).getImage(), "jpg", new File("features/featureDesc_"
-                            + n + "_angle_" + a + ".jpg"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                new one.empty3.libs.Image(pixM.normalize(0, 1).getImage()).saveFile( new File("features/featureDesc_"
+                        + n + "_angle_" + a + ".jpg"));
 
                 featuresDescriptors.add(pixM);
             }
@@ -153,7 +149,7 @@ public class PartMatch extends ProcessFile {
                 }
             }
 
-            ImageIO.write(outImg, "jpg", out);
+            new one.empty3.libs.Image(outImg).saveFile( out);
 
             return true;
         } catch (IOException e) {

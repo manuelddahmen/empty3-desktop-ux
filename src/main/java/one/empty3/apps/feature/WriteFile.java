@@ -55,7 +55,7 @@ public class WriteFile {
         try {
 
             no++;
-            ImageIO.write(imageJpeg, "jpg", n);
+            new one.empty3.libs.Image(imageJpeg).saveFile( n);
             Logger.getLogger(WriteFile.class.toString()).log(Level.INFO, "file written: " + n.getAbsolutePath());
             return true;
 

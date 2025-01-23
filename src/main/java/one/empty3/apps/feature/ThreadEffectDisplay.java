@@ -36,6 +36,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import one.empty3.library.Point;
 import one.empty3.libs.*;
+import one.empty3.libs.Image;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -97,40 +98,39 @@ public class ThreadEffectDisplay extends Thread {
 
         do {
             File fileOrigin = new File(new Config().getDefaultFileOutput() + File.separator + "FeaturesVideo" + File.separator + "webcam.jpg");
-            fileOrigin.mkdirs();
+            new File(new Config().getDefaultFileOutput() + File.separator + "FeaturesVideo" ).mkdirs();
 
 
             main.files.clear();
             main.files.add(new File[]{fileOrigin});
 
             image = webcam.getImage();
-            try {
-                if (image != null && ImageIO.write(image, "jpg", fileOrigin)) {
+            if(image!=null)
+                new Image(image).saveFile(fileOrigin);
+            if (image != null) {
 
-                    System.err.println("File written");
+                System.err.println("File written");
 
-                    main.setMaxRes(Math.max(image.getWidth(), image.getHeight()));
+                main.setMaxRes(Math.max(image.getWidth(), image.getHeight()));
 
+                main.buttonGOActionPerformed(null);
+
+                while ((imageIn2 = getImageIn()) == null) {
+                    /*try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException ignored) {
+
+                    }*/
                     main.buttonGOActionPerformed(null);
-
-                    while ((imageIn2 = getImageIn()) == null) {
-                        /*try {
-                            Thread.sleep(20);
-                        } catch (InterruptedException ignored) {
-
-                        }*/
-                        main.buttonGOActionPerformed(null);
-                    }
-
-                    if (imageIn2 != null) {
-                        jPanel.setMinimumSize(new Dimension(imageIn2.getWidth(), imageIn2.getHeight()));
-                        Graphics graphics = jPanel.getGraphics();
-                        graphics.drawImage(imageIn2, 0, 0, jPanel.getWidth(), jPanel.getHeight(), null);
-                    } else {
-                        Logger.getAnonymousLogger().log(Level.INFO, "No image to display: " + imageIn2);
-                    }
                 }
-            } catch (IOException ignored) {
+
+                if (imageIn2 != null) {
+                    jPanel.setMinimumSize(new Dimension(imageIn2.getWidth(), imageIn2.getHeight()));
+                    Graphics graphics = jPanel.getGraphics();
+                    graphics.drawImage(imageIn2, 0, 0, jPanel.getWidth(), jPanel.getHeight(), null);
+                } else {
+                    Logger.getAnonymousLogger().log(Level.INFO, "No image to display: " + imageIn2);
+                }
             }
         } while (directEffect.isVisible());
 

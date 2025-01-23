@@ -51,7 +51,7 @@ public class DistanceImage extends ProcessFile {
                 }
             }
         }
-        ImageIO.write(outP.normalize(0, 1).getImage(), "jpg", out);
+        new one.empty3.libs.Image(outP.normalize(0, 1).getImage()).saveFile( out);
         return true;
     }
 

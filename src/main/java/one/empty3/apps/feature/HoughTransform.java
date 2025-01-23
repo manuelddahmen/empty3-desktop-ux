@@ -110,7 +110,7 @@ public class HoughTransform extends ProcessFile {
                 line.draw(image, Color.RED.getRGB());
             }
 
-            ImageIO.write(image, "jpg", out);
+            new one.empty3.libs.Image(image).saveFile( out);
             return true;
         } catch (IOException e) {
             e.printStackTrace();

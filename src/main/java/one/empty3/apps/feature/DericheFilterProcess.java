@@ -44,11 +44,7 @@ public class DericheFilterProcess extends ProcessFile {
         }
 
 
-        try {
-            ImageIO.write(pixM.getImage(), "jpg", out);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        new one.empty3.libs.Image(pixM.getImage()).saveFile( out);
 
 
         return false;

@@ -63,7 +63,7 @@ public class ImageIO {
     public static boolean write(BufferedImage imageOut, String jpg, File out) {
 
         try {
-            javax.imageio.ImageIO.write(imageOut, "jpg", out);
+            javax.imageio.ImageIO.write(imageOut, jpg, out);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -81,7 +81,7 @@ public class ImageIO {
             FileOutputStream fileOutputStream = new FileOutputStream(out);
             // ???
 
-            javax.imageio.ImageIO.write(imageOut, "jpg", fileOutputStream);
+            javax.imageio.new one.empty3.libs.Image(imageOut).saveFile( fileOutputStream);
             fileOutputStream.flush();
             fileOutputStream.close();
             fileOutputStream = null;

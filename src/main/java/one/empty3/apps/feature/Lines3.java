@@ -407,7 +407,7 @@ public class Lines3 extends ProcessFile {
                 }
             });
 
-            ImageIO.write(img3.normalize(0.0, 1.0).getImage(), "jpg",
+            new one.empty3.libs.Image(img3.normalize(0.0, 1.0).getImage()).saveFile(
                     new File(out.getAbsolutePath()));
             return true;
         } catch (

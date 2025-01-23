@@ -186,12 +186,12 @@ public class ResolutionCharacter7 implements Runnable {
     public void exec(ITexture texture, PixM output, PixM input, File dirOut, String name) {
         output.plotCurve(new Rectangle(10, 10, output.getColumns() - 20, output.getLines() - 20), texture);
 
-        ImageIO.write(input.getImage(), "jpg",
+        new one.empty3.libs.Image(input.getImage()).saveFile(
                 new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "INPUT.jpg")));
-        ImageIO.write(output.getImage(), "jpg",
+        new one.empty3.libs.Image(output.getImage()).saveFile(
                 new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "OUTPUT.jpg")));
 
-        ImageIO.write(outRecompose.getImage(), "jpg", new File(
+        new one.empty3.libs.Image(outRecompose.getImage()).saveFile( new File(
                 dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "RECOMPOSE.jpg")));
 
     }
@@ -274,7 +274,7 @@ public class ResolutionCharacter7 implements Runnable {
         output = input.copy();
 
         outRecompose = new PixM(input.getColumns(), input.getLines());
-        ImageIO.write(derivative(input).getImage(), "jpg", dirOutGradient2);
+        new one.empty3.libs.Image(derivative(input).getImage()).saveFile( dirOutGradient2);
 
         Logger.getAnonymousLogger().log(Level.INFO, "Image size: " + output.getColumns() + ", " + output.getLines());
 
@@ -385,9 +385,9 @@ public class ResolutionCharacter7 implements Runnable {
             }));
         });
         height += maxheight;
-        ImageIO.write(pSlide.getImage(), "jpg", new File(dirOutDist + "_matchingRects_" + pSlide + ".jpg"));
+        new one.empty3.libs.Image(pSlide.getImage()).saveFile( new File(dirOutDist + "_matchingRects_" + pSlide + ".jpg"));
 
-        ImageIO.write(distances.normalize(0, 1).getImage(), "jpg", dirOutDist);
+        new one.empty3.libs.Image(distances.normalize(0, 1).getImage()).saveFile( dirOutDist);
     }
 
     private Point3D compare(one.empty3.apps.feature.tryocr.Rectangle2 rect1, one.empty3.apps.feature.tryocr.Rectangle2 rect2) {
@@ -553,7 +553,7 @@ public class ResolutionCharacter7 implements Runnable {
                             File file = new File(dirOutChars + "-" + j + "-" + i + "-" + w + "-" + h + "-" + s[0] + ".png");
                             if (!file.getParentFile().exists() || file.getParentFile().isDirectory()) {
                                 file.getParentFile().mkdirs();
-                                ImageIO.write(outChar.getImage(), "png", file);
+                                outChar.getImage2().saveFile( file);
                             }
                         }
                     }

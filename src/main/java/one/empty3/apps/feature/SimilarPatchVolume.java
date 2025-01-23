@@ -85,7 +85,7 @@ public class SimilarPatchVolume {
         ImageOutputStream ios = ImageIO.createImageOutputStream(file);
         imageWriter.setOutput(ios);
         imageWriter.write(imageToWrite);
-        /*if (!ImageIO.write(imageToWrite, "image/jpg", file)) {
+        /*if (!new one.empty3.libs.Image(imageToWrite, "image/jpg", file)) {
             Logger.getAnonymousLogger().log(Level.INFO, "Error inappropriate writer or not found " + "jpg");
             System.exit(-2);
         }*/

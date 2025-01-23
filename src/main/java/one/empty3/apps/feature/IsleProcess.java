@@ -64,7 +64,7 @@ public class IsleProcess extends ProcessFile {
         il.filter();
         try {
 
-            ImageIO.write(pix.getImage(), "JPEG", out);
+            new one.empty3.libs.Image(pix.getImage()).saveFile(out);
 
         } catch (Exception ex) {
 

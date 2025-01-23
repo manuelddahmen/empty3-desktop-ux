@@ -26,6 +26,10 @@ import one.empty3.feature.*;
 
 
 import one.empty3.apps.feature.FilterMatPixM;
+import one.empty3.feature.FilterPixM;
+
+
+
 import one.empty3.feature.M3;
 
 public class GradientFilter extends FilterMatPixM {

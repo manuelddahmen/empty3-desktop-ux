@@ -65,6 +65,8 @@ public class ProcessPlusNormalize extends ProcessNFiles {
                 }
             }
         }
-        return ImageIO.write(pixM.getImage(), "jpg", out);
+        pixM.getImage2().saveFile( out);
+
+        return true;
     }
 }

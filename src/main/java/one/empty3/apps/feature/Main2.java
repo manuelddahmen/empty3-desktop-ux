@@ -61,14 +61,7 @@ public class Main2 {
             Logger.getAnonymousLogger().log(Level.INFO, dir.getAbsolutePath() + " created");
         System.out.print("\n(width, height) = " + imageToWrite.getWidth() +
                 ", " + imageToWrite.getHeight() + ")");
-
-        if (!ImageIO.write(imageToWrite, "jpg", file)) {
-            Logger.getAnonymousLogger().log(Level.INFO, "Error inappropriate writer or not found " + "JEG");
-            System.exit(-2);
-        } else {
-            Logger.getAnonymousLogger().log(Level.INFO, "Done writing : " + outputFilename);
-
-        }
+        new Image(imageToWrite).saveFile( file);
         return file;
     }
 
@@ -95,7 +88,7 @@ public class Main2 {
                         Logger.getAnonymousLogger().log(Level.INFO, "Directory created" + directory.getAbsolutePath());
                     Logger.getAnonymousLogger().log(Level.INFO, "format name image " + ext + " found");
 
-                    Image image = new Image(ImageIO.read(new File("resources/" + s)));
+                    Image image = new one.empty3.libs.Image(ImageIO.read(new File("resources/" + s)));
 
                     PixM pixMOriginal = PixM.getPixM(image, 300);
                     GradientFilter gradientMask = new GradientFilter(pixMOriginal.getColumns(), pixMOriginal.getLines());

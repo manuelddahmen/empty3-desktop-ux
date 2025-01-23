@@ -29,7 +29,10 @@
 
 package one.empty3.feature_2;
 
-import one.empty3.matrix.FilterMatPixM;
+import one.empty3.apps.feature.FilterMatPixM;
+import one.empty3.feature.FilterPixM;
+
+
 import one.empty3.feature.M3;
 import one.empty3.feature.PixM;
 
@@ -65,10 +68,10 @@ public class LocalExtrema extends FilterMatPixM {
 
     @Override
     public M3 filter(M3 original) {
-        M3 copy = new M3(original.getColumns(), original.getLines(),
+        M3 copy = new M3(original.columns, original.lines,
                 1, 1);
-        for (int i = 0; i < original.getColumns(); i++) {
-            for (int j = 0; j < original.getLines(); j++) {
+        for (int i = 0; i < original.columns; i++) {
+            for (int j = 0; j < original.lines; j++) {
                 //copy.setCompNo(c);
                 //boolean isMaximum = true;
                 double maxLocal = original.getIntensity(i, j, 0, 0);
@@ -120,12 +123,10 @@ public class LocalExtrema extends FilterMatPixM {
         return pixM.determinant() / pixM.diagonalSum();
     }
 
-    @Override
     public void element(M3 source, M3 copy, int i, int j, int ii, int ij) {
 
     }
 
-    @Override
     public M3 norm(M3 m3, M3 copy) {
         return m3.copy();
     }

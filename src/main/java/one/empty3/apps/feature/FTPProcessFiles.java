@@ -621,7 +621,7 @@ public class FTPProcessFiles {
                 continue;
             }
             try {
-                ImageIO.write(image, "JPEG", ftmp);
+                new one.empty3.libs.Image(image).saveFile(ftmp);
             } catch (Exception ex) {
                 Logger.getAnonymousLogger().log(Level.INFO, "error writing movie frame");
                 ex.printStackTrace();

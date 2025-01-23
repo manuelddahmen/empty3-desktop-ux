@@ -49,7 +49,7 @@ public class GradProcess2 extends ProcessFile {
                     + 4 * pixMout.get(x, y+1));
                     }
 
-            ImageIO.write(pixMout.normalize(0,1).getImage(), "jpg", out);
+            new one.empty3.libs.Image(pixMout.normalize(0,1).getImage()).saveFile( out);
             return true;
         } catch (Exception ex) {}
 

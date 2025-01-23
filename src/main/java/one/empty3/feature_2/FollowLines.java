@@ -72,10 +72,10 @@ public class FollowLines {
     public ArrayList<Line> processPoints(int ii, int ij) {
         int[] x = new int[getMaxNeighbours()];
         int[] y = new int[getMaxNeighbours()];
-        M3 points = new M3(traces.getColumns(), traces.getLines(), 1, 1);
+        M3 points = new M3(traces.columns, traces.lines, 1, 1);
         for (int comp = 0; comp < 4; comp++) {
-            for (int i = 0; i < traces.getColumns(); i++) {
-                for (int j = 0; j < traces.getLines(); j++) {
+            for (int i = 0; i < traces.columns; i++) {
+                for (int j = 0; j < traces.lines; j++) {
 
                     if (comp < 3) {
                         int add = 0;

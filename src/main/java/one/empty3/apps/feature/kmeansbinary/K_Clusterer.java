@@ -190,7 +190,7 @@ public class K_Clusterer extends ReadDataset {
 
             }));
 
-            ImageIO.write(pix2.normalize(0, 1).getImage(), "jpg", out);
+            new one.empty3.libs.Image(pix2.normalize(0, 1).getImage()).saveFile( out);
 
         } catch (Exception ex1) {
             ex1.printStackTrace();

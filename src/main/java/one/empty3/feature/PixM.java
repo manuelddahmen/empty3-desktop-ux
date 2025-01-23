@@ -22,7 +22,6 @@
 
 package one.empty3.feature;
 
-import one.empty3.ImageIO;
 import one.empty3.apps.feature.V;
 import one.empty3.library.ITexture;
 import one.empty3.library.LineSegment;
@@ -33,9 +32,16 @@ import org.jetbrains.annotations.NotNull;
 
 import one.empty3.library.Point;
 import one.empty3.libs.*;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PixM extends M {
     public static final int COMP_RED = 0;
@@ -72,7 +78,12 @@ public class PixM extends M {
     }
 
     public static PixM getPixM(File in, int res) {
-        return getPixM(ImageIO.read(in), res);
+        try {
+            return getPixM(ImageIO.read(in), res);
+        } catch (IOException e) {
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Can't read file : "+in, e);
+            throw new RuntimeException(e);
+        }
     }
 
     public Point3D getRgb(int i, int j) {

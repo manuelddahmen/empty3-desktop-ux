@@ -304,7 +304,7 @@ public class Lines6 extends ProcessFile {
                         stack, new ColorTexture(Color.WHITE.getRGB()));
             });
 
-            ImageIO.write(stack.getImage(), "jpg", out);
+            new one.empty3.libs.Image(stack.getImage()).saveFile( out);
 
             addSource(out);
 

@@ -45,7 +45,7 @@ public class RunFeatures extends ProcessFile {
 
         PixM imageOut = imageIn.applyFilter(function);
 
-        ImageIO.write(imageOut.normalize(0., 1.).getImage(), "jpg", out);
+        imageOut.normalize(0., 1.).getImage2().saveFile( out);
         return true;
     }
 }

@@ -231,11 +231,11 @@ private int sizeElement = 20, elementSize=20;
 
 
                             }
-            //ImageIO.write(pi.getImage(), "JPEG", out);
-            ImageIO.write(moutA.normalize(0., 1.).getImage(), "JPEG", new File(out.getParent() + "a" + "jpg"));
-            ImageIO.write(moutB.normalize(0., 1.).getImage(), "JPEG", new File(out.getParent() + "b" + "jpg"));
+            //new one.empty3.libs.Image(pi.getImage()).saveFile(out);
+            new one.empty3.libs.Image(moutA.normalize(0., 1.).getImage()).saveFile(new File(out.getParent() + "a" + "jpg"));
+            new one.empty3.libs.Image(moutB.normalize(0., 1.).getImage()).saveFile(new File(out.getParent() + "b" + "jpg"));
 
-            //ImageIO.write(m2g, "JPEG", new File(out.getParent()+5+"jpg"));
+            //new one.empty3.libs.Image(m2g).saveFile(new File(out.getParent()+5+"jpg"));
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

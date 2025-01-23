@@ -356,10 +356,10 @@ public class CurveFitting extends ProcessFile {
 
             String absolutePath = out.getAbsolutePath();
             absolutePath = absolutePath.substring(0, absolutePath.length() - 4);
-            ImageIO.write(image, "jpg", new File(absolutePath + ".jpg"));
-            ImageIO.write(outPix.normalize(0.0, 1.0, 0., 1.).getImage(), "jpg", new File(
+            new one.empty3.libs.Image(image).saveFile( new File(absolutePath + ".jpg"));
+            new one.empty3.libs.Image(outPix.normalize(0.0, 1.0, 0., 1.).getImage()).saveFile( new File(
                     absolutePath + "-outPixels.jpg"));
-            ImageIO.write(inPix.normalize(0.0, 1.0, 0., 1.).getImage(), "jpg", new File(
+            new one.empty3.libs.Image(inPix.normalize(0.0, 1.0, 0., 1.).getImage()).saveFile( new File(
                     absolutePath + "-inPixels.jpg"));
 
             return true;

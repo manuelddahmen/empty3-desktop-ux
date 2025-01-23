@@ -46,7 +46,7 @@ public class TransformColor extends ProcessFile {
                 }
             }
 
-            ImageIO.write(pix.normalize(0.0, 1.0).getImage(), "jpg", out);
+            new one.empty3.libs.Image(pix.normalize(0.0, 1.0).getImage()).saveFile( out);
 
             return true;
         } catch (IOException e) {

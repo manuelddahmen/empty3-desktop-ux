@@ -141,7 +141,7 @@ public class DBScan extends ProcessFile implements Algorithm {
                             colorCluster.getGreen(), colorCluster.getBlue());
                 }
             }
-            ImageIO.write(p.getImage(), "jpg", out);
+            new one.empty3.libs.Image(p.getImage()).saveFile( out);
         } catch (Exception ex) {
         }
 

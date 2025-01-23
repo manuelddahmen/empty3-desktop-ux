@@ -55,7 +55,7 @@ public class SelectColor extends ProcessFile {
                 }
             }
         try {
-            ImageIO.write(pixM2.getImage(), "jpg", out);
+            new one.empty3.libs.Image(pixM2.getImage()).saveFile( out);
             return true;
         } catch (Exception ex) {
         }

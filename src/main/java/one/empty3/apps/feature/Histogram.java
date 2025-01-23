@@ -153,7 +153,6 @@ public class Histogram {
 
     public static void testCircleSelect(BufferedImage file, File directory, int levels, double min, double radiusIncr) {
         for (int i = 0; i < levels; i++) {
-            try {
                 BufferedImage img = file;
                 BufferedImage img2 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
                 BufferedImage img3 = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -200,13 +199,10 @@ public class Histogram {
                 File fileToWrite3 = new File(directory.getAbsolutePath()
                         + "level" + finalI + "_NEW_RGB.jpg");
                 fileToWrite.mkdirs();
-                ImageIO.write(img, "JPEG", fileToWrite);
-                ImageIO.write(img, "JPEG", fileToWrite2);
-                ImageIO.write(img, "JPEG", fileToWrite3);
+                new one.empty3.libs.Image(img).saveFile(fileToWrite);
+                new one.empty3.libs.Image(img).saveFile(fileToWrite2);
+                new one.empty3.libs.Image(img).saveFile(fileToWrite3);
 
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
         }
     }
 

@@ -20,7 +20,10 @@
 
 package one.empty3.feature_2;
 
-import one.empty3.matrix.FilterMatPixM;
+import one.empty3.apps.feature.FilterMatPixM;
+import one.empty3.feature.FilterPixM;
+
+
 import one.empty3.feature.M3;
 
 public class GradientFilter extends FilterMatPixM {

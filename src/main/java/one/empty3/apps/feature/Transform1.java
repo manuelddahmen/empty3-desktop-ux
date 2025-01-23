@@ -139,7 +139,7 @@ public class Transform1 extends ProcessFile {
      WriteFile.writeNext("radial grad"+file.getName(), rad.normalize(0.,1.).getImage());
      */
         try {
-            ImageIO.write(plext3.getImage(), "jpg", out);
+            new one.empty3.libs.Image(plext3.getImage()).saveFile( out);
         } catch (Exception ex) {
             return false;
         }

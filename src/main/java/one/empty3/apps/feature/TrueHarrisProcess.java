@@ -79,7 +79,7 @@ public class TrueHarrisProcess extends ProcessFile {
 
         try {
 
-            ImageIO.write(normalize.getImage(), "JPEG", out);
+            new one.empty3.libs.Image(normalize.getImage()).saveFile(out);
             return true;
         } catch (Exception ex) {
 

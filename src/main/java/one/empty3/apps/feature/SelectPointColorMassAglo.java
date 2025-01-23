@@ -35,7 +35,7 @@ public class SelectPointColorMassAglo extends FilterPixM {
     private double[] rgb;
 
     public SelectPointColorMassAglo(BufferedImage image) {
-        super(new Image(image));
+        super(new one.empty3.libs.Image(image));
     }
 
     public double[] getColor(int x, int y) {

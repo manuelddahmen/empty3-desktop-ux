@@ -162,9 +162,9 @@ public class Hist4Contour3 extends ProcessFile {
         // Colorier en fonction des pixels voisins
         //        Circle c2 = getLevel(cc, inP, cc.r/2);
         try {
-            //ImageIO.write(outP.normalize(0, 1).getImage(), "jpg", out);
-            ImageIO.write(outP.normalize(0, 1, 0, 1).getImage(), "jpg", out);
-            //ImageIO.write(outP0.normalize(0, 1).getImage(), "jpg", out);
+            //new one.empty3.libs.Image(outP.normalize(0, 1).getImage()).saveFile( out);
+            outP.normalize(0, 1, 0, 1).getImage2().saveFile( out);
+            //new one.empty3.libs.Image(outP0.normalize(0, 1).getImage()).saveFile( out);
             return true;
 
         } catch (Exception ex) {

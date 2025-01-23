@@ -173,7 +173,7 @@ tasks.withType(JavaCompile).configureEach {
 dependencies {
     implementation "one.empty3.libs:partial-desktop:0.0.16"
     implementation "one.empty3.libs:commons-mp:0.0.7"
-    implementation "one.empty3:empty3-library-mp:2025.1.22"
+    implementation "one.empty3:empty3-library-mp:2025.1.22-1"
 
     testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
     testImplementation platform('org.junit:junit-bom:5.10.3')

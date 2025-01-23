@@ -154,12 +154,12 @@ public class ResolutionCharacter5 implements Runnable {
     public void exec(ITexture texture, PixM output, PixM input, File dirOut, String name) {
         output.plotCurve(new Rectangle(10, 10, output.getColumns() - 20, output.getLines() - 20), texture);
 
-        ImageIO.write(input.getImage(), "jpg",
+        new one.empty3.libs.Image(input.getImage()).saveFile(
                 new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "INPUT.jpg")));
-        ImageIO.write(output.getImage(), "jpg",
+        new one.empty3.libs.Image(output.getImage()).saveFile(
                 new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "OUTPUT.jpg")));
 
-        ImageIO.write(outRecompose.getImage(), "jpg", new File(
+        new one.empty3.libs.Image(outRecompose.getImage()).saveFile( new File(
                 dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "RECOMPOSE.jpg")));
 
     }
@@ -500,7 +500,7 @@ public class ResolutionCharacter5 implements Runnable {
                                     rectangle2.getY(), rectangle2.getW(), rectangle2.getH());
                             if (!file.getParentFile().exists() || file.getParentFile().isDirectory()) {
                                 file.getParentFile().mkdirs();
-                                ImageIO.write(outChar.getImage(), "png", file);
+                                outChar.getImage2().saveFile(file);
                             }
                             outRecompose.pasteSubImage(outChar,
                                     rectangle2.getX(), rectangle2.getY(), rectangle2.getW(), rectangle2.getH());

@@ -20,8 +20,11 @@
 //
 //package one.empty3.feature_2;
 //
-//import matrix.FilterMatPixM;
-//import matrix.M3;
+//import one.empty3.apps.feature.FilterMatPixM;
+import one.empty3.feature.FilterPixM;
+
+
+//import one.empty3.apps.feature.M3;
 ///*
 // * liste de régions petites ou grandes
 // */

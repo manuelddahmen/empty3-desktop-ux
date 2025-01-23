@@ -340,7 +340,7 @@ public class Lines7luckyLinesOutline extends ProcessFile {
                 }
             }
 
-            ImageIO.write(img3.normalize(0, 1).getImage(), "jpg", out);
+            new one.empty3.libs.Image(img3.normalize(0, 1).getImage()).saveFile( out);
 
             return true;
         } catch (

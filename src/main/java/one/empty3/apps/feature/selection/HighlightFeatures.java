@@ -165,7 +165,7 @@ public class HighlightFeatures extends ProcessFile {
                             }
                     }
                 }
-            ImageIO.write(original.normalize(0., 1., 0., 1.).getImage(), "jpg", out);
+            new one.empty3.libs.Image(original.normalize(0., 1., 0., 1.).getImage()).saveFile( out);
 
             return true;
         } catch (IOException e) {

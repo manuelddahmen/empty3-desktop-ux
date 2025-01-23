@@ -80,7 +80,7 @@ public class Classification extends ProcessFile {
             }
 
         try {
-            ImageIO.write(imageOut, "jpg", out);
+            new one.empty3.libs.Image(imageOut).saveFile( out);
         } catch (Exception ex) {
             return false;
         }

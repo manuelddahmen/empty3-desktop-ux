@@ -153,9 +153,9 @@ public class Hist1Votes extends ProcessFile {
             }
         }
         try {
-            //ImageIO.write(outP.normalize(0, 1).getImage(), "jpg", out);
-            ImageIO.write(outP.normalize(0, 1).getImage(), "jpg", out);
-            //ImageIO.write(outP0.normalize(0, 1).getImage(), "jpg", out);
+            //new one.empty3.libs.Image(outP.normalize(0, 1).getImage()).saveFile( out);
+            outP.normalize(0, 1).getImage2().saveFile( out);
+            //new one.empty3.libs.Image(outP0.normalize(0, 1).getImage()).saveFile( out);
             return true;
 
         } catch (Exception ignored) {

@@ -94,7 +94,7 @@ public class CharacterIsolationMatching extends Thread {
                 sumLines[0] += sumLinesI;
             });
 
-            ImageIO.write(result.normalize(0, 1).getImage(), "jpg", this.fileOut);
+            new one.empty3.libs.Image(result.normalize(0, 1).getImage()).saveFile( this.fileOut);
         }
     }
 }

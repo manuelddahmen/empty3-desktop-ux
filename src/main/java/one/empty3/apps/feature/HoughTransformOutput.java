@@ -58,7 +58,7 @@ public class HoughTransformOutput {
                 img.setRGB(i, j, new Color(Lumiere.getIntFromInts(255, 255, imgArray[i][j])).getRGB());
             }
         }
-        ImageIO.write(img, "png", outFile);
+        new one.empty3.libs.Image(img).saveFile( outFile);
     }
 
     public static void writeImage(double[][] imgArray, File outFile) throws Exception {
@@ -68,11 +68,11 @@ public class HoughTransformOutput {
                 img.setRGB(i, j, (int) imgArray[i][j]);
             }
         }
-        ImageIO.write(img, "png", outFile);
+        new one.empty3.libs.Image(img).saveFile( outFile);
     }
 
     public static void writeImage(BufferedImage image, File outFile) throws Exception {
-        ImageIO.write(image, "png", outFile);
+        new one.empty3.libs.Image(image).saveFile(outFile);
     }
 
     public static void writeImage(double[][] sobelArray, File outFile, int threshold) throws Exception {
@@ -84,7 +84,7 @@ public class HoughTransformOutput {
                 }
             }
         }
-        ImageIO.write(img, "png", outFile);
+        new one.empty3.libs.Image(img).saveFile(outFile);
     }
 
     public static void superimposeCircles(List<one.empty3.apps.feature.CircleHit> hits, BufferedImage in, File out) {
@@ -103,7 +103,7 @@ public class HoughTransformOutput {
             }
         }
         try {
-            ImageIO.write(in, "jpg", out);
+            new one.empty3.libs.Image(in).saveFile( out);
 
         } catch (Exception ex) {
         }
@@ -130,7 +130,7 @@ public class HoughTransformOutput {
             }
         }
 
-        ImageIO.write(totalCircles, "png", out);
+        new one.empty3.libs.Image(totalCircles).saveFile( out);
     }
 
     public static BufferedImage scaledSobelResult(double[][] sobelTotal) {

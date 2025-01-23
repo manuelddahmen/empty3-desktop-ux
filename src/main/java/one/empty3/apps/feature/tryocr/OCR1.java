@@ -199,13 +199,13 @@ public class OCR1 implements Runnable {
         if (name.endsWith("jpg") || name.endsWith("png"))
             extension = name.substring(-3);
         else return;
-        ImageIO.write(input.getImage(), extension,
+        new one.empty3.libs.Image(input.getImage()).saveFile(
                 new File(dirOut + File.separator + name.replace(' ', '_')
                         .replace("." + extension, "INPUT." + extension)));
-        ImageIO.write(output.getImage(), "jpg",
+        new one.empty3.libs.Image(output.getImage()).saveFile(
                 new File(dirOut + File.separator + name.replace(' ', '_').replace("." + extension, "OUTPUT." + extension)));
 
-        ImageIO.write(outRecompose.getImage(), "jpg", new File(
+        new one.empty3.libs.Image(outRecompose.getImage()).saveFile( new File(
                 dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "RECOMPOSE.jpg")));
 
     }
@@ -289,7 +289,7 @@ public class OCR1 implements Runnable {
         output = input.copy();
 
         outRecompose = new PixM(input.getColumns(), input.getLines());
-        ImageIO.write(derivative(input).getImage(), "jpg", dirOutGradient2);
+        new one.empty3.libs.Image(derivative(input).getImage()).saveFile( dirOutGradient2);
 
         Logger.getAnonymousLogger().log(Level.INFO, "Image size: " + output.getColumns() + ", " + output.getLines());
 
@@ -403,10 +403,10 @@ public class OCR1 implements Runnable {
         });
         height += maxheight;
         if (pSlide.getColumns() > 0 && pSlide.getLines() > 0)
-            ImageIO.write(pSlide.getImage(), "jpg", new File(dirOutDist + "_matchingRects_" + pSlide + ".jpg"));
+            new one.empty3.libs.Image(pSlide.getImage()).saveFile( new File(dirOutDist + "_matchingRects_" + pSlide + ".jpg"));
 
         if (distances.getColumns() > 0 && distances.getLines() > 0)
-            ImageIO.write(distances.normalize(0, 1).getImage(), "jpg", dirOutDist);
+            new one.empty3.libs.Image(distances.normalize(0, 1).getImage()).saveFile( dirOutDist);
     }
 
     /***
@@ -626,7 +626,7 @@ public class OCR1 implements Runnable {
         if (!file.getParentFile().exists() || file.getParentFile().isDirectory()) {
             file.getParentFile().mkdirs();
             if (outChar.getColumns() > 0 && outChar.getLines() > 0)
-                ImageIO.write(outChar.getImage(), "png", file);
+                new one.empty3.libs.Image(outChar.getImage()).saveFile( file);
         }
 
     }

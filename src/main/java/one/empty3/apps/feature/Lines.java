@@ -235,7 +235,7 @@ public class Lines extends ProcessFile {
                 Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
                 p3s.forEach(point3D -> o.setValues((int) (double) (point3D.getX()), (int) (double) (point3D.getY()), r.getRed() / 255., r.getGreen() / 255., r.getBlue() / 255.));
             });
-            ImageIO.write(o.normalize(0.0, 1.0).getImage(), "jpg", out);
+            new one.empty3.libs.Image(o.normalize(0.0, 1.0).getImage()).saveFile( out);
             return true;
         } catch (IOException e) {
             e.printStackTrace();

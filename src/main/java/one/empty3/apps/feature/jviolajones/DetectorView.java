@@ -61,7 +61,7 @@ public class DetectorView extends JFrame {
 
         Image image = null;
         try {
-            image = new Image(ImageIO.read(img));
+            image = new one.empty3.libs.Image(ImageIO.read(img));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -112,14 +112,10 @@ public class CustomProcessFileRGB extends ProcessFile {
                 }
             }
 
-            try {
-                assert pixOut != null;
-                ImageIO.write(pixOut.getImage(), "jpg", out);
-                assert out.exists();
-                Logger.getAnonymousLogger().log(Level.INFO, "Image written" + out.getAbsolutePath());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            assert pixOut != null;
+            new one.empty3.libs.Image(pixOut.getImage()).saveFile( out);
+            assert out.exists();
+            Logger.getAnonymousLogger().log(Level.INFO, "Image written" + out.getAbsolutePath());
             return true;
         }
         return false;

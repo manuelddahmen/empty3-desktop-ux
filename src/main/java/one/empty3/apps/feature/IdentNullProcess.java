@@ -28,6 +28,8 @@ import one.empty3.io.ObjectWithProperties;
 import one.empty3.io.ProcessFile;
 import one.empty3.libs.Image;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -52,16 +54,24 @@ public class IdentNullProcess extends ProcessFile {
         double r = (double) getProperties().getProperty("redFactor");
         double g = (double) getProperties().getProperty("blueFactor");
         double b = (double) getProperties().getProperty("greenFactor");
-
+/*
 
         for (int i = 0; i < pixM.getColumns(); i++) {
             for (int j = 0; j < pixM.getLines(); j++) {
                 pixM.set(pixM.index(i,j), pixM.getInt(i,j));
             }
+        }*/
+/** GOOD
+        BufferedImage image = pixM.getImage();
+        try {
+            new one.empty3.libs.Image(image).saveFile( out);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
+ */
         Image image = pixM.getImage2();
         image.saveFile(out);
+
         addSource(out);
         return true;
 

@@ -86,7 +86,7 @@ public class ProxyValue extends ProcessFile {
 
 
         try {
-            ImageIO.write(copy.getImage(), "jpg", out);
+            new one.empty3.libs.Image(copy.getImage()).saveFile( out);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

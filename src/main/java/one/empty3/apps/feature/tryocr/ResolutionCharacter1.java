@@ -134,9 +134,9 @@ public class ResolutionCharacter1 implements Runnable {
     static void exec(ITexture texture, PixM output, PixM input, File dirOut, String name) {
         output.plotCurve(new Rectangle(10, 10, output.getColumns() - 20, output.getLines() - 20), texture);
 
-        ImageIO.write(input.getImage(), "jpg",
+        new one.empty3.libs.Image(input.getImage()).saveFile(
                 new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "INPUT.jpg")));
-        ImageIO.write(output.getImage(), "jpg",
+        new one.empty3.libs.Image(output.getImage()).saveFile(
                 new File(dirOut + File.separator + name.replace(' ', '_').replace(".jpg", "OUTPUT.jpg")));
     }
 

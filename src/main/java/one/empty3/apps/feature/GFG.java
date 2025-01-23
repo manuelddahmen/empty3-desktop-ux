@@ -235,7 +235,7 @@ import java.awt.Dimension;
 //        }
 //
 //        try {
-//            ImageIO.write(pixOut.normalize(0, 1).getImage(), "jpg", out);
+//            new one.empty3.libs.Image(pixOut.normalize(0, 1).getImage()).saveFile( out);
 //            return true;
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
@@ -278,7 +278,7 @@ import java.awt.Dimension;
 //        Matrix multiply = pixM1.multiply(pixM2);
 //
 //        try {
-//            ImageIO.write(multiply.normalize(0, 1).getImage(), "jpg", out);
+//            new one.empty3.libs.Image(multiply.normalize(0, 1).getImage()).saveFile( out);
 //
 //
 //            return true;

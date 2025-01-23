@@ -340,11 +340,11 @@ public class RegionLineCorner extends ProcessFile {
                 File fileToWrite3 = new File(directory.getAbsolutePath()
                         + "level" + finalI + "_NEW_RGB.jpg");
                 //fileToWrite.mkdirs();
-                ImageIO.write(img4, "JPEG", out);
+                new one.empty3.libs.Image(img4).saveFile(out);
                 /*
-                ImageIO.write(img, "JPEG", fileToWrite);
-                ImageIO.write(img, "JPEG", fileToWrite2);
-                ImageIO.write(img, "JPEG", fileToWrite3);
+                new one.empty3.libs.Image(img).saveFile(fileToWrite);
+                new one.empty3.libs.Image(img).saveFile(fileToWrite2);
+                new one.empty3.libs.Image(img).saveFile(fileToWrite3);
 */
             }
 

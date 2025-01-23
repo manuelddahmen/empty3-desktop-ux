@@ -140,8 +140,7 @@ public class ExtractIntensityInfo extends
 
 
         try {
-            ImageIO.write(pix.getImage(),
-                    "JPEG", out);
+            pix.getImage2().saveFile( out);
         } catch (Exception ex) {
         }
 

@@ -38,8 +38,6 @@ import one.empty3.libs.*;
 
 import java.util.ArrayList;
 
-;
-
 /*__
  * Meta Description missing
  * @author Manuel Dahmen dathewolf@gmail.com

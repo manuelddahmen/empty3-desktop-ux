@@ -377,7 +377,7 @@ public class Lines4 extends ProcessFile {
                     }
                 }
             }
-            ImageIO.write(o.getImage(), "jpg", out);
+            new one.empty3.libs.Image(o.getImage()).saveFile( out);
 
             return true;
         } catch (

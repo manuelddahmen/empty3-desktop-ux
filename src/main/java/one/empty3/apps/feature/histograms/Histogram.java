@@ -132,7 +132,7 @@ public class Histogram extends ProcessFile {
 
 
         try {
-            ImageIO.write(outP.normalize(0, 1).getImage(), "jpg", out);
+            outP.normalize(0, 1).getImage2().saveFile( out);
             return true;
 
         } catch (Exception ignored) {
