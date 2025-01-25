@@ -27,15 +27,11 @@
 package one.empty3.apps.facedetect;
 
 import java.awt.*;
-
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
 import one.empty3.apps.facedetect.vecmesh.Rotate;
 import one.empty3.apps.facedetect.vecmesh.VecMeshEditor;
-import one.empty3.apps.facedetect.vecmesh.VecMeshEditorGui;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
-import one.empty3.apps.feature.snakes.Matrix;
-import one.empty3.library.Camera;
 import one.empty3.library.Config;
 import one.empty3.library.Point3D;
 import one.empty3.library.Scene;
@@ -64,6 +60,7 @@ import java.util.logging.Logger;
  */
 public class JFrameEditPolygonsMappings extends JFrame {
 
+    public double computeTimeMax;
     private Rotate rotate;
 
     public void validateCameraPosition(VecMeshEditor model) {
@@ -75,6 +72,13 @@ public class JFrameEditPolygonsMappings extends JFrame {
         editPolygonsMappings2.model.setVectX(rotate.getRotationMatrix().mult(editPolygonsMappings2.model.getVectX()));
         editPolygonsMappings2.model.setVectY(rotate.getRotationMatrix().mult(editPolygonsMappings2.model.getVectY()));
         editPolygonsMappings2.model.setVectZ(rotate.getRotationMatrix().mult(editPolygonsMappings2.model.getVectZ()));
+    }
+
+    public void setComputeMaxTime(double value) {
+        this.computeTimeMax = value;
+    }
+    public double getComputeTimeMax() {
+        return computeTimeMax;
     }
 
     public class MyFilter implements Filter {
@@ -722,6 +726,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
         lastDirectory = loadImageDeformed.getCurrentDirectory();
     }
 
+    private void menuItemDistance43computeTImeMax(ActionEvent e) {
+        ComputeTimeMax computeTimeMax1 = new ComputeTimeMax(this);
+        computeTimeMax1.setVisible(true);
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         ResourceBundle bundle = ResourceBundle.getBundle("one.empty3.library.core.testing.Bundle");
@@ -781,6 +790,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menu9 = new JMenu();
         menuItem2 = new JMenuItem();
         menuItem13 = new JMenuItem();
+        label1 = new JLabel();
+        menuItem21 = new JMenuItem();
+        textField1 = new JTextField();
         menuItem14 = new JMenuItem();
         menuItem15 = new JMenuItem();
         menuItem16 = new JMenuItem();
@@ -1126,6 +1138,16 @@ public class JFrameEditPolygonsMappings extends JFrame {
                     menuItem13.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem13.text"));
                     menuItem13.addActionListener(e -> menuItem13(e));
                     menu9.add(menuItem13);
+                    menu9.add(label1);
+
+                    //---- menuItem21 ----
+                    menuItem21.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem21.text"));
+                    menuItem21.addActionListener(e -> menuItemDistance43computeTImeMax(e));
+                    menu9.add(menuItem21);
+
+                    //---- textField1 ----
+                    textField1.setText(bundle.getString("JFrameEditPolygonsMappings.textField1.text"));
+                    menu9.add(textField1);
 
                     //---- menuItem14 ----
                     menuItem14.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem14.text"));
@@ -1258,6 +1280,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenu menu9;
     private JMenuItem menuItem2;
     private JMenuItem menuItem13;
+    private JLabel label1;
+    private JMenuItem menuItem21;
+    private JTextField textField1;
     private JMenuItem menuItem14;
     private JMenuItem menuItem15;
     private JMenuItem menuItem16;

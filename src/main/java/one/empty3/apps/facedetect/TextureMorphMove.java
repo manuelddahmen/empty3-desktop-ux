@@ -200,6 +200,7 @@ public class TextureMorphMove extends ITexture {
                     distanceAB = new DistanceProxLinear43(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
                             bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid);
                     ((DistanceProxLinear43) distanceAB).setJpgRight(editPanel.imageFileRight);
+                    ((DistanceProxLinear43) distanceAB).setComputeMaxTime(editPanel.getComputeTimeMax());
                     editPanel.convexHull3 = new ConvexHull(lC, new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
                     if(editPanel.imageFileRight!=null)
                         distanceAB.jpgRight = editPanel.imageFileRight;

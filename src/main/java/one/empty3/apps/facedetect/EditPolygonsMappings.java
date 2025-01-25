@@ -114,6 +114,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     private Thread threadDisplay;
     Thread threadTextureCreation;
     ConvexHull convexHull3;
+    private double computeTimeMax;
 
 
     public EditPolygonsMappings(Window owner) {
@@ -143,6 +144,13 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 }
             }
         });
+    }
+
+    public void setComputeMaxTime(double value) {
+        this.computeTimeMax = value;
+    }
+    public double getComputeTimeMax() {
+        return computeTimeMax;
     }
 
     public void voidPanelModelViewRotate(MouseEvent mouseEvent) {
@@ -518,8 +526,10 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                     oneMore.set(false);
                                 long l = System.nanoTime();
                                 Logger.getAnonymousLogger().log(Level.INFO, "All loaded resources finished. Starts distance calculation");
-                                if (iTextureMorphMove == null || !distanceABClass.getClass().equals(iTextureMorphMove.distanceAB)) {
+                                if (iTextureMorphMove == null) {
                                     iTextureMorphMove = new TextureMorphMove(this, distanceABClass);
+                                }
+                                if(  !distanceABClass.getClass().equals(iTextureMorphMove.distanceAB)) {
                                     if (pointsInModel != null && pointsInImage != null && !pointsInImage.isEmpty() && !pointsInModel.isEmpty()) {
 
                                         if (pointsInImage != null && pointsInImage.size() >= 3 && pointsInModel != null && pointsInModel.size() >= 3) {

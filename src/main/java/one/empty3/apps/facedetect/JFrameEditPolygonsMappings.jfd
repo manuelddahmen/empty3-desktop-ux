@@ -333,6 +333,18 @@ new FormModel {
 							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem13.text" )
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItem13", true ) )
 						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label1"
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem21"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem21.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemDistance43computeTImeMax", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JTextField" ) {
+							name: "textField1"
+							"text": new FormMessage( null, "JFrameEditPolygonsMappings.textField1.text" )
+						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "menuItem14"
 							"text": new FormMessage( null, "JFrameEditPolygonsMappings.menuItem14.text" )

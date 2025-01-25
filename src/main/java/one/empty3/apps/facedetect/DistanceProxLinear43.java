@@ -40,6 +40,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
     private static final int MAX_SUB_ITERE_X = 10;
     private List<Point3D> pointsC;
     boolean[][] checkedListC;
+    private double computeTimeMax;
 
     /***
      * Algorithme Chercher le poil dans la tête pressée d'Ariane
@@ -59,6 +60,13 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         imageCB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
         if(cDimReal!=null && C.size()>0)
             init_1();
+    }
+
+    public void setComputeMaxTime(double value) {
+        this.computeTimeMax = value;
+    }
+    public double getComputeTimeMax() {
+        return computeTimeMax;
     }
 
     int nIteration0 = 7;
@@ -102,7 +110,16 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         double surfaceOccupied = 0.1;
         double surfaceOccupiedOld = 0.01;
         int step = 0;
-        while (occ != oldoccc) {
+        int sizeIndexStart = 0;
+
+
+        long timeStart = System.nanoTime();
+
+        long timeElapsed = 0;
+
+        boolean ended = false;
+
+        while (occ != oldoccc && !ended) {
             oldoccc = occ;
             stepNewPoints = false;
             firstStep = false;
@@ -131,7 +148,12 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
                 double distCand = Double.MAX_VALUE;
                 // Find the nearest mapped point
                 double norm = Double.MAX_VALUE;
-                for (int k = 0; k < sizeA; k++) {
+                for (int k = sizeIndexStart; k < sizeA; k++) {
+                    timeElapsed = System.nanoTime()-timeStart;
+                    if(timeElapsed> computeTimeMax) { // 1 min max.
+                        ended = true;
+                        break;
+                    }
                     if (k == i)
                         continue;
                     norm = pointsA.get(i).moins(pointsA.get(k)).norme();
@@ -186,8 +208,10 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
                     m++;
                 }
 
-
             }
+
+            sizeIndexStart = pointsA.size();
+
             pointsA.addAll(newA);
             pointsB.addAll(newB);
             pointsC.addAll(newC);
@@ -220,54 +244,6 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         System.out.println("Compute texturing ended");
     }
 
-    public void init_2() {
-        imageAB = new Point3D[((int) aDimReal.getWidth())][(int) aDimReal.getHeight()];
-
-        pointsA = A.subList(0, A.size() - 1);
-        pointsB = B.subList(0, B.size() - 1);
-        List<Point3D> newA = new ArrayList<>();
-        List<Point3D> newB = new ArrayList<>();
-        double eps = 1. / Math.max(bDimReal.getWidth(), bDimReal.getHeight());
-
-        double maxDist = 1. / eps;
-        double globalLocalMaxDist = maxDist;
-        double[][] localMaxDist = new double[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
-        while (maxDist > eps) {
-            for (int i = 0; i < pointsB.size(); i++) {
-                for (int j = 0; j < pointsA.size(); j++) {
-                    if (i != j) {
-                        Point3D pi = pointsA.get(i);
-                        Point3D pj = pointsA.get(i);
-                        double dist = Point3D.distance(pointsA.get(j), pointsA.get(i));
-                        if (dist < localMaxDist[i][j] && dist < maxDist) {
-                            localMaxDist[i][j] = dist;
-                            Point3D pB = pointsB.get(i).plus(pointsB.get(j)).mult(0.5);
-                            Point3D pA = pointsA.get(i).plus(pointsA.get(j)).mult(0.5);
-
-                            newA.add(pA);
-                            newB.add(pB);
-
-                            if (localMaxDist[i][j] < maxDist && globalLocalMaxDist < maxDist
-                                    && localMaxDist[i][j] < globalLocalMaxDist) {
-                                globalLocalMaxDist = localMaxDist[i][j];
-                            }
-                        }
-                    }
-                }
-            }
-            for (int i = 0; i < localMaxDist.length; i++) {
-                for (int j = 0; j < localMaxDist[i].length; j++) {
-                    if (maxDist > localMaxDist[i][j]) {
-                        maxDist = localMaxDist[i][j];
-                    }
-                }
-            }
-            pointsA.addAll(newA);
-            pointsB.addAll(newB);
-            newA = new ArrayList<>();
-            newB = new ArrayList<>();
-        }
-    }
 
 
     @Override
