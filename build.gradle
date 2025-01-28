@@ -11,7 +11,7 @@ plugins {
 //"empty3-desktop-ux"
 
 group = 'one.empty3'
-version = '2025.1.10'
+version = '2025.1.26'
 
 kotlin {
     jvmToolchain(22)
@@ -173,7 +173,7 @@ tasks.withType(JavaCompile).configureEach {
 dependencies {
     implementation "one.empty3.libs:partial-desktop:0.0.16"
     implementation "one.empty3.libs:commons-mp:0.0.7"
-    implementation "one.empty3:empty3-library-mp:2025.1.22-1"
+    implementation "one.empty3:empty3-library-mp:2025.1.22-2"
 
     testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
     testImplementation platform('org.junit:junit-bom:5.10.3')
@@ -209,7 +209,6 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-storage'
     implementation "com.google.apis:google-api-services-vision:v1-rev20231219-2.0.0"
     implementation "com.google.auth:google-auth-library-oauth2-http:1.23.0"
-    implementation 'com.google.guava:guava:32.0.0-android'
     implementation "com.google.http-client:google-http-client-jackson2:1.44.2"
     implementation("org.jdesktop:beansbinding:1.2.1")
 }
@@ -299,13 +298,13 @@ signing {
     //sign configurations.archives
 }
 
-def versionName = '2025.1.10'
+def versionName = '2025.1.26'
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-desktop-ux'
-            version = '2025.1.10'
+            version = '2025.1.26'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -321,7 +320,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-desktop-ux"
-                version '2025.1.10'
+                version "2025.1.26"
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -405,8 +404,8 @@ jreleaser {
         name = 'empty3-desktop-ux'
         java.artifactId = 'empty3-desktop-ux'
         java.groupId = 'one.empty3'
-        java.version = '2025.1.10'
-        version = '2025.1.10'
+        java.version = '2025.1.26'
+        version = '2025.1.26'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +

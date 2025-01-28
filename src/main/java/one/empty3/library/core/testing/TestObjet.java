@@ -48,9 +48,6 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -124,7 +121,7 @@ public abstract class TestObjet implements Test, Runnable {
     private int version = 1;
     private String template = "";
     private String type = "JPEG";
-    private String filenameZIP = "tests";
+    private String filenameZIP = "one/empty3/test/tests";
     private String fileextZIP = "diapo";
     private File file = null;
     private int resx = 640;
