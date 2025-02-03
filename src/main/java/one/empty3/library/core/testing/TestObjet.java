@@ -28,6 +28,7 @@
  */
 package one.empty3.library.core.testing;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import one.empty3.gui.DataModel;
 import one.empty3.library.*;
 import one.empty3.library.core.ECBufferedImage;
@@ -178,6 +179,11 @@ public abstract class TestObjet implements Test, Runnable {
     private boolean LOG = false;
     private boolean running = false;
     static int numInstancesRunning = 0;
+
+
+    {
+        FlatDarkLaf.setup();
+    }
 
     /**
      * The TestObjet class represents an object used for testing purposes.

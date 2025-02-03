@@ -22,6 +22,7 @@
 
 package one.empty3.apps.facedetect.gcp;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
@@ -71,6 +72,13 @@ public class FaceDetectApp {
     private String[][][] landmarks0 = {{{"LEFT_EYE", "RIGHT_EYE", "FOREHEAD_GLABELLA"}}};
     private String[][][] landmarks = {{{"LEFT_EYE", "RIGHT_EYE", "FOREHEAD_GLABELLA"}}};
     private PrintWriter dataWriter;
+
+
+
+    {
+        FlatDarkLaf.setup();
+    }
+
 
     public FaceDetectApp(Vision visionService) {
         this.vision = visionService;

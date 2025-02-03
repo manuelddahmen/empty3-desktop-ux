@@ -26,6 +26,7 @@
 
 package one.empty3.library.core.testing;
 
+import java.awt.*;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -45,6 +46,8 @@ public class TestObjetUI extends JFrame {
         panel1 = new JPanel();
 
         //======== this ========
+        setMaximumSize(new Dimension(0, 2147483647));
+        setMinimumSize(new Dimension(400, 300));
         var contentPane = getContentPane();
         contentPane.setLayout(new MigLayout(
             "hidemode 3",

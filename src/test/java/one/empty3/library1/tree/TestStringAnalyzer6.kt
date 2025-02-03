@@ -43,7 +43,7 @@ class TestStringAnalyzer6 {
         File(directory_path).listFiles()?.forEach {
             val file = it
             if (file != null && file.name.endsWith(".java_code")) {
-                val stringAnalyzer1java: StringAnalyzerJava1 = StringAnalyzerJava1()
+                val stringAnalyzer1java: StringAnalyzerJava2 = StringAnalyzerJava2()
                 val javaToken5 = getJavaToken6(stringAnalyzer1java)
                 val readString = readString(file.absolutePath)
                 val parse = 0
@@ -108,7 +108,7 @@ class TestStringAnalyzer6 {
         throw RuntimeException("Not found or read fails")
     }
 
-    public fun getJavaToken6(stringAnalyzer3: StringAnalyzerJava1): StringAnalyzer3.Token {
+    public fun getJavaToken6(stringAnalyzer3: StringAnalyzerJava2): StringAnalyzer3.Token {
         val tokenPackage = stringAnalyzer3.TokenPackage()
         val tokenPackageName = stringAnalyzer3.TokenQualifiedName()
         val tokenPackageSemicolon = stringAnalyzer3.TokenSemiColon()
@@ -195,12 +195,6 @@ class TestStringAnalyzer6 {
         val tokenMemberMethodExpression4 = stringAnalyzer3.TokenExpression1()
         val tokenMethodSemiColonVar4 = stringAnalyzer3.TokenSemiColon()
 
-        val tokenType5 = stringAnalyzer3.TokenType2()
-        val tokenName5 = stringAnalyzer3.TokenName()
-        val tokenEquals5 = stringAnalyzer3.TokenEquals()
-        val tokenExpression5 = stringAnalyzer3.TokenExpression2()
-        val tokenSemiColon5 = stringAnalyzer3.TokenSemiColon()
-
         //Variant without end semicolon ";"
         // Method's instructions
         val tokenMemberMethodVarType1wo = stringAnalyzer3.TokenQualifiedName()
@@ -279,10 +273,6 @@ class TestStringAnalyzer6 {
         tokenMemberMethodVarEquals4.addToken(tokenMemberMethodExpression4)
         tokenMemberMethodExpression4.addToken(tokenMethodSemiColonVar4)
 
-        tokenType5.addToken(tokenName5)
-        tokenName5.addToken(tokenEquals5)
-        tokenEquals5.addToken(tokenExpression5)
-        tokenExpression5.addToken(tokenSemiColon5)
 
         val tokenMemberVar = stringAnalyzer3.SingleTokenExclusiveXor(
             tokenMemberVarType1, tokenMemberVarType2
@@ -550,7 +540,6 @@ class TestStringAnalyzer6 {
             tokenMemberMethodVarType2,
             tokenMemberMethodExpression3,
             tokenMemberMethodVarName4,
-            tokenType5
         )
         val instructionIncr = stringAnalyzer3.SingleTokenExclusiveXor(
             tokenMemberMethodExpression3wo,

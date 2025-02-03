@@ -27,6 +27,8 @@
 package one.empty3.apps.facedetect;
 
 import java.awt.*;
+
+import com.formdev.flatlaf.FlatDarkLaf;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
 import one.empty3.apps.facedetect.vecmesh.Rotate;
@@ -62,6 +64,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     public double computeTimeMax;
     private Rotate rotate;
+
+    {
+        FlatDarkLaf.setup();
+    }
 
     public void validateCameraPosition(VecMeshEditor model) {
         if (model != null) {

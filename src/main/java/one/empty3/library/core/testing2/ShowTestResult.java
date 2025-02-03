@@ -186,17 +186,19 @@ public final class ShowTestResult extends JFrame implements Runnable {
             }
 
         });
+
+        pack();
     }
 
     public void dessine() {
         if (biic != null && biic.getImage() != null) {
             image = new Image(biic.getImage());
-            if (image != null) {
+            if (image.getBi() != null) {
                 if (jPanel1 != null) {
                     Graphics g = jPanel1.getGraphics();
                     if (g != null) {
                         if (isDisplaying()) {
-                            jPanel1.getGraphics().drawImage(image, 0, 0,
+                            jPanel1.getGraphics().drawImage(image.getBi(), 0, 0,
                                     jPanel1.getWidth(), jPanel1.getHeight(), 0, 0,
                                     image.getWidth(), image.getHeight(), null);
                         }

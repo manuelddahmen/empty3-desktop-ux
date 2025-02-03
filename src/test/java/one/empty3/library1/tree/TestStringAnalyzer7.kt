@@ -68,15 +68,15 @@ class TestStringAnalyzer7 {
         File(directory_path).listFiles()?.forEach {
             val file = it
             if (file != null && file.name.endsWith(".java_code")) {
-                val StringAnalyzerJava1: StringAnalyzerJava1 = StringAnalyzerJava1()
-                val javaToken7 = getJavaToken7(StringAnalyzerJava1)
+                val stringAnalyzerJava1: StringAnalyzerJava1 = StringAnalyzerJava1()
+                val javaToken7 = getJavaToken7(stringAnalyzerJava1)
                 val readString = readString(file.absolutePath)
                 var parse = 0
                 try {
                     parse = javaToken7.parse(readString, parse)
                 } catch (ex: RuntimeException) {
                     ex.printStackTrace()
-                    if (StringAnalyzerJava1.mPosition < readString.length - 1) {
+                    if (stringAnalyzerJava1.mPosition < readString.length - 1) {
                         println("Error: Parsing text not finished")
                     }
                 }
@@ -84,19 +84,19 @@ class TestStringAnalyzer7 {
                 println("------------------------------------------------------------------------")
                 println("- " + file.name)
                 println("------------------------------------------------------------------------")
-                println(StringAnalyzerJava1.construct.toLangStringJava(isDebug))
+                println(stringAnalyzerJava1.construct.toLangStringJava(isDebug))
                 println("------------------------------------------------------------------------")
-                println("- " + "amount of code: " + (StringAnalyzerJava1.mPosition + 1) + "/" + readString.length)
+                println("- " + "amount of code: " + (stringAnalyzerJava1.mPosition + 1) + "/" + readString.length)
                 println("------------------------------------------------------------------------")
                 println("- " + "errors (characters remainers): ")
                 println("------------------------------------------------------------------------")
-                System.err.println(readString.substring(StringAnalyzerJava1.mPosition));
+                System.err.println(readString.substring(stringAnalyzerJava1.mPosition));
                 println("------------------------------------------------------------------------")
-                System.err.println(StringAnalyzerJava1.construct.toLangStringJava(true));
+                System.err.println(stringAnalyzerJava1.construct.toLangStringJava(true));
                 println("------------------------------------------------------------------------")
 
 
-                succeed = succeed && (StringAnalyzerJava1.mPosition + 2 >= readString.length)
+                succeed = succeed && (stringAnalyzerJava1.mPosition + 2 >= readString.length)
                 /*&&
                 compareStrings(
                     readString, stringAnalyzer3.construct.toLangStringJava(false),
