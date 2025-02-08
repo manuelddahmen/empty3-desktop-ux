@@ -58,7 +58,9 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
     int nNeighbors = 3;
 
     public void init_1() {
-
+        if(A==null || B==null) {
+            return;
+        }
         pointsA = A.subList(0, A.size() - 1);
         pointsB = B.subList(0, B.size() - 1);
         List<Point3D> newA = new ArrayList<>();

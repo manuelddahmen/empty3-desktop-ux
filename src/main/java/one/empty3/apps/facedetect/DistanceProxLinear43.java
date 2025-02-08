@@ -40,7 +40,8 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
     private static final int MAX_SUB_ITERE_X = 10;
     private List<Point3D> pointsC;
     boolean[][] checkedListC;
-    private double computeTimeMax;
+    private double computeTimeMax = 1000*10e9d;
+    boolean[][] checkedListB;
 
     /***
      * Algorithme Chercher le poil dans la tête pressée d'Ariane
@@ -69,9 +70,6 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         return computeTimeMax;
     }
 
-    int nIteration0 = 7;
-    int nNeighbors = 3;
-
     public void init_1() {
 
         pointsA = A.subList(0, A.size() - 1);
@@ -81,6 +79,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         List<Point3D> newB = new ArrayList<>();
         List<Point3D> newC = new ArrayList<>();
         double eps = 1. / Math.min(aDimReal.getWidth(), aDimReal.getHeight());
+        checkedListB = new boolean[(int) bDimReal.getWidth()][(int) bDimReal.getHeight()];
         checkedListA = new boolean[(int) aDimReal.getWidth()][(int) aDimReal.getHeight()];
         checkedListC = new boolean[(int) cDimReal.getWidth()][(int) cDimReal.getHeight()];
        /* if(jpgRight!=null) {
@@ -99,6 +98,9 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
         }
         for (int i = 0; i < checkedListC.length; i++) {
             Arrays.fill(checkedListC[i], false);
+        }
+        for (int i = 0; i < checkedListB.length; i++) {
+            Arrays.fill(checkedListB[i], false);
         }
         int iteration = 1;
         double N = 1 / eps;
@@ -190,10 +192,11 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
                     int k1 = (int) (pC.getX() * cDimReal.getWidth());
                     int k2 = (int) (pC.getY() * cDimReal.getHeight());
 
-                    if (!checkedListA[i1][i2]) {
+                    if (!checkedListB[j1][j2]) {
                         checkedListA[i1][i2] = true;
                         checkedListC[k1][k2] = true;
-                        //checkedListRight[]
+                        checkedListB[j1][j2] = true;
+//checkedListRight[]
                         stepNewPoints = true;
                         newA.add(pA);
                         newB.add(pB);
@@ -222,9 +225,9 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
 
             iteration++;
             occ = 0;
-            for (int i = 0; i < imageAB.length; i++) {
-                for (int j = 0; j < imageAB[i].length; j++) {
-                    if (imageAB[i][j] != null) {
+            for (int i = 0; i < checkedListB.length; i++) {
+                for (int j = 0; j < checkedListB[i].length; j++) {
+                    if (checkedListB[i][j]) {
                         occ++;
                     }
                 }

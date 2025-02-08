@@ -70,7 +70,7 @@ public class TestBlob extends TestObjetSub {
         z().backgroundTexture(colorTextureBackground);
         z().texture(colorTextureBackground);
         Camera camera;
-        camera = new Camera(new Point3D(0d, 0d, Blob1.maxMulStatic1*4.0), new Point3D(0d, 0d, 0d));
+        camera = new Camera(new Point3D(0d, 0d, Blob1.maxMulStatic1*1000.0), new Point3D(0d, 0d, 0d));
         scene().cameraActive(camera);
     }
 

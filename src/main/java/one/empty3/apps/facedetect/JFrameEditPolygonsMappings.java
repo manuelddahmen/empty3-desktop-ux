@@ -81,10 +81,14 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     public void setComputeMaxTime(double value) {
-        this.computeTimeMax = value;
+        this.computeTimeMax = value*10E9d;
+        editPolygonsMappings2.setComputeMaxTime(computeTimeMax);
+        if(editPolygonsMappings2.iTextureMorphMove!=null)
+            if(editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d)
+                d.setComputeMaxTime(computeTimeMax);
     }
     public double getComputeTimeMax() {
-        return computeTimeMax;
+        return computeTimeMax/10E9d;
     }
 
     public class MyFilter implements Filter {
