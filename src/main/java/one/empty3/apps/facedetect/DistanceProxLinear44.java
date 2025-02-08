@@ -1,25 +1,3 @@
-/*
- *
- *  * Copyright (c) 2024. Manuel Daniel Dahmen
- *  *
- *  *
- *  *    Copyright 2024 Manuel Daniel Dahmen
- *  *
- *  *    Licensed under the Apache License, Version 2.0 (the "License");
- *  *    you may not use this file except in compliance with the License.
- *  *    You may obtain a copy of the License at
- *  *
- *  *        http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  *    Unless required by applicable law or agreed to in writing, software
- *  *    distributed under the License is distributed on an "AS IS" BASIS,
- *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *    See the License for the specific language governing permissions and
- *  *    limitations under the License.
- *
- *
- */
-
 package one.empty3.apps.facedetect;
 
 import one.empty3.library.Point3D;
@@ -29,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DistanceProxLinear43 extends DistanceBezier2 {
+public class DistanceProxLinear44 extends DistanceBezier2 {
     private final Point3D[][] imageCB;
     private final List<Point3D> C;
     private final Dimension2D cDimReal;
@@ -52,8 +30,8 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
      * @param opt1
      * @param optimizeGrid
      */
-    public DistanceProxLinear43(List<Point3D> A, List<Point3D> B, List<Point3D> C, Dimension2D aDimReal, Dimension2D bDimReal, Dimension2D cDimReal,
-                               boolean opt1, boolean optimizeGrid) {
+    public DistanceProxLinear44(List<Point3D> A, List<Point3D> B, List<Point3D> C, Dimension2D aDimReal, Dimension2D bDimReal, Dimension2D cDimReal,
+                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
         this.C  = C;
         this.cDimReal = cDimReal;
@@ -202,7 +180,7 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
                         newB.add(pB);
                         newC.add(pC);
                         imageAB[j1][j2] = pA;
-                        imageCB[j1][j2] = pA;
+                        imageCB[j1][j2] = pC;
                         gen[i1][i2] = iteration;
                         pointAddedA[i1][i2] = pA;
                         pointAddedC[i1][i2] = pA;
@@ -280,31 +258,13 @@ public class DistanceProxLinear43 extends DistanceBezier2 {
 
 
     private Point3D findAxPointInBa12(double u, double v) {
-        Point3D searchedB = new Point3D(u, v, 0.0);
-        Point3D found = searchedB;
-        if(pointsB!=null&&pointsA!=null) {
-            double dist = Double.MAX_VALUE;
-            for (int i = 0; i < pointsB.size(); i++) {
-                if (pointsB.get(i).moins(searchedB).norme() < dist) {
-                    found = pointsA.get(i);
-                    dist = pointsB.get(i).moins(searchedB).norme();
-                }
-            }
-        }
-        return searchedB;
+        if(u>=0&&v>=0&&u<1&&v<1)
+            return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
+        return Point3D.O0;
     }
     Point3D findAxPointInBa13(double u, double v) {
-        Point3D searchedB = new Point3D(u, v, 0.0);
-        Point3D found = searchedB;
-        if(pointsB!=null&&pointsC!=null) {
-            double dist = Double.MAX_VALUE;
-            for (int i = 0; i < pointsB.size(); i++) {
-                if (pointsB.get(i).moins(searchedB).norme() < dist) {
-                    found = pointsC.get(i);
-                    dist = pointsB.get(i).moins(searchedB).norme();
-                }
-            }
-        }
-        return found;
+        if(u>=0&&v>=0&&u<1&&v<1)
+            return imageCB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
+        return Point3D.O0;
     }
 }

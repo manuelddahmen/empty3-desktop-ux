@@ -81,14 +81,16 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     public void setComputeMaxTime(double value) {
-        this.computeTimeMax = value*10E9d;
+        this.computeTimeMax = value*1000d;
         editPolygonsMappings2.setComputeMaxTime(computeTimeMax);
         if(editPolygonsMappings2.iTextureMorphMove!=null)
             if(editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d)
                 d.setComputeMaxTime(computeTimeMax);
+        if(editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear44 d)
+            d.setComputeMaxTime(computeTimeMax);
     }
     public double getComputeTimeMax() {
-        return computeTimeMax/10E9d;
+        return computeTimeMax/1000d;
     }
 
     public class MyFilter implements Filter {
@@ -443,7 +445,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
         editPolygonsMappings2.hasChangedAorB = true;
 
     }
+    private void menuItem44(ActionEvent e) {
+        editPolygonsMappings2.distanceABClass = DistanceProxLinear44.class;
+        editPolygonsMappings2.hasChangedAorB = true;
 
+    }
     private void editPolygonsMappings2MouseDragged(MouseEvent e) {
         // TODO add your code here
     }
@@ -1161,7 +1167,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                     //---- menuItem14 ----
                     menuItem14.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem14.text"));
-                    menuItem14.addActionListener(e -> menuItem4Plus(e));
+                    menuItem14.addActionListener(e -> menuItem44(e));
                     menu9.add(menuItem14);
 
                     //---- menuItem15 ----
