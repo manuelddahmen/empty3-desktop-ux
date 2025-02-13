@@ -30,6 +30,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.morph.Main;
 import one.empty3.library.*;
+import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.objloader.E3Model;
 
@@ -125,6 +126,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         initComponents();
         distanceABClass = DistanceProxLinear2.class;
         testHumanHeadTexturing = new TestHumanHeadTexturing();
+        testHumanHeadTexturing.editPolygonsMappings = this;
         panelModelView.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -277,7 +279,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             if (testHumanHeadTexturing.threadTest != null)
                 TestHumanHeadTexturing.threadTest.interrupt();
         }
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, null);
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
         hasChangedAorB = true;
     }
 
@@ -476,7 +478,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
 
     public void run() {
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, TestObjet.HD1080);
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
         hasChangedAorB = true;
         boolean firstTime = true;
         AtomicBoolean oneMore = new AtomicBoolean(true);
@@ -1023,7 +1025,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         threadTextureCreation = null;
         threadDistanceIsNotRunning = true;
         testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this,
-                image, imageFileRight, model, TestObjet.HD1080);
+                image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
         renderingStopped = true;
         hasChangedAorB = true;
     }

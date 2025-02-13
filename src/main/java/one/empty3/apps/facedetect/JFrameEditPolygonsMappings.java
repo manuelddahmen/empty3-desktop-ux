@@ -641,7 +641,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void menuItemHDTextures(ActionEvent e) {
-        editPolygonsMappings2.hasChangedAorB = editPolygonsMappings2.hdTextures != ((JCheckBoxMenuItem) (e.getSource())).isSelected();
+        editPolygonsMappings2.hasChangedAorB = true;
         editPolygonsMappings2.hdTextures = ((JCheckBoxMenuItem) (e.getSource())).isSelected();
     }
 

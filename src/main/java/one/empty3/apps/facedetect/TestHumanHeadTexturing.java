@@ -48,7 +48,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     private BufferedImage jpgFile;
     protected BufferedImage jpgFileRight;
     private E3Model objFile;
-    private EditPolygonsMappings editPolygonsMappings;
+    EditPolygonsMappings editPolygonsMappings;
     protected ArrayList<BufferedImage> zBufferImages = new ArrayList<>();
 
     public TestHumanHeadTexturing() {
@@ -70,8 +70,17 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     @Override
     public void finit() {
         super.finit();
+
         if (editPolygonsMappings == null)
             return;
+
+        if (editPolygonsMappings.hdTextures && (z().la()!=Resolution.HD1080RESOLUTION.x() || z().ha()!=Resolution.HD1080RESOLUTION.y())) {
+            setZ(new ZBufferImpl(Resolution.HD1080RESOLUTION.x(), Resolution.HD1080RESOLUTION.y()));
+        } if (!editPolygonsMappings.hdTextures && (z().la()!=editPolygonsMappings.panelModelView.getWidth() ||
+                z().ha()!=editPolygonsMappings.panelModelView.getHeight())) {
+            setZ(new ZBufferImpl(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
+        }
+
         if (editPolygonsMappings.model != null) {
             setObj(editPolygonsMappings.model);
         }
@@ -79,7 +88,16 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             setJpg(editPolygonsMappings.image);
         }
 
+
+        if((z().scene()==null&&scene!=null)||(z().scene().getObjets().getData1d().isEmpty()&&scene!=null))
+            z().scene(scene);
+        else if(scene==null) {
+            scene = new Scene();
+            z().scene(scene);
+        }
+
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
+
         File intPart = new File("faceSkin.txt");
         PrintWriter printWriter;
         try {
@@ -196,6 +214,10 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             threadTest.interrupt();
             threadTest = null;
         }
+        EditPolygonsMappings editPolygonsMappings2 = editPolygonsMappings;
+        if(editPolygonsMappings!=null)
+            editPolygonsMappings2  =editPolygonsMappings;
+
         if (editPolygonsMappings.iTextureMorphMove != null) {
             if (editPolygonsMappings.iTextureMorphMove.distanceAB != null) {
                 editPolygonsMappings.iTextureMorphMove.distanceAB = null;
@@ -207,18 +229,13 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             }
             instance.editPolygonsMappings = null;
         }
-        if (instance != null) {
-            instance.editPolygonsMappings = null;
-        }
-        TestHumanHeadTexturing testHumanHeadTexturing = new TestHumanHeadTexturing();
-        if (resolution == null) {
-            testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
 
-        } else {
-            testHumanHeadTexturing.setDimension(TestObjet.HD1080);
-        }
+        TestHumanHeadTexturing testHumanHeadTexturing = new TestHumanHeadTexturing();
         TestHumanHeadTexturing.instance = testHumanHeadTexturing;
-        testHumanHeadTexturing.editPolygonsMappings = editPolygonsMappings;
+        if(editPolygonsMappings2!=null) {
+            testHumanHeadTexturing.editPolygonsMappings = editPolygonsMappings2;
+            editPolygonsMappings = editPolygonsMappings2;
+        }
         if (editPolygonsMappings.distanceABClass != null) {
             editPolygonsMappings.iTextureMorphMove = new TextureMorphMove(editPolygonsMappings, editPolygonsMappings.distanceABClass);
             if (editPolygonsMappings.iTextureMorphMove.distanceAB != null) {
@@ -240,7 +257,11 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             testHumanHeadTexturing.loop(true);
             testHumanHeadTexturing.setMaxFrames(Integer.MAX_VALUE);
             testHumanHeadTexturing.setPublish(false);
-            testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
+            if(editPolygonsMappings.hdTextures) {
+                testHumanHeadTexturing.setDimension(Resolution.HD1080RESOLUTION);
+            } else {
+                testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
+            }
         }
         threadTest = new Thread(testHumanHeadTexturing);
         threadTest.start();
