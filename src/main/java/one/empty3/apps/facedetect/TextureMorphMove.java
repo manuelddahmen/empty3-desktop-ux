@@ -168,7 +168,8 @@ public class TextureMorphMove extends ITexture {
                                     color[k] = rgb1[k] + (rgb3[k] - rgb1[k]) * percentB;
                                 }
 
-                                return one.empty3.libs.Color.newCol((float) color[0], (float) color[1], (float) color[2]).getRGB();
+                                //return one.empty3.libs.Color.newCol((float) color[0], (float) color[1], (float) color[2]).getRGB();
+                                return new Color((float) color[0], (float) color[1], (float) color[2]).getRGB();
                             }
                         }
                     } else if (!(distanceAB instanceof DistanceProxLinear44)) {

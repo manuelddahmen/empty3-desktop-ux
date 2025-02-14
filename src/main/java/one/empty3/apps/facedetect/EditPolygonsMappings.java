@@ -489,7 +489,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         //if (isNotMenuOpen()) {
                         zBufferImage = testHumanHeadTexturing.zBufferImage();
                         // Display 3D scene
-                        if (zBufferImage != null && zBufferImage.getWidth() == panelModelView.getWidth() && zBufferImage.getHeight() == panelModelView.getHeight()) {
+                        if (zBufferImage != null) {
                             Graphics graphics = panelModelView.getGraphics();
                             if (graphics != null) {
                                 graphics.drawImage(zBufferImage, 0, 0, panelModelView.getWidth(), panelModelView.getHeight(), null);
@@ -545,6 +545,12 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                             }
                                             if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear4 d4 && imageFileRight != null) {
                                                 d4.jpgRight = imageFileRight;
+                                            }
+                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d43 && imageFileRight != null) {
+                                                d43.jpgRight = imageFileRight;
+                                            }
+                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear44 d44 && imageFileRight != null) {
+                                                d44.jpgRight = imageFileRight;
                                             }
                                         } else {
                                             Logger.getAnonymousLogger().log(Level.INFO, "Invalid array in DistanceAB");

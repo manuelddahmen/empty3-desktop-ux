@@ -202,8 +202,7 @@ public abstract class TestObjet implements Test, Runnable {
             init();
             setResx(dimension.x());
             setResy(dimension.y());
-            z = ZBufferFactory.instance(resx, resy, D3);
-
+            setDimension(new Resolution(resx, resy));
         } else {
         }
     }
@@ -1328,9 +1327,22 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public void setDimension(Resolution dimension) {
-        this.resx = dimension.x();
-        this.resy = dimension.y();
-        this.dimension = dimension;
+        if(z()!=null) {
+            z = z();
+            Scene scene1 = z().scene();
+            Camera camera = camera();
+            setZ(new ZBufferImpl(resx, resy));
+            z().scene(scene1);
+            z().camera(camera);
+            this.resx = dimension.x();
+            this.resy = dimension.y();
+            this.dimension = dimension;
+        } else {
+            this.resx = dimension.x();
+            this.resy = dimension.y();
+            this.dimension = dimension;
+            setZ(new ZBufferImpl(resx, resy));
+        }
     }
 
     public void setName(String name) {
