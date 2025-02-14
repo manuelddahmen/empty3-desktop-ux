@@ -61,21 +61,16 @@ public class TextureMorphMove extends ITexture {
                 editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(),
                         new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
         }
-        if(editPanel.hdTextures) {
-            Dimension dim1 = new Dimension(Resolution.HD1080RESOLUTION.x(), Resolution.HD1080RESOLUTION.y());
-            Dimension dim2 = dim1;
-            Dimension dim3 = dim1;
-
-            if (!editPanel.pointsInImage.isEmpty())
-                editPanel.convexHull1 = new ConvexHull(editPanel.pointsInImage.values().stream().toList(), dim1);
-            if (!editPanel.pointsInModel.isEmpty())
-                editPanel.convexHull2 = new ConvexHull(editPanel.pointsInModel.values().stream().toList(), dim2);
-
-        }
         if (!editPanel.pointsInImage.isEmpty())
             editPanel.convexHull1 = new ConvexHull(editPanel.pointsInImage.values().stream().toList(), new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()));
         if (!editPanel.pointsInModel.isEmpty())
             editPanel.convexHull2 = new ConvexHull(editPanel.pointsInModel.values().stream().toList(), new Dimension(editPanel.panelPicture.getWidth(), editPanel.panelPicture.getHeight()));
+        if(editPanel.hdTextures) {
+            Dimension dim1 = new Dimension(Resolution.HD1080RESOLUTION.x(), Resolution.HD1080RESOLUTION.y());
+            if (!editPanel.pointsInModel.isEmpty())
+                editPanel.convexHull2 = new ConvexHull(editPanel.pointsInModel.values().stream().toList(), dim1);
+
+        }
 
     }
 

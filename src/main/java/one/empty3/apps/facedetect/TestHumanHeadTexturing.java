@@ -88,10 +88,10 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
 
         scene().getObjets().getData1d().clear();
-        if (editPolygonsMappings.model != null
-                && !scene().getObjets().getData1d().contains(editPolygonsMappings.model)) {
+        if (editPolygonsMappings.model != null) {
+            scene.getObjets().getData1d().clear();
             scene.add(editPolygonsMappings.model);
-            addEyePolygons(scene, editPolygonsMappings.model);
+            //addEyePolygons(scene, editPolygonsMappings.model);
         }
         if (editPolygonsMappings!=null&&editPolygonsMappings.model != null && editPolygonsMappings.image != null && editPolygonsMappings.textureWired) {
             editPolygonsMappings.model.texture(new ImageTexture(new Image(editPolygonsMappings.image)));
@@ -131,11 +131,13 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             for (int i = 0; i < e3Model.getListRepresentable().size(); i++) {
                 Representable representable = e3Model.getListRepresentable().get(i);
                 if(representable instanceof E3Model.FaceWithUv faceWithUv) {
-                    faceWithUv.setIncrU(0.0002);
-                    faceWithUv.setIncrV(0.0002);
+                    faceWithUv.setIncrU(0.2);
+                    faceWithUv.setIncrV(0.1);
                 }
             }
         }*/
+        if(z().scene().getObjets().getData1d().size()>1)
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Only one model in scene allowed here");
     }
 
     private void addEyePolygons(Scene scene, E3Model model) {
@@ -246,6 +248,12 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     public BufferedImage getJpgFile() {
         int i = zBufferImages.size() - 1;
+        if(i>10){
+            for (int j = 0; j < 9; j++) {
+                zBufferImages.remove(0);
+            }
+        }
+        i = zBufferImages.size() - 1;
         if (i < 0) return getPicture();
         BufferedImage current = zBufferImages.get(i);
         zBufferImages.clear();
