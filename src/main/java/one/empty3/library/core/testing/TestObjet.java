@@ -301,8 +301,24 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public void camera(Camera c) {
-        scene().cameraActive(c);
-        z().camera(c);
+
+        if(scene()!=null) {
+            if(z().scene()==null)
+                z().scene(scene());
+            scene().cameraActive(c);
+            z().camera(c);
+        } else {
+            if(z().scene()!=null)
+                scene(z().scene());
+            else {
+                scene = new Scene();
+                scene.cameraActive(c);
+                z().scene(scene);
+            }
+            scene = new Scene();
+            scene.cameraActive(c);
+            z().camera(c);
+        }
     }
 
     public boolean D3() {
@@ -1327,21 +1343,27 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public void setDimension(Resolution dimension) {
-        if(z()!=null) {
+        if (z() != null) {
             z = z();
             Scene scene1 = z().scene();
+            if(scene1==null) scene1 = scene();
             Camera camera = camera();
-            setZ(new ZBufferImpl(resx, resy));
             z().scene(scene1);
             z().camera(camera);
             this.resx = dimension.x();
             this.resy = dimension.y();
             this.dimension = dimension;
+            z().camera(camera);
+            z().scene(scene1);
+            setZ(new ZBufferImpl(resx, resy));
         } else {
             this.resx = dimension.x();
             this.resy = dimension.y();
             this.dimension = dimension;
             setZ(new ZBufferImpl(resx, resy));
+            //z().camera(camera());
+            z().scene(scene()!=null?scene():new Scene());
+            z().camera(camera()!=null?camera():new Camera());
         }
     }
 

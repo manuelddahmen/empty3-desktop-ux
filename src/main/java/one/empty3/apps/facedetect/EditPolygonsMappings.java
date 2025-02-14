@@ -74,7 +74,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public int durationMilliS = 30000;
     public File imageFile;
     public File txtFile;
-    public boolean hdTextures = false;
+    public boolean hdTextures = true;
     public boolean textureWired = false;
     private final int mode = EDIT_POINT_POSITION;
     public ConvexHull convexHull1;
@@ -492,7 +492,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         if (zBufferImage != null) {
                             Graphics graphics = panelModelView.getGraphics();
                             if (graphics != null) {
-                                graphics.drawImage(zBufferImage, 0, 0, panelModelView.getWidth(), panelModelView.getHeight(), null);
+                                graphics.drawImage(zBufferImage, 0, 0, panelModelView.getWidth()-1, panelModelView.getHeight()-1, null);
                                 displayPointsOut(pointsInModel);
                             }
                         }

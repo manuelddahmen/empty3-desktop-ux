@@ -86,11 +86,10 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
         Camera c = new Camera();
 
+        scene = new Scene();
 
-        scene().getObjets().getData1d().clear();
-        if (editPolygonsMappings.model != null) {
-            scene.getObjets().getData1d().clear();
-            scene.add(editPolygonsMappings.model);
+        if (editPolygonsMappings!=null&&editPolygonsMappings.model != null) {
+            scene().add(editPolygonsMappings.model);
             //addEyePolygons(scene, editPolygonsMappings.model);
         }
         if (editPolygonsMappings!=null&&editPolygonsMappings.model != null && editPolygonsMappings.image != null && editPolygonsMappings.textureWired) {
@@ -100,7 +99,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         } else {
         }
         if (!scene().getObjets().getData1d().isEmpty()) {
-            z().scene(scene);
+            z().scene(scene());
             z().camera(c);
         }
         Point3D minBox = new Point3D(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);

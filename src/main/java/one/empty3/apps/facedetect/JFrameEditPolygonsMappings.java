@@ -641,8 +641,17 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void menuItemHDTextures(ActionEvent e) {
-        editPolygonsMappings2.hasChangedAorB = true;
         editPolygonsMappings2.hdTextures = ((JCheckBoxMenuItem) (e.getSource())).isSelected();
+
+        if(editPolygonsMappings2.hdTextures) {
+            editPolygonsMappings2.testHumanHeadTexturing.setDimension(Resolution.HD1080RESOLUTION);
+        } else {
+            editPolygonsMappings2.testHumanHeadTexturing.setDimension(new Resolution(
+                    editPolygonsMappings2.panelModelView.getWidth(),
+                    editPolygonsMappings2.panelModelView.getHeight()));
+        }
+        editPolygonsMappings2.hasChangedAorB = true;
+
     }
 
     private void wiredTextures(ActionEvent e) {
