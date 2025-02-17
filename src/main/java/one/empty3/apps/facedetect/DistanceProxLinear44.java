@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DistanceProxLinear44 extends DistanceBezier2 {
-    private final Point3D[][] imageCB;
+    private Point3D[][] imageCB;
     private final List<Point3D> C;
     private final Dimension2D cDimReal;
     private Point3D[][] imageAB;
@@ -222,10 +222,60 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
 
         }
 
-        System.out.println("Compute texturing ended");
+        System.out.println("Compute texturing ended 1/2");
+        System.out.println("Next: fills arrays avoiding blanks ");
+
+        imageAB = fillArray(imageAB);
+        imageCB = fillArray(imageCB);
+        System.out.println("Compute texturing ended 2/2") ;
     }
 
+    public Point3D[][] fillArray(Point3D[][] image) {
+        Point3D[][] p = new Point3D[image.length][image[0].length];
 
+        for (int i = 0; i < image.length; i++) {
+            for (int j = 0; j < image[i].length; j++) {
+                if(image[i][j]!=null) {
+                    p[i][j] = image[i][j];
+                } else {
+                    p[i][j] = searchNeighbours(i, j, image);
+                }
+            }
+        }
+
+        return p;
+    }
+
+    private Point3D searchNeighbours(int i, int j, Point3D[][] image) {
+        for(int dist = 0; dist<1000; dist++) {
+            for(int c=0; c<4; c++) {
+                int incrI = 0;
+                int incrJ = 0;
+                switch (c) {
+                    case 0:
+                        incrI = 1;
+                        incrJ = 0;
+                        break;
+                    case 1:
+                        incrI = 0;
+                        incrJ = 1;
+                        break;
+                    case 2:
+                        incrI = -1;
+                        incrJ = 0;
+                        break;
+                    case 3:
+                        incrI = 0;
+                        incrJ = -1;
+                        break;
+                }
+                if(i+incrI>=0 && i+incrI<image.length && j+incrJ>=0 && j+incrJ<image[i].length && image[i+incrI][j+incrJ]!=null) {
+                    return image[i+incrI][j+incrJ];
+                }
+            }
+        }
+        return Point3D.O0;
+    }
 
     @Override
     public Point3D findAxPointInB(double u, double v) {

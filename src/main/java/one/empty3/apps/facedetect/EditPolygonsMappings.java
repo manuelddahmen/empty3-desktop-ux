@@ -653,24 +653,25 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                     uvCoordinates.getX(),
                                     uvCoordinates.getY());
                             if (uvFace != null) {
-                                Point point = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.getZ());
-                                Point point2 = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.getZ());
-                                if (point != null && point2 != null) {
-                                    point.setLocation(point.getX() / testHumanHeadTexturing.getZ().la() * panelDraw.getWidth(),
-                                            point.getY() / testHumanHeadTexturing.getZ().ha() * panelDraw.getHeight());
-                                    point2.setLocation(point2.getX() * panelModelView.getWidth(), point2.getX() * panelModelView.getWidth());
-                                    Graphics graphics = panelDraw.getGraphics();
-                                    // point.setLocation(point.getX(), point.getY());
-                                    if (testHumanHeadTexturing.getZ().checkScreen(point)) {
-                                        if (landmarkType != null && landmarkType.equals(s)) {
-                                            graphics.setColor(Color.PINK);
-                                        } else {
-                                            graphics.setColor(Color.GREEN);
+                                if (testHumanHeadTexturing.scene() != null && testHumanHeadTexturing.scene().cameraActive() != null) {
+                                    Point point = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.getZ());
+                                    Point point2 = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.getZ());
+                                    if (point != null && point2 != null) {
+                                        point.setLocation(point.getX() / testHumanHeadTexturing.getZ().la() * panelDraw.getWidth(),
+                                                point.getY() / testHumanHeadTexturing.getZ().ha() * panelDraw.getHeight());
+                                        point2.setLocation(point2.getX() * panelModelView.getWidth(), point2.getX() * panelModelView.getWidth());
+                                        Graphics graphics = panelDraw.getGraphics();
+                                        // point.setLocation(point.getX(), point.getY());
+                                        if (testHumanHeadTexturing.getZ().checkScreen(point)) {
+                                            if (landmarkType != null && landmarkType.equals(s)) {
+                                                graphics.setColor(Color.PINK);
+                                            } else {
+                                                graphics.setColor(Color.GREEN);
+                                            }
+                                            graphics.fillOval((int) (point.getX() - 3),
+                                                    (int) ((point.getY()) - 3),
+                                                    7, 7);
                                         }
-                                        graphics.fillOval((int) (point.getX() - 3),
-                                                (int) ((point.getY()) - 3),
-                                                7, 7);
-                                    }
                                     /*
                                     if (testHumanHeadTexturing.getZ().checkScreen(point2)
                                             && iTextureMorphMove != null && iTextureMorphMove.distanceAB != null
@@ -685,15 +686,15 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                                 (int) ((point3.getY()) - 3),
                                                 7, 7);
                                     }*/
-                                } else {
-                                    Graphics graphics = panelDraw.getGraphics();
-                                    graphics.setColor(Color.GREEN);
-                                    graphics.fillRect(0, 0, 10, 10);
+                                    } else {
+                                        Graphics graphics = panelDraw.getGraphics();
+                                        graphics.setColor(Color.GREEN);
+                                        graphics.fillRect(0, 0, 10, 10);
 
+                                    }
                                 }
                             }
                         }
-
                     });
                 } catch (ConcurrentModificationException ex) {
                     Logger.getAnonymousLogger().log(Level.SEVERE, "Concurrent exception while drawing");

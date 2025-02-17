@@ -52,4 +52,11 @@ public class Resolution {
     public int y() {
         return y;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Resolution))
+            return false;
+        return x==((Resolution)obj).x&&y==((Resolution)obj).y;
+    }
 }

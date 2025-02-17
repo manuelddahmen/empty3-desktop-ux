@@ -193,12 +193,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             instance.editPolygonsMappings = null;
         }
         TestHumanHeadTexturing testHumanHeadTexturing = new TestHumanHeadTexturing();
-        if (resolution == null) {
-            testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
 
-        } else {
-            testHumanHeadTexturing.setDimension(TestObjet.HD1080);
-        }
         TestHumanHeadTexturing.instance = testHumanHeadTexturing;
         testHumanHeadTexturing.editPolygonsMappings = editPolygonsMappings;
         if (editPolygonsMappings.distanceABClass != null) {
@@ -215,6 +210,17 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
             }
             editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
+
+            if (resolution == null||!resolution.equals(Resolution.HD1080RESOLUTION) ) {
+                testHumanHeadTexturing.setResx(editPolygonsMappings.panelModelView.getWidth());
+                testHumanHeadTexturing.setResy(editPolygonsMappings.panelModelView.getHeight());
+                testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
+
+            } else {
+                testHumanHeadTexturing.setResx(resolution.x());
+                testHumanHeadTexturing.setResy(resolution.y());
+                testHumanHeadTexturing.setDimension(TestObjet.HD1080);
+            }
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
             testHumanHeadTexturing.setJpg(jpg);
             testHumanHeadTexturing.setJpgRight(jpgRight);
@@ -241,7 +247,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     }
     public void setJpgRight(BufferedImage image) {
         this.jpgFileRight = image;
-        if(editPolygonsMappings.iTextureMorphMove!=null && editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4)
+        if(editPolygonsMappings!=null&&editPolygonsMappings.iTextureMorphMove!=null && editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4)
             editPolygonsMappings.iTextureMorphMove.distanceAB.jpgRight = image;
     }
 

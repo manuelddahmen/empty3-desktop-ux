@@ -65,9 +65,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
     public double computeTimeMax;
     private Rotate rotate;
 
-    {
-        FlatDarkLaf.setup();
-    }
 
     public void validateCameraPosition(VecMeshEditor model) {
         if (model != null) {
@@ -107,6 +104,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private Resolution resolutionOut;
 
     public JFrameEditPolygonsMappings() {
+
         initComponents();
 
         editPolygonsMappings2 = new EditPolygonsMappings(this);
@@ -644,12 +642,20 @@ public class JFrameEditPolygonsMappings extends JFrame {
         editPolygonsMappings2.hdTextures = ((JCheckBoxMenuItem) (e.getSource())).isSelected();
 
         if(editPolygonsMappings2.hdTextures) {
+            TestHumanHeadTexturing.startAll(editPolygonsMappings2, editPolygonsMappings2.image,
+                    editPolygonsMappings2.imageFileRight, editPolygonsMappings2.model, Resolution.HD1080RESOLUTION);
+        } else {
+            TestHumanHeadTexturing.startAll(editPolygonsMappings2, editPolygonsMappings2.image,
+                    editPolygonsMappings2.imageFileRight, editPolygonsMappings2.model, null);
+        }/*
+        if(editPolygonsMappings2.hdTextures) {
             editPolygonsMappings2.testHumanHeadTexturing.setDimension(Resolution.HD1080RESOLUTION);
         } else {
             editPolygonsMappings2.testHumanHeadTexturing.setDimension(new Resolution(
                     editPolygonsMappings2.panelModelView.getWidth(),
                     editPolygonsMappings2.panelModelView.getHeight()));
         }
+        */
         editPolygonsMappings2.hasChangedAorB = true;
 
     }
@@ -1320,6 +1326,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 
     public static void main(String[] args) {
+        FlatDarkLaf.setup();
         JFrameEditPolygonsMappings jFrameEditPolygonsMappings = new JFrameEditPolygonsMappings();
     }
 
