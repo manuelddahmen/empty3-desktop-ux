@@ -30,6 +30,7 @@ import one.empty3.apps.facedetect.JFrameEditPolygonsMappings;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.library.*;
+import one.empty3.library.ZBufferImpl.MinMaxOptimium;
 import one.empty3.library.core.export.ObjExport;
 import one.empty3.library.core.export.STLExport;
 import one.empty3.library.core.tribase.Plan3D;
@@ -842,6 +843,7 @@ public class VecMeshEditorGui extends JFrame {
             zBuffer = new ZBufferImpl(getPanelGraphics().getWidth(),
                     getPanelGraphics().getHeight());
             zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_POINTS);
+            zBuffer.minMaxOptimium = zBuffer.new MinMaxOptimium(MinMaxOptimium.MinMax.Max, 0.01);
             if (zBuffer != null) {
                 zBuffer.setDisplayType(zBuffer.getDisplayType());
             } else {

@@ -458,6 +458,8 @@ public abstract class TestObjet implements Test, Runnable {
 
         o.addOutput(Logger.getLogger(getClass().getCanonicalName()));
 
+
+
         if (initialise) {
             return;
         }
@@ -1365,6 +1367,7 @@ public abstract class TestObjet implements Test, Runnable {
             z().scene(scene()!=null?scene():new Scene());
             z().camera(camera()!=null?camera():new Camera());
         }
+        z.minMaxOptimium = z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.001);
     }
 
     public void setName(String name) {
