@@ -105,14 +105,15 @@ try {
         propertiesReleaseConfig.load(it)
     }
 } catch (Exception ex) {
+    ex.printStackTrace()
     try {
         // Other configuration here
         File propertiesFile = new File('~/.jreleaser/config.properties')
         propertiesFile.withInputStream {
             propertiesReleaseConfig.load(it)
         }
-        } catch (Exception ex) {
-        ex.printStackTrace()
+        } catch (Exception ex1) {
+        ex1.printStackTrace()
         }
     }
 test.onlyIf { !project.hasProperty('skipTestFromBuild') }
