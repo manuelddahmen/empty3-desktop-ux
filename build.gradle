@@ -6,8 +6,8 @@ plugins {
     id 'org.jreleaser' version '1.14.0'
     id 'signing'
     id 'org.jetbrains.kotlin.jvm' version '1.9.24'
+    id 'com.google.cloud.functions-framework' version '0.6.0'
 }
-
 //"empty3-desktop-ux"
 
 group = 'one.empty3'
@@ -149,7 +149,17 @@ tasks.register('Game', JavaExec) {
     mainClass = 'one.empty3.apps.opad.PanelGraphics'
 }
 
-
+tasks.register('runFunctionsFramework', JavaExec) {
+    group = 'Execution'
+    description = 'Starts the Functions Framework server for local testing'
+    mainClass = 'com.google.cloud.functions.framework.FunctionsFramework'
+    classpath = sourceSets.main.runtimeClasspath
+    args = [
+            '--target', 'one.empty3.apps.facedetect.gcp.ImageProcessor', // Your HttpFunction class name
+            '--port', '8080' // Change the port if necessary
+    ]
+    standardInput = System.in
+}
 repositories {
     mavenCentral()
     maven {
@@ -183,7 +193,7 @@ dependencies {
     implementation "one.empty3.libs:commons-mp:0.0.7"
     implementation "one.empty3:empty3-library-mp:2025.2.15-2"
     implementation("com.google.cloud.functions:functions-framework-api:1.1.0")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.10.1") //if you use gson
 
     testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
     testImplementation platform('org.junit:junit-bom:5.10.3')
