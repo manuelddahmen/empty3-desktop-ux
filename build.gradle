@@ -174,6 +174,8 @@ dependencies {
     implementation "one.empty3.libs:partial-desktop:0.0.16"
     implementation "one.empty3.libs:commons-mp:0.0.7"
     implementation "one.empty3:empty3-library-mp:2025.2.15-2"
+    implementation("com.google.cloud.functions:functions-framework-api:1.1.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
     testImplementation platform('org.junit:junit-bom:5.10.3')
@@ -212,12 +214,36 @@ dependencies {
     implementation "com.google.http-client:google-http-client-jackson2:1.44.2"
     implementation("org.jdesktop:beansbinding:1.2.1")
 }
-/*
-test {
-    useJUnitPlatform()
-    use
+
+cloudFunctions {
+    // Change if you change the region
+    setRegion("us-central1") // Default is us-central1
+    setProject("your-gcp-project-id") // Replace with your GCP Project ID
+    setSource("build/functions") //Where the jar file will be created
+    setStageBucket("your-staging-bucket-name")// Replace with your staging bucket name
+    //Optional you can define a name for the function
+    //setFunctionName("image-processor")
 }
-*/
+
+//Create the directory build/functions
+tasks.create<Copy>("copyBuildToFunctions") {
+    from("build/libs")
+    into("build/functions")
+}
+
+//Create the jar file
+tasks.create<Jar>("jarBuild") {
+    archiveBaseName.set("image-processor") //Optional
+    dependsOn("copyBuildToFunctions")
+    from(sourceSets.main.get().output)
+    manifest {
+        attributes["Main-Class"] = "com.example.ImageProcessor"
+    }
+}
+
+tasks.getByName("build") {
+    dependsOn("jarBuild")
+}
 tasks.register('javadocJar', Jar) {
     dependsOn javadoc
     archiveClassifier = "javadoc"

@@ -589,11 +589,11 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 Logger.getAnonymousLogger().log(Level.SEVERE, "Interrupts ", e);
             }
 
-            if (testHumanHeadTexturing == null || !testHumanHeadTexturing.isRunning()
-                    && image != null && model != null) {
-                //testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, model);
+            if ((testHumanHeadTexturing == null || !testHumanHeadTexturing.isRunning())
+                    && (image != null && model != null)) {
                 Logger.getAnonymousLogger().log(Level.INFO, "Le thread :TestObjet est arrêté ou non attribute");
-                Logger.getAnonymousLogger().log(Level.INFO, "Il y a (pas nécessairement exact) %d instances de classes dérivées de TsestObjet");
+                testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image,imageFileRight,  model,
+                        hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
                 Logger.getAnonymousLogger().log(Level.INFO, "Une nouvelle instance a été démarrée");
             }
 
