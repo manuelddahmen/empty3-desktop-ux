@@ -223,41 +223,12 @@ dependencies {
     implementation("org.jdesktop:beansbinding:1.2.1")
 }
 
-cloudFunctions {
-    // Change if you change the region
-    setRegion("us-central1") // Default is us-central1
-    setProject("your-gcp-project-id") // Replace with your GCP Project ID
-    setSource("build/functions") //Where the jar file will be created
-    setStageBucket("your-staging-bucket-name")// Replace with your staging bucket name
-    //Optional you can define a name for the function
-    //setFunctionName("image-processor")
-}
-
-//Create the directory build/functions
-tasks.create< (Copy as Task) >("copyBuildToFunctions") {
-    from("build/libs")
-    into("build/functions")
-}
-
-//Create the jar file
-tasks.create< (Jar as Task) >("jarBuild") {
-    archiveBaseName.set("image-processor") //Optional
-    dependsOn("copyBuildToFunctions")
-    from(sourceSets.main.get().output)
-    manifest {
-        attributes["Main-Class"] = " one.empty3.apps.facedetect.gcp.ImageProcessor"
-    }
-}
-
 tasks.register('javadocJar', Jar) {
     dependsOn javadoc
     archiveClassifier = "javadoc"
     from javadoc.destinationDir
 }
 
-tasks.getByName("build2functionFaceApp") {
-    dependsOn("jarBuild")
-}
 configurations {
     desktopCompile
     androidCompile
