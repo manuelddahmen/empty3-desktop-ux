@@ -108,7 +108,7 @@ try {
     ex.printStackTrace()
     try {
         // Other configuration here
-        File propertiesFile = new File('~/.jreleaser/config.properties')
+        File propertiesFile = new File('../.jreleaser/config.properties')
         propertiesFile.withInputStream {
             propertiesReleaseConfig.load(it)
         }
