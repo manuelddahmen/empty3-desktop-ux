@@ -5,11 +5,18 @@ import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.jogamp.nativewindow.awt.DirectDataBufferInt;
+import one.empty3.libs.Image;
+import org.apache.http.util.ByteArrayBuffer;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.Map;
 import java.util.HashMap;
@@ -106,6 +113,7 @@ public class ImageProcessor implements HttpFunction {
         while (processData.isRunning()) {
             
         }
+        Image result = processData.getImage();
 
 
         // Placeholder for your actual image processing logic
@@ -130,8 +138,13 @@ public class ImageProcessor implements HttpFunction {
             completionCode = 100; // 100% completed
             System.out.println("Image processing completed");
             // Generate a dummy image (replace this with your actual image)
-            byte[] dummyImageBytes = new byte[]{0x00, 0x01, 0x02, 0x03, 0x04, 0x05};
-            finalImageBase64 = Base64.getEncoder().encodeToString(dummyImageBytes);
+            ByteArrayBuffer byteBuffer = new ByteArrayBuffer(result.getWidth()*result.getHeight());
+            for (int i = 0; i < result.getWidth(); i++) {
+                for (int j = 0; j < result.getHeight(); j++) {
+                    byteBuffer.append(result.getRgb(i, j));
+                }
+            }
+            finalImageBase64 = Base64.getEncoder().encodeToString(byteBuffer.toByteArray());
             response.put("final_image", finalImageBase64);
             System.out.println("Response created");
         } else {
