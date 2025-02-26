@@ -23,10 +23,11 @@ public class ProcessData implements Runnable {
         editPolygonsMappings = new EditPolygonsMappings();
         editPolygonsMappings.loadImageData1(Base64.getDecoder().decode(data.get("image1")));
         editPolygonsMappings.loadImageData3(Base64.getDecoder().decode(data.get("image3")));
-        editPolygonsMappings.model =new E3Model(new BufferedReader(new StringReader(Arrays.toString(data.get("model").getBytes()))), false, null);
-        editPolygonsMappings.loadTxtData(data.get("textFile1"), 0);
-        editPolygonsMappings.loadTxtData(data.get("textFile2"), 1);
-        editPolygonsMappings.loadTxtData(data.get("textFile3"), 2);
+        String modelDecoded = new String(Base64.getDecoder().decode(data.get("model")));
+        editPolygonsMappings.model =new E3Model(new BufferedReader(new StringReader(modelDecoded)), false, null);
+        editPolygonsMappings.loadTxtData(Arrays.toString(Base64.getDecoder().decode(data.get("textFile1"))), 0);
+        editPolygonsMappings.loadTxtData(Arrays.toString(Base64.getDecoder().decode(data.get("textFile2"))), 1);
+        editPolygonsMappings.loadTxtData(Arrays.toString(Base64.getDecoder().decode(data.get("textFile3"))), 2);
         editPolygonsMappings.hdTextures = Objects.equals(data.get("hd_texture"), "true");
         switch (Integer.parseInt(data.get("selected_algorithm"))) {
             case 1:
@@ -54,7 +55,7 @@ public class ProcessData implements Runnable {
                 editPolygonsMappings.distanceABClass = DistanceIdent.class;
                 break;
         }
-        editPolygonsMappings.typeShape = !Objects.equals(data.get("selected_texture_type"), "quadr") ?DistanceAB.TYPE_SHAPE_QUADR:DistanceAB.TYPE_SHAPE_BEZIER;
+        editPolygonsMappings.typeShape = !Objects.equals(data.get("selected_texture_type"), "Bezier texture") ?DistanceAB.TYPE_SHAPE_QUADR:DistanceAB.TYPE_SHAPE_BEZIER;
         data.get("token");
 
         runApp = new Thread(editPolygonsMappings);
