@@ -699,7 +699,7 @@ public class EditPolygonsMappings implements Runnable {
                 hasChangedAorB = true;
 
                 Logger.getAnonymousLogger().log(Level.INFO, "Loaded {0} points in model view", pointsInImage.size());
-            } catch (IOException | RuntimeException ex) {
+            } catch ( RuntimeException ex) {
                 Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", ex);
             }
         } else {
@@ -782,7 +782,7 @@ public class EditPolygonsMappings implements Runnable {
 
                 hasChangedAorB = true;
 
-            } catch (IOException | RuntimeException ex) {
+            } catch ( RuntimeException ex) {
                 Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", ex);
             }
         } else {
@@ -945,7 +945,7 @@ public class EditPolygonsMappings implements Runnable {
 
                 hasChangedAorB = true;
 
-            } catch (IOException | RuntimeException ex) {
+            } catch (RuntimeException ex) {
                 Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", ex);
             }
         } else {
