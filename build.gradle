@@ -6,7 +6,7 @@ plugins {
     id 'org.jreleaser' version '1.14.0'
     id 'signing'
     id 'org.jetbrains.kotlin.jvm' version '1.9.24'
-    id 'com.google.cloud.functions-framework' version '0.6.0'
+//    id 'com.google.cloud.functions-framework' version '0.6.0'
 }
 //"empty3-desktop-ux"
 
@@ -159,23 +159,6 @@ tasks.register('runFunctionsFramework', JavaExec) {
             '--port', '8080' // Change the port if necessary
     ]
     standardInput = System.in
-}
-repositories {
-    mavenCentral()
-    maven {
-        url "https://www.jetbrains.com/intellij-repository/releases"
-    }
-    maven {
-        url "https://repo1.maven.org/maven2/"
-    }
-    mavenLocal()
-    flatDir {
-        dirs "libs"
-    }
-    google()
-    maven {
-        url "https://mvnrepository.com/"
-    }
 }
 
 kotlin {
