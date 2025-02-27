@@ -105,20 +105,25 @@ public class ImageProcessor implements HttpFunction {
         System.out.println("Token : " + token);
         System.out.println("Image1 received");
         System.out.println("Processing...");
-
-
-        ProcessData processData = new ProcessData(data);
-        Thread thread = new Thread(processData);
-        thread.start();
-        while (processData.isRunning()) {
-            
-        }
-        Image result = processData.getImage();
-
-
         // Placeholder for your actual image processing logic
         Map<String, Object> response = new HashMap<>();
         String finalImageBase64;
+
+
+        Image result = new Image(100, 100);
+        try {
+            ProcessData processData = new ProcessData(data);
+            Thread thread = new Thread(processData);
+            thread.start();
+            while (processData.isRunning()) {
+
+            }
+            result = processData.getImage();
+         } catch (Exception e) {
+            response.put("completion", -1);
+        }
+
+
         int completionCode = 0; // Start at 0%
 
         if (data.containsKey("image1") && data.containsKey("textFile1")) {
