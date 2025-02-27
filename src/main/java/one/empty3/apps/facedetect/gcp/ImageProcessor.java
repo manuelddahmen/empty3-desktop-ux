@@ -29,7 +29,7 @@ public class ImageProcessor implements HttpFunction {
         response.appendHeader("Access-Control-Allow-Origin", "*"); // Replace with your Flutter app's origin in production
         response.appendHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
         response.appendHeader("Access-Control-Allow-Headers", "Content-Type");
-
+/*
         if ("OPTIONS".equals(request.getMethod())) {
             // Respond to preflight requests
             response.setStatusCode(204);
@@ -40,7 +40,7 @@ public class ImageProcessor implements HttpFunction {
             response.setStatusCode(405);
             return;
         }
-
+*/
         // Read the request body
         BufferedReader reader = request.getReader();
         StringBuilder stringBuilder = new StringBuilder();
