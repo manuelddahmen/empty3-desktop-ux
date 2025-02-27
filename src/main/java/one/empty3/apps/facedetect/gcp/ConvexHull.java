@@ -137,7 +137,7 @@ public class ConvexHull {
         graphics.setColor(Color.WHITE);
         graphics.fillPolygon(xPoints, yPoints, p.size());
 
-
+/*
         try {
             File file = new File(".\\storage\\");
             if(!file.exists())
@@ -155,7 +155,7 @@ public class ConvexHull {
             Logger.getAnonymousLogger().log(Level.INFO, "ConvexHull failed "+mask.getWidth()+"/"+mask.getHeight());
             e.printStackTrace();
         }
-
+*/
         Logger.getAnonymousLogger().log(Level.INFO, "ConvexHull done " + p.size()+"/"+list.size());
    }
 
