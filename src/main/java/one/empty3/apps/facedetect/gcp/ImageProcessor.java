@@ -9,13 +9,11 @@ import com.jogamp.nativewindow.awt.DirectDataBufferInt;
 import one.empty3.libs.Image;
 import org.apache.http.util.ByteArrayBuffer;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.Map;
@@ -87,7 +85,6 @@ public class ImageProcessor implements HttpFunction {
         }
 
 
-
         //Process data
         Map<String, Object> result = processImage(data);
 
@@ -109,6 +106,7 @@ public class ImageProcessor implements HttpFunction {
         Map<String, Object> response = new HashMap<>();
         String finalImageBase64;
 
+        int completionCode = 0; // Start at 0%
 
         Image result = new Image(100, 100);
         try {
@@ -119,47 +117,15 @@ public class ImageProcessor implements HttpFunction {
 
             }
             result = processData.getImage();
-         } catch (Exception e) {
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(result, "jpg", byteArrayOutputStream);
+            response.put("completion", completionCode);
+            response.put("image", Base64.getEncoder().encode(byteArrayOutputStream.toByteArray()));
+            return response;
+        } catch (Exception e) {
             response.put("completion", -1);
+            return response;
         }
-
-
-        int completionCode = 0; // Start at 0%
-
-        if (data.containsKey("image1") && data.containsKey("textFile1")) {
-            //Simulate process in progress
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            completionCode = 50; // 50 %
-
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            completionCode = 100; // 100% completed
-            System.out.println("Image processing completed");
-            // Generate a dummy image (replace this with your actual image)
-            ByteArrayBuffer byteBuffer = new ByteArrayBuffer(result.getWidth()*result.getHeight());
-            for (int i = 0; i < result.getWidth(); i++) {
-                for (int j = 0; j < result.getHeight(); j++) {
-                    byteBuffer.append(result.getRgb(i, j));
-                }
-            }
-            finalImageBase64 = Base64.getEncoder().encodeToString(byteBuffer.toByteArray());
-            response.put("final_image", finalImageBase64);
-            System.out.println("Response created");
-        } else {
-            //Error management
-            System.out.println("Error : missing files");
-            completionCode = -1;
-            response.put("error", "missing file");
-        }
-
-        response.put("completion", completionCode);
-        return response;
     }
 }
