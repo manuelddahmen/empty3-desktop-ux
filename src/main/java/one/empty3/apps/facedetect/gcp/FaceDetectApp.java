@@ -74,12 +74,6 @@ public class FaceDetectApp {
     private PrintWriter dataWriter;
 
 
-
-    {
-        FlatDarkLaf.setup();
-    }
-
-
     public FaceDetectApp(Vision visionService) {
         this.vision = visionService;
     }
