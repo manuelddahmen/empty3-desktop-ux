@@ -176,7 +176,30 @@ tasks.register("runFunction", JavaExec) {
     doFirst {
         args('--classpath', files(configurations.runtimeClasspath, sourceSets.main.output).asPath)
     }
-}//gradle runFunction -Prun.functionTarget=one.empty3.apps.facedetect.gcp.ImageProcessor  -Prun.port=8080
+}
+
+tasks.register('deployCloudFunction', Exec) {
+    commandLine "gcloud", "functions", "deploy", "$functionName",
+            "--runtime", "java17",
+            "--trigger-http",
+            "--entry-point", "$fullyQualifiedEntryPoint",
+            "--source", "$buildDirJars/$jarFileName",
+            // Add any other necessary gcloud options here, such as memory settings, etc.
+
+            // Set environment variables if needed
+            environment("GOOGLE_APPLICATION_CREDENTIALS", "/path/to/your/credentials.json")
+}
+
+//define variables that you want to use
+def buildDirJars = 'build/libs'
+def functionName = "create-texture-function"
+def fullyQualifiedEntryPoint = 'one.empty3.apps.facedetect.gcp.ImageProcessor'
+def jarFileName = "*"
+
+
+
+
+//gradle runFunction -Prun.functionTarget=one.empty3.apps.facedetect.gcp.ImageProcessor  -Prun.port=8080
 //java --classpath 'build/libs' --target one.empty3.apps.facedetect.gcp.ImageProcessor com.google.cloud.functions.invoker.runner.Invoker
 kotlin {
     jvmToolchain(21)
