@@ -160,7 +160,24 @@ tasks.register('runFunctionsFramework', JavaExec) {
     ]
     standardInput = System.in
 }
+configurations {
+    invoker
+}
 
+
+tasks.register("runFunction", JavaExec) {
+    main = 'com.google.cloud.functions.invoker.runner.Invoker'
+    classpath(configurations.invoker)
+    inputs.files(configurations.runtimeClasspath, sourceSets.main.output)
+    args(
+            '--target', project.findProperty('run.functionTarget')?:'one.empty3.apps.facedetect.gcp.ImageProcessor',
+            '--port', project.findProperty('run.port') ?: 8081
+    )
+    doFirst {
+        args('--classpath', files(configurations.runtimeClasspath, sourceSets.main.output).asPath)
+    }
+}//gradle runFunction -Prun.functionTarget=one.empty3.apps.facedetect.gcp.ImageProcessor  -Prun.port=8080
+//java --classpath 'build/libs' --target one.empty3.apps.facedetect.gcp.ImageProcessor com.google.cloud.functions.invoker.runner.Invoker
 kotlin {
     jvmToolchain(21)
 }
@@ -175,9 +192,10 @@ dependencies {
     implementation "one.empty3.libs:partial-desktop:0.0.16"
     implementation "one.empty3.libs:commons-mp:0.0.7"
     implementation "one.empty3:empty3-library-mp:2025.2.15-2"
-    implementation("com.google.cloud.functions:functions-framework-api:1.1.0")
-    implementation("com.google.code.gson:gson:2.10.1") //if you use gson
-
+    implementation 'com.google.cloud:google-cloud-pubsub:1.123.15' // Check for the latest version
+    implementation 'com.google.cloud.functions:functions-framework-api:1.1.0'
+    invoker 'com.google.cloud.functions.invoker:java-function-invoker:1.1.0'
+    implementation 'com.google.code.gson:gson:2.10.1' //if you use gson
     testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
     testImplementation platform('org.junit:junit-bom:5.10.3')
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'

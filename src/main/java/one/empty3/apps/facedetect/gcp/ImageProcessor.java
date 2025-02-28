@@ -99,6 +99,7 @@ public class ImageProcessor implements HttpFunction {
         }catch (RuntimeException ex) {
             response.setContentType("application/json");
             response.setStatusCode(500);
+            response.getWriter().write(ex.getMessage());
         }
     }
 
@@ -133,5 +134,10 @@ public class ImageProcessor implements HttpFunction {
             response.put("completion", -1);
             return response;
         }
+    }
+
+    public static void main(String[] args) {
+        ImageProcessor imageProcessor = new ImageProcessor();
+
     }
 }
