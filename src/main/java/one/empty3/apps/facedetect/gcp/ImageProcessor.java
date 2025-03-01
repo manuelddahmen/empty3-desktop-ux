@@ -42,7 +42,7 @@ public class ImageProcessor implements HttpFunction {
         }
 */
             // Read the request body
-            BufferedReader reader = request.getReader();
+/*            BufferedReader reader = request.getReader();
             StringBuilder stringBuilder = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -50,10 +50,17 @@ public class ImageProcessor implements HttpFunction {
             }
             String requestBody = stringBuilder.toString();
 
+  */
             // Parse the JSON request body
             Gson gson = new Gson();
             Map<String, String> data = new HashMap<>();
-            JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
+            JsonObject jsonObject = gson.fromJson(request.getReader(), JsonObject.class);
+            if(jsonObject==null) {
+                response.setContentType("application/json");
+                response.setStatusCode(200);
+                response.getWriter().write("jSonObject is null in ImageProcessor"+"\n");
+                return;
+            }
 
             if (jsonObject.has("image1")) {
                 data.put("image1", jsonObject.get("image1").getAsString());
@@ -99,7 +106,10 @@ public class ImageProcessor implements HttpFunction {
         }catch (RuntimeException ex) {
             response.setContentType("application/json");
             response.setStatusCode(500);
-            response.getWriter().write(ex.getMessage());
+            for (int i = 0; i < ex.getStackTrace().length; i++) {
+                response.getWriter().write(ex.getStackTrace()[i].toString()+"\n");
+            }
+            response.getWriter().write(ex.getMessage()+"\n");
         }
     }
 
