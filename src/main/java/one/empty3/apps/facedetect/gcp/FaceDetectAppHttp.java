@@ -78,6 +78,14 @@ public class FaceDetectAppHttp implements HttpFunction {
     private PrintWriter dataWriter;
 
 
+    public FaceDetectAppHttp() {
+        try {
+            this.vision = getVisionService();
+        } catch (IOException | GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public FaceDetectAppHttp(Vision visionService) {
         this.vision = visionService;
     }
