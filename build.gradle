@@ -178,9 +178,17 @@ tasks.register("runFunction", JavaExec) {
     }
 }
 
+
+
+
 tasks.register('deployCloudFunction', Exec) {
+//define variables that you want to use
+    def buildDirJars = 'build/libs'
+    def functionName = "create-texture-function"
+    def fullyQualifiedEntryPoint = 'one.empty3.apps.facedetect.gcp.ImageProcessor'
+    def jarFileName = "*"
     commandLine "gcloud", "functions", "deploy", "$functionName",
-            "--runtime", "java17",
+            "--runtime", "java21",
             "--trigger-http",
             "--entry-point", "$fullyQualifiedEntryPoint",
             "--source", "$buildDirJars/$jarFileName",
@@ -189,12 +197,6 @@ tasks.register('deployCloudFunction', Exec) {
             // Set environment variables if needed
             environment("GOOGLE_APPLICATION_CREDENTIALS", "/path/to/your/credentials.json")
 }
-
-//define variables that you want to use
-def buildDirJars = 'build/libs'
-def functionName = "create-texture-function"
-def fullyQualifiedEntryPoint = 'one.empty3.apps.facedetect.gcp.ImageProcessor'
-def jarFileName = "*"
 
 
 
@@ -223,6 +225,8 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.3')
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.2.0'// Or latest version
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'// Or latest version
 
     implementation 'org.junit.platform:junit-platform-launcher:1.9.2'
     implementation platform('org.junit:junit-bom:5.10.3')
