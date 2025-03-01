@@ -12,6 +12,8 @@ import java.io.*;
 import java.util.Base64;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ImageProcessor implements HttpFunction {
 
@@ -23,7 +25,7 @@ public class ImageProcessor implements HttpFunction {
             response.appendHeader("Access-Control-Allow-Origin", "*"); // Replace with your Flutter app's origin in production
             response.appendHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
             response.appendHeader("Access-Control-Allow-Headers", "Content-Type");
-/*
+
         if ("OPTIONS".equals(request.getMethod())) {
             // Respond to preflight requests
             response.setStatusCode(204);
@@ -34,9 +36,9 @@ public class ImageProcessor implements HttpFunction {
             response.setStatusCode(405);
             return;
         }
-*/
+
             // Read the request body
-/*            BufferedReader reader = request.getReader();
+            BufferedReader reader = request.getReader();
             StringBuilder stringBuilder = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -44,7 +46,10 @@ public class ImageProcessor implements HttpFunction {
             }
             String requestBody = stringBuilder.toString();
 
-  */
+            Logger.getLogger("Cloud function ImageProcessor");
+            Logger.getLogger(this.getClass().getCanonicalName())
+                    .log(Level.INFO, requestBody);
+
             // Parse the JSON request body
             Gson gson = new Gson();
             Map<String, String> data = new HashMap<>();
@@ -94,16 +99,29 @@ public class ImageProcessor implements HttpFunction {
             //Return Result
             response.setContentType("application/json");
             response.setStatusCode(200);
+
+
+
+            JsonObject jsonObject1 = new JsonObject();
+            jsonObject1.addProperty("image", result); // Replace with valid base64 data
+            jsonObject1.addProperty("completion", 100);
+
             BufferedWriter writer = response.getWriter();
-            writer.write(result);
             writer.close();
         }catch (RuntimeException ex) {
             response.setContentType("application/json");
             response.setStatusCode(500);
+
+            JsonObject jsonObject1 = new JsonObject();
+            jsonObject1.addProperty("completion", -1);
+            jsonObject1.addProperty("image", "");
+            String error = "ex.getMessage()\n";
             for (int i = 0; i < ex.getStackTrace().length; i++) {
-                response.getWriter().write(ex.getStackTrace()[i].toString()+"\n");
+                error = error+(ex.getStackTrace()[i].toString()+"\n");
             }
-            response.getWriter().write(ex.getMessage()+"\n");
+            jsonObject1.addProperty("error", error);
+
+            response.getWriter().write(new Gson().toJson(jsonObject1));
         }
     }
 

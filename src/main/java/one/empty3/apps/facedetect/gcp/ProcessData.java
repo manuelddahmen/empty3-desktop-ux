@@ -68,7 +68,6 @@ public class ProcessData implements Runnable {
                 } catch (InterruptedException e) {
                     editPolygonsMappings.isRunning = false;
                     this.isRunning = false;
-                    throw new RuntimeException(e);
                 }
             }
         } catch (RuntimeException e) {
