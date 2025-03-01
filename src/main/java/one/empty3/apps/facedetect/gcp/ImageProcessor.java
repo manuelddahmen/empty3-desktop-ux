@@ -5,16 +5,10 @@ import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.jogamp.nativewindow.awt.DirectDataBufferInt;
 import one.empty3.libs.Image;
-import org.apache.http.util.ByteArrayBuffer;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.Map;
 import java.util.HashMap;
@@ -95,13 +89,13 @@ public class ImageProcessor implements HttpFunction {
 
 
             //Process data
-            Map<String, Object> result = processImage(data);
+            String result = processImage(data);
 
             //Return Result
             response.setContentType("application/json");
             response.setStatusCode(200);
             BufferedWriter writer = response.getWriter();
-            writer.write(gson.toJson(result));
+            writer.write(result);
             writer.close();
         }catch (RuntimeException ex) {
             response.setContentType("application/json");
@@ -113,7 +107,7 @@ public class ImageProcessor implements HttpFunction {
         }
     }
 
-    private Map<String, Object> processImage(Map<String, String> data) {
+    private String processImage(Map<String, String> data) {
         //Simulate processing
         String token = data.get("token");
         System.out.println("Token : " + token);
@@ -136,14 +130,14 @@ public class ImageProcessor implements HttpFunction {
             result = processData.getImage();
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
             ImageIO.write(result, "jpg", byteArrayOutputStream);
             response.put("completion", completionCode);
             response.put("image", Base64.getEncoder().encode(byteArrayOutputStream.toByteArray()));
-            return response;
         } catch (Exception e) {
             response.put("completion", -1);
-            return response;
         }
+        return new Gson().toJson(response);
     }
 
     public static void main(String[] args) {
