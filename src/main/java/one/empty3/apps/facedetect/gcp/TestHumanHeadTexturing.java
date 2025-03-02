@@ -212,9 +212,9 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
 
             if (resolution == null||!resolution.equals(Resolution.HD1080RESOLUTION) ) {
-                testHumanHeadTexturing.setResx(editPolygonsMappings.panelModelView.getWidth());
-                testHumanHeadTexturing.setResy(editPolygonsMappings.panelModelView.getHeight());
-                testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
+                testHumanHeadTexturing.setResx((int) editPolygonsMappings.dimModelBox.getWidth());
+                testHumanHeadTexturing.setResy((int) editPolygonsMappings.dimModelBox.getHeight());
+                testHumanHeadTexturing.setDimension(new Resolution((int) editPolygonsMappings.dimModelBox.getWidth(), (int) editPolygonsMappings.dimModelBox.getHeight()));
                 testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.01);
 
             } else {
