@@ -55,7 +55,7 @@ public class ImageProcessor implements HttpFunction {
         JsonObject jsonObject = gson.fromJson(request.getReader(), JsonObject.class);
         if (jsonObject == null) {
             response.setContentType("application/json");
-            response.setStatusCode(200);
+            response.setStatusCode(500);
             response.getWriter().write("jSonObject is null in ImageProcessor" + "\n");
             return;
         }
@@ -93,7 +93,7 @@ public class ImageProcessor implements HttpFunction {
 
 
         //Process data
-        String result = processImage(data);
+        Map<String, Object> result1 = processImage(data);
 
         //Return Result
         response.setContentType("application/json");
@@ -101,8 +101,10 @@ public class ImageProcessor implements HttpFunction {
 
 
         JsonObject jsonObject1 = new JsonObject();
-        jsonObject1.addProperty("image", result); // Replace with valid base64 data
-        jsonObject1.addProperty("completion", 100);
+        jsonObject1.addProperty("image", String.valueOf(result1.get("image"))); // Replace with valid base64 data
+        jsonObject1.addProperty("completion", (int) result1.get("completion"));
+
+        response.getWriter().write(new Gson().toJson(jsonObject1));
 
         BufferedWriter writer = response.getWriter();
         writer.close();
@@ -123,7 +125,7 @@ public class ImageProcessor implements HttpFunction {
 //        }
     }
 
-    private String processImage(Map<String, String> data) {
+    private Map<String, Object> processImage(Map<String, String> data) throws IOException {
         //Simulate processing
         String token = data.get("token");
         System.out.println("Token : " + token);
@@ -136,7 +138,6 @@ public class ImageProcessor implements HttpFunction {
         int completionCode = 0; // Start at 0%
 
         Image result = new Image(100, 100);
-        try {
             ProcessData processData = new ProcessData(data);
             Thread thread = new Thread(processData);
             thread.start();
@@ -150,10 +151,7 @@ public class ImageProcessor implements HttpFunction {
             ImageIO.write(result, "jpg", byteArrayOutputStream);
             response.put("completion", completionCode);
             response.put("image", Base64.getEncoder().encode(byteArrayOutputStream.toByteArray()));
-        } catch (Exception e) {
-            response.put("completion", -1);
-        }
-        return new Gson().toJson(response);
+        return response;
     }
 
     public static void main(String[] args) {
