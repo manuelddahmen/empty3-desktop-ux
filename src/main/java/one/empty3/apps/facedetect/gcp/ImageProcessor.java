@@ -63,12 +63,10 @@ public class ImageProcessor implements HttpFunction {
         Gson gson = new Gson();
         Map<String, String> data = new HashMap<>();
         JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
-        if (jsonObject == null) {
-            response.setContentType("application/json");
-            response.setStatusCode(500);
-            response.getWriter().write("jSonObject is null in ImageProcessor" + "\n");
-            return;
-        }
+
+        response.setContentType("application/json");
+        response.setStatusCode(500);
+        response.getWriter().write("jSonObject is null in ImageProcessor" + "\n");
 
         if (jsonObject.has("image1")) {
             data.put("image1", jsonObject.get("image1").getAsString());
