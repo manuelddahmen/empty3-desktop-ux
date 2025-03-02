@@ -19,7 +19,17 @@ public class ImageProcessor implements HttpFunction {
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
-//        try {
+        try {
+            serviceWithoutException(request, response);
+            Logger.getLogger(ImageProcessor.class.getName()).log(Level.SEVERE, "Response Ok without Excpetion");
+        }  catch (RuntimeException ex) {
+            Logger.getLogger(ImageProcessor.class.getName()).log(Level.SEVERE, "Exception in service RuntimeException", ex);
+            response.setStatusCode(500);;
+        }
+    }
+
+    public void serviceWithoutException(HttpRequest request, HttpResponse response) throws RuntimeException, IOException {
+        //        try {
         // Set CORS headers to allow requests from Flutter
         response.appendHeader("Access-Control-Allow-Origin", "*"); // Replace with your Flutter app's origin in production
         response.appendHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -52,7 +62,7 @@ public class ImageProcessor implements HttpFunction {
         // Parse the JSON request body
         Gson gson = new Gson();
         Map<String, String> data = new HashMap<>();
-        JsonObject jsonObject = gson.fromJson(request.getReader(), JsonObject.class);
+        JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
         if (jsonObject == null) {
             response.setContentType("application/json");
             response.setStatusCode(500);
@@ -123,9 +133,10 @@ public class ImageProcessor implements HttpFunction {
 //
 //            response.getWriter().write(new Gson().toJson(jsonObject1));
 //        }
+
     }
 
-    private Map<String, Object> processImage(Map<String, String> data) throws IOException {
+    private Map<String, Object> processImage(Map<String, String> data) throws RuntimeException, IOException {
         //Simulate processing
         String token = data.get("token");
         System.out.println("Token : " + token);
