@@ -21,13 +21,14 @@ public class ImageProcessor implements HttpFunction {
     public void service(HttpRequest request, HttpResponse response) throws IOException {
         try {
             serviceWithoutException(request, response);
+            response.setStatusCode(200);
             Logger.getLogger(ImageProcessor.class.getName()).log(Level.INFO, "Response Ok without Exception");
         }  catch (RuntimeException ex) {
             Logger.getLogger(ImageProcessor.class.getName()).log(Level.SEVERE, "Exception in service RuntimeException", ex);
             for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
                 Logger.getLogger(ImageProcessor.class.getName()).log(Level.SEVERE, stackTraceElement.toString());
             }
-            response.setStatusCode(500);;
+            response.setStatusCode(501);;
         }
     }
 
