@@ -21,7 +21,7 @@ public class ImageProcessor implements HttpFunction {
     public void service(HttpRequest request, HttpResponse response) throws IOException {
         try {
             serviceWithoutException(request, response);
-            Logger.getLogger(ImageProcessor.class.getName()).log(Level.INFO, "Response Ok without Excpetion");
+            Logger.getLogger(ImageProcessor.class.getName()).log(Level.INFO, "Response Ok without Exception");
         }  catch (RuntimeException ex) {
             Logger.getLogger(ImageProcessor.class.getName()).log(Level.SEVERE, "Exception in service RuntimeException", ex);
             for (StackTraceElement stackTraceElement : ex.getStackTrace()) {
