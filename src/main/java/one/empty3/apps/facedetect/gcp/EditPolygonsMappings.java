@@ -29,6 +29,7 @@ package one.empty3.apps.facedetect.gcp;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import one.empty3.apps.gui.Main;
+import one.empty3.apps.opad.game.Unit;
 import one.empty3.library.Point3D;
 import one.empty3.library.Point;
 import one.empty3.library.Representable;
@@ -67,7 +68,7 @@ public class EditPolygonsMappings implements Runnable {
     public static final int EDIT_OBJECT_MODE_INT_RESET_VIEW = 256;
     public static final int MULTIPLE = 1;
     public static final int SINGLE = 2;
-    public BufferedImage zBufferImage;
+    public BufferedImage zBufferImage = new one.empty3.libs.Image(200, 200);
     public int typeShape = DistanceAB.TYPE_SHAPE_QUADR;
     public boolean refineMatrix = false;
     public Dimension2D aDimReduced = new Dimension(20, 20);
@@ -98,8 +99,8 @@ public class EditPolygonsMappings implements Runnable {
     public HashMap<String, Point3D> pointsInModel = new HashMap<>();
     public HashMap<String, Point3D> pointsInImage = new HashMap<>();
     public HashMap<String, Point3D> points3 = new HashMap<>();
-    BufferedImage image;
-    BufferedImage imageFileRight;
+    BufferedImage image = new one.empty3.libs.Image(200, 200);
+    BufferedImage imageFileRight = new one.empty3.libs.Image(200, 200);
     public int distanceABdimSize = 25;
     public Class<? extends DistanceAB> distanceABClass = DistanceProxLinear2.class;
     public boolean opt1 = false;
@@ -117,6 +118,9 @@ public class EditPolygonsMappings implements Runnable {
     Thread threadTextureCreation;
     ConvexHull convexHull3;
     private double computeTimeMax;
+    public Dimension2D dimPictureBox = new Dimension(200, 200);
+    public Dimension2D dimModelBox = new Dimension(200, 200);
+    private BufferedImage image1;
 
 
     public EditPolygonsMappings() {
@@ -133,7 +137,7 @@ public class EditPolygonsMappings implements Runnable {
         return computeTimeMax;
     }
 
-    public void voidPanelModelViewRotate(MouseEvent mouseEvent) {
+    public void voiddimModelBoxRotate(MouseEvent mouseEvent) {
         if (mode == EDIT_OBJECT_MODE_ROTATE) {
 
         } else if (mode == EDIT_OBJECT_MODE_TRANSLATE) {
@@ -149,11 +153,7 @@ public class EditPolygonsMappings implements Runnable {
         }
     }
 
-    public JPanel getContentPanel() {
-        return contentPanel;
-    }
-
-    private void panelModelViewMouseDragged(MouseEvent e) {
+    private void dimModelBoxMouseDragged(MouseEvent e) {
         java.awt.Point point = e.getPoint();
         if (image != null && model != null && selectedPointNo > -1) {
             int x = point.x;
@@ -191,8 +191,8 @@ public class EditPolygonsMappings implements Runnable {
     private void panelPictureMouseClicked(MouseEvent e) {
         java.awt.Point point = e.getPoint();
         if (image != null && model != null) {
-            Point3D[] pNear = new Point3D[]{new Point3D(point.getX() / panelPicture.getWidth(),
-                    point.getY() / panelPicture.getHeight(), 0.)};
+            Point3D[] pNear = new Point3D[]{new Point3D(point.getX() / dimPictureBox.getWidth(),
+                    point.getY() / dimPictureBox.getHeight(), 0.)};
             AtomicDouble distanceMin = new AtomicDouble(Double.MAX_VALUE);
             pointsInImage.forEach((s, point3D) -> {
                 if (Point3D.distance(pNear[0], point3D) < distanceMin.get()) {
@@ -206,7 +206,7 @@ public class EditPolygonsMappings implements Runnable {
         }
     }
 
-    private void panelModelViewMouseClicked(MouseEvent e) {
+    private void dimModelBoxMouseClicked(MouseEvent e) {
 /*        Point point = e.getPoint();
         if (model != null) {
             int x = point.x;
@@ -247,7 +247,7 @@ public class EditPolygonsMappings implements Runnable {
 */
     }
 
-    private void panelModelViewComponentResized(ComponentEvent e) {
+    private void dimModelBoxComponentResized(ComponentEvent e) {
         int w = e.getComponent().getWidth();
         int h = e.getComponent().getHeight();
         if (testHumanHeadTexturing != null) {
@@ -257,7 +257,7 @@ public class EditPolygonsMappings implements Runnable {
             if (testHumanHeadTexturing.threadTest != null)
                 TestHumanHeadTexturing.threadTest.interrupt();
         }
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures? Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures? Resolution.HD1080RESOLUTION:new Resolution((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()));
         hasChangedAorB = true;
     }
 
@@ -267,7 +267,7 @@ public class EditPolygonsMappings implements Runnable {
             int x = point.x;
             int y = point.y;
             //ime.getElementPoint(x, y);
-            final Point3D finalPointIme = new Point3D((double) (1.0 * x / panelPicture.getWidth()), (double) (1.0 * y / panelPicture.getHeight()), 0.0);
+            final Point3D finalPointIme = new Point3D((double) (1.0 * x / dimPictureBox.getWidth()), (double) (1.0 * y / dimPictureBox.getHeight()), 0.0);
             pointsInImage.forEach((landmarkTypeItem, point3D) -> {
                 if (landmarkTypeItem.equals(landmarkType)) {
                     pointsInImage.put(landmarkTypeItem, finalPointIme);
@@ -279,16 +279,6 @@ public class EditPolygonsMappings implements Runnable {
 
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    private JPanel dialogPane;
-    private JPanel contentPanel;
-    private JSplitPane splitPane1;
-    private JSplitPane splitPane2;
-    JPanel panelPicture;
-    JPanel panelModelView;
-    private JScrollPane scrollPane1;
-    private JTextArea textAreaTextOutput;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 
     public void loadImage(File selectedFile) {
         try {
@@ -318,7 +308,7 @@ public class EditPolygonsMappings implements Runnable {
 
 
     public void run() {
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()));
         hasChangedAorB = true;
         boolean firstTime = true;
         AtomicBoolean oneMore = new AtomicBoolean(true);
@@ -330,19 +320,24 @@ public class EditPolygonsMappings implements Runnable {
                         zBufferImage = testHumanHeadTexturing.zBufferImage();
                         // Display 3D scene
                         if (zBufferImage != null) {
-                            Graphics graphics = panelModelView.getGraphics();
+                            if(zBufferImage==null) {
+                                zBufferImage = new one.empty3.libs.Image((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()).getBi();
+                            }
+                            Graphics graphics = zBufferImage.getGraphics();
                             if (graphics != null) {
-                                graphics.drawImage(zBufferImage, 0, 0, panelModelView.getWidth()-1, panelModelView.getHeight()-1, null);
+                                graphics.drawImage((Image) zBufferImage, 0, 0, (int) (dimModelBox.getWidth()-1), (int) (dimModelBox.getHeight()-1), null);
                                 displayPointsOut(pointsInModel);
                             }
                         }
-                        if (image != null) {
-                            Graphics graphics = panelPicture.getGraphics();
+                        if (image == null) {
+                            image = new one.empty3.libs.Image((int) dimPictureBox.getWidth(), (int) dimPictureBox.getHeight()).getBi();
+                        }
+                            Graphics graphics = image.getGraphics();
                             if (graphics != null) {
-                                graphics.drawImage(image, 0, 0, panelPicture.getWidth(), panelPicture.getHeight(), null);
+                                graphics.drawImage((Image) image, 0, 0, (int) dimPictureBox.getWidth(), (int) dimPictureBox.getHeight(), null);
                                 displayPointsIn(pointsInImage);
                             }
-                        }
+
                         try {
                             Thread.sleep(20);
                         } catch (InterruptedException e) {
@@ -354,7 +349,7 @@ public class EditPolygonsMappings implements Runnable {
                     threadDisplay.start();
                     firstTime = false;
                 }
-                if (pointsInImage != null && panelModelView != null && !pointsInImage.isEmpty()
+                if (pointsInImage != null && dimModelBox != null && !pointsInImage.isEmpty()
                         && !pointsInModel.isEmpty() && model != null && image != null && distanceABClass != null
                         && threadDistanceIsNotRunning && iTextureMorphMove != null) {
                     if (oneMore.get() || hasChangedAorB() && threadTextureCreation == null) {
@@ -433,7 +428,7 @@ public class EditPolygonsMappings implements Runnable {
                     && (image != null && model != null)) {
                 Logger.getAnonymousLogger().log(Level.INFO, "Le thread :TestObjet est arrêté ou non attribute");
                 testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image,imageFileRight,  model,
-                        hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+                        hdTextures?Resolution.HD1080RESOLUTION:new Resolution((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()));
                 Logger.getAnonymousLogger().log(Level.INFO, "Une nouvelle instance a été démarrée");
             }
 
@@ -451,15 +446,15 @@ public class EditPolygonsMappings implements Runnable {
 
     private void displayPointsIn(HashMap<String, Point3D> points) {
         if (points == null) return;
-        JPanel panelDraw = panelPicture;
+        Dimension2D panelDraw = dimPictureBox;
         try {
             Thread.sleep(200);
             if (image != null && panelDraw != null) {
-                Graphics graphics = panelDraw.getGraphics();
+                Graphics graphics = image.getGraphics();
                 if (graphics != null) {
                     try {
                         points.forEach((s, point3D) -> {
-                            Graphics graphics1 = panelDraw.getGraphics();
+                            Graphics graphics1 = image.getGraphics();
                             if (landmarkType != null && landmarkType.equals(s))
                                 graphics1.setColor(Color.ORANGE);
                             else
@@ -480,9 +475,9 @@ public class EditPolygonsMappings implements Runnable {
     }
 
     private void displayPointsOut(HashMap<String, Point3D> points) {
-        JPanel panelDraw = panelModelView;
-        if (image != null && panelDraw != null && testHumanHeadTexturing != null && testHumanHeadTexturing.getZ().la() == panelModelView.getWidth()
-                && testHumanHeadTexturing.getZ().ha() == panelModelView.getHeight()) {
+        BufferedImage panelDraw = image1;
+        if (image != null && panelDraw != null && testHumanHeadTexturing != null && testHumanHeadTexturing.getZ().la() == dimModelBox.getWidth()
+                && testHumanHeadTexturing.getZ().ha() == dimModelBox.getHeight()) {
             // Display image
             if (points != null) {
                 try {
@@ -499,7 +494,7 @@ public class EditPolygonsMappings implements Runnable {
                                     if (point != null && point2 != null) {
                                         point.setLocation(point.getX() / testHumanHeadTexturing.getZ().la() * panelDraw.getWidth(),
                                                 point.getY() / testHumanHeadTexturing.getZ().ha() * panelDraw.getHeight());
-                                        point2.setLocation(point2.getX() * panelModelView.getWidth(), point2.getX() * panelModelView.getWidth());
+                                        point2.setLocation(point2.getX() * dimModelBox.getWidth(), point2.getX() * dimModelBox.getWidth());
                                         Graphics graphics = panelDraw.getGraphics();
                                         // point.setLocation(point.getX(), point.getY());
                                         if (testHumanHeadTexturing.getZ().checkScreen(point)) {
@@ -591,11 +586,11 @@ public class EditPolygonsMappings implements Runnable {
         testHumanHeadTexturing.setObj(model);
         Logger.getAnonymousLogger().log(Level.INFO, "Loaded model");
 
-        testHumanHeadTexturing.defautZwidth = (panelModelView.getWidth() * Math.sqrt(2) / 2) * 2;
-        testHumanHeadTexturing.defautZheight = (panelModelView.getHeight() * Math.sqrt(2) / 2) * 2;
+        testHumanHeadTexturing.defautZwidth = (dimModelBox.getWidth() * Math.sqrt(2) / 2) * 2;
+        testHumanHeadTexturing.defautZheight = (dimModelBox.getHeight() * Math.sqrt(2) / 2) * 2;
 
-        Point3D minWidthPanel = new Point3D((double) panelModelView.getWidth(),
-                (double) panelModelView.getHeight() * (1.0 * panelModelView.getWidth() / panelModelView.getHeight()), 0.0).mult(Math.sqrt(2));
+        Point3D minWidthPanel = new Point3D((double) dimModelBox.getWidth(),
+                (double) dimModelBox.getHeight() * (1.0 * dimModelBox.getWidth() / dimModelBox.getHeight()), 0.0).mult(Math.sqrt(2));
         Point3D[] plane;
 
 
@@ -867,7 +862,7 @@ public class EditPolygonsMappings implements Runnable {
         threadTextureCreation = null;
         threadDistanceIsNotRunning = true;
         testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this,
-                image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+                image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution((int) dimModelBox.getWidth(), (int) dimModelBox.getHeight()));
         renderingStopped = true;
         hasChangedAorB = true;
     }
