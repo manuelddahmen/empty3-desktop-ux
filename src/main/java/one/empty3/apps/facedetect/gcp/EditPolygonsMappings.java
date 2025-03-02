@@ -836,6 +836,7 @@ public class EditPolygonsMappings implements Runnable {
     public void loadImages(File selectedFile) {
         if (selectedFile.exists() && selectedFile.isDirectory()) {
             inImageType = MULTIPLE;
+
             this.imagesDirectory = selectedFile;
         }
 
@@ -951,15 +952,22 @@ public class EditPolygonsMappings implements Runnable {
 
     public void loadImageData1(byte[] image1s) {
         try {
-            image = ImageIO.read(new ByteArrayInputStream(image1s));
-        } catch (IOException e) {
+            BufferedImage image0 = ImageIO.read(new ByteArrayInputStream(image1s));
+            if(image0!=null) {
+                image = image0;
+                dimPictureBox = new Dimension(image.getWidth(), image.getHeight());
+            }
+        } catch (IOException ignored) {
 
         }
     }
     public void loadImageData3(byte[] image1s) {
         try {
-            imageFileRight = ImageIO.read(new ByteArrayInputStream(image1s));
-        } catch (IOException e) {
+            BufferedImage image0 = ImageIO.read(new ByteArrayInputStream(image1s));
+            if(image0!=null) {
+                imageFileRight = image0;
+            }
+        } catch (IOException ignored) {
 
         }
     }
