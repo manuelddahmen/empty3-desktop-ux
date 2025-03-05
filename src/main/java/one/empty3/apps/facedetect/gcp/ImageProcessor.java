@@ -64,13 +64,6 @@ public class ImageProcessor implements HttpFunction {
                 gson.toJson(Map.of("error", "jSonObject is null in ImageProcessor"), response.getWriter());
                 return;
             }
-        } catch (Exception ex) {
-            response.setStatusCode(500);
-            gson.toJson(Map.of("error", "Invalid json. " + ex.getMessage()), response.getWriter());
-            return;
-        }
-
-        try {
             if (jsonObject.has("image1")) {
                 data.put("image1", jsonObject.get("image1").getAsString());
             }
@@ -103,25 +96,25 @@ public class ImageProcessor implements HttpFunction {
             }
 
             //Process data
-            Map<String, Object> result = processImage(data);
+            Map<String, String> result = processImage(data);
 
             //Return Result
             response.setStatusCode(200);
             gson.toJson(result, response.getWriter());
         } catch (RuntimeException ex) {
             response.setStatusCode(500);
-            gson.toJson(Map.of("error", "An unexpected error occurred. "+ex.getMessage()), response.getWriter());
-            //Log exception.
+            StringBuilder error = new StringBuilder(" Error \n CAUSE:" + ex.getCause().toString() + "\n" + ex.getMessage());
             for (int i = 0; i < ex.getStackTrace().length; i++) {
-                Logger.getAnonymousLogger().log(Level.SEVERE, ex.getStackTrace()[i].toString()+"\n");
+                error.append(ex.getStackTrace()[i].toString());
             }
             Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage()+"\n");
+            gson.toJson(Map.of("error", "An unexpected error occurred. "+ex.getMessage()+error), response.getWriter());
 
         }
     }
 
-    private Map<String, Object> processImage(Map<String, String> data) {
-        Map<String, Object> response = new HashMap<>();
+    private Map<String, String> processImage(Map<String, String> data) {
+        Map<String, String> response = new HashMap<>();
         try {
             ProcessData processData = new ProcessData(data);
             Thread thread = new Thread(processData);
@@ -134,11 +127,10 @@ public class ImageProcessor implements HttpFunction {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
             ImageIO.write(result, "jpg", byteArrayOutputStream);
-            response.put("completion", 0);
+            response.put("completion", "0");
             response.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
-        } catch (Exception e) {
-            response.put("completion", -1);
-            response.put("error", e.getMessage());
+        } catch (RuntimeException | IOException e) {
+            throw new RuntimeException(e);
         }
         return response;
     }
