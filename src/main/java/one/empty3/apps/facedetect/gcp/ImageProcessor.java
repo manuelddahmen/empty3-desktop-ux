@@ -108,7 +108,8 @@ public class ImageProcessor implements HttpFunction {
                 error.append(ex.getStackTrace()[i].toString());
             }
             Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage()+"\n");
-            gson.toJson(Map.of("error", "An unexpected error occurred. "+ex.getMessage()+error), response.getWriter());
+            gson.toJson(Map.of("error", "An unexpected error occurred. "+ex.getMessage()+error,
+                    "completion", "-1"),  response.getWriter());
 
         }
     }
