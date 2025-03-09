@@ -5,28 +5,16 @@ import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Base64;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.google.cloud.functions.HttpFunction;
-import com.google.cloud.functions.HttpRequest;
-import com.google.cloud.functions.HttpResponse;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import one.empty3.libs.Image;
-
-import javax.imageio.ImageIO;
-import java.io.*;
-import java.util.Base64;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,11 +49,16 @@ public class ImageProcessor implements HttpFunction {
             jsonObject = gson.fromJson(request.getReader(), JsonObject.class);
             if (jsonObject == null) {
                 response.setStatusCode(500);
-                response.getWriter().write("&error=-1:cannot decode json from request");
-                response.getWriter().write("&completion=0");
                 gson.toJson(Map.of("error", "jSonObject is null in ImageProcessor"), response.getWriter());
                 return;
             }
+        } catch (JsonParseException e) {
+            response.setStatusCode(500);
+            gson.toJson(Map.of("error", "Invalid JSON format: " + e.getMessage()), response.getWriter());
+            return;
+        }
+
+        try {
             if (jsonObject.has("image1")) {
                 data.put("image1", jsonObject.get("image1").getAsString());
             }
@@ -97,53 +90,57 @@ public class ImageProcessor implements HttpFunction {
                 data.put("token", jsonObject.get("token").getAsString());
             }
 
-            //Process data
-            Map<String, String> result = processImage(data);
+            // Process data
+            Map<String, Object> result = processImage(data);
 
-            //Return Result
+            // Return Result
             response.setStatusCode(200);
             gson.toJson(result, response.getWriter());
         } catch (RuntimeException ex) {
             response.setStatusCode(500);
-            StringBuilder error = new StringBuilder(" Error \n CAUSE:" + ex.getCause().toString() + "\n" + ex.getMessage());
-            for (int i = 0; i < ex.getStackTrace().length; i++) {
-                error.append(ex.getStackTrace()[i].toString());
+            Map<String, Object> errorMap = new HashMap<>();
+            errorMap.put("error", "An unexpected error occurred: " + ex.getMessage());
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            try {
+                ex.printStackTrace(new PrintStream(byteArrayOutputStream));
+                errorMap.put("stacktrace", byteArrayOutputStream.toString());
+            } catch (Exception e) {
+                Logger.getAnonymousLogger().log(Level.SEVERE, "Error writing stacktrace");
+                e.printStackTrace();
             }
-            Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage()+"\n");
-            response.getWriter().write(error.toString());
-            gson.toJson(Map.of("error", "An unexpected error occurred. "+ex.getMessage()+error,
-                    "completion", "-1"),  response.getWriter());
+            gson.toJson(errorMap, response.getWriter());
 
+            // Log exception.
+            Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage() + "\n");
+            for (int i = 0; i < ex.getStackTrace().length; i++) {
+                Logger.getAnonymousLogger().log(Level.SEVERE, ex.getStackTrace()[i].toString() + "\n");
+            }
         }
     }
 
-    private Map<String, String> processImage(Map<String, String> data) {
-        Map<String, String> response = new HashMap<>();
+    private Map<String, Object> processImage(Map<String, String> data) {
+        Map<String, Object> response = new HashMap<>();
         try {
             ProcessData processData = new ProcessData(data);
             Thread thread = new Thread(processData);
             thread.start();
             while (processData.isRunning()) {
-
             }
             Image result = processData.getImage();
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
             ImageIO.write(result, "jpg", byteArrayOutputStream);
-            response.put("completion", "0");
+            response.put("completion", 0);
             response.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
-        } catch (RuntimeException | IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            response.put("completion", -1);
+            response.put("error", e.getMessage());
         }
         return response;
     }
 
     public static void main(String[] args) {
         ImageProcessor imageProcessor = new ImageProcessor();
-
     }
-
-    public JsonObject jsonObject;
-
 }
