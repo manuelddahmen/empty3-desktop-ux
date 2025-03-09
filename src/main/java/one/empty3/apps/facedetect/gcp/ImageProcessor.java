@@ -124,17 +124,18 @@ public class ImageProcessor implements HttpFunction {
             ProcessData processData = new ProcessData(data);
             Thread thread = new Thread(processData);
             thread.start();
-            while (processData.isRunning()) {
+            Image result = null;
+            while (processData.isRunning() && result==null) {
+                result = processData.getImage();
             }
-            Image result = processData.getImage();
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
             ImageIO.write(result, "jpg", byteArrayOutputStream);
-            response.put("completion", 0);
+            response.put("completion", "0");
             response.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
         } catch (Exception e) {
-            response.put("completion", -1);
+            response.put("completion", "-1");
             response.put("error", e.getMessage());
         }
         return response;
