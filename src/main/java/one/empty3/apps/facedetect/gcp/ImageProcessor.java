@@ -61,6 +61,8 @@ public class ImageProcessor implements HttpFunction {
             jsonObject = gson.fromJson(request.getReader(), JsonObject.class);
             if (jsonObject == null) {
                 response.setStatusCode(500);
+                response.getWriter().write("&error=-1:cannot decode json from request");
+                response.getWriter().write("&completion=0");
                 gson.toJson(Map.of("error", "jSonObject is null in ImageProcessor"), response.getWriter());
                 return;
             }
@@ -108,6 +110,7 @@ public class ImageProcessor implements HttpFunction {
                 error.append(ex.getStackTrace()[i].toString());
             }
             Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage()+"\n");
+            response.getWriter().write(error.toString());
             gson.toJson(Map.of("error", "An unexpected error occurred. "+ex.getMessage()+error,
                     "completion", "-1"),  response.getWriter());
 

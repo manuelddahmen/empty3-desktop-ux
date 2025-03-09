@@ -384,8 +384,9 @@ public class FaceDetectAppHttp implements HttpFunction {
                 String gson1 = new Gson().toJson(hashMapResponse);
                 httpResponse.getWriter().write(gson1 );
             }
-        } catch (IOException | GeneralSecurityException ex) {
-            throw new RuntimeException(ex);
+        } catch (RuntimeException ex) {
+            httpResponse.getWriter().write("&error="+ex.getMessage());
+            httpResponse.getWriter().write("&completion=0");
         }
     }
 }
