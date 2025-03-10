@@ -131,9 +131,13 @@ public class ImageProcessor implements HttpFunction {
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-            ImageIO.write(result, "jpg", byteArrayOutputStream);
-            response.put("completion", "0");
-            response.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
+            if(result!=null) {
+                ImageIO.write(result, "jpg", byteArrayOutputStream);
+                response.put("completion", "100");
+                response.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
+            } else {
+                response.put("completion", "0");
+            }
         } catch (Exception e) {
             response.put("completion", "-1");
             response.put("error", e.getMessage());
