@@ -27,9 +27,10 @@ public class ImageProcessor implements HttpFunction {
         if(array instanceof JsonArray array1) {
             array1.forEach(element -> {
                 if (element!=null &&!(element instanceof JsonNull) && !element.isJsonNull()) {
+                    byte b = element.getAsByte();
                     String ch = element.toString();
                     if (ch.getBytes()[0] != 22 && ch.getBytes()[0] != 0x5f) {
-                        str.append(ch);
+                        str.append(b);
                         i.getAndIncrement();
                     }
                 }
