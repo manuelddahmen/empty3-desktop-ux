@@ -12,14 +12,17 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ProcessData implements Runnable {
-    private final Thread runApp;
     boolean isRunning = true;
     EditPolygonsMappings editPolygonsMappings;
+    Map<String, String> data;
     /***
      * Constructor
      * @param data POST data encoded as String and Base64 for files
      */
     public ProcessData(Map<String, String> data) {
+        this.data = data;
+    }
+    public void run() {
         try {
             editPolygonsMappings = new EditPolygonsMappings();
             editPolygonsMappings.loadImageData1(Base64.getDecoder().decode(data.get("image1")));
@@ -59,7 +62,7 @@ public class ProcessData implements Runnable {
             editPolygonsMappings.typeShape = !Objects.equals(data.get("selected_texture_type"), "Bezier texture") ? DistanceAB.TYPE_SHAPE_QUADR : DistanceAB.TYPE_SHAPE_BEZIER;
             data.get("token");
 
-            runApp = new Thread(editPolygonsMappings);
+            Thread runApp = new Thread(editPolygonsMappings);
             runApp.start();
 
             while (editPolygonsMappings.zBufferImage == null) {
@@ -79,11 +82,6 @@ public class ProcessData implements Runnable {
 
     public boolean isRunning() {
         return isRunning;
-    }
-
-    @Override
-    public void run() {
-        isRunning = false;
     }
 
     public Image getImage() {

@@ -3,15 +3,14 @@ package one.empty3.apps.facedetect.gcp;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
@@ -22,6 +21,16 @@ import java.util.logging.Logger;
 public class ImageProcessor implements HttpFunction {
 
     private final Gson gson = new Gson();
+
+    String stringify(JsonArray array) {
+        StringBuilder str = new StringBuilder();
+        for (JsonElement jsonElement : array) {
+            if(jsonElement instanceof JsonNull) {
+                str.append(jsonElement.toString());
+            }
+        }
+        return str.toString();
+    }
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
@@ -61,34 +70,34 @@ public class ImageProcessor implements HttpFunction {
         try {
 
             if (jsonObject.has("image1") && jsonObject.get("image1") != null) {
-            data.put("image1", jsonObject.get("image1").toString());
+            data.put("image1", stringify(jsonObject.getAsJsonArray("image1")));
         }
         if (jsonObject.has("model") && jsonObject.get("model") != null) {
-            data.put("model", jsonObject.get("model").toString());
+            data.put("model", stringify(jsonObject.getAsJsonArray("model")));
         }
         if (jsonObject.has("image3") && jsonObject.get("image3") != null) {
-            data.put("image3", jsonObject.get("image3").toString());
+            data.put("image3", stringify(jsonObject.getAsJsonArray("image3")));
         }
         if (jsonObject.has("textFile1") && jsonObject.get("textFile1") != null) {
-            data.put("textFile1", jsonObject.get("textFile1").toString());
+            data.put("textFile1", stringify(jsonObject.getAsJsonArray("textFile1")));
         }
         if (jsonObject.has("textFile2") && jsonObject.get("textFile2") != null) {
-            data.put("textFile2", jsonObject.get("textFile2").toString());
+            data.put("textFile2", stringify(jsonObject.getAsJsonArray("textFile2")));
         }
         if (jsonObject.has("textFile3") && jsonObject.get("textFile3") != null) {
-            data.put("textFile3", jsonObject.get("textFile3").toString());
+            data.put("textFile3", stringify(jsonObject.getAsJsonArray("textFile3")));
         }
         if (jsonObject.has("hd_texture") && jsonObject.get("hd_texture") != null) {
-            data.put("hd_texture", jsonObject.get("hd_texture").toString());
+            data.put("hd_texture", stringify(jsonObject.getAsJsonArray("hd_texture")));
         }
         if (jsonObject.has("selected_algorithm") && jsonObject.get("selected_algorithm") != null) {
-            data.put("selected_algorithm", jsonObject.get("selected_algorithm").toString());
+            data.put("selected_algorithm", stringify(jsonObject.getAsJsonArray("selected_algorithm")));
         }
         if (jsonObject.has("selected_texture_type") && jsonObject.get("selected_texture_type") != null) {
-            data.put("selected_texture_type", jsonObject.get("selected_texture_type").toString());
+            data.put("selected_texture_type", stringify(jsonObject.getAsJsonArray("selected_texture_type")));
         }
         if (jsonObject.has("token") & jsonObject.get("token") != null) {
-            data.put("token", jsonObject.get("token").toString());
+            data.put("token", stringify(jsonObject.getAsJsonArray("token")));
         }
 
         // Process data
