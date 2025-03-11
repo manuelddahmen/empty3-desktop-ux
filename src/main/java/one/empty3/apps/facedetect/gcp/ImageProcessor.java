@@ -24,9 +24,14 @@ public class ImageProcessor implements HttpFunction {
 
     String stringify(JsonArray array) {
         StringBuilder str = new StringBuilder();
+        int i=0;
         for (JsonElement jsonElement : array) {
-            if(jsonElement instanceof JsonNull) {
-                str.append(jsonElement.toString());
+            if (!(jsonElement instanceof JsonNull)&& !jsonElement.isJsonNull()) {
+                String ch = jsonElement.toString();
+                if(ch.getBytes()[0]!=22) {
+                    str.append(ch);
+                    i++;
+                }
             }
         }
         return str.toString();
@@ -68,39 +73,38 @@ public class ImageProcessor implements HttpFunction {
             return;
         }
         try {
-
             if (jsonObject.has("image1") && jsonObject.get("image1") != null) {
-            data.put("image1", stringify(jsonObject.getAsJsonArray("image1")));
-        }
-        if (jsonObject.has("model") && jsonObject.get("model") != null) {
-            data.put("model", stringify(jsonObject.getAsJsonArray("model")));
-        }
-        if (jsonObject.has("image3") && jsonObject.get("image3") != null) {
-            data.put("image3", stringify(jsonObject.getAsJsonArray("image3")));
-        }
-        if (jsonObject.has("textFile1") && jsonObject.get("textFile1") != null) {
-            data.put("textFile1", stringify(jsonObject.getAsJsonArray("textFile1")));
-        }
-        if (jsonObject.has("textFile2") && jsonObject.get("textFile2") != null) {
-            data.put("textFile2", stringify(jsonObject.getAsJsonArray("textFile2")));
-        }
-        if (jsonObject.has("textFile3") && jsonObject.get("textFile3") != null) {
-            data.put("textFile3", stringify(jsonObject.getAsJsonArray("textFile3")));
-        }
-        if (jsonObject.has("hd_texture") && jsonObject.get("hd_texture") != null) {
-            data.put("hd_texture", stringify(jsonObject.getAsJsonArray("hd_texture")));
-        }
-        if (jsonObject.has("selected_algorithm") && jsonObject.get("selected_algorithm") != null) {
-            data.put("selected_algorithm", stringify(jsonObject.getAsJsonArray("selected_algorithm")));
-        }
-        if (jsonObject.has("selected_texture_type") && jsonObject.get("selected_texture_type") != null) {
-            data.put("selected_texture_type", stringify(jsonObject.getAsJsonArray("selected_texture_type")));
-        }
-        if (jsonObject.has("token") & jsonObject.get("token") != null) {
-            data.put("token", stringify(jsonObject.getAsJsonArray("token")));
-        }
+                data.put("image1", stringify(jsonObject.getAsJsonArray("image1")));
+            }
+            if (jsonObject.has("model") && jsonObject.get("model") != null) {
+                data.put("model", stringify(jsonObject.getAsJsonArray("model")));
+            }
+            if (jsonObject.has("image3") && jsonObject.get("image3") != null) {
+                data.put("image3", stringify(jsonObject.getAsJsonArray("image3")));
+            }
+            if (jsonObject.has("textFile1") && jsonObject.get("textFile1") != null) {
+                data.put("textFile1", stringify(jsonObject.getAsJsonArray("textFile1")));
+            }
+            if (jsonObject.has("textFile2") && jsonObject.get("textFile2") != null) {
+                data.put("textFile2", stringify(jsonObject.getAsJsonArray("textFile2")));
+            }
+            if (jsonObject.has("textFile3") && jsonObject.get("textFile3") != null) {
+                data.put("textFile3", stringify(jsonObject.getAsJsonArray("textFile3")));
+            }
+            if (jsonObject.has("hd_texture") && jsonObject.get("hd_texture") != null) {
+                data.put("hd_texture", stringify(jsonObject.getAsJsonArray("hd_texture")));
+            }
+            if (jsonObject.has("selected_algorithm") && jsonObject.get("selected_algorithm") != null) {
+                data.put("selected_algorithm", stringify(jsonObject.getAsJsonArray("selected_algorithm")));
+            }
+            if (jsonObject.has("selected_texture_type") && jsonObject.get("selected_texture_type") != null) {
+                data.put("selected_texture_type", stringify(jsonObject.getAsJsonArray("selected_texture_type")));
+            }
+            if (jsonObject.has("token") & jsonObject.get("token") != null) {
+                data.put("token", stringify(jsonObject.getAsJsonArray("token")));
+            }
 
-        // Process data
+            // Process data
             Map<String, Object> result = processImage(data);
 
             // Return Result
@@ -135,13 +139,13 @@ public class ImageProcessor implements HttpFunction {
             Thread thread = new Thread(processData);
             thread.start();
             Image result = null;
-            while (processData.isRunning() && result==null) {
+            while (processData.isRunning() && result == null) {
                 result = processData.getImage();
             }
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-            if(result!=null) {
+            if (result != null) {
                 ImageIO.write(result, "jpg", byteArrayOutputStream);
                 response.put("completion", "100");
                 response.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
