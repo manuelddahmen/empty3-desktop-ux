@@ -13,6 +13,7 @@ import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import one.empty3.library.Point3D;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -148,34 +149,23 @@ public class FaceDetectAppHttp implements HttpFunction {
             gson.toJson(Map.of("error", "Method Not Allowed. Use POST."), httpResponse.getWriter());
             return;
         }
-
-        // Read and process json body
-        Map<String, Object> responseMap = new HashMap<>();
-        String json;
+        JsonObject jsonObject;
         try {
-            json = new BufferedReader(httpRequest.getReader()).lines().reduce("", (accumulator, actual) -> accumulator+actual);
-        } catch (Exception ex) {
+            jsonObject = gson.fromJson(httpRequest.getReader(), JsonObject.class);
+            if (jsonObject == null) {
+                httpResponse.setStatusCode(500);
+                gson.toJson(Map.of("error", "jSonObject is null in ImageProcessor"), httpResponse.getWriter());
+                return;
+            }
+        } catch (JsonParseException e) {
             httpResponse.setStatusCode(500);
-            gson.toJson(Map.of("error", "Error reading body."), httpResponse.getWriter());
+            gson.toJson(Map.of("error", "Invalid JSON format: " + e.getMessage()), httpResponse.getWriter());
             return;
         }
-        JsonObject jsonObject = null;
         String imageString = null;
-        try {
-            jsonObject = gson.fromJson(json, JsonObject.class);
             if(jsonObject!=null) {
                 imageString = jsonObject.get("image").getAsString();
             }
-            if (jsonObject == null || imageString == null) {
-                httpResponse.setStatusCode(500);
-                gson.toJson(Map.of("error", "Error reading or parsing body."), httpResponse.getWriter());
-                return;
-            }
-        } catch (Exception ex) {
-            httpResponse.setStatusCode(500);
-            gson.toJson(Map.of("error", "Error parsing Json body."+ex.getMessage()), httpResponse.getWriter());
-            return;
-        }
 
         try {
 
@@ -195,11 +185,15 @@ public class FaceDetectAppHttp implements HttpFunction {
             faces.forEach(faceAnnotation -> {
                 app.writeFaceData(img, faceAnnotation);
             });
+            // Process data
+            Map<String, Object> result = new HashMap<>();
 
+            result.put("completion", "100");
+            result.put("faces", faces);
+            result.put("image", Base64.getEncoder().encode(byteArrayOutputStream.toByteArray()));
             app.dataWriter.close();
-            responseMap.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toString().getBytes())/*.replaceAll("\n", "")*/);
             httpResponse.setStatusCode(200);
-            gson.toJson(responseMap, httpResponse.getWriter());
+            gson.toJson(httpResponse, httpResponse.getWriter());
 
         } catch (Exception ex) {
             httpResponse.setStatusCode(500);

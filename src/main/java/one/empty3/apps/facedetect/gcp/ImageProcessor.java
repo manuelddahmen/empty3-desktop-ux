@@ -58,43 +58,40 @@ public class ImageProcessor implements HttpFunction {
             gson.toJson(Map.of("error", "Invalid JSON format: " + e.getMessage()), response.getWriter());
             return;
         }
-
         try {
-            if (jsonObject.has("image1") && jsonObject.get("image1")!=null) {
-                data.put("image1", Base64.getDecoder().decode(jsonObject.get("image1").getAsString()).toString());
-            }
-            if (jsonObject.has("model")&& jsonObject.get("model")!=null) {
-                data.put("model", Base64.getDecoder().decode(jsonObject.get("model").getAsString()).toString());
-            }
-            if (jsonObject.has("image3")&& jsonObject.get("image3")!=null) {
-                data.put("image3", Base64.getDecoder().decode(jsonObject.get("image3").getAsString()).toString());
 
-            }
-            if (jsonObject.has("textFile1")&& jsonObject.get("textFile1")!=null) {
-                data.put("txtFile1", Base64.getDecoder().decode(jsonObject.get("textFile1").getAsString()).toString());
-            }
-            if (jsonObject.has("textFile2")&& jsonObject.get("textFile2")!=null) {
-                data.put("textFile2", Base64.getDecoder().decode(jsonObject.get("textFile2").getAsString()).toString());
+            if (jsonObject.has("image1") && jsonObject.get("image1") != null) {
+            data.put("image1", jsonObject.get("image1").getAsString());
+        }
+        if (jsonObject.has("model") && jsonObject.get("model") != null) {
+            data.put("model", jsonObject.get("model").getAsString());
+        }
+        if (jsonObject.has("image3") && jsonObject.get("image3") != null) {
+            data.put("image3", jsonObject.get("image3").getAsString());
+        }
+        if (jsonObject.has("textFile1") && jsonObject.get("textFile1") != null) {
+            data.put("textFile1", jsonObject.get("textFile1").getAsString());
+        }
+        if (jsonObject.has("textFile2") && jsonObject.get("textFile2") != null) {
+            data.put("textFile2", jsonObject.get("textFile2").getAsString());
+        }
+        if (jsonObject.has("textFile3") && jsonObject.get("textFile3") != null) {
+            data.put("textFile3", jsonObject.get("textFile3").getAsString());
+        }
+        if (jsonObject.has("hd_texture") && jsonObject.get("hd_texture") != null) {
+            data.put("hd_texture", jsonObject.get("hd_texture").getAsString());
+        }
+        if (jsonObject.has("selected_algorithm") && jsonObject.get("selected_algorithm") != null) {
+            data.put("selected_algorithm", jsonObject.get("selected_algorithm").getAsString());
+        }
+        if (jsonObject.has("selected_texture_type") && jsonObject.get("selected_texture_type") != null) {
+            data.put("selected_texture_type", jsonObject.get("selected_texture_type").getAsString());
+        }
+        if (jsonObject.has("token") & jsonObject.get("token") != null) {
+            data.put("token", jsonObject.get("token").getAsString());
+        }
 
-            }
-            if (jsonObject.has("textFile3")&& jsonObject.get("textFile3")!=null) {
-                data.put("textFile3", Base64.getDecoder().decode(jsonObject.get("textFile3").getAsString()).toString());
-
-            }
-            if (jsonObject.has("hd_texture")&& jsonObject.get("hd_texture")!=null) {
-                data.put("hd_texture", jsonObject.get("hd_texture").getAsString());
-            }
-            if (jsonObject.has("selected_algorithm")&& jsonObject.get("selected_algorithm")!=null) {
-                data.put("selected_algorithm", jsonObject.get("selected_algorithm").getAsString());
-            }
-            if (jsonObject.has("selected_texture_type")&& jsonObject.get("selected_texture_type")!=null) {
-                data.put("selected_texture_type", jsonObject.get("selected_texture_type").getAsString());
-            }
-            if (jsonObject.has("token")& jsonObject.get("token")!=null) {
-                data.put("token", jsonObject.get("token").getAsString());
-            }
-
-            // Process data
+        // Process data
             Map<String, Object> result = processImage(data);
 
             // Return Result
