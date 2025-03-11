@@ -14,12 +14,12 @@ import java.util.Objects;
 public class ProcessData implements Runnable {
     boolean isRunning = true;
     EditPolygonsMappings editPolygonsMappings;
-    Map<String, String> data;
+    Map<String, byte[]> data;
     /***
      * Constructor
      * @param data POST data encoded as String and Base64 for files
      */
-    public ProcessData(Map<String, String> data) {
+    public ProcessData(Map<String, byte[]> data) {
         this.data = data;
     }
     public void run() {
@@ -33,7 +33,7 @@ public class ProcessData implements Runnable {
             editPolygonsMappings.loadTxtData(Arrays.toString(Base64.getDecoder().decode(data.get("textFile2"))), 1);
             editPolygonsMappings.loadTxtData(Arrays.toString(Base64.getDecoder().decode(data.get("textFile3"))), 2);
             editPolygonsMappings.hdTextures = Objects.equals(data.get("hd_texture"), "true");
-            switch (Integer.parseInt(data.get("selected_algorithm"))) {
+            switch (Integer.parseInt(data.get("selected_algorithm").toString())) {
                 case 1:
                     editPolygonsMappings.distanceABClass = DistanceProxLinear1.class;
                     break;

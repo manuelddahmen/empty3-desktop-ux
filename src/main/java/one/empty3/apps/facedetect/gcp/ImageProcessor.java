@@ -7,6 +7,7 @@ import com.google.gson.*;
 import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -15,8 +16,10 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ImageProcessor implements HttpFunction {
 
@@ -42,6 +45,8 @@ public class ImageProcessor implements HttpFunction {
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
+
+        try {
         // Set CORS headers to allow requests from Flutter
         response.appendHeader("Access-Control-Allow-Origin", "*"); // Replace with your Flutter app's origin in production
         response.appendHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -59,56 +64,30 @@ public class ImageProcessor implements HttpFunction {
             gson.toJson(Map.of("error", "Method Not Allowed. Use POST."), response.getWriter());
             return;
         }
+        // Read the request body as a string
+        BufferedReader reader = request.getReader();
+        String body = reader.lines().collect(Collectors.joining());
+        System.out.println("Request Body: " + body);
 
-        // Parse the JSON request body
-        Map<String, String> data = new HashMap<>();
-        JsonObject jsonObject;
-        try {
-            jsonObject = gson.fromJson(request.getReader(), JsonObject.class);
-            if (jsonObject == null) {
-                response.setStatusCode(500);
-                gson.toJson(Map.of("error", "jSonObject is null in ImageProcessor"), response.getWriter());
-                return;
-            }
-        } catch (JsonParseException e) {
-            response.setStatusCode(500);
-            gson.toJson(Map.of("error", "Invalid JSON format: " + e.getMessage()), response.getWriter());
-            return;
+        // Parse the JSON
+        JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
+
+        // Extract each byte array
+        Map<String, byte[]> byteArrays = new HashMap<>();
+        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+            String key = entry.getKey();
+            JsonArray jsonArray = entry.getValue().getAsJsonArray();
+            byte[] byteArray = jsonArrayToByteArray(jsonArray);
+            byteArrays.put(key, byteArray);
+            System.out.println("Receive : "+key);
         }
-        try {
-            if (jsonObject.has("image1") && jsonObject.get("image1") != null) {
-                data.put("image1", stringify(jsonObject.get("image1")));
-            }
-            if (jsonObject.has("model") && jsonObject.get("model") != null) {
-                data.put("model", stringify(jsonObject.get("model")));
-            }
-            if (jsonObject.has("image3") && jsonObject.get("image3") != null) {
-                data.put("image3", stringify(jsonObject.get("image3")));
-            }
-            if (jsonObject.has("textFile1") && jsonObject.get("textFile1") != null) {
-                data.put("textFile1", stringify(jsonObject.get("textFile1")));
-            }
-            if (jsonObject.has("textFile2") && jsonObject.get("textFile2") != null) {
-                data.put("textFile2", stringify(jsonObject.get("textFile2")));
-            }
-            if (jsonObject.has("textFile3") && jsonObject.get("textFile3") != null) {
-                data.put("textFile3", stringify(jsonObject.get("textFile3")));
-            }
-            if (jsonObject.has("hd_texture") && jsonObject.get("hd_texture") != null) {
-                data.put("hd_texture", stringify(jsonObject.get("hd_texture")));
-            }
-            if (jsonObject.has("selected_algorithm") && jsonObject.get("selected_algorithm") != null) {
-                data.put("selected_algorithm", stringify(jsonObject.get("selected_algorithm")));
-            }
-            if (jsonObject.has("selected_texture_type") && jsonObject.get("selected_texture_type") != null) {
-                data.put("selected_texture_type", stringify(jsonObject.get("selected_texture_type")));
-            }
-            if (jsonObject.has("token") & jsonObject.get("token") != null) {
-                data.put("token", stringify(jsonObject.getAsJsonArray("token")));
-            }
 
+        byteArrays.forEach((s, bytes) -> {
+            if(bytes==null)
+                byteArrays.remove(s);
+        });
             // Process data
-            Map<String, Object> result = processImage(data);
+            Map<String, String> result = processImage(byteArrays);
 
             // Return Result
             response.setStatusCode(200);
@@ -120,7 +99,7 @@ public class ImageProcessor implements HttpFunction {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             try {
                 ex.printStackTrace(new PrintStream(byteArrayOutputStream));
-                errorMap.put("stacktrace", byteArrayOutputStream.toString());
+                errorMap.put("s0tacktrace", byteArrayOutputStream.toString());
             } catch (Exception e) {
                 Logger.getAnonymousLogger().log(Level.SEVERE, "Error writing stacktrace");
                 e.printStackTrace();
@@ -135,8 +114,9 @@ public class ImageProcessor implements HttpFunction {
         }
     }
 
-    private Map<String, Object> processImage(Map<String, String> data) {
-        Map<String, Object> response = new HashMap<>();
+
+    private Map<String, String> processImage(Map<String, byte[]> data) {
+        Map<String, String> response = new HashMap<>();
         try {
             ProcessData processData = new ProcessData(data);
             Thread thread = new Thread(processData);
@@ -164,5 +144,15 @@ public class ImageProcessor implements HttpFunction {
 
     public static void main(String[] args) {
         ImageProcessor imageProcessor = new ImageProcessor();
+    }
+
+
+    // Helper method to convert JsonArray to byte[]
+    private byte[] jsonArrayToByteArray(JsonArray jsonArray) {
+        byte[] byteArray = new byte[jsonArray.size()];
+        for (int i = 0; i < jsonArray.size(); i++) {
+            byteArray[i] = jsonArray.get(i).getAsByte();
+        }
+        return byteArray;
     }
 }
