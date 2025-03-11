@@ -197,7 +197,7 @@ public class FaceDetectAppHttp implements HttpFunction {
             });
 
             app.dataWriter.close();
-            responseMap.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toString().getBytes()).replaceAll("\n", ""));
+            responseMap.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toString().getBytes())/*.replaceAll("\n", "")*/);
             httpResponse.setStatusCode(200);
             gson.toJson(responseMap, httpResponse.getWriter());
 
