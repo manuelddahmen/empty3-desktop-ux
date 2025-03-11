@@ -10,11 +10,10 @@ import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,18 +21,20 @@ public class ImageProcessor implements HttpFunction {
 
     private final Gson gson = new Gson();
 
-    String stringify(JsonArray array) {
+    String stringify(JsonElement array) {
         StringBuilder str = new StringBuilder();
-        int i=0;
-        for (JsonElement jsonElement : array) {
-            if (!(jsonElement instanceof JsonNull)&& !jsonElement.isJsonNull()) {
-                String ch = jsonElement.toString();
-                if(ch.getBytes()[0]!=22) {
-                    str.append(ch);
-                    i++;
+        AtomicInteger i= new AtomicInteger();
+        if(array instanceof JsonArray array1) {
+            array1.forEach(element -> {
+                if (element!=null &&!(element instanceof JsonNull) && !element.isJsonNull()) {
+                    String ch = element.toString();
+                    if (ch.getBytes()[0] != 22 && ch.getBytes()[0] != 0x5f) {
+                        str.append(ch);
+                        i.getAndIncrement();
+                    }
                 }
+            });
             }
-        }
         return str.toString();
     }
 
@@ -74,31 +75,31 @@ public class ImageProcessor implements HttpFunction {
         }
         try {
             if (jsonObject.has("image1") && jsonObject.get("image1") != null) {
-                data.put("image1", stringify(jsonObject.getAsJsonArray("image1")));
+                data.put("image1", stringify(jsonObject.get("image1")));
             }
             if (jsonObject.has("model") && jsonObject.get("model") != null) {
-                data.put("model", stringify(jsonObject.getAsJsonArray("model")));
+                data.put("model", stringify(jsonObject.get("model")));
             }
             if (jsonObject.has("image3") && jsonObject.get("image3") != null) {
-                data.put("image3", stringify(jsonObject.getAsJsonArray("image3")));
+                data.put("image3", stringify(jsonObject.get("image3")));
             }
             if (jsonObject.has("textFile1") && jsonObject.get("textFile1") != null) {
-                data.put("textFile1", stringify(jsonObject.getAsJsonArray("textFile1")));
+                data.put("textFile1", stringify(jsonObject.get("textFile1")));
             }
             if (jsonObject.has("textFile2") && jsonObject.get("textFile2") != null) {
-                data.put("textFile2", stringify(jsonObject.getAsJsonArray("textFile2")));
+                data.put("textFile2", stringify(jsonObject.get("textFile2")));
             }
             if (jsonObject.has("textFile3") && jsonObject.get("textFile3") != null) {
-                data.put("textFile3", stringify(jsonObject.getAsJsonArray("textFile3")));
+                data.put("textFile3", stringify(jsonObject.get("textFile3")));
             }
             if (jsonObject.has("hd_texture") && jsonObject.get("hd_texture") != null) {
-                data.put("hd_texture", stringify(jsonObject.getAsJsonArray("hd_texture")));
+                data.put("hd_texture", stringify(jsonObject.get("hd_texture")));
             }
             if (jsonObject.has("selected_algorithm") && jsonObject.get("selected_algorithm") != null) {
-                data.put("selected_algorithm", stringify(jsonObject.getAsJsonArray("selected_algorithm")));
+                data.put("selected_algorithm", stringify(jsonObject.get("selected_algorithm")));
             }
             if (jsonObject.has("selected_texture_type") && jsonObject.get("selected_texture_type") != null) {
-                data.put("selected_texture_type", stringify(jsonObject.getAsJsonArray("selected_texture_type")));
+                data.put("selected_texture_type", stringify(jsonObject.get("selected_texture_type")));
             }
             if (jsonObject.has("token") & jsonObject.get("token") != null) {
                 data.put("token", stringify(jsonObject.getAsJsonArray("token")));
