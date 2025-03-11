@@ -27,10 +27,10 @@ public class ImageProcessor implements HttpFunction {
 
     String stringify(JsonElement array) {
         StringBuilder str = new StringBuilder();
-        AtomicInteger i= new AtomicInteger();
-        if(array instanceof JsonArray array1) {
+        AtomicInteger i = new AtomicInteger();
+        if (array instanceof JsonArray array1) {
             array1.forEach(element -> {
-                if (element!=null &&!(element instanceof JsonNull) && !element.isJsonNull()) {
+                if (element != null && !(element instanceof JsonNull) && !element.isJsonNull()) {
                     byte b = element.getAsByte();
                     String ch = element.toString();
                     if (ch.getBytes(StandardCharsets.UTF_8)[0] != 22 && ch.getBytes(StandardCharsets.UTF_8)[0] != 0x5d) {
@@ -39,7 +39,7 @@ public class ImageProcessor implements HttpFunction {
                     }
                 }
             });
-            }
+        }
         return str.toString();
     }
 
@@ -47,45 +47,43 @@ public class ImageProcessor implements HttpFunction {
     public void service(HttpRequest request, HttpResponse response) throws IOException {
 
         try {
-        // Set CORS headers to allow requests from Flutter
-        response.appendHeader("Access-Control-Allow-Origin", "*"); // Replace with your Flutter app's origin in production
-        response.appendHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-        response.appendHeader("Access-Control-Allow-Headers", "Content-Type");
-        response.setContentType("application/json"); // Ensure content type is set to JSON
+            // Set CORS headers to allow requests from Flutter
+            response.appendHeader("Access-Control-Allow-Origin", "*"); // Replace with your Flutter app's origin in production
+            response.appendHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+            response.appendHeader("Access-Control-Allow-Headers", "Content-Type");
+            response.setContentType("application/json"); // Ensure content type is set to JSON
 
-        if ("OPTIONS".equals(request.getMethod())) {
-            // Respond to preflight requests
-            response.setStatusCode(204);
-            return;
-        }
+            if ("OPTIONS".equals(request.getMethod())) {
+                // Respond to preflight requests
+                response.setStatusCode(204);
+                return;
+            }
 
-        if (!"POST".equals(request.getMethod())) {
-            response.setStatusCode(405);
-            gson.toJson(Map.of("error", "Method Not Allowed. Use POST."), response.getWriter());
-            return;
-        }
-        // Read the request body as a string
-        BufferedReader reader = request.getReader();
-        String body = reader.lines().collect(Collectors.joining());
-        System.out.println("Request Body: " + body);
+            if (!"POST".equals(request.getMethod())) {
+                response.setStatusCode(405);
+                gson.toJson(Map.of("error", "Method Not Allowed. Use POST."), response.getWriter());
+                return;
+            }
+            // Read the request body as a string
+            BufferedReader reader = request.getReader();
+            String body = reader.lines().collect(Collectors.joining());
+            System.out.println("Request Body: " + body);
 
-        // Parse the JSON
-        JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
+            // Parse the JSON
+            JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
 
-        // Extract each byte array
-        Map<String, byte[]> byteArrays = new HashMap<>();
-        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-            String key = entry.getKey();
-            JsonArray jsonArray = entry.getValue().getAsJsonArray();
-            byte[] byteArray = jsonArrayToByteArray(jsonArray);
-            byteArrays.put(key, byteArray);
-            System.out.println("Receive : "+key);
-        }
+            // Extract each byte array
+            Map<String, byte[]> byteArrays = new HashMap<>();
+            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                String key = entry.getKey();
+                JsonArray jsonArray = entry.getValue().getAsJsonArray();
+                byte[] byteArray = jsonArrayToByteArray(jsonArray);
+                if(byteArray!=null && byteArray.length>0) {
+                    byteArrays.put(key, byteArray);
+                    System.out.println("Receive : " + key);
+                }
+            }
 
-        byteArrays.forEach((s, bytes) -> {
-            if(bytes==null)
-                byteArrays.remove(s);
-        });
             // Process data
             Map<String, String> result = processImage(byteArrays);
 
@@ -99,18 +97,18 @@ public class ImageProcessor implements HttpFunction {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             try {
                 ex.printStackTrace(new PrintStream(byteArrayOutputStream));
-                errorMap.put("s0tacktrace", byteArrayOutputStream.toString());
+                errorMap.put("error", byteArrayOutputStream.toString());
             } catch (Exception e) {
                 Logger.getAnonymousLogger().log(Level.SEVERE, "Error writing stacktrace");
                 e.printStackTrace();
             }
-            gson.toJson(errorMap, response.getWriter());
 
             // Log exception.
             Logger.getAnonymousLogger().log(Level.SEVERE, ex.getMessage() + "\n");
             for (int i = 0; i < ex.getStackTrace().length; i++) {
                 Logger.getAnonymousLogger().log(Level.SEVERE, ex.getStackTrace()[i].toString() + "\n");
             }
+            gson.toJson(errorMap, response.getWriter());
         }
     }
 
@@ -149,10 +147,14 @@ public class ImageProcessor implements HttpFunction {
 
     // Helper method to convert JsonArray to byte[]
     private byte[] jsonArrayToByteArray(JsonArray jsonArray) {
-        byte[] byteArray = new byte[jsonArray.size()];
-        for (int i = 0; i < jsonArray.size(); i++) {
-            byteArray[i] = jsonArray.get(i).getAsByte();
-        }
-        return byteArray;
+        if(jsonArray.size()>0 && jsonArray.get(0).isJsonNull() || jsonArray.size()==0) {
+            byte[] byteArray = new byte[jsonArray.size()];
+            for (int i = 0; i < jsonArray.size(); i++) {
+                byteArray[i] = jsonArray.get(i).getAsByte();
+            }
+            return byteArray;
+        } else
+            return null;
+
     }
 }
