@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,24 @@ import java.util.logging.Logger;
 public class ImageProcessor implements HttpFunction {
 
     private final Gson gson = new Gson();
+
+    String stringify(JsonElement array) {
+        StringBuilder str = new StringBuilder();
+        AtomicInteger i= new AtomicInteger();
+        if(array instanceof JsonArray array1) {
+            array1.forEach(element -> {
+                if (element!=null &&!(element instanceof JsonNull) && !element.isJsonNull()) {
+                    byte b = element.getAsByte();
+                    String ch = element.toString();
+                    if (ch.getBytes(StandardCharsets.UTF_8)[0] != 22 && ch.getBytes(StandardCharsets.UTF_8)[0] != 0x5d) {
+                        str.append(b);
+                        i.getAndIncrement();
+                    }
+                }
+            });
+            }
+        return str.toString();
+    }
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
@@ -58,34 +77,34 @@ public class ImageProcessor implements HttpFunction {
         }
         try {
             if (jsonObject.has("image1") && jsonObject.get("image1") != null) {
-                data.put("image1", jsonObject.get("image1").getAsString());
+                data.put("image1", stringify(jsonObject.get("image1")));
             }
             if (jsonObject.has("model") && jsonObject.get("model") != null) {
-                data.put("model", jsonObject.get("model").getAsString());
+                data.put("model", stringify(jsonObject.get("model")));
             }
             if (jsonObject.has("image3") && jsonObject.get("image3") != null) {
-                data.put("image3", jsonObject.get("image3").getAsString());
+                data.put("image3", stringify(jsonObject.get("image3")));
             }
             if (jsonObject.has("textFile1") && jsonObject.get("textFile1") != null) {
-                data.put("textFile1", jsonObject.get("textFile1").getAsString());
+                data.put("textFile1", stringify(jsonObject.get("textFile1")));
             }
             if (jsonObject.has("textFile2") && jsonObject.get("textFile2") != null) {
-                data.put("textFile2", jsonObject.get("textFile2").getAsString());
+                data.put("textFile2", stringify(jsonObject.get("textFile2")));
             }
             if (jsonObject.has("textFile3") && jsonObject.get("textFile3") != null) {
-                data.put("textFile3", jsonObject.get("textFile3").getAsString());
+                data.put("textFile3", stringify(jsonObject.get("textFile3")));
             }
             if (jsonObject.has("hd_texture") && jsonObject.get("hd_texture") != null) {
-                data.put("hd_texture", jsonObject.get("hd_texture").getAsString());
+                data.put("hd_texture", stringify(jsonObject.get("hd_texture")));
             }
             if (jsonObject.has("selected_algorithm") && jsonObject.get("selected_algorithm") != null) {
-                data.put("selected_algorithm", jsonObject.get("selected_algorithm").getAsString());
+                data.put("selected_algorithm", stringify(jsonObject.get("selected_algorithm")));
             }
             if (jsonObject.has("selected_texture_type") && jsonObject.get("selected_texture_type") != null) {
-                data.put("selected_texture_type", jsonObject.get("selected_texture_type").getAsString());
+                data.put("selected_texture_type", stringify(jsonObject.get("selected_texture_type")));
             }
             if (jsonObject.has("token") & jsonObject.get("token") != null) {
-                data.put("token", jsonObject.get("token").getAsString());
+                data.put("token", stringify(jsonObject.getAsJsonArray("token")));
             }
 
             // Process data
