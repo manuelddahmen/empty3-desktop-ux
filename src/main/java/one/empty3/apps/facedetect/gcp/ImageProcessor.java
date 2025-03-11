@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,22 +61,25 @@ public class ImageProcessor implements HttpFunction {
 
         try {
             if (jsonObject.has("image1") && jsonObject.get("image1")!=null) {
-                data.put("image1", jsonObject.get("image1").getAsString());
+                data.put("image1", Base64.getDecoder().decode(jsonObject.get("image1").getAsString()).toString());
             }
             if (jsonObject.has("model")&& jsonObject.get("model")!=null) {
-                data.put("model", jsonObject.get("model").getAsString());
+                data.put("model", Base64.getDecoder().decode(jsonObject.get("model").getAsString()).toString());
             }
             if (jsonObject.has("image3")&& jsonObject.get("image3")!=null) {
-                data.put("image3", jsonObject.get("image3").getAsString());
+                data.put("image3", Base64.getDecoder().decode(jsonObject.get("image3").getAsString()).toString());
+
             }
             if (jsonObject.has("textFile1")&& jsonObject.get("textFile1")!=null) {
-                data.put("textFile1", jsonObject.get("textFile1").getAsString());
+                data.put("txtFile1", Base64.getDecoder().decode(jsonObject.get("textFile1").getAsString()).toString());
             }
             if (jsonObject.has("textFile2")&& jsonObject.get("textFile2")!=null) {
-                data.put("textFile2", jsonObject.get("textFile2").getAsString());
+                data.put("textFile2", Base64.getDecoder().decode(jsonObject.get("textFile2").getAsString()).toString());
+
             }
             if (jsonObject.has("textFile3")&& jsonObject.get("textFile3")!=null) {
-                data.put("textFile3", jsonObject.get("textFile3").getAsString());
+                data.put("textFile3", Base64.getDecoder().decode(jsonObject.get("textFile3").getAsString()).toString());
+
             }
             if (jsonObject.has("hd_texture")&& jsonObject.get("hd_texture")!=null) {
                 data.put("hd_texture", jsonObject.get("hd_texture").getAsString());
