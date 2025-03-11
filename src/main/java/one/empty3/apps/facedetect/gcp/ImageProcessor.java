@@ -59,34 +59,34 @@ public class ImageProcessor implements HttpFunction {
         }
 
         try {
-            if (jsonObject.has("image1")) {
+            if (jsonObject.has("image1") && jsonObject.get("image1")!=null) {
                 data.put("image1", jsonObject.get("image1").getAsString());
             }
-            if (jsonObject.has("model")) {
+            if (jsonObject.has("model")&& jsonObject.get("model")!=null) {
                 data.put("model", jsonObject.get("model").getAsString());
             }
-            if (jsonObject.has("image3")) {
+            if (jsonObject.has("image3")&& jsonObject.get("image3")!=null) {
                 data.put("image3", jsonObject.get("image3").getAsString());
             }
-            if (jsonObject.has("textFile1")) {
+            if (jsonObject.has("textFile1")&& jsonObject.get("textFile1")!=null) {
                 data.put("textFile1", jsonObject.get("textFile1").getAsString());
             }
-            if (jsonObject.has("textFile2")) {
+            if (jsonObject.has("textFile2")&& jsonObject.get("textFile2")!=null) {
                 data.put("textFile2", jsonObject.get("textFile2").getAsString());
             }
-            if (jsonObject.has("textFile3")) {
+            if (jsonObject.has("textFile3")&& jsonObject.get("textFile3")!=null) {
                 data.put("textFile3", jsonObject.get("textFile3").getAsString());
             }
-            if (jsonObject.has("hd_texture")) {
+            if (jsonObject.has("hd_texture")&& jsonObject.get("hd_texture")!=null) {
                 data.put("hd_texture", jsonObject.get("hd_texture").getAsString());
             }
-            if (jsonObject.has("selected_algorithm")) {
+            if (jsonObject.has("selected_algorithm")&& jsonObject.get("selected_algorithm")!=null) {
                 data.put("selected_algorithm", jsonObject.get("selected_algorithm").getAsString());
             }
-            if (jsonObject.has("selected_texture_type")) {
+            if (jsonObject.has("selected_texture_type")&& jsonObject.get("selected_texture_type")!=null) {
                 data.put("selected_texture_type", jsonObject.get("selected_texture_type").getAsString());
             }
-            if (jsonObject.has("token")) {
+            if (jsonObject.has("token")& jsonObject.get("token")!=null) {
                 data.put("token", jsonObject.get("token").getAsString());
             }
 
