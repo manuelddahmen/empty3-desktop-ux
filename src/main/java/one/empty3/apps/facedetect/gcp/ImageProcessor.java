@@ -76,12 +76,24 @@ public class ImageProcessor implements HttpFunction {
             Map<String, byte[]> byteArrays = new HashMap<>();
             for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
                 String key = entry.getKey();
-                JsonArray jsonArray = entry.getValue().getAsJsonArray();
-                byte[] byteArray = jsonArrayToByteArray(jsonArray);
-                if(byteArray!=null && byteArray.length>0) {
-                    byteArrays.put(key, byteArray);
-                    System.out.println("Receive : " + key);
-                }
+                if(entry.getValue() instanceof JsonNull jsonNull) {
+
+                } else if(entry.getValue() instanceof JsonArray jsonArray) {
+                     jsonArray = entry.getValue().getAsJsonArray();
+                     byte[] byteArray = jsonArrayToByteArray(jsonArray);
+                     if(byteArray!=null && byteArray.length>0) {
+                         byteArrays.put(key, byteArray);
+                         System.out.println("Receive : " + key);
+                     }
+                 } else if(entry instanceof JsonElement jsonElement){
+                     byte[] byteArray = jsonElement.getAsString().getBytes(StandardCharsets.UTF_8);
+                     if(byteArray!=null && byteArray.length>0) {
+                         byteArrays.put(key, byteArray);
+                         System.out.println("Receive : " + key);
+                     }
+
+                 }
+
             }
 
             // Process data
