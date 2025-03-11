@@ -85,6 +85,8 @@ public class ProcessData implements Runnable {
     }
 
     public Image getImage() {
-        return new Image(editPolygonsMappings.zBufferImage);
+        if(editPolygonsMappings!=null && editPolygonsMappings.zBufferImage!=null)
+            return new Image(editPolygonsMappings.zBufferImage);
+        return null;
     }
 }
