@@ -61,34 +61,34 @@ public class ImageProcessor implements HttpFunction {
         try {
 
             if (jsonObject.has("image1") && jsonObject.get("image1") != null) {
-            data.put("image1", jsonObject.get("image1").getAsString());
+            data.put("image1", jsonObject.get("image1").toString());
         }
         if (jsonObject.has("model") && jsonObject.get("model") != null) {
-            data.put("model", jsonObject.get("model").getAsString());
+            data.put("model", jsonObject.get("model").toString());
         }
         if (jsonObject.has("image3") && jsonObject.get("image3") != null) {
-            data.put("image3", jsonObject.get("image3").getAsString());
+            data.put("image3", jsonObject.get("image3").toString());
         }
         if (jsonObject.has("textFile1") && jsonObject.get("textFile1") != null) {
-            data.put("textFile1", jsonObject.get("textFile1").getAsString());
+            data.put("textFile1", jsonObject.get("textFile1").toString());
         }
         if (jsonObject.has("textFile2") && jsonObject.get("textFile2") != null) {
-            data.put("textFile2", jsonObject.get("textFile2").getAsString());
+            data.put("textFile2", jsonObject.get("textFile2").toString());
         }
         if (jsonObject.has("textFile3") && jsonObject.get("textFile3") != null) {
-            data.put("textFile3", jsonObject.get("textFile3").getAsString());
+            data.put("textFile3", jsonObject.get("textFile3").toString());
         }
         if (jsonObject.has("hd_texture") && jsonObject.get("hd_texture") != null) {
-            data.put("hd_texture", jsonObject.get("hd_texture").getAsString());
+            data.put("hd_texture", jsonObject.get("hd_texture").toString());
         }
         if (jsonObject.has("selected_algorithm") && jsonObject.get("selected_algorithm") != null) {
-            data.put("selected_algorithm", jsonObject.get("selected_algorithm").getAsString());
+            data.put("selected_algorithm", jsonObject.get("selected_algorithm").toString());
         }
         if (jsonObject.has("selected_texture_type") && jsonObject.get("selected_texture_type") != null) {
-            data.put("selected_texture_type", jsonObject.get("selected_texture_type").getAsString());
+            data.put("selected_texture_type", jsonObject.get("selected_texture_type").toString());
         }
         if (jsonObject.has("token") & jsonObject.get("token") != null) {
-            data.put("token", jsonObject.get("token").getAsString());
+            data.put("token", jsonObject.get("token").toString());
         }
 
         // Process data
