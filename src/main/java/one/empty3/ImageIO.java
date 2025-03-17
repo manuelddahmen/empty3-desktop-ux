@@ -11,7 +11,7 @@ import one.empty3.libs.Image;
 public class ImageIO {
 
     public static @NotNull Image read(@NotNull File in) {
-        Image i = new Image(null);
+        Image i = (Image) Image.getFromFile(in);
         i.loadFile(in);
         return i;
     }
