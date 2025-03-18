@@ -214,25 +214,26 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    implementation "one.empty3.libs:partial-desktop:0.0.16"
-    implementation "one.empty3.libs:commons-mp:0.0.7"
-    implementation "one.empty3:empty3-library-mp:2025.2.15-2"
-    implementation 'com.google.cloud:google-cloud-pubsub:1.123.15' // Check for the latest version
+    implementation "one.empty3.libs:partial-desktop:0.0.20"
+    implementation "one.empty3.libs:commons-mp:0.0.9"
+    implementation "one.empty3:empty3-library-mp:2025.3.18"
+    implementation 'com.google.cloud:google-cloud-pubsub:1.133.1' // Check for the latest version
+    implementation 'com.google.cloud:google-cloud-tasks:2.59.0'
     implementation 'com.google.cloud.functions:functions-framework-api:1.1.0'
     invoker 'com.google.cloud.functions.invoker:java-function-invoker:1.1.0'
     implementation 'com.google.code.gson:gson:2.10.1' //if you use gson
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
-    testImplementation platform('org.junit:junit-bom:5.10.3')
+    implementation 'com.google.cloud:libraries-bom:26.49.0'
+    //testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
+    //testImplementation platform('org.junit:junit-bom:5.10.3')
+    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.12.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:5.2.0'// Or latest version
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'// Or latest version
-
-    implementation 'org.junit.platform:junit-platform-launcher:1.9.2'
-    implementation platform('org.junit:junit-bom:5.10.3')
-    implementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
+    implementation group: 'org.mockito', name: 'mockito-core', version: '5.15.2'
+    implementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.15.2'
+  //  implementation platform('org.junit:junit-bom:5.10.3')
+    //  implementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     implementation 'junit:junit:4.13.2'
-
+    implementation group: 'org.junit', name: 'junit5-api', version: '5.0.0-ALPHA'
     implementation("com.github.sarxos:webcam-capture:0.3.12")
     implementation group: 'commons-net', name: 'commons-net', version: '3.9.0'
     implementation("org.jdom:jdom2:2.0.6.1")

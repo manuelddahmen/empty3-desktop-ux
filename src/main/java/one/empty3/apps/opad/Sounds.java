@@ -53,10 +53,10 @@ public class Sounds {
     }
 
     public static synchronized void playSoundBonusHit() {
-        playSound("/resources/sounds/bonusHit.wav");
+        playSound("resources/sounds/bonusHit.wav");
     }
 
     public static synchronized void playMusic() {
-        playSound("/resources/sounds/musicIntro.wav");
+        playSound("resources/sounds/musicIntro.wav");
     }
 }

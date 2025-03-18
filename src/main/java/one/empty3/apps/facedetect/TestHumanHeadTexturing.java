@@ -60,6 +60,9 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     @Override
     public void ginit() {
+
+        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.0007));
+        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
 /*
         super.ginit();
         if (objFile != null) {
@@ -81,7 +84,6 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             setJpg(editPolygonsMappings.image);
         }
 
-        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         File intPart = new File("faceSkin.txt");
 
         Camera c = new Camera();
