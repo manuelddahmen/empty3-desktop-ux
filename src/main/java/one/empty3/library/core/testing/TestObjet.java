@@ -988,7 +988,7 @@ public abstract class TestObjet implements Test, Runnable {
                     if ((generate & GENERATE_MOVIE) > 0 && encoder != null && !(((generate & GENERATE_OPENGL) > 0))) {
 
                         try {
-                            encoder.encodeImage((BufferedImage) ri);
+                            encoder.encodeImage(ri.getBi());
                         } catch (IOException e) {
                             e.printStackTrace();
                             reportException(e);

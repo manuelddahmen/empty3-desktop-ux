@@ -27,13 +27,13 @@ import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.tribase.Tubulaire3;
 import one.empty3.library.core.tribase.Tubulaire3refined;
 
 import javax.imageio.ImageIO;
 
 import one.empty3.library.Point;
 import one.empty3.libs.*;
-import one.empty3.libs.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class Balade1 extends TestObjetSub {
 
     private static final int VUE_1 = 30;
     private static final int FPS = 50;
-    Tubulaire3refined polygonSol = new Tubulaire3refined();
+    Tubulaire3 polygonSol = new Tubulaire3();
     ImageTexture imageTextureTrunk;
     private boolean useRecursive;
 
@@ -71,7 +71,7 @@ public class Balade1 extends TestObjetSub {
             throw new RuntimeException(e);
         }
 
-        polygonSol = new Tubulaire3refined();
+        polygonSol = new Tubulaire3();
         polygonSol.getSoulCurve().setElem(
                 new CourbeParametriquePolynomialeBezier());
 
@@ -100,6 +100,7 @@ public class Balade1 extends TestObjetSub {
         super.finit();
 
         setZ(new ZBufferImpl(z.la(), z.ha()));
+        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Min, 1.0));
         z().scene(scene());
         //z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
