@@ -75,7 +75,7 @@ public class TestCircles extends TestObjetSub {
         for (int i = 0; i < circles.length; i++) {
             circles[i] = new Circle(new Axe(Point3D.random(MAX_SIZE), Point3D.random(MAX_SIZE)),
                     MAX_SIZE);
-            circles[i].texture(new TextureCol(Colors.random()));
+            circles[i].texture(new ColorTexture(new Colors().random()));
             circles[i].getParameters().setIncrU(0.01);
             scene().add(circles[i]);
             Logger.getAnonymousLogger().log(Level.INFO, "Center: " + circles[i].getCenter());

@@ -47,12 +47,12 @@ public class TeteBonhomme extends RepresentableConteneur {
         Hemisphere hemisphere = new Hemisphere(Point3D.Z, 1.0, Point3D.Z);
         Hemisphere hemisphere2 = new Hemisphere(Point3D.Z.mult(-1.), 1.0, Point3D.Z.mult(-1.));
         ExtrusionB1B1 tubeExtrusion = new ExtrusionB1B1();
-        hemisphere.texture(new TextureCol(new Color(Color.YELLOW)));
-        hemisphere2.texture(new TextureCol(new Color(Color.RED)));
+        hemisphere.texture(new ColorTexture(new Color(Color.YELLOW)));
+        hemisphere2.texture(new ColorTexture(new Color(Color.RED)));
         tubeExtrusion.getBase().add(new Circle(Point3D.Z.mult(-1), Point3D.Z, 1.0));
         tubeExtrusion.getPath().add(new CourbeParametriquePolynomiale(new Point3D[]
                 {Point3D.Z.mult(-1.), Point3D.Z}));
-        tubeExtrusion.texture(new TextureCol(new Color(Color.BLUE)));
+        tubeExtrusion.texture(new ColorTexture(new Color(Color.BLUE)));
 
         add(hemisphere);
         add(tubeExtrusion);

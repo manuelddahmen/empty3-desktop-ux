@@ -32,9 +32,9 @@ public class TestPixM {
     @Test
     public void testPixMblack() {
         PixM p = new PixM(500, 500);
-        WriteFile.writeNext(p.getImage(), "black 500x500");
+        new WriteFile().writeNext(p.getImage(), "black 500x500");
         PixM p2 = PixM.getPixM(new PixM(1000, 1000).getImage(), 500.0);
-        WriteFile.writeNext(p.getImage(), "black 500x500 resized from 1000x1000");
+        new WriteFile().writeNext(p.getImage(), "black 500x500 resized from 1000x1000");
         assertTrue(p.equals(p2));
         PixM p3 = PixM.getPixM(p.getImage(), 500.);
         assertTrue(p.equals(p3));

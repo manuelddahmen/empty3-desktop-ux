@@ -68,7 +68,7 @@ public class TestHuman extends TestObjetSub {
         polygon.getPoints().add(new Point3D(10., 10., 0.));
         polygon.getPoints().add(new Point3D(-10., 10., 0.));
 
-        polygon.texture(new TextureCol(new Color(Color.GRAY)));
+        polygon.texture(new ColorTexture(new Color(Color.GRAY)));
 
         scene().add(humanModel);
         Camera c = new Camera(new Point3D(0.0, 1.0, -3.0), new Point3D(0., 1.0, 0.0), new Point3D(0.0, 1.0, 0.0));

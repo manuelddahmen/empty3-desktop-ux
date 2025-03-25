@@ -1128,7 +1128,7 @@ public class ClassSchemaBuilder extends JFrame implements Serializable {
             listProcessClasses.add(one.empty3.apps.feature.Lines3.class.newInstance());
             listProcessClasses.add(one.empty3.apps.feature.Lines4.class.newInstance());
             listProcessClasses.add(one.empty3.apps.feature.Lines5.class.newInstance());
-            listProcessClasses.add(one.empty3.apps.feature.Lines5colors.class.newInstance());
+            listProcessClasses.add(one.empty3.apps.feature.Lines5new Colors().class.newInstance());
             listProcessClasses.add(one.empty3.apps.feature.Lines6.class.newInstance());
             listProcessClasses.add(LocalExtremaProcess.class.newInstance());
             listProcessClasses.add(MagnitudeProcess.class.newInstance());

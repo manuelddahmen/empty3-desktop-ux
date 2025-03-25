@@ -178,7 +178,7 @@ public class K_Clusterer extends ReadDataset {
 
             for (int i = 0; i < k; i++)
                 if (colors[i] == null) {
-                    colors[i] = Colors.random();
+                    colors[i] = new Colors().random();
                 }
 
             clustersPrint = clusters;

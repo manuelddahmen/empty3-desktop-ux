@@ -31,7 +31,7 @@
 
 package one.empty3.test.tests.tests2.trigenerateurabstract.triextrusiongeneralisee;
 
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.testing.TestObjetSub;
 import one.empty3.library.core.tribase.*;
 
@@ -57,7 +57,7 @@ public class TestTore extends TestObjetSub {
         TRIExtrusionGeneralisee tri = new TRIExtrusionGeneralisee();
 
 
-        tri.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        tri.texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
 
         scene().add(tri);
     }

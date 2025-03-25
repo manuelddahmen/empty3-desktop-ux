@@ -23,7 +23,7 @@
 package one.empty3.test.tests.tests2.courbes_bsplines;
 
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.BSpline;
 import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.core.tribase.TubulaireN2;
@@ -64,14 +64,14 @@ public class TestGDXBSpline1 extends TestObjet {
         for (Point3D p : TestsBSpline.p2(frame()))
             b.add(p);
 
-        b.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        b.texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
 
         t.setSoulCurve(b);
 
         t.nbrAnneaux((int) (1 / INCR_PRECISION));
         t.setDiameter(1);
         t.nbrRotations(10);
-        t.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        t.texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
 
         scene().add(t);
 

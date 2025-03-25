@@ -24,7 +24,7 @@ package one.empty3.test.tests.tests2;
 
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.core.tribase.TRISphere;
@@ -99,7 +99,7 @@ public class TestSpheres extends TestObjet {
         int i = 0;
         for (i = 0; i < NUMBER; i++) {
             arraySp[i] = new TRISphere(Point3D.random2(RMax), Math.random() * RMax);
-            arraySp[i].texture(new TextureCol(Colors.random()));
+            arraySp[i].texture(new ColorTexture(new Colors().random()));
             scene().add(arraySp[i]);
         }
         scene().cameraActive(new Camera(triSphereCamEye.getCentre(), triSphereCamLookAt.getCentre()));

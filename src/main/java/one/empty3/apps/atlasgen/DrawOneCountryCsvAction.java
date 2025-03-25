@@ -70,7 +70,7 @@ public class DrawOneCountryCsvAction implements CsvAction {
         String[] lineArray = csvLine.getValue();
         String countryCode = lineArray[countryCodeColumn];
         if (country.equals(countryCode)) {
-            colors.computeIfAbsent(countryCode, k -> Colors.random());
+            colors.computeIfAbsent(countryCode, k -> new Colors().random());
             double latitude = Double.parseDouble(lineArray[longitudeColumn]);
             double longitude = -Double.parseDouble(lineArray[latitudeColumn]);
             Dimension dimension = new Dimension(

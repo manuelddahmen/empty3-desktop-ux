@@ -58,8 +58,8 @@ public class Balade extends TestObjetSub {
     public void ginit() {
         useRecursive = false;
         super.ginit();
-        ITexture ciel_ensoleille = new TextureCol(new Color(Color.BLUE.getRGB()));
-        ITexture sol_sableux = new TextureCol(new Color(Color.newCol(104, 78, 51)));
+        ITexture ciel_ensoleille = new ColorTexture(new Color(Color.BLUE.getRGB()));
+        ITexture sol_sableux = new ColorTexture(new Color(Color.newCol(104, 78, 51)));
         try {
             imageTextureTrunk = new ImageTexture(new Image(Objects.requireNonNull(ImageIO.read(new File("resources/img/CIMG0454-modif-cs4.jpg")))));
             ciel_ensoleille = new ImageTexture(new Image(Objects.requireNonNull(ImageIO.read(new File("resources/ciel_ensoleille.jpg")))));
@@ -91,7 +91,7 @@ public class Balade extends TestObjetSub {
 
         setZ(new ZBufferImpl(z.la(), z.ha()));
         z().scene(scene());
-        z().texture(new TextureCol(new Color(Color.blue.getRGB())));
+        z().texture(new ColorTexture(new Color(Color.blue.getRGB())));
         //z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
     }

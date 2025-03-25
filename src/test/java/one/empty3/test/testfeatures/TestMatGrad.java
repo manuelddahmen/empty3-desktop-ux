@@ -31,6 +31,7 @@ import one.empty3.feature.PixM;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Logger;
 
@@ -53,7 +54,7 @@ public class TestMatGrad {
             File file = new File("resources/" + fileStr);
             one.empty3.feature.PixM pixMOriginal = null;
             try {
-                pixMOriginal = one.empty3.feature.PixM.getPixM(new one.empty3.libs.Image(new Image(ImageIO.read(file.getAbsoluteFile()))), 500.0);
+                pixMOriginal = PixM.getPixM((Image)(Image.getFromFile(file.getAbsoluteFile())), 500.0);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 continue;
@@ -123,17 +124,17 @@ public class TestMatGrad {
             i.setMax(2., 5., 2, 4);
             PixM rad = i.filter(pix);
             logger.info("radial orientation");
-            WriteFile.writeNext("reduite" + file.getName(), pixMOriginal.normalize(0., 1.).getImage());
-            WriteFile.writeNext("gradient gx" + file.getName(), imagesMatrix[0][0].normalize(0., 1.).getImage());
-            WriteFile.writeNext("gradient gy" + file.getName(), imagesMatrix[1][0].normalize(0., 1.).getImage());
-            WriteFile.writeNext("gradient phase x" + file.getName(), imagesMatrix[0][1].normalize(0., 1.).getImage());
-            WriteFile.writeNext("gradient phase y" + file.getName(), imagesMatrix[1][1].normalize(0., 1.).getImage());
-            WriteFile.writeNext("gradients dot" + file.getName(), smoothedGrad.normalize(0., 1.).getImage());
-            WriteFile.writeNext("extrema 3x3" + file.getName(), plext.normalize(0., 1.).getImage());
-            WriteFile.writeNext("angles" + file.getName(), anglesTangente.getImagesMatrix()[0][0].normalize(0., 1.).getImage());
-            WriteFile.writeNext("radial grad" + file.getName(), rad.normalize(0., 1.).getImage());
-            WriteFile.writeNext("extrema 5x5" + file.getName(), plext2.normalize(0., 1.).getImage());
-            WriteFile.writeNext("extrema 19x19" + file.getName(), plext3.normalize(0., 1.).getImage());
+            WriteFile.writeNext("reduite" + file.getName(), new Image(pixMOriginal.normalize(0., 1.).getImage()));
+            WriteFile.writeNext("gradient gx" + file.getName(), new Image(imagesMatrix[0][0].normalize(0., 1.).getImage()));
+            WriteFile.writeNext("gradient gy" + file.getName(), new Image(imagesMatrix[1][0].normalize(0., 1.).getImage()));
+            WriteFile.writeNext("gradient phase x" + file.getName(), new Image(imagesMatrix[0][1].normalize(0., 1.).getImage()));
+            WriteFile.writeNext("gradient phase y" + file.getName(), new Image(imagesMatrix[1][1].normalize(0., 1.).getImage()));
+            WriteFile.writeNext("gradients dot" + file.getName(), new Image(smoothedGrad.normalize(0., 1.).getImage()));
+            WriteFile.writeNext("extrema 3x3" + file.getName(), new Image(plext.normalize(0., 1.).getImage()));
+            WriteFile.writeNext("angles" + file.getName(), new Image(anglesTangente.getImagesMatrix()[0][0].normalize(0., 1.).getImage()));
+            WriteFile.writeNext("radial grad" + file.getName(), new Image(rad.normalize(0., 1.).getImage()));
+            WriteFile.writeNext("extrema 5x5" + file.getName(), new Image(plext2.normalize(0., 1.).getImage()));
+            WriteFile.writeNext("extrema 19x19" + file.getName(), new Image(plext3.normalize(0., 1.).getImage()));
             System.gc();
         }
 

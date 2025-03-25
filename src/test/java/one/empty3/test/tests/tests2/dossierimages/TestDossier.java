@@ -27,7 +27,7 @@ package one.empty3.test.tests.tests2.dossierimages;
 
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.TextureImg;
 import one.empty3.library.core.testing.TestObjetSub;
 import one.empty3.library.core.tribase.Plan3D;
@@ -107,7 +107,7 @@ public class TestDossier extends TestObjetSub {
 
     @Override
     public void testScene() throws Exception {
-        setCouleurFond(new TextureCol(new Color(Color.WHITE.getRGB())));
+        setCouleurFond(new ColorTexture(new Color(Color.WHITE.getRGB())));
         scene().cameraActive(new Camera(
                 //Deplace.deplace(1, getMaxFrames(), Point3D.Z.mult(-30), Point3D.Z.mult(30), frame, getMaxFrames()),
                 Point3D.O0,

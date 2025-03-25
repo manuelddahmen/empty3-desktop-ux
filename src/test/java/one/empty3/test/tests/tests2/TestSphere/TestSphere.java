@@ -90,7 +90,7 @@ public class TestSphere extends TestObjetSub {
             try {
                 s[i].texture(new TextureImg(new Image(ImageIO.read(new File("resources/img/2iu2h2w0.bmp")))));
             } catch (IOException ex) {
-                s[i].texture(new TextureCol(new Color(Color.PINK)));
+                s[i].texture(new ColorTexture(new Color(Color.PINK)));
                 Logger.getLogger(TestSphere.class.getName()).log(Level.SEVERE, null, ex);
             }
             scene().add(s[i]);

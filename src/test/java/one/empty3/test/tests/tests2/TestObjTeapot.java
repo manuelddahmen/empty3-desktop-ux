@@ -39,7 +39,7 @@ public class TestObjTeapot extends TestObjetSub {
     public void ginit() {
         E3Model modelLoaderOBJ = ModelLoaderOBJ.LoadModelE3("resources/teapot.obj", "");
         modelLoaderOBJ.texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
-        scene().texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        scene().texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
         scene().add(modelLoaderOBJ);
         scene().cameraActive(new Camera());
         scene().cameraActive().getEye().setZ(-5.);

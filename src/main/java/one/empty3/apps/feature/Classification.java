@@ -66,7 +66,7 @@ public class Classification extends ProcessFile {
         int color = Color.WHITE.getRGB();
         for (int i = 0; i < selectPointColorMassAglo1.getColumns(); i += 1)
             for (int j = 0; j < selectPointColorMassAglo1.getLines(); j += 1) {
-                selectPointColorMassAglo1.setTmpColor(Colors.random());
+                selectPointColorMassAglo1.setTmpColor(new Colors().random());
                 double v = selectPointColorMassAglo1.averageCountMeanOf(i, j, SIZE, SIZE, threshold);
                 if (v > ratio) {
                     imageOut.setRGB(i, j, color);/*selectPointColorMassAglo.getChosenColor().getRGB()*/

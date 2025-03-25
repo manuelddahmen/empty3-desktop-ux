@@ -66,7 +66,7 @@ public class TestGravity2 extends TestObjetSub {
                     billes[k * Y * X + j * X + i].vitesse = new Point3D(
                             (i - X / 2.), (j - Y / 2.) / 1d,
                             (k - Z / 2.) / 1d).mult((Math.random()-0.5) * 10.0);
-                    billes[k * Y * X + j * X + i].color = Colors.random();
+                    billes[k * Y * X + j * X + i].color = new Colors().random();
                     billes[k * Y * X + j * X + i].masse = 100;
                     billes[k * Y * X + j * X + i].attraction = 1e10;
                     billes[k * Y * X + j * X + i].repulsion = 0.0;
@@ -107,7 +107,7 @@ public class TestGravity2 extends TestObjetSub {
 //            ((TRISphere) r).setMaxX(7);
 //            ((TRISphere) r).setMaxY(7);
 
-            r.texture(new TextureCol(billes[i].color));
+            r.texture(new ColorTexture(billes[i].color));
 
             rc.add(r);
 

@@ -63,9 +63,9 @@ public class TestSoS extends TestObjetSub {
             = new RepresentableConteneur();
     protected HeightMapSurfaceSphere heightMapSurfaceSphere;
     private Point3D sphereOrig = Point3D.O0;
-    TextureCol textureCol = new TextureCol(Color.RED.getRGB());
+    ColorTexture ColorTexture = new ColorTexture(Color.RED.getRGB());
     private Point3D sphereDest = Point3D.Y;
-    ITexture colorTextureSurface = new TextureCol(Color.GREEN.getRGB());
+    ITexture colorTextureSurface = new ColorTexture(Color.GREEN.getRGB());
     private double segemntSize = 1;
     private Image bufferedImageHeightMap;
     private Image bufferedImageTexture;
@@ -114,9 +114,9 @@ public class TestSoS extends TestObjetSub {
                 pointsA = new Point3D(0d, 1.0 * s / NSEG, 0d);
                 pointsB = new Point3D(1d, 1.0 * s / NSEG, 0d);
                 LineSegment segmentDroite = new LineSegment(pointsA, pointsB);
-                segmentDroite.texture(textureCol);
-                pointsA.texture(textureCol);
-                pointsB.texture(textureCol);
+                segmentDroite.texture(ColorTexture);
+                pointsA.texture(ColorTexture);
+                pointsB.texture(ColorTexture);
 
                 PcOnPs pcOnPs = new PcOnPs(heightMapSurfaceSphere, segmentDroite);
                 pcOnPs.getParameters().setIncrU(0.0001);
@@ -129,9 +129,9 @@ public class TestSoS extends TestObjetSub {
                 pointsA = new Point3D(1.0 * s / NSEG2, 0d, 0d);
                 pointsB = new Point3D(1.0 * s / NSEG2, 1d, 0d);
                 LineSegment segmentDroite = new LineSegment(pointsA, pointsB);
-                segmentDroite.texture(textureCol);
-                pointsA.texture(textureCol);
-                pointsB.texture(textureCol);
+                segmentDroite.texture(ColorTexture);
+                pointsA.texture(ColorTexture);
+                pointsB.texture(ColorTexture);
 
                 PcOnPs pcOnPs = new PcOnPs(heightMapSurfaceSphere, segmentDroite);
                 pcOnPs.getParameters().setIncrU(0.0001);

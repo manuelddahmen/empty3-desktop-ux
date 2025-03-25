@@ -24,7 +24,7 @@ package one.empty3.test.tests.tests2;
 
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.move.Trajectoires;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.testing.TestObjetSub;
@@ -74,7 +74,7 @@ public class TriTest extends TestObjetSub {
     @Override
     public void ginit() {
         f = new Forme();
-        f.texture(new TextureCol(new Color(Color.BLUE)));
+        f.texture(new ColorTexture(new Color(Color.BLUE)));
         scene().add(f);
     }
 

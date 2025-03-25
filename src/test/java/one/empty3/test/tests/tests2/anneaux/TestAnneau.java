@@ -24,7 +24,7 @@ package one.empty3.test.tests.tests2.anneaux;
 
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.move.Trajectoires;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.testing.TestObjet;
@@ -78,7 +78,7 @@ public class TestAnneau extends TestObjet {
         courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier(this.point3D.toArray(ds));
         scene().add(courbeParametriquePolynomialeBezier);
 
-        courbeParametriquePolynomialeBezier.texture(new TextureCol(new Color(Color.BLUE)));
+        courbeParametriquePolynomialeBezier.texture(new ColorTexture(new Color(Color.BLUE)));
         courbeParametriquePolynomialeBezier.getParameters().setIncrU(0.0001);
         Camera camera = new Camera(Point3D.O0, Point3D.Z.mult(2d));
         camera.calculerMatrice(Point3D.Y);

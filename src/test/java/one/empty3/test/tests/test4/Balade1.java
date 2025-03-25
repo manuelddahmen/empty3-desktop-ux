@@ -30,9 +30,11 @@ import one.empty3.library.core.testing.TestObjetSub;
 import one.empty3.library.core.tribase.Tubulaire3refined;
 
 import javax.imageio.ImageIO;
+
 import one.empty3.library.Point;
 import one.empty3.libs.*;
 import one.empty3.libs.Image;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -48,7 +50,7 @@ public class Balade1 extends TestObjetSub {
     public static void main(String[] args) {
         Balade1 balade1 = new Balade1();
         balade1.loop(true);
-        balade1.setMaxFrames(VUE_1*FPS);
+        balade1.setMaxFrames(VUE_1 * FPS);
         balade1.setDimension(new Resolution(1920, 1080));
         //balade1.setDimension(new Resolution(320, 200));
         //balade1.setDimension(new Resolution(640, 480));
@@ -60,7 +62,7 @@ public class Balade1 extends TestObjetSub {
         useRecursive = false;
         super.ginit();
         ITexture ciel_ensoleille = new ColorTexture(new Color(java.awt.Color.BLUE.getRGB()));
-        ITexture sol_sableux = new TextureCol(new Color(Color.newCol(104, 78, 51)));
+        ITexture sol_sableux = new ColorTexture(new Color(Color.newCol(104 / 255f, 78 / 255f, 51 / 255f)));
         try {
             imageTextureTrunk = new ImageTexture(new Image(Objects.requireNonNull(ImageIO.read(new File("resources/img/CIMG0454-modif-cs4.jpg")))));
             ciel_ensoleille = new ImageTexture(new Image(Objects.requireNonNull(ImageIO.read(new File("resources/ciel_ensoleille.jpg")))));
@@ -73,7 +75,7 @@ public class Balade1 extends TestObjetSub {
         polygonSol.getSoulCurve().setElem(
                 new CourbeParametriquePolynomialeBezier());
 
-        for(int i=0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             polygonSol.getSoulCurve().getElem().getCoefficients().setElem(Point3D.random(10.0), i);
         }
         polygonSol.getDiameterFunction().setElem(new FctXY() {
@@ -97,19 +99,19 @@ public class Balade1 extends TestObjetSub {
     public void finit() throws Exception {
         super.finit();
 
-            setZ(new ZBufferImpl(z.la(), z.ha()));
-            z().scene(scene());
+        setZ(new ZBufferImpl(z.la(), z.ha()));
+        z().scene(scene());
         //z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
-        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
+        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         if (frame() < VUE_1 * FPS) {
-            Point3D a = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) /getMaxFrames());
-            Point3D b = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() + 2.0) /getMaxFrames());
+            Point3D a = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) / getMaxFrames());
+            Point3D b = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() + 2.0) / getMaxFrames());
 
-            Point3D y  = polygonSol.calculerPoint3D(0.25, 1.0*frame()/getMaxFrames());
-            Point3D ym = polygonSol.calculerPoint3D(0.75, 1.0*frame()/getMaxFrames());
+            Point3D y = polygonSol.calculerPoint3D(0.25, 1.0 * frame() / getMaxFrames());
+            Point3D ym = polygonSol.calculerPoint3D(0.75, 1.0 * frame() / getMaxFrames());
 
 
-            Camera camera = new Camera(a, b, y.moins(ym).mult(1.0/Point3D.distance(y, ym)));
+            Camera camera = new Camera(a, b, y.moins(ym).mult(1.0 / Point3D.distance(y, ym)));
 
             camera.getScale().setElem(100.0);
             scene().cameraActive(camera);
@@ -124,7 +126,7 @@ public class Balade1 extends TestObjetSub {
 
             Point3D[] vects = new Point3D[]{mat.getElem(0, 0), mat.getElem(0, 1), mat.getElem(1, 0)};
 
-            StructureMatrix<Point3D>[] v = new StructureMatrix[] {
+            StructureMatrix<Point3D>[] v = new StructureMatrix[]{
                     new StructureMatrix<Point3D>(0, Point3D.class),
                     new StructureMatrix<Point3D>(0, Point3D.class),
                     new StructureMatrix<Point3D>(0, Point3D.class)};
@@ -134,7 +136,7 @@ public class Balade1 extends TestObjetSub {
             v[1].setElem(vects[1]);
             v[2].setElem(vects[2]);
 
-            StructureMatrix<Point3D>[] v1 = new StructureMatrix[] {
+            StructureMatrix<Point3D>[] v1 = new StructureMatrix[]{
                     new StructureMatrix<Point3D>(0, Point3D.class),
                     new StructureMatrix<Point3D>(0, Point3D.class),
                     new StructureMatrix<Point3D>(0, Point3D.class)};

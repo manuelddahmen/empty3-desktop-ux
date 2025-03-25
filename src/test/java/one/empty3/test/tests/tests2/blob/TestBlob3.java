@@ -35,7 +35,7 @@ import one.empty3.test.tests.tests2.balleclou.BalleClous2;
 public class TestBlob3 extends TestObjetSub {
 
     public int N = 1;
-    private ITexture tc = new TextureCol(new Color(Color.red));
+    private ITexture tc = new ColorTexture(new Color(Color.red));
     private Blob1 ballec;
     private Point3D[][] s;
     private Point3D[][] v;
@@ -67,7 +67,7 @@ public class TestBlob3 extends TestObjetSub {
 
         //scene().lumieres().add(lumierePonctuelle);
 
-        //scene().lumieres().add(new LumierePonctuelle(Point3D.O0, Colors.random()));
+        //scene().lumieres().add(new LumierePonctuelle(Point3D.O0, new Colors().random()));
 
 
         s = new Point3D[nBalles][N];
@@ -82,7 +82,7 @@ public class TestBlob3 extends TestObjetSub {
                 v[b][i] = new Point3D(Math.random() * (V / 2 - V), Math.random() * (V / 2 - V), Math.random() * (V / 2 - V));
 
             }
-            tc = new ColorTexture(Colors.random());
+            tc = new ColorTexture(new Colors().random());
 
 
         }
@@ -96,7 +96,7 @@ public class TestBlob3 extends TestObjetSub {
             ballec.setIncrV(0.01);
 
             balles[i] = ballec;
-            ballec.texture(new ColorTexture(Colors.random()));
+            ballec.texture(new ColorTexture(new Colors().random()));
             //textureMov = new TextureMov("C:\\Emptycanvas\\Resources\\BigFloEtOlie.mp4");
             //textureMov.setTransparent(java.awt.Color.BLACK.getRGB());
             //ballec.texture(textureMov);

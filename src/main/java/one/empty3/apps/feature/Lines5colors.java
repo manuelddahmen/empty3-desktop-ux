@@ -374,7 +374,7 @@ public class Lines5colors extends ProcessFile {
             BufferedImage bLines = new BufferedImage(o.getColumns(), o.getLines(), BufferedImage.TYPE_INT_RGB);
             Graphics g = bLines.getGraphics();
             for (LineSegment line : lines) {
-                g.setColor(Colors.random());
+                g.setColor(new Colors().random());
                 if (line.getLength() >= 2) {
                     /*for (double c = 0.0; c <= 1.0; c += 1 / line.getLength()) {
                         Point3D pDraw = line.getOrigine().plus(
@@ -409,7 +409,7 @@ public class Lines5colors extends ProcessFile {
 //                Point p1 = new Point(0, (int) b);
 //                Point p2 = new Point((int) (-b / a), 0);
 //                Graphics g2 = linesImg2.getGraphics();
-//                g2.setColor(Colors.random());
+//                g2.setColor(new Colors().random());
 //                g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
 //            });
             points.forEach(new Consumer<List<Point3D>>() {

@@ -151,7 +151,7 @@ public class Plotter3D implements KeyListener, Runnable {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             plot(distanceCount.dir.plus(getTerrain().calcCposition(getPosition().getX(), getPosition().getY())),
                     distanceCount.dir.plus(getTerrain().calcCposition(getPosition().getX(), getPosition().getY()))
-                    , new Cube(0.1, Point3D.O0, new TextureCol(new Color(Color.WHITE))));
+                    , new Cube(0.1, Point3D.O0, new ColorTexture(new Color(Color.WHITE))));
         }
         if (e.getKeyCode() == KeyEvent.VK_Z) {
             release_up = false;

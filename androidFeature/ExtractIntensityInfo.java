@@ -101,8 +101,8 @@ public class ExtractIntensityInfo extends
             isumtot[1] += circle.r;
         });
         Color[] colors = new Color[colorsLevels];
-        for (int i = 0; i < colors.length; i++)
-            colors[i] = Colors.random();
+        for (int i = 0; i < new Colors().length; i++)
+            colors[i] = new Colors().random();
 
         double finalMin = min;
         pointsOfInterest.stream().filter(new Predicate<Histogram2.Circle>() {

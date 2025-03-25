@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.trihole;
 import one.empty3.library.Camera;
 import one.empty3.library.LumierePonctuelle;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.extra.Polyhedron;
 import one.empty3.library.core.testing.TestObjetSub;
 
@@ -57,7 +57,7 @@ public class TestTriHole extends TestObjetSub {
     public void ginit() {
         th = new Polyhedron();
 
-        th.texture(new TextureCol(new Color(Color.GREEN)));
+        th.texture(new ColorTexture(new Color(Color.GREEN)));
 
         scene().add(th);
 
@@ -75,7 +75,7 @@ public class TestTriHole extends TestObjetSub {
 
         th2 = new Polyhedron();
 
-        th2.texture(new TextureCol(new Color(Color.RED)));
+        th2.texture(new ColorTexture(new Color(Color.RED)));
 
         scene().add(th2);
 

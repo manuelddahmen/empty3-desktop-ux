@@ -66,7 +66,7 @@ public class TestCoeur1 extends TestObjet {
         try {
             coeur.texture(new TextureImg(new Image(ImageIO.read(getClass().getResourceAsStream("moi1.jpg")))));
         } catch (IOException ex) {
-            coeur.texture(new TextureCol(new Color(Color.PINK)));
+            coeur.texture(new ColorTexture(new Color(Color.PINK)));
             Logger.getLogger(TestCoeur1.class.getName()).log(Level.SEVERE, null, ex);
         }
 

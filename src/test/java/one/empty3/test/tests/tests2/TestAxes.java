@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2;
 import one.empty3.library.Camera;
 import one.empty3.library.Matrix33;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.testing.TestObjetSub;
 import one.empty3.library.core.tribase.Plan3D;
 
@@ -49,15 +49,15 @@ public class TestAxes extends TestObjetSub {
         planX.pointOrigine(Point3D.O0);
         planX.pointXExtremite(Point3D.X);
         planX.pointYExtremite(Point3D.Y.mult(0.3));
-        planX.texture(new TextureCol(new Color(Color.RED)));
+        planX.texture(new ColorTexture(new Color(Color.RED)));
         planY.pointOrigine(Point3D.O0);
         planY.pointXExtremite(Point3D.Y);
         planY.pointYExtremite(Point3D.Z.mult(0.3));
-        planY.texture(new TextureCol(new Color(Color.GREEN)));
+        planY.texture(new ColorTexture(new Color(Color.GREEN)));
         planZ.pointOrigine(Point3D.O0);
         planZ.pointXExtremite(Point3D.Z);
         planZ.pointYExtremite(Point3D.X.mult(0.3));
-        planZ.texture(new TextureCol(new Color(Color.BLUE)));
+        planZ.texture(new ColorTexture(new Color(Color.BLUE)));
         scene().add(planX);
         scene().add(planY);
         scene().add(planZ);

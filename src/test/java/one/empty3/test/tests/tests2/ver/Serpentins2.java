@@ -69,12 +69,12 @@ public class Serpentins2 extends TestObjetSub {
         for (int i = 0; i < Ns; i++) {
             itext[i] = new TextureImg(new Image(ImageIO.read(new File("c:\\Emptycanvas\\textures\\photo" + (i + 1) + ".jpg"))));
         }
-        LumierePonctuelle lumierePonctuelle = new LumierePonctuelle(Point3D.X, Colors.random());
+        LumierePonctuelle lumierePonctuelle = new LumierePonctuelle(Point3D.X, new Colors().random());
         lumierePonctuelle.setR0(1);
 
         scene().lumieres().add(lumierePonctuelle);
 
-        lumierePonctuelle = new LumierePonctuelle(Point3D.Y, Colors.random());
+        lumierePonctuelle = new LumierePonctuelle(Point3D.Y, new Colors().random());
         lumierePonctuelle.setR0(1);
 
         scene().lumieres().add(lumierePonctuelle);
@@ -90,7 +90,7 @@ public class Serpentins2 extends TestObjetSub {
 
             }
         }
-        scene().lumieres().add(new LumierePonctuelle(Point3D.O0, Colors.random()));
+        scene().lumieres().add(new LumierePonctuelle(Point3D.O0, new Colors().random()));
 
         Camera camera;
         camera = new Camera(new Point3D(0d, 0d, -3d),

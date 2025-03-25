@@ -35,13 +35,13 @@ public class Chien extends RepresentableConteneur {
         Point3D tete = new Point3D(0., 1., 0.); //tête
         Point3D queue = new Point3D(1., 0., 1.); // queue
         Sphere tetes = new Sphere(tete, 0.8); //sphère
-        tetes.texture(new TextureCol(new Color(Color.RED)));
-        queue.texture(new TextureCol(java.awt.Color.BLACK.getRGB()));
+        tetes.texture(new ColorTexture(new Color(Color.RED)));
+        queue.texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
 
         for (int i = 0; i < 4; i++) {
             patte[i] = new Tubulaire3();
             patte[i].getSoulCurve().getElem().getCoefficients().getData1d().clear();
-            patte[i].texture(new TextureCol(new Color(Color.ORANGE)));
+            patte[i].texture(new ColorTexture(new Color(Color.ORANGE)));
             ((FctXY) (patte[i].getDiameterFunction().getElem())).setFormulaX("0.6");
         }
         Tubulaire3 corps;
@@ -49,7 +49,7 @@ public class Chien extends RepresentableConteneur {
         corps.getSoulCurve().getElem().getCoefficients().getData1d().clear();
         corps.getSoulCurve().getElem().getCoefficients().setElem(P.n(0., 1., 0.));
         corps.getSoulCurve().getElem().getCoefficients().setElem(P.n(1., 1., 0.));
-        corps.texture(new TextureCol(new Color(Color.ORANGE)));
+        corps.texture(new ColorTexture(new Color(Color.ORANGE)));
         ((FctXY) (corps.getDiameterFunction().getElem())).setFormulaX("1.5");
 // patte AVANT
 // §1

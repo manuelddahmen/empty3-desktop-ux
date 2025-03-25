@@ -83,7 +83,7 @@ public class TestCameraEnMouvementCylindre extends TestObjet {
         Cube cube = new Cube();
 
         cube.getCote().setElem(100.);
-        cube.texture(new TextureCol(new Color(Color.RED)));
+        cube.texture(new ColorTexture(new Color(Color.RED)));
 
         scene().add(cube);
         scene().add(e);

@@ -66,7 +66,7 @@ public class FeuArbre {
 
     public void generate(final Noeud n, final RepresentableConteneur rc) {
         ITexture color;
-        color = new TextureCol(new Color(Color.newCol((float) Math.random(), (float) Math.random(), (float) Math.random())));
+        color = new ColorTexture(new Color(Color.newCol((float) Math.random(), (float) Math.random(), (float) Math.random())));
         n.addBranches((int) (Math.random() * NUM));
         Iterator<Noeud> iterator = n.iterator();
         while (iterator.hasNext()) {

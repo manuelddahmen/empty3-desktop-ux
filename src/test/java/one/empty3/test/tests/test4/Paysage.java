@@ -119,7 +119,7 @@ public class Paysage extends TestObjetSub {
             polygonCiel.setvX(v[1]);
             polygonCiel.setvY(v[2]);
 
-            polygonCiel.texture(new TextureCol(new Color(Color.newCol(0f, 0.2f, 1.0f))));
+            polygonCiel.texture(new ColorTexture(new Color(Color.newCol(0f, 0.2f, 1.0f))));
 
             StructureMatrix<Point3D>[] v1 = new StructureMatrix[]{
                     new StructureMatrix<Point3D>(0, Point3D.class),

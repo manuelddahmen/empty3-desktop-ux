@@ -60,7 +60,7 @@ public class TestStl extends TestObjetSub {
 
         Logger.getAnonymousLogger().log(Level.INFO, "scene objets= "+load.getObjets().data1d.size());
 
-        TextureCol colorTexture0 = new TextureCol(Colors.random());
+        ColorTexture colorTexture0 = new ColorTexture(new Colors().random());
         for (int i = 0; i < ((RepresentableConteneur) scene().getObjets().getElem(0)).getListRepresentable().size(); i++) {
             TRI t = (TRI)((RepresentableConteneur) scene().getObjets().getElem(0)).getListRepresentable().get(i);
             t.texture(colorTexture0);
@@ -70,7 +70,7 @@ public class TestStl extends TestObjetSub {
 
         Sphere s = new Sphere(new Axe(new Point3D(0., -1., 0.),
                 new Point3D(0., 1., 0.)), 1.0);
-        s.texture(new TextureCol(Colors.random()));
+        s.texture(new ColorTexture(new Colors().random()));
 
         scene().add(s);
 

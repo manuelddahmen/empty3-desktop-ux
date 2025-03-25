@@ -28,7 +28,7 @@
 package one.empty3.test.tests.tests2.courbes_bsplines;
 
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 
 import one.empty3.library.Point;
 import one.empty3.libs.*;
@@ -70,7 +70,7 @@ public class TestsBSpline {
         for (int i = 0; i < N; i++) {
             p[i] = new Point3D(1.0 * i * Math.cos((i / 6) * (Math.PI * 2.0) * ((double) i) / N),
                     1.0 * i * Math.sin((i / 6) * (Math.PI * 2.0) * ((double) i) / N), 0d);
-            p[i].texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+            p[i].texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
         }
         return p;
     }
@@ -80,7 +80,7 @@ public class TestsBSpline {
         for (int i = 0; i < N; i++) {
             p[i] = new Point3D(1.0 * i * Math.cos((i / 6.0) * (Math.PI * 2.0) * ((double) i) / N),
                     1.0 * i * Math.sin((i / 6.0) * (Math.PI * 2.0) * ((double) i) / N), 0d);
-            p[i].texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+            p[i].texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
         }
         return p;
     }

@@ -23,7 +23,7 @@
 package one.empty3.test.tests.tests2.paintingActs;
 
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.core.testing.TestObjetSub;
 import one.empty3.library.core.tribase.TRISphere;
@@ -47,7 +47,7 @@ public class TestSpheres extends TestObjetSub {
 
     public void ginit() {
         TRISphere sphere = new TRISphere(Point3D.O0, 10);
-        sphere.texture(new TextureCol(new Color(Color.GREEN)));
+        sphere.texture(new ColorTexture(new Color(Color.GREEN)));
         scene().add(sphere);
         //TODO CHECK sphere.setPaintingAct(getZ(), scene(), new SpheresPA());
     }

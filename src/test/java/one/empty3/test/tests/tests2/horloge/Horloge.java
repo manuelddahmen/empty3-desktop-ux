@@ -124,23 +124,23 @@ public class Horloge extends JFrame {
                 .mult(80d), 10);
         Sphere sG9 = new Sphere(position(f * 9.0 / 12)
                 .mult(80d), 10);
-        sG0.texture(new TextureCol(new Color(Color.GREEN)));
-        sG3.texture(new TextureCol(new Color(Color.GREEN)));
-        sG6.texture(new TextureCol(new Color(Color.GREEN)));
-        sG9.texture(new TextureCol(new Color(Color.GREEN)));
-        s0.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
-        sH.texture(new TextureCol(new Color(Color.MAGENTA)));
-        sM.texture(new TextureCol(new Color(Color.BLUE)));
-        sS.texture(new TextureCol(new Color(Color.RED)));
-        s0.texture(new TextureCol(new Color(Color.RED)));
-        sH.texture(new TextureCol(new Color(Color.GREEN)));
-        sM.texture(new TextureCol(new Color(Color.BLUE)));
-        sS.texture(new TextureCol(new Color(Color.YELLOW)));
+        sG0.texture(new ColorTexture(new Color(Color.GREEN)));
+        sG3.texture(new ColorTexture(new Color(Color.GREEN)));
+        sG6.texture(new ColorTexture(new Color(Color.GREEN)));
+        sG9.texture(new ColorTexture(new Color(Color.GREEN)));
+        s0.texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
+        sH.texture(new ColorTexture(new Color(Color.MAGENTA)));
+        sM.texture(new ColorTexture(new Color(Color.BLUE)));
+        sS.texture(new ColorTexture(new Color(Color.RED)));
+        s0.texture(new ColorTexture(new Color(Color.RED)));
+        sH.texture(new ColorTexture(new Color(Color.GREEN)));
+        sM.texture(new ColorTexture(new Color(Color.BLUE)));
+        sS.texture(new ColorTexture(new Color(Color.YELLOW)));
 
         for (int i = 0; i < 12; i++) {
             TRISphere sGm = new TRISphere(position(f * i / 12)
                     .mult(80d), 6);
-            sGm.texture(new TextureCol(new Color(Color.BLUE)));
+            sGm.texture(new ColorTexture(new Color(Color.BLUE)));
             sc.add(sGm);
         }
         sc.add(s0);
@@ -153,12 +153,12 @@ public class Horloge extends JFrame {
         sc.add(sG9);
         droite0 = new LineSegment(
                 position(f * d.getHours() / 12).mult(60d),
-                Point3D.O0, new TextureCol(new Color(Color.GREEN)));
+                Point3D.O0, new ColorTexture(new Color(Color.GREEN)));
         droite1 = new LineSegment(position(f * d.getHours() / 12).mult(60d),
-                Point3D.O0, new TextureCol(new Color(Color.BLUE)));
+                Point3D.O0, new ColorTexture(new Color(Color.BLUE)));
         droite2 = new LineSegment(
                 position(f * d.getHours() / 12).mult(60d),
-                Point3D.O0, new TextureCol(new Color(Color.RED)));
+                Point3D.O0, new ColorTexture(new Color(Color.RED)));
         sc.add(droite0);
         sc.add(droite1);
         sc.add(droite2);
@@ -208,7 +208,7 @@ public class Horloge extends JFrame {
                     this.getHeight());
             time();
             z.next();
-            z.couleurDeFond(new TextureCol(new Color(Color.WHITE.getRGB())));
+            z.couleurDeFond(new ColorTexture(new Color(Color.WHITE.getRGB())));
             z.scene(sc);
 
             ((ZBufferImpl) z).setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_TRI);

@@ -207,7 +207,7 @@ public class ZRunnerMain extends Thread implements PropertyChangeListener {
         ls.texture(new ColorTexture(Color.GREEN.getRGB()));
         zBuffer.draw(ls);
         ls = new LineSegment(Point3D.O0, Point3D.Z.mult(10d));
-        ls.texture(new TextureCol(new Color(Color.BLUE)));
+        ls.texture(new ColorTexture(new Color(Color.BLUE)));
         zBuffer.draw(ls);
     }
 
@@ -229,13 +229,13 @@ public class ZRunnerMain extends Thread implements PropertyChangeListener {
     private void showRepere(ZBuffer zBuffer) {
         Scene scene = new Scene();
         LineSegment ls = new LineSegment(Point3D.O0, Point3D.X);
-        ls.texture(new TextureCol(new Color(Color.RED)));
+        ls.texture(new ColorTexture(new Color(Color.RED)));
         scene.add(ls);
         ls = new LineSegment(Point3D.O0, Point3D.Y);
-        ls.texture(new TextureCol(new Color(Color.GREEN)));
+        ls.texture(new ColorTexture(new Color(Color.GREEN)));
         scene.add(ls);
         ls = new LineSegment(Point3D.O0, Point3D.Z);
-        ls.texture(new TextureCol(new Color(Color.BLUE)));
+        ls.texture(new ColorTexture(new Color(Color.BLUE)));
         scene.add(ls);
         zBuffer.draw(scene);
     }

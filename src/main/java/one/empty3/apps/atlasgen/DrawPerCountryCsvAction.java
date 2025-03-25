@@ -59,7 +59,7 @@ public class DrawPerCountryCsvAction implements CsvAction {
         int countryCodeColumn = 8;
         String[] lineArray = csvLine.getValue();
         String countryCode = lineArray[countryCodeColumn];
-        colors.computeIfAbsent(countryCode, k -> Colors.random());
+        colors.computeIfAbsent(countryCode, k -> new Colors().random());
 
         pixeler.pixelize(
                 (int) ((Double.parseDouble(lineArray[longitudeColumn]) / 180 + 1) / 2 * pixeler.getImage().getWidth()),

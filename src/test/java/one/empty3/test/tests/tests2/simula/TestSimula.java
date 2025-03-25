@@ -33,7 +33,7 @@ import java.awt.Dimension;
 
 public class TestSimula extends TestObjetSub {
     private int N = 10;
-    private ITexture tc = new TextureCol(new Color(Color.red);
+    private ITexture tc = new ColorTexture(new Color(Color.red);
     private double V = 0.03;
     private double D = 1;
     private TextureMov textureMov;
@@ -89,7 +89,7 @@ public class TestSimula extends TestObjetSub {
         for (int i = 0; i < N * N * N; i++) {
             Point3D p = billes[i].position;
 
-            p.texture(new TextureCol(billes[i].color));
+            p.texture(new ColorTexture(billes[i].color));
 
             scene().add(p);
 

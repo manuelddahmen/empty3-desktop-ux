@@ -42,16 +42,16 @@ public class TestSeins extends TestObjetSub {
     public void finit() {
         if (frame() == 0) {
             mammaires.Sein1 s = new mammaires.Sein1();
-            s.texture(new TextureCol(new Color(Color.BLUE));
+            s.texture(new ColorTexture(new Color(Color.BLUE));
             scene().add(s);
         } else if (frame() == 1) {
             mammaires.Sein2 s = new mammaires.Sein2();
-            s.texture(new TextureCol(new Color(Color.BLUE));
+            s.texture(new ColorTexture(new Color(Color.BLUE));
             scene().clear();
             scene().add(s);
         } else if (frame() == 2) {
             mammaires.Sein3 s = new mammaires.Sein3();
-            s.texture(new TextureCol(new Color(Color.BLUE));
+            s.texture(new ColorTexture(new Color(Color.BLUE));
             scene().clear();
             scene().add(s);
         }

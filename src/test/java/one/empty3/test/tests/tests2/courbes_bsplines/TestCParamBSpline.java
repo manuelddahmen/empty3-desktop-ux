@@ -29,7 +29,7 @@ package one.empty3.test.tests.tests2.courbes_bsplines;
 
 
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.BSpline;
 import one.empty3.library.core.nurbs.CourbeParametriqueBSpline;
 import one.empty3.library.core.testing.TestObjet;
@@ -79,7 +79,7 @@ TestCParamBSpline extends TestObjet {
         for(int i=0; i<u.length; i++)
         b.add(u[i], p[i]);
 */
-        b.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        b.texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
         scene().add(b);
 
         scene.cameraActive().setEye(Point3D.Z.mult(-50.0));

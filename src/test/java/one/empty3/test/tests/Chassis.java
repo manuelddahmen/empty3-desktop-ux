@@ -49,13 +49,13 @@ public class Chassis extends RepresentableConteneur {
                 P.n(-voiture.getLongueur() / 2, 20, -largeur),
                 P.n(voiture.getLongueur() / 2, 20, -largeur),
                 P.n(voiture.getLongueur() / 2, 20, largeur),
-                P.n(-voiture.getLongueur() / 2, 20, largeur)}, new ColorTexture(Colors.random())
+                P.n(-voiture.getLongueur() / 2, 20, largeur)}, new ColorTexture(new Colors().random())
         ));
         add(new Polygon(new Point3D[]{
                 P.n(-voiture.getLongueur() / 2, hauteur2, -largeur),
                 P.n(voiture.getLongueur() / 2, hauteur2, -largeur),
                 P.n(voiture.getLongueur() / 2, hauteur2, largeur),
-                P.n(-voiture.getLongueur() / 2, hauteur2, largeur)}, new ColorTexture(Colors.random())
+                P.n(-voiture.getLongueur() / 2, hauteur2, largeur)}, new ColorTexture(new Colors().random())
         ));
         // Metre 4 rectangles pour l'epace entre les roues
         // 2 pour l'arrière
@@ -63,26 +63,26 @@ public class Chassis extends RepresentableConteneur {
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur1, -largeur + voiture.getEpaisseurRoue()),
                 P.n(-voiture.getLongueur() / 2, hauteur1, -largeur + voiture.getEpaisseurRoue()),
                 P.n(-voiture.getLongueur() / 2, hauteur1, largeur - voiture.getEpaisseurRoue()),
-                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur1, largeur - voiture.getEpaisseurRoue())}, new ColorTexture(Colors.random())
+                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur1, largeur - voiture.getEpaisseurRoue())}, new ColorTexture(new Colors().random())
         ));
         add(new Polygon(new Point3D[]{
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur2, -largeur + voiture.getEpaisseurRoue()),
                 P.n(-voiture.getLongueur() / 2, hauteur2, -largeur + voiture.getEpaisseurRoue()),
                 P.n(-voiture.getLongueur() / 2, hauteur2, largeur - voiture.getEpaisseurRoue()),
-                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur2, largeur - voiture.getEpaisseurRoue())}, new ColorTexture(Colors.random())
+                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur2, largeur - voiture.getEpaisseurRoue())}, new ColorTexture(new Colors().random())
         ));
         // 2 pour l'avant
         add(new Polygon(new Point3D[]{
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur1, -largeur + voiture.getEpaisseurRoue()),
                 P.n(-voiture.getLongueur() / 2, hauteur1, -largeur + voiture.getEpaisseurRoue()),
                 P.n(-voiture.getLongueur() / 2, hauteur1, largeur - voiture.getEpaisseurRoue()),
-                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur1, largeur - voiture.getEpaisseurRoue())}, new ColorTexture(Colors.random())
+                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur1, largeur - voiture.getEpaisseurRoue())}, new ColorTexture(new Colors().random())
         ));
         add(new Polygon(new Point3D[]{
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur2, -largeur + voiture.getEpaisseurRoue()),
                 P.n(-voiture.getLongueur() / 2, hauteur2, -largeur + voiture.getEpaisseurRoue()),
                 P.n(-voiture.getLongueur() / 2, hauteur2, largeur - voiture.getEpaisseurRoue()),
-                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur2, largeur - voiture.getEpaisseurRoue())}, new ColorTexture(Colors.random())
+                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() - voiture.getEspacementRoues(), hauteur2, largeur - voiture.getEpaisseurRoue())}, new ColorTexture(new Colors().random())
         ));
         // Largeur avant
         double longueurAvant = 100;
@@ -90,26 +90,26 @@ public class Chassis extends RepresentableConteneur {
                 P.n(voiture.getLongueur() / 2 + voiture.getRayonRoue() + longueurAvant, hauteur1, -largeurMuseau),
                 P.n(voiture.getLongueur() / 2 + voiture.getRayonRoue(), hauteur1, -largeurMuseau),
                 P.n(voiture.getLongueur() / 2, hauteur1, largeurMuseau),
-                P.n(voiture.getLongueur() / 2 + voiture.getRayonRoue() + longueurAvant, hauteur1, largeurMuseau)}, new ColorTexture(Colors.random())
+                P.n(voiture.getLongueur() / 2 + voiture.getRayonRoue() + longueurAvant, hauteur1, largeurMuseau)}, new ColorTexture(new Colors().random())
         ));
         add(new Polygon(new Point3D[]{
                 P.n(voiture.getLongueur() / 2 + voiture.getRayonRoue() + longueurAvant, hauteur2, -largeurMuseau),
                 P.n(voiture.getLongueur() / 2 + voiture.getRayonRoue(), hauteur2, -largeurMuseau),
                 P.n(voiture.getLongueur() / 2, hauteur2, largeurMuseau),
-                P.n(voiture.getLongueur() / 2 + voiture.getRayonRoue() + longueurAvant, hauteur2, largeurMuseau)}, new ColorTexture(Colors.random())
+                P.n(voiture.getLongueur() / 2 + voiture.getRayonRoue() + longueurAvant, hauteur2, largeurMuseau)}, new ColorTexture(new Colors().random())
         ));
         // Coffre et arrière
         add(new Polygon(new Point3D[]{
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() + longueurArriere, hauteur1, -largeurMuseau),
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue(), hauteur1, -largeurMuseau),
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue(), hauteur1, largeurMuseau),
-                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() + longueurArriere, hauteur1, largeurMuseau)}, new ColorTexture(Colors.random())
+                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() + longueurArriere, hauteur1, largeurMuseau)}, new ColorTexture(new Colors().random())
         ));
         add(new Polygon(new Point3D[]{
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() + longueurArriere, hauteur2, -largeurMuseau),
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue(), hauteur2, -largeurMuseau),
                 P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue(), hauteur2, largeurMuseau),
-                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() + longueurArriere, hauteur2, largeurMuseau)}, new ColorTexture(Colors.random())
+                P.n(-voiture.getLongueur() / 2 - voiture.getRayonRoue() + longueurArriere, hauteur2, largeurMuseau)}, new ColorTexture(new Colors().random())
         ));
 
 
@@ -119,7 +119,7 @@ public class Chassis extends RepresentableConteneur {
                 new Point3D(10., voiture.getHauteurPorte() + 20., voiture.getLargeur() - 20.),
                 new Point3D(10., voiture.getHauteurPorte() + 20., voiture.getLargeur()),
                 new Point3D(-10., voiture.getHauteurPorte() + 20., voiture.getLargeur()),
-        }, Colors.random()));
+        }, new Colors().random()));
         CourbeParametriquePolynomialeBezier courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier();
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., 0., 0.), 0);
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., voiture.getHauteurPorte() / 2, -15.), 1);
@@ -134,7 +134,7 @@ public class Chassis extends RepresentableConteneur {
                 new Point3D(10., voiture.getHauteurPorte() + 20., -voiture.getLargeur() + 20.),
                 new Point3D(10., voiture.getHauteurPorte() + 20., -voiture.getLargeur()),
                 new Point3D(-10., voiture.getHauteurPorte() + 20., -voiture.getLargeur()),
-        }, Colors.random()));
+        }, new Colors().random()));
         courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier();
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., 0., 0.), 0);
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., voiture.getHauteurPorte() / 2, 15.), 1);
@@ -149,7 +149,7 @@ public class Chassis extends RepresentableConteneur {
                 new Point3D(voiture.getEspacementRoues() / 2 + 20., voiture.getHauteurPorte() / 2., voiture.getLargeur() - 20.),
                 new Point3D(voiture.getEspacementRoues() / 2 + 20., voiture.getHauteurPorte() / 2., voiture.getLargeur()),
                 new Point3D(voiture.getEspacementRoues() / 2., voiture.getHauteurPorte() / 2., voiture.getLargeur()),
-        }, Colors.random()));
+        }, new Colors().random()));
         courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier();
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., 0., 0.), 0);
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., voiture.getHauteurPorte() / 3, -10.), 1);
@@ -164,7 +164,7 @@ public class Chassis extends RepresentableConteneur {
                 new Point3D(voiture.getEspacementRoues() / 2 + 20., voiture.getHauteurPorte() / 2., -voiture.getLargeur() + 20.),
                 new Point3D(voiture.getEspacementRoues() / 2 + 20., voiture.getHauteurPorte() / 2., -voiture.getLargeur()),
                 new Point3D(voiture.getEspacementRoues() / 2., voiture.getHauteurPorte() / 2., -voiture.getLargeur()),
-        }, Colors.random()));
+        }, new Colors().random()));
         courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier();
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., 0., 0.), 0);
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., voiture.getHauteurPorte() / 3, 10.), 1);
@@ -179,7 +179,7 @@ public class Chassis extends RepresentableConteneur {
                 new Point3D(-voiture.getEspacementRoues() / 2 + 20., voiture.getHauteurPorte() / 2., voiture.getLargeur() - 20.),
                 new Point3D(-voiture.getEspacementRoues() / 2 + 20., voiture.getHauteurPorte() / 2., voiture.getLargeur()),
                 new Point3D(-voiture.getEspacementRoues() / 2., voiture.getHauteurPorte() / 2., voiture.getLargeur()),
-        }, Colors.random()));
+        }, new Colors().random()));
         courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier();
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., 0., 0.), 0);
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., voiture.getHauteurPorte() / 3, -10.), 1);
@@ -194,7 +194,7 @@ public class Chassis extends RepresentableConteneur {
                 new Point3D(-voiture.getEspacementRoues() / 2 + 20., voiture.getHauteurPorte() / 2., -voiture.getLargeur() + 20.),
                 new Point3D(-voiture.getEspacementRoues() / 2 + 20., voiture.getHauteurPorte() / 2., -voiture.getLargeur()),
                 new Point3D(-voiture.getEspacementRoues() / 2., voiture.getHauteurPorte() / 2., -voiture.getLargeur()),
-        }, Colors.random()));
+        }, new Colors().random()));
         courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier();
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., 0., 0.), 0);
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0., voiture.getHauteurPorte() / 3, 10.), 1);

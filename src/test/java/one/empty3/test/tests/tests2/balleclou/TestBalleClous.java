@@ -40,7 +40,7 @@ import java.util.logging.Logger;
  * @author MD
  */
 public class TestBalleClous extends TestObjetSub {
-    private ITexture tc = new TextureCol(new Color(Color.red));
+    private ITexture tc = new ColorTexture(new Color(Color.red));
     private BalleClous ballec;
 
     public static void main(String[] args) {

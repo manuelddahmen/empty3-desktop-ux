@@ -67,7 +67,7 @@ public class DrawPerCountryCsvActionSphere implements CsvAction {
         int countryCodeColumn = 8;
         String[] lineArray = csvLine.getValue();
         String countryCode = lineArray[countryCodeColumn];
-        colors.computeIfAbsent(countryCode, k -> Colors.random());
+        colors.computeIfAbsent(countryCode, k -> new Colors().random());
         double lng = (Double.parseDouble(lineArray[longitudeColumn]) / 180 + 1) / 2;
         double lat = Double.parseDouble(lineArray[lattitudeColumn]) / 90;
         Point3DS d = new Point3DS(new Point3D(

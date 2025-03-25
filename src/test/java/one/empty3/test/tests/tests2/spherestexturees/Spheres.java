@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.spherestexturees;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.RepresentableConteneur;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.testing.TestObjetSub;
 
@@ -62,7 +62,7 @@ public class Spheres extends TestObjetSub {
         for (int i = 0; i < pointCount; i++) {
             points[i] = Point3D.random2(dimension);
 
-            points[i].texture(new TextureCol(Colors.random()));
+            points[i].texture(new ColorTexture(new Colors().random()));
             points[i].setNormale(Point3D.Z);
             representableConteneur.add(points[i]);
 

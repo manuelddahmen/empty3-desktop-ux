@@ -28,6 +28,7 @@ import one.empty3.library.LineSegment;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.ParametricCurve;
+import one.empty3.libs.commons.IImageMp;
 import org.jetbrains.annotations.NotNull;
 
 import one.empty3.library.Point;
@@ -84,6 +85,10 @@ public class PixM extends M {
             Logger.getAnonymousLogger().log(Level.SEVERE, "Can't read file : "+in, e);
             throw new RuntimeException(e);
         }
+    }
+
+    public static PixM getPixM(Image fromFile, double v) {
+        return getPixM(fromFile.getBi(), v);
     }
 
     public Point3D getRgb(int i, int j) {

@@ -170,11 +170,11 @@ public class TextureEditor extends JPanel {
 
     private void comboBox1ActionPerformed(ActionEvent e) {
         if (choiceTexType == 0) {
-            TextureCol textureCol;
+            ColorTexture ColorTexture;
             currentColor =new Color( JColorChooser.showDialog(this, "Choose a Color", currentColor));
-            textureCol = new TextureCol(currentColor);
-            tableModelTexture.getLines().add(new one.empty3.apps.gui.TableModelTexture.ModelLine(null, textureCol, textureCol.getClass()));
-            getMain().getDataModel().addTexture(textureCol);
+            ColorTexture = new ColorTexture(currentColor);
+            tableModelTexture.getLines().add(new one.empty3.apps.gui.TableModelTexture.ModelLine(null, ColorTexture, ColorTexture.getClass()));
+            getMain().getDataModel().addTexture(ColorTexture);
         } else {
             JFileChooser choose = new JFileChooser();
             choose.setFileFilter(new FileFilter() {

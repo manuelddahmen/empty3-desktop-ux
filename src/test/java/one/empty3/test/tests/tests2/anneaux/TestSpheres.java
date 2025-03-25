@@ -76,7 +76,7 @@ public class TestSpheres extends TestObjetSub {
             Axe axe = new Axe(Point3D.random(100d), Point3D.random(100d));
             spheres[i] = new Sphere(axe,
                     100);
-            spheres[i].texture(new TextureCol(new Color(Color.ORANGE)));
+            spheres[i].texture(new ColorTexture(new Color(Color.ORANGE)));
             spheres[i].setIncrU(.01);
             spheres[i].setIncrV(.01);
             try {

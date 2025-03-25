@@ -66,14 +66,14 @@ public class HumainMarche extends RepresentableConteneur {
         Point3D tete = new Point3D(0., 21., 0.); //tête
         Point3D queue = new Point3D(1., 0., 1.); // queue
         Sphere tetes = new Sphere(tete, 2.); //sphère
-        tetes.texture(new TextureCol(new Color(Color.RED)));
-        queue.texture(new TextureCol(java.awt.Color.BLACK.getRGB()));
+        tetes.texture(new ColorTexture(new Color(Color.RED)));
+        queue.texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
 
         Cube ventre = new Cube(5.0, P.n(0., 15., 0));
         for (int i = 0; i < 4; i++) {
             patte[i] = new Tubulaire3();
             patte[i].getSoulCurve().getElem().getCoefficients().getData1d().clear();
-            patte[i].texture(new TextureCol(new Color(Color.ORANGE)));
+            patte[i].texture(new ColorTexture(new Color(Color.ORANGE)));
             patte[i].getDiameterFunction().getElem().setFormulaX("0.6");
         }
         Tubulaire3 corps;
@@ -81,7 +81,7 @@ public class HumainMarche extends RepresentableConteneur {
         corps.getSoulCurve().getElem().getCoefficients().getData1d().clear();
         corps.getSoulCurve().getElem().getCoefficients().setElem(P.n(0., 1., 0.), 0);
         corps.getSoulCurve().getElem().getCoefficients().setElem(P.n(1., 1., 0.), 1);
-        corps.texture(new TextureCol(new Color(Color.ORANGE)));
+        corps.texture(new ColorTexture(new Color(Color.ORANGE)));
         corps.getDiameterFunction().getElem().setFormulaX("1.5");
 // JAMBE AVANT DROIT
 // §1

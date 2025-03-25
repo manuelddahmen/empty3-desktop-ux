@@ -56,7 +56,7 @@ public class FirstPassColoredMapsCsvAction implements CsvAction {
             Logger.getAnonymousLogger().log(Level.INFO, ""+i+"  "+lineArray[i]);
 */
         if (colors.get(countryCode) == null) {
-            colors.put(countryCode, Colors.random());
+            colors.put(countryCode, new Colors().random());
         }
         pixeler.pixelize(
                 (int) ((Double.parseDouble(lineArray[longitudeColumn]) / 180 + 1) / 2 * pixeler.getImage().getWidth()),

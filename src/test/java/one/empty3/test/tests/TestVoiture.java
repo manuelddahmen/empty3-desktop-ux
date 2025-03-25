@@ -25,7 +25,7 @@ package one.empty3.test.tests;
 import one.empty3.library.Camera;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.testing.TestObjetSub;
 
 import one.empty3.libs.*;
@@ -41,7 +41,7 @@ public class TestVoiture extends TestObjetSub {
         loop(false);
         scene().cameraActive(new Camera(new Point3D(0.0, 0.0, 5000.0),
                 new Point3D(0.0,0.0,0.0), Point3D.Y.mult(1.)));
-        z().texture(new TextureCol(new Color(Color.YELLOW)));
+        z().texture(new ColorTexture(new Color(Color.YELLOW)));
     }
     @Override
     public void finit() throws Exception {

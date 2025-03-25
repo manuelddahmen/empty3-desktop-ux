@@ -28,7 +28,7 @@
 package one.empty3.test.tests.tests2.courbes_bsplines;
 
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.testing.TestObjet;
 
@@ -67,7 +67,7 @@ public class TestBezierN extends TestObjet {
 
         b = new CourbeParametriquePolynomialeBezier(TestsBSpline.p(frame()));
 
-        b.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        b.texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
 
 
         scene().add(b);

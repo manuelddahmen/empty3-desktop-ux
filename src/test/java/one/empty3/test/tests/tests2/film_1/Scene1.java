@@ -29,7 +29,7 @@ package one.empty3.test.tests.tests2.film_1;
 
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.move.Trajectoires;
 import one.empty3.library.core.testing.TestObjet;
 import one.empty3.library.core.tribase.TRISphere;
@@ -116,15 +116,15 @@ public class Scene1 extends TestObjet {
         /*s1 = new TRISphere(Point3D.X.mult(1000), 100);
         s2 = new TRISphere(Point3D.X.mult(-1000), 100);
 
-        s1.texture(new TextureCol(java.awt.Color.BLACK.getRGB()));
-        s2.texture(new TextureCol(java.awt.Color.BLACK.getRGB()));
+        s1.texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
+        s2.texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
 
         scene().add(s1);
         scene().add(s2);
 */
         for (int i = 0; i < NUMBRE; i++) {
             s1 = new TRISphere(Point3D.X.mult(1000d), 100d);
-            s1.texture(new TextureCol(java.awt.Color.BLACK.getRGB()));
+            s1.texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
             spheres.add(s1);
             scene().add(s1);
         }

@@ -32,7 +32,7 @@ package one.empty3.library.core.nurbs;
 
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.testing.TestObjetSub;
 
 import one.empty3.libs.*;
@@ -97,7 +97,7 @@ public class TestNurbs2 extends TestObjetSub {
                 {0, 0, 0, 0.5, 1, 1, 1}
         });
 
-        n.texture(new TextureCol(Color.WHITE.getRGB()));
+        n.texture(new ColorTexture(Color.WHITE.getRGB()));
 
         n.setStartU(0.0);
         n.setStartV(0.0);

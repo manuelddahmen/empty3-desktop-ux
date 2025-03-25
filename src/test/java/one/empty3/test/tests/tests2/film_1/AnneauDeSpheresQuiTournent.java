@@ -24,7 +24,7 @@ package one.empty3.test.tests.tests2.film_1;
 
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.move.Trajectoires;
 import one.empty3.library.core.testing.TestObjet;
@@ -96,16 +96,16 @@ public class AnneauDeSpheresQuiTournent extends TestObjet {
         /*s1 = new TRISphere(Point3D.X.mult(1000), 100);
          s2 = new TRISphere(Point3D.X.mult(-1000), 100);
 
-         s1.texture(new TextureCol(java.awt.Color.BLACK.getRGB()));
-         s2.texture(new TextureCol(java.awt.Color.BLACK.getRGB()));
+         s1.texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
+         s2.texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
 
          scene().add(s1);
          scene().add(s2);
          */
         for (int i = 0; i < NOMBRE; i++) {
             s1 = new TRISphere(Point3D.X.mult(1000d), 100d);
-            s1.texture(new TextureCol(
-                    Colors.random()));
+            s1.texture(new ColorTexture(
+                    new Colors().random()));
             spheres.add(s1);
             scene().add(s1);
         }
@@ -118,7 +118,7 @@ public class AnneauDeSpheresQuiTournent extends TestObjet {
         for (int i = 0; i < NOMBRE; i++) {
             s1 = spheres.get(i);
             Point3D centre = s1.getCentre();
-            centre.texture(new TextureCol(new Color(Color.PINK)));
+            centre.texture(new ColorTexture(new Color(Color.PINK)));
             scene().add(centre);
             s1.setCentre(Trajectoires.sphere(longiI(i), latI(i), RI(i)));
         }

@@ -53,14 +53,14 @@ public class TestPortrait1 extends TestObjetSub {
 
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
-                Cube c1 = new Cube(1.0, new Point3D(i * 2d, 0.5, j * 2d), new TextureCol(new Color(Color.WHITE.getRGB())));
+                Cube c1 = new Cube(1.0, new Point3D(i * 2d, 0.5, j * 2d), new ColorTexture(new Color(Color.WHITE.getRGB())));
                 scene().add(c1);
             }
         }
 
         TRISphere ts = new TRISphere(new Point3D(0d, 1.5, 0d), 2d);
 
-        ts.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        ts.texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
 
         scene().add(ts);
 

@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.tihange_reac_cendar;
 import one.empty3.library.ITexture;
 import one.empty3.library.Point3D;
 import one.empty3.library.RepresentableConteneur;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.ParametricSurface;
 
 import one.empty3.library.Point;
@@ -41,12 +41,12 @@ public class Tihange extends RepresentableConteneur {
 
         clear();
 
-        ITexture texture1 = new TextureCol(new Color(Color.RED));
-        ITexture texture2 = new TextureCol(new Color(Color.GREEN));
-        ITexture texture3 = new TextureCol(new Color(Color.BLUE));
-        ITexture texture4 = new TextureCol(new Color(Color.MAGENTA));
-        ITexture texture5 = new TextureCol(new Color(Color.CYAN));
-        ITexture texture6 = new TextureCol(new Color(Color.YELLOW));
+        ITexture texture1 = new ColorTexture(new Color(Color.RED));
+        ITexture texture2 = new ColorTexture(new Color(Color.GREEN));
+        ITexture texture3 = new ColorTexture(new Color(Color.BLUE));
+        ITexture texture4 = new ColorTexture(new Color(Color.MAGENTA));
+        ITexture texture5 = new ColorTexture(new Color(Color.CYAN));
+        ITexture texture6 = new ColorTexture(new Color(Color.YELLOW));
 
 
         // Paroi extérieure haut

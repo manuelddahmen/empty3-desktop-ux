@@ -29,6 +29,7 @@
 package one.empty3.library.core.testing;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import one.empty3.feature.M;
 import one.empty3.gui.DataModel;
 import one.empty3.library.*;
 import one.empty3.library.core.ECBufferedImage;
@@ -92,7 +93,6 @@ public abstract class TestObjet implements Test, Runnable {
     public static final int ON_MAX_FRAMES_CONTINUE = 1;
     public static final int ENCODER_MONTE = 0;
     public static final int ENCODER_HUMBLE = 1;
-    public static Resolution PAL = new Resolution(1280, 720);
     public static Resolution HD720 = new Resolution(1280, 720);
     public static Resolution HD1080 = new Resolution(1920, 1080);
     public static Resolution UHD = new Resolution(1920 * 2, 1080 * 2);
@@ -308,13 +308,6 @@ public abstract class TestObjet implements Test, Runnable {
             scene().cameraActive(c);
             z().camera(c);
         } else {
-            if(z().scene()!=null)
-                scene(z().scene());
-            else {
-                scene = new Scene();
-                scene.cameraActive(c);
-                z().scene(scene);
-            }
             scene = new Scene();
             scene.cameraActive(c);
             z().camera(c);
@@ -836,6 +829,7 @@ public abstract class TestObjet implements Test, Runnable {
 
         z = ZBufferFactory.newInstance(resx, resy);
         z.scene(scene);
+        z.setMinMaxOptimium(z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Min, 0.0001));
         //z.next();
         long timeStart = System.currentTimeMillis();
 

@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  */
 public class TestBlob1 extends TestObjetSub {
     public int N = 21;
-    private ITexture tc = new TextureCol(new Color(Color.red));
+    private ITexture tc = new ColorTexture(new Color(Color.red));
     private Blob1 ballec;
     private Point3D[] s;
     private Point3D[] v;
@@ -71,7 +71,7 @@ public class TestBlob1 extends TestObjetSub {
         for (int i = 0; i < N; i++) {
             s[i] = new Point3D(Point3D.O0);
 
-            s[i].texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+            s[i].texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
 
             v[i] = new Point3D(Math.random() * (V / 2 - V), Math.random() * (V / 2 - V), Math.random() * (V / 2 - V));
 

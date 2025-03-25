@@ -24,7 +24,7 @@ package one.empty3.test.tests.tests2.position;
 
 import one.empty3.library.Barycentre;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.testing.TestObjetSub;
 import one.empty3.library.core.tribase.TRISphere;
 
@@ -53,7 +53,7 @@ public class TestTRISphere extends TestObjetSub {
         Barycentre barycentre = new Barycentre();
         barycentre.position = Point3D.Y.mult(5d);
 
-        s.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        s.texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
         scene().add(s);
 
     }

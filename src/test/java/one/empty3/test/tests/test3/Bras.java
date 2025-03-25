@@ -54,7 +54,7 @@ public class Bras extends TestObjetSub {
 
     @Override
     public void ginit() {
-        getZ().couleurDeFond(new TextureCol(new Color(Color.WHITE.getRGB())));
+        getZ().couleurDeFond(new ColorTexture(new Color(Color.WHITE.getRGB())));
         try {
             textureDefault = new TextureImg(
                     new Image(

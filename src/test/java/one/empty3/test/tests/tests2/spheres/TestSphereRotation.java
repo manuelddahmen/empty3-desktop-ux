@@ -67,8 +67,8 @@ public class TestSphereRotation extends TestObjetSub {
             spheres[i] = new Sphere(Point3D.O0.plus(Point3D.random(1.0)), 10.0);
             Cube c = new Cube(0.7, spheres[i].getCircle().getCenter());
 
-            spheres[i].texture(new TextureCol(Colors.random()));
-            c.texture(new TextureCol(Colors.random()));
+            spheres[i].texture(new ColorTexture(new Colors().random()));
+            c.texture(new ColorTexture(new Colors().random()));
 
 
             scene().add(spheres[i]);

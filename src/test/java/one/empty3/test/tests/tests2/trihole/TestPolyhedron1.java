@@ -52,7 +52,7 @@ public class TestPolyhedron1 extends TestObjetStub {
 
         polyhedron = new Polyhedron();
 
-        polyhedron.texture(new TextureCol(new Color(Color.RED)));
+        polyhedron.texture(new ColorTexture(new Color(Color.RED)));
 
         scene().add(polyhedron);
     }

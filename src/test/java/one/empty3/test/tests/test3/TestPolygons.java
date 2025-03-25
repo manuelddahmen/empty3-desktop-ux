@@ -94,7 +94,7 @@ public class TestPolygons extends TestObjetSub {
     @Override
     public void finit() throws Exception {
         super.finit();
-        scene().texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        scene().texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
 
     }
 

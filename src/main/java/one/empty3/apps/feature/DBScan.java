@@ -134,7 +134,7 @@ public class DBScan extends ProcessFile implements Algorithm {
             cluster();
 
             for (Cluster cluster : clusters) {
-                one.empty3.libs.Color colorCluster = Colors.random();
+                one.empty3.libs.Color colorCluster = new Colors().random();
                 for (int i = 0; i < cluster.getPoints().size(); i++) {
                     DataPoint centroid = cluster.getPoints().get(i);
                     p.setValues(centroid.getX(), centroid.getY(), colorCluster.getRed(),

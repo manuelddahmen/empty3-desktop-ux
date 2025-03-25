@@ -30,7 +30,7 @@ import one.empty3.apps.feature.shape.Rectangle;
 import one.empty3.library.ITexture;
 import one.empty3.library.Lumiere;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 
@@ -319,7 +319,7 @@ public class ResolutionCharacter8 implements Runnable {
 
         Logger.getAnonymousLogger().log(Level.INFO, "Image size: " + output.getColumns() + ", " + output.getLines());
 
-        final ITexture texture = new TextureCol(java.awt.Color.BLACK.getRGB());
+        final ITexture texture = new ColorTexture(java.awt.Color.BLACK.getRGB());
 
         for (int j = 0; j < input.getLines() - step; j += 1) {
             if (j % (input.getLines() / 100) == 0)
@@ -609,8 +609,8 @@ public class ResolutionCharacter8 implements Runnable {
                         }
                         if (s[0].length() > 0)
                             pwTxt.println(s[0]);
-                        Color random = Colors.random();
-                        output.plotCurve(rectangle, new TextureCol(random));
+                        Color random = new Colors().random();
+                        output.plotCurve(rectangle, new ColorTexture(random));
                         countRects++;
                         rectangles.add(rectangle2);
                         PixM outChar = input.copySubImage(rectangle2.getX(),
@@ -774,8 +774,8 @@ public class ResolutionCharacter8 implements Runnable {
                         }
                         if (s[0].length() > 0)
                             pwTxt.println(s[0]);
-                        Color random = Colors.random();
-                        output.plotCurve(rectangle, new TextureCol(random));
+                        Color random = new Colors().random();
+                        output.plotCurve(rectangle, new ColorTexture(random));
                         countRects++;
                         rectangles2.add(rectangle3);
                         PixM outChar = input.copySubImage(rectangle3.getX(),
@@ -1277,7 +1277,7 @@ public class ResolutionCharacter8 implements Runnable {
             PixM pError = state.backgroundImage;
             PixM inputCopy = input.copy();
             state.currentCurves.forEach(courbeParametriquePolynomialeBezier -> {
-                pError.plotCurve(courbeParametriquePolynomialeBezier, new TextureCol(java.awt.Color.BLACK.getRGB()));
+                pError.plotCurve(courbeParametriquePolynomialeBezier, new ColorTexture(java.awt.Color.BLACK.getRGB()));
                 numCurves++;
             });
             PixM copy = pError.copy();

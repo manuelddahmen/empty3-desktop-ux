@@ -61,9 +61,9 @@ public class TestTransparence extends TestObjetSub {
         plan3D.pointOrigine(new Point3D(-1d, -1d, 0d));
         plan3D.pointXExtremite(new Point3D(1d, 0d, 0d));
         plan3D.pointYExtremite(new Point3D(0d, 1d, 0d));
-        TextureImg TextureCol = new TextureImg(new Image(ImageIO.read(getClass().getResourceAsStream("be.manudahmen.empty3.tests.tests2.cubes-be.manudahmen.empty3.tests.tests2.transparence.png"))));
-        //TextureCol.setTransparent(Color.GREEN);
-        plan3D.texture(TextureCol);
+        TextureImg ColorTexture = new TextureImg(new Image(ImageIO.read(getClass().getResourceAsStream("be.manudahmen.empty3.tests.tests2.cubes-be.manudahmen.empty3.tests.tests2.transparence.png"))));
+        //ColorTexture.setTransparent(Color.GREEN);
+        plan3D.texture(ColorTexture);
 
         scene().add(plan3D);
         scene().cameraActive(new Camera(Point3D.Z.mult(3d), Point3D.O0));

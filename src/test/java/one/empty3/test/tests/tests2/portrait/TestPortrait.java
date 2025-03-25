@@ -51,28 +51,28 @@ public class TestPortrait extends TestObjetSub {
     @Override
     public void testScene() throws Exception {
 
-        Cube c1 = new Cube(2.0, new Point3D(0d, 0d, 0d), new TextureCol(new Color(Color.RED)));
+        Cube c1 = new Cube(2.0, new Point3D(0d, 0d, 0d), new ColorTexture(new Color(Color.RED)));
 
-        Cube c2 = new Cube(1.5, new Point3D(1d, 1d, 0d), new TextureCol(new Color(Color.YELLOW)));
+        Cube c2 = new Cube(1.5, new Point3D(1d, 1d, 0d), new ColorTexture(new Color(Color.YELLOW)));
 
-        Cube cy1 = new Cube(0.5, new Point3D(2.1, 0d, 0d), new TextureCol(new Color(Color.GREEN)));
-        Cube cy2 = new Cube(0.5, new Point3D(2.1, 1d, 1d), new TextureCol(new Color(Color.GREEN)));
+        Cube cy1 = new Cube(0.5, new Point3D(2.1, 0d, 0d), new ColorTexture(new Color(Color.GREEN)));
+        Cube cy2 = new Cube(0.5, new Point3D(2.1, 1d, 1d), new ColorTexture(new Color(Color.GREEN)));
 
-        Cube c3 = new Cube(1, new Point3D(2d, 2d, 0d), new TextureCol(new Color(Color.WHITE.getRGB())));
+        Cube c3 = new Cube(1, new Point3D(2d, 2d, 0d), new ColorTexture(new Color(Color.WHITE.getRGB())));
 
         TRISphere ts = new TRISphere(new Point3D(0d, 6d, -5d), 4d);
 
-        ts.texture(new TextureCol(new Color(Color.WHITE.getRGB())));
+        ts.texture(new ColorTexture(new Color(Color.WHITE.getRGB())));
 
         scene().add(ts);
 
         Camera c = new Camera(new Point3D(10d, 10d, 10d), Point3D.O0);
 
-        scene().add(new LineSegment(Point3D.O0, Point3D.X.mult(10d), new TextureCol(new Color(Color.RED))));
-        scene().add(new LineSegment(Point3D.O0, Point3D.X.mult(10d), new TextureCol(new Color(Color.RED))));
-        scene().add(new LineSegment(Point3D.O0, Point3D.Y.mult(10d), new TextureCol(new Color(Color.GREEN))));
-        scene().add(new LineSegment(Point3D.O0, Point3D.Z.mult(10d), new TextureCol(new Color(Color.BLUE))));
-        scene().add(new TRI(new Point3D(3.1, 3d, -1d), new Point3D(3.1, 1d, -1d), new Point3D(3.1, 3d, 1d), new TextureCol(new Color(Color.WHITE.getRGB()))));
+        scene().add(new LineSegment(Point3D.O0, Point3D.X.mult(10d), new ColorTexture(new Color(Color.RED))));
+        scene().add(new LineSegment(Point3D.O0, Point3D.X.mult(10d), new ColorTexture(new Color(Color.RED))));
+        scene().add(new LineSegment(Point3D.O0, Point3D.Y.mult(10d), new ColorTexture(new Color(Color.GREEN))));
+        scene().add(new LineSegment(Point3D.O0, Point3D.Z.mult(10d), new ColorTexture(new Color(Color.BLUE))));
+        scene().add(new TRI(new Point3D(3.1, 3d, -1d), new Point3D(3.1, 1d, -1d), new Point3D(3.1, 3d, 1d), new ColorTexture(new Color(Color.WHITE.getRGB()))));
 
         scene().add(c1);
         scene().add(c2);

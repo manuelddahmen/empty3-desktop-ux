@@ -32,7 +32,7 @@ public class Membre {
 
     public Membre(Representable representable) {
         this.representable = representable;
-        representable.texture(new ColorTexture(Colors.random()));
+        representable.texture(new ColorTexture(new Colors().random()));
 
 
     }

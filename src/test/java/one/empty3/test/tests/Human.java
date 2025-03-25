@@ -98,7 +98,7 @@ public class Human extends RepresentableConteneur {
             Sphere sphere = new Sphere(axe,
                     largeurBassin * 2 / 3);
 
-            sphere.texture(new ColorTexture(Colors.random()));
+            sphere.texture(new ColorTexture(new Colors().random()));
 
 
             t.getListRepresentable().add(sphere);

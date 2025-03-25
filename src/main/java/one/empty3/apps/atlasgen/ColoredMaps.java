@@ -89,7 +89,7 @@ public class ColoredMaps {
                 csvReader1.setAction(new DrawOneCountryCsvAction(
                         pixeler,
                         myDim,
-                        new ColorTexture(Colors.random())
+                        new ColorTexture(new Colors().random())
                 ));
                 csvReader1.process();
                 ImageIO.write(pixeler.getImage(), "jpg", new File(

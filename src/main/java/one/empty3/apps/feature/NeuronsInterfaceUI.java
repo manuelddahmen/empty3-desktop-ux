@@ -123,7 +123,7 @@
 //            model.add(Lines3.class.newInstance());
 //            model.add(Lines4.class.newInstance());
 //            model.add(Lines5.class.newInstance());
-//            model.add(Lines5colors.class.newInstance());
+//            model.add(Lines5new Colors().class.newInstance());
 //            model.add(Lines6.class.newInstance());
 //            model.add(LocalExtremaProcess.class.newInstance());
 //            model.add(MagnitudeProcess.class.newInstance());

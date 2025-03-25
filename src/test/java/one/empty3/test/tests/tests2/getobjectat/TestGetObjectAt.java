@@ -36,7 +36,7 @@ package one.empty3.test.tests.tests2.getobjectat;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.TRI;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.testing.TestObjetSub;
 
 import one.empty3.library.Point;
@@ -55,7 +55,7 @@ public class TestGetObjectAt extends TestObjetSub {
     @Override
     public void testScene() throws Exception {
         scene().getObjets().getData1d().clear();
-        scene().add(new TRI(Point3D.O0, Point3D.X, Point3D.Y, new TextureCol(new Color(Color.BLUE))));
+        scene().add(new TRI(Point3D.O0, Point3D.X, Point3D.Y, new ColorTexture(new Color(Color.BLUE))));
         scene().cameraActive(new Camera(Point3D.Z.mult(-1d), Point3D.O0));
 
     }

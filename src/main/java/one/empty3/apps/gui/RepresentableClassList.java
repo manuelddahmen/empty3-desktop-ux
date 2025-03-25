@@ -198,10 +198,10 @@ public class RepresentableClassList {
 
     public static void initTextValues(ITexture texture, JComboBox<String> comboBox1, JFileChooser fileChooser1, JTextField[] jTextFields) {
         if (texture != null) {
-            if (texture instanceof TextureCol) {
+            if (texture instanceof ColorTexture) {
                 comboBox1.setSelectedIndex(0);
                 float[] comps;
-                Color color = new Color(((TextureCol) texture).color());
+                Color color = new Color(((ColorTexture) texture).color());
                 jTextFields[0].setText("" + color.getRed());
                 jTextFields[1].setText("" + color.getGreen());
                 jTextFields[2].setText("" + color.getBlue());

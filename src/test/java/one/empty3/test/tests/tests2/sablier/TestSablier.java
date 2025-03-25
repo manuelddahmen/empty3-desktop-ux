@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.sablier;
 import one.empty3.library.Camera;
 import one.empty3.library.Point2D;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.core.move.Trajectoires;
 import one.empty3.library.core.testing.TestObjetSub;
 
@@ -45,7 +45,7 @@ public class TestSablier extends TestObjetSub {
     public void ginit() {
         this.setMaxFrames(1);
         Sablier s = new Sablier();
-        s.texture(new TextureCol(new Color(Color.BLUE)));
+        s.texture(new ColorTexture(new Color(Color.BLUE)));
         scene().add(s);
 
     }

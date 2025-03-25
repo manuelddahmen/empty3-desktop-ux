@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.sw;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 import one.empty3.library.Point3D;
-import one.empty3.library.TextureCol;
+import one.empty3.library.ColorTexture;
 import one.empty3.library.TextureImg;
 import one.empty3.library.core.tribase.Plan3D;
 
@@ -43,7 +43,7 @@ public class TextObjet extends Plan3D {
     private Point3D x2Vect;
     private Point3D y2Vect;
 
-    private Color texTextureCol;
+    private Color texColorTexture;
 
 
     private Image prerenderedImg;
@@ -55,18 +55,18 @@ public class TextObjet extends Plan3D {
         this.pointXExtremite(orig.plus(x2Vect));
         this.pointYExtremite(orig.plus(y2Vect));
 
-        TextureCol c = new TextureCol(java.awt.Color.BLACK.getRGB());
+        ColorTexture c = new ColorTexture(java.awt.Color.BLACK.getRGB());
         texture(c);
 
 
     }
 
-    public Color texTextureCol() {
-        return texTextureCol;
+    public Color texColorTexture() {
+        return texColorTexture;
     }
 
-    public void setTexTextureCol(Color color) {
-        this.texTextureCol = color;
+    public void setTexColorTexture(Color color) {
+        this.texColorTexture = color;
     }
 
     public void setText(String txt) {
@@ -75,7 +75,7 @@ public class TextObjet extends Plan3D {
 
         Graphics prerenderedImgGraphics = prerenderedImg.getGraphics();
 
-        prerenderedImgGraphics.setColor(texTextureCol);
+        prerenderedImgGraphics.setColor(texColorTexture);
 
         prerenderedImgGraphics.drawString(txt, 0, 0);
 

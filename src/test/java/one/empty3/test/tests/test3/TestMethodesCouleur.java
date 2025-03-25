@@ -29,7 +29,7 @@ public class TestMethodesCouleur {
     public void testColorIdent() {
         /*
         for (int c = 0; c < 5; c++) {
-            Color col = Colors.random();
+            Color col = new Colors().random();
             Color col1 = Color.newCol(Lumiere.getInt(Lumiere.getRgb(col)));
             Color col2 = Lumiere.getColorD(Lumiere.getDoubles(col.getRGB()));
             Logger.getAnonymousLogger().log(Level.INFO, "col" + col + "\ncol1 " + col1 + "\ncol2" + col2);

@@ -82,13 +82,13 @@ public class Pieuvre extends RepresentableConteneur {
     public Pieuvre() {
         for (int i = 0; i < nbrBras; i++) {
             int noBras = i;
-            bras = new Bras(noBras, nbrBras, new TextureCol(new Color(Color.YELLOW)));
+            bras = new Bras(noBras, nbrBras, new ColorTexture(new Color(Color.YELLOW)));
 
 
             add(bras);
         }
         tete = new Sphere(new Axe(Point3D.O0, Point3D.X), 2.0);
-        tete.texture(new TextureCol(new Color(Color.RED)));
+        tete.texture(new ColorTexture(new Color(Color.RED)));
 
         add(tete);
     }

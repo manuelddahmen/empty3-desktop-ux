@@ -66,15 +66,15 @@ public class SphereCube12 extends TestObjetSub {
 
         Cube c;
 
-        //c.texture(new TextureCol(new Color(Color.RED));
+        //c.texture(new ColorTexture(new Color(Color.RED));
         c = new Cube(d / 10, Point3D.O0);
 
 
-        c.texture(new TextureCol(new Color(Color.BLUE)));
+        c.texture(new ColorTexture(new Color(Color.BLUE)));
 
         s = new Sphere(Point3D.X.mult(t0), d / 10);
 
-        s.texture(new TextureCol(new Color(Color.YELLOW)));
+        s.texture(new ColorTexture(new Color(Color.YELLOW)));
 
         scene().add(c);
         scene().add(s);

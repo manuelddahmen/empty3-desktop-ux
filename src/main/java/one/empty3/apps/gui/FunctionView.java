@@ -51,7 +51,7 @@ public class FunctionView {
     private boolean ok;
     private Camera camera = new Camera(new Point3D(0.0, 0.0, -100.0), Point3D.O0);
     private int zDiplayType = ZBufferImpl.SURFACE_DISPLAY_LINES;
-    private ITexture texture = new TextureCol(Colors.random());
+    private ITexture texture = new ColorTexture(new Colors().random());
     private boolean refresh = true;
     private Scene scene = new Scene();
     private one.empty3.apps.gui.MeshEditorBean meshEditorBean = new one.empty3.apps.gui.MeshEditorBean();

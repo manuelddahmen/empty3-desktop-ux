@@ -58,7 +58,7 @@ public class TestCitron extends TestObjetSub {
                     Trajectoires.sphere(
                             1.0 * frame() / getMaxFrames(), 0.0, DIM),
                     DIM * 4);
-            citrons[i].texture(new TextureCol(new Color(Color.ORANGE)));
+            citrons[i].texture(new ColorTexture(new Color(Color.ORANGE)));
             citrons[i].texture(new TextureImg(new Image(ImageIO.read(new java.io.File("samples/img/herbe.jpg")))));
             scene().add(citrons[i]);
         }
