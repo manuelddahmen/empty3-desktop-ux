@@ -26,6 +26,7 @@
 
 package one.empty3.apps.facedetect;
 
+import java.awt.*;
 import com.formdev.flatlaf.FlatDarkLaf;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
@@ -762,7 +763,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        ResourceBundle bundle = ResourceBundle.getBundle("one.empty3.library.core.testing.Bundle");
+        ResourceBundle bundle = ResourceBundle.getBundle("one.empty3.apps.facedetect.Bundle");
         menuBar1 = new JMenuBar();
         menu2 = new JMenu();
         menuItem1 = new JMenuItem();
@@ -1180,7 +1181,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                     //---- menuItem14 ----
                     menuItem14.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem14.text"));
-                    menuItem14.addActionListener(e -> menuItem44(e));
+                    menuItem14.addActionListener(e -> menuItem4Plus(e));
                     menu9.add(menuItem14);
 
                     //---- menuItem15 ----

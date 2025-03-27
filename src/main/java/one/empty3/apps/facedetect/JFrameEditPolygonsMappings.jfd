@@ -2,7 +2,7 @@ JFDML JFormDesigner: "8.2.4.0.393" Java: "21.0.5" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
-	"i18n.bundlePackage": "one.empty3.library.core.testing"
+	"i18n.bundlePackage": "one.empty3.apps.facedetect"
 	"i18n.bundleName": "Bundle"
 	"i18n.keyPrefix": "JFrameEditPolygonsMappings"
 	contentType: "form/swing"

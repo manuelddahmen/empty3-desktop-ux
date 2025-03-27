@@ -73,7 +73,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public int durationMilliS = 30000;
     public File imageFile;
     public File txtFile;
-    public boolean hdTextures = true;
+    public boolean hdTextures = false;
     public boolean textureWired = false;
     private final int mode = EDIT_POINT_POSITION;
     public ConvexHull convexHull1;
