@@ -51,7 +51,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.text.DateFormat;
@@ -147,8 +146,8 @@ public abstract class TestObjet implements Test, Runnable {
     public String sousdossier;
     private boolean D3 = false;
     private ImageContainer biic;
-    private ECBufferedImage riG;
-    private ECBufferedImage riD;
+    private Image riG;
+    private Image riD;
     private File fileG;
     private File fileD;
     private boolean pause = false;
@@ -238,7 +237,7 @@ public abstract class TestObjet implements Test, Runnable {
         dimension = new Resolution(x, y);
     }
 
-    public BufferedImage img() {
+    public Image img() {
         return ri;
     }
 
@@ -297,7 +296,7 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public Camera camera() {
-        return c;
+        return scene().cameraActive();
     }
 
     public void camera(Camera c) {
@@ -333,7 +332,7 @@ public abstract class TestObjet implements Test, Runnable {
             System.exit(1);
         }
 
-        Graphics g = ((BufferedImage) ri).getGraphics();
+        Graphics g = ((Image) ri).getGraphics();
         g.setColor(Color.black);
         g.drawString(description, 0, 1100);
 
@@ -716,7 +715,7 @@ public abstract class TestObjet implements Test, Runnable {
     public void publishResult() {
         if (getPublish()) {
 
-            str = new one.empty3.library.core.testing2.ShowTestResult(new Image(ri));
+            str = new one.empty3.library.core.testing2.ShowTestResult((ri));
             str.setImageContainer(biic);
             str.setTestObjet(this);
             new Thread(str).start();
@@ -753,7 +752,7 @@ public abstract class TestObjet implements Test, Runnable {
             }
 
             RenderedImage i = ImageIO.read(is);
-            BufferedImage bi = (BufferedImage) i;
+            Image bi = (Image) i;
 
             //biic.setImage(eci);
         } catch (Exception ex1) {
@@ -781,7 +780,7 @@ public abstract class TestObjet implements Test, Runnable {
             }
 
             RenderedImage i = ImageIO.read(is);
-            BufferedImage bi = (BufferedImage) i;
+            Image bi = (Image) i;
 
             //biic.setImage(eci);
         } catch (IOException e) {
@@ -830,7 +829,7 @@ public abstract class TestObjet implements Test, Runnable {
 
         z = ZBufferFactory.newInstance(resx, resy);
         z.scene(scene);
-        z.setMinMaxOptimium(z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Min, 0.0001));
+        z.setMinMaxOptimium(z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100));
         //z.next();
         long timeStart = System.currentTimeMillis();
 
@@ -911,7 +910,7 @@ public abstract class TestObjet implements Test, Runnable {
             }
 
 
-            pauseActive = true;
+        /*    pauseActive = true;
             while (isPause()) {
                 try {
                     Thread.sleep(500);
@@ -922,7 +921,7 @@ public abstract class TestObjet implements Test, Runnable {
             }
             pauseActive = false;
 
-
+*/
             try {
                 finit();
             } catch (Exception ex) {
@@ -1009,7 +1008,7 @@ public abstract class TestObjet implements Test, Runnable {
                     if (ri != null && (getGenerate() & GENERATE_SAVE_IMAGE) > 0) {
                         ecrireImage(ri, type, file);
 
-                        biic.setImage(new Image(ri != null ? ri : (frame % 2 == 0 ? riG : riD)));
+                        biic.setImage(ri != null ? ri : (frame % 2 == 0 ? riG : riD));
                         biic.setStr("" + frame);
                     }
                 }
@@ -1083,7 +1082,7 @@ public abstract class TestObjet implements Test, Runnable {
         setRunning(false);
 
         if (img() == null) {
-            ri = new Image(getResx(), getResy(), BufferedImage.TYPE_INT_RGB);
+            ri = new Image(getResx(), getResy(), Image.TYPE_INT_ARGB);
         } else {
             afterRender();
 
@@ -1290,10 +1289,10 @@ public abstract class TestObjet implements Test, Runnable {
         }
     }
 
-    public void writeOnPictureAfterZ(BufferedImage bi) {
+    public void writeOnPictureAfterZ(Image bi) {
     }
 
-    public void writeOnPictureBeforeZ(BufferedImage bi) {
+    public void writeOnPictureBeforeZ(Image bi) {
     }
 
     public String getFolder() {
@@ -1364,7 +1363,7 @@ public abstract class TestObjet implements Test, Runnable {
             z().scene(scene()!=null?scene():new Scene());
             z().camera(camera()!=null?camera():new Camera());
         }
-        z.minMaxOptimium = z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.001);
+        z.minMaxOptimium = z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 0.001);
     }
 
     public void setName(String name) {

@@ -55,8 +55,8 @@ public class TestCubes extends TestObjetSub {
 
     }
 
-    private double z(double min, double max, int framemin, int nof) {
-        return min + (max - min) * (1.0 * (frame() - framemin) / nof);
+    private double z(int nof) {
+        return 250.0 +  (1.0 * (getMaxFrames()-frame()) / getMaxFrames());
     }
 
     @Override
@@ -64,10 +64,11 @@ public class TestCubes extends TestObjetSub {
         scene().cameras().clear();
 
         scene().cameraActive(new Camera(
-                new Point3D(0d, 0d, z(-250d, 250d, 0, getMaxFrames())),
-                new Point3D(0d, 0d, 1000d)
+                new Point3D(0d, 0d, z(getMaxFrames())),
+                new Point3D(0d, 0d, 1000d),
+                Point3D.Y
         ));
-        scene().cameraActive().calculerMatrice(Point3D.Y);
+        //scene().cameraActive().calculerMatrice(Point3D.Y);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class TestCubes extends TestObjetSub {
 }
 
 class Cube extends RepresentableConteneur {
-    private ArrayList<Representable> cube = new ArrayList<Representable>();
+    private final ArrayList<Representable> cube = new ArrayList<Representable>();
 
     public Cube(double dim, int pas, Color c) {
         if (dim < 0)
@@ -85,25 +86,25 @@ class Cube extends RepresentableConteneur {
         for (double i = -dim / 2; i < dim / 2 + pas; i += pas)
             for (double j = -dim / 2; j < dim / 2 + pas; j += pas)
                 for (double k = -dim / 2; k < dim / 2 + pas; k += pas) {
-                    if (1.0 * i + 1.0 * dim / pas < dim / 2 + pas) {
+                    if (i + dim / pas < dim / 2 + pas) {
                         cube.add(new LineSegment(
-                                        new Point3D(1.0 * i, 1.0 * j, 1.0 * k),
-                                        new Point3D(1.0 * i + 1.0 * dim / pas, 1.0 * j, 1.0 * k),
+                                        new Point3D(i, j, k),
+                                        new Point3D(i + dim / pas, j, k),
                                         new ColorTexture(c)
                                 )
                         );
                     }
-                    if (1.0 * j + 1.0 * dim / pas < dim / 2 + pas)
+                    if (j + dim / pas < dim / 2 + pas)
                         cube.add(new LineSegment(
-                                        new Point3D(1.0 * i, 1.0 * j, 1.0 * k),
-                                        new Point3D(1.0 * i, 1.0 * j + 1.0 * dim / pas, 1.0 * k),
+                                        new Point3D(i, j, k),
+                                        new Point3D(i, j + dim / pas, k),
                                         new ColorTexture(c)
                                 )
                         );
-                    if (1.0 * k + 1.0 * dim / pas < dim / 2 + pas)
+                    if (k + dim / pas < dim / 2 + pas)
                         cube.add(new LineSegment(
-                                        new Point3D(1.0 * i, 1.0 * j, 1.0 * k),
-                                        new Point3D(1.0 * i, 1.0 * j, 1.0 * k + 1.0 * dim / pas),
+                                        new Point3D(i, j, k),
+                                        new Point3D(i, j, k + dim / pas),
                                         new ColorTexture(c)
                                 )
                         );
@@ -111,7 +112,6 @@ class Cube extends RepresentableConteneur {
     }
 
     public void deforme(Point3D p) {
-        return;
     }
 
     public ArrayList<Representable> getListRepresentable() {

@@ -24,6 +24,7 @@ package one.empty3.apps.facedetect;
 
 import one.empty3.feature.Myfacedetect.Face;
 import one.empty3.library.*;
+import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.core.testing.TestObjet;
@@ -60,16 +61,11 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     @Override
     public void ginit() {
-
-        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.0007));
+        setZ(new ZBufferImpl(getResx(), getResy()));
+        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.None, 200));
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
-/*
-        super.ginit();
-        if (objFile != null) {
-            z().scene().getObjets().getData1d().clear();
-            z().scene().getObjets().setElem(objFile, 0);
-        }
-*/
+        z().texture( new ColorTexture(new Colors().random()));
+
     }
 
     @Override
@@ -217,13 +213,13 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 testHumanHeadTexturing.setResx(editPolygonsMappings.panelModelView.getWidth());
                 testHumanHeadTexturing.setResy(editPolygonsMappings.panelModelView.getHeight());
                 testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
-                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.01);
+                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 0.01);
 
             } else {
                 testHumanHeadTexturing.setResx(resolution.x());
                 testHumanHeadTexturing.setResy(resolution.y());
                 testHumanHeadTexturing.setDimension(TestObjet.HD1080);
-                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 0.01);
+                testHumanHeadTexturing.z().minMaxOptimium = testHumanHeadTexturing.z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 0.01);
             }
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
             testHumanHeadTexturing.setJpg(jpg);
