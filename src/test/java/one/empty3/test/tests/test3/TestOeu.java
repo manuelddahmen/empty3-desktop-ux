@@ -22,7 +22,7 @@
 
 package one.empty3.test.tests.test3;
 
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 /*__
  *

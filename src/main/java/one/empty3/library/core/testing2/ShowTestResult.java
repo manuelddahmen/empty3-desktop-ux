@@ -31,11 +31,10 @@ import net.miginfocom.swing.MigLayout;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
-import one.empty3.libs.Image;
-import one.empty3.library.core.testing.ImageContainer;
-import one.empty3.library.core.testing.TestObjet;
-import one.empty3.library.core.testing.TextAreaOutputStream;
-import one.empty3.library.core.testing.ViewerFrame;
+import one.empty3.library.core.testing.jvm.ImageContainer;
+import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TextAreaOutputStream;
+import one.empty3.library.core.testing.jvm.ViewerFrame;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.FileChannelWrapper;
 import org.jcodec.common.io.NIOUtils;
@@ -43,8 +42,6 @@ import org.jcodec.common.model.Rational;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 
 import java.awt.*;
 import java.awt.event.*;

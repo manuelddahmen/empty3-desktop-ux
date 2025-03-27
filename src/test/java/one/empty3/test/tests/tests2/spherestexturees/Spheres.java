@@ -27,7 +27,7 @@ import one.empty3.library.Point3D;
 import one.empty3.library.RepresentableConteneur;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.core.lighting.Colors;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

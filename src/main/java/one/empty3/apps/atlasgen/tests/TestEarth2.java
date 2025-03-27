@@ -22,7 +22,7 @@
 
 package one.empty3.apps.atlasgen.tests;
 
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjet;
 
 /*__
  * Created by manue on 11-05-19.

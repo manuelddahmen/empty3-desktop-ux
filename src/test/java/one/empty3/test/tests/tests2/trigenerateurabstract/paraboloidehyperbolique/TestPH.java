@@ -35,7 +35,7 @@ import one.empty3.library.Camera;
 import one.empty3.library.LumierePointSimple;
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjet;
 import one.empty3.library.core.tribase.ParaboloideHyperbolique;
 
 import one.empty3.libs.*;

@@ -22,8 +22,7 @@
 
 package one.empty3.apps.gui;
 
-import one.empty3.apps.gui.Main;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 /**
  * Created by manue on 25-07-20.

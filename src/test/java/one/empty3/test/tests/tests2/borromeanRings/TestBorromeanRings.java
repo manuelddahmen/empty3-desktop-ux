@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.borromeanRings;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.move.Trajectoires;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 /*__
  * Created by Win on 11-09-18.

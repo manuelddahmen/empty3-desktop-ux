@@ -25,14 +25,11 @@ package one.empty3.apps.atlasgen;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CameraInPath;
 import one.empty3.library.core.nurbs.PcOnPs;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import javax.imageio.ImageIO;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
-
-import java.awt.Dimension;
 
 import one.empty3.libs.Image;
 

@@ -37,7 +37,7 @@ import one.empty3.library.P;
 import one.empty3.library.Point3D;
 import one.empty3.library.TextureMov;
 import one.empty3.library.core.nurbs.SurfaceParametricPolygonalBezier;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import java.io.File;
 

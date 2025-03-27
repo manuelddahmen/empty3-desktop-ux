@@ -37,7 +37,7 @@ package one.empty3.test.tests.tests2.spheres;
 import one.empty3.library.*;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.move.Trajectoires;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 
 /*__

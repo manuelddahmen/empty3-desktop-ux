@@ -30,7 +30,7 @@ import one.empty3.library.EOFVideoException;
 import one.empty3.library.Point3D;
 import one.empty3.library.TextureMov;
 import one.empty3.library.core.nurbs.CameraInPath;
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjet;
 import one.empty3.library.core.tribase.TRIObjetGenerateurAbstract;
 
 /*__

@@ -20,25 +20,15 @@
  *
  */
 
-package one.empty3.library.core.testing;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package one.empty3.library.core.testing.jvm;
 
-import one.empty3.library.Scene;
-
-public class TestSTL {
-
-    public static class Liste {
-
-        public int version = 11;
-
-        public String fn = ".STL";
-        public Scene scene = new Scene();
-
-        public Liste() {
-        }
-
-        public String getFilename() {
-            return scene.getObjets().getElem(0).getClass().getName() + "-" + version + ".STL";
-        }
-    }
+/*__
+ * @author Manuel DAHMEN
+ */
+public interface Report {
 
 }

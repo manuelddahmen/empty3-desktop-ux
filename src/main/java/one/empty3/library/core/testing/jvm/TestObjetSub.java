@@ -20,12 +20,27 @@
  *
  */
 
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
-import javax.swing.*;
+public class TestObjetSub extends TestObjet {
 
-public class ViewerFrame extends JFrame {
-    public ViewerFrame(String title) {
-        super(title);
+
+    public void finit() throws Exception {
+
+    }
+
+    public void ginit() {
+
+    }
+
+    public void testScene() throws Exception {
+
+    }
+
+    public void afterRenderFrame() {
+    }
+
+    public void afterRender() {
+
     }
 }

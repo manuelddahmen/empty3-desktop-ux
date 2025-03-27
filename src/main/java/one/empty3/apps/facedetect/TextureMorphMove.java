@@ -25,7 +25,7 @@ package one.empty3.apps.facedetect;
 import java.awt.*;
 
 import one.empty3.library.*;
-import one.empty3.library.core.testing.Resolution;
+import one.empty3.library.core.testing.jvm.Resolution;
 
 import java.awt.geom.Dimension2D;
 import java.util.*;

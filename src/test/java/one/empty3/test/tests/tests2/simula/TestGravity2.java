@@ -26,7 +26,7 @@ import one.empty3.library.*;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.physics.Bille;
 import one.empty3.library.core.physics.Force;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import java.util.ArrayList;
 import java.util.logging.Level;

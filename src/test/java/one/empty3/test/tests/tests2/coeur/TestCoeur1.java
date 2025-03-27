@@ -33,7 +33,7 @@
 package one.empty3.test.tests.tests2.coeur;
 
 import one.empty3.library.*;
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjet;
 
 import javax.imageio.ImageIO;
 

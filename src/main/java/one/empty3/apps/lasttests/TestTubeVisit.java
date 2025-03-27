@@ -25,13 +25,10 @@ package one.empty3.apps.lasttests;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.FctXY;
-import one.empty3.library.core.testing.Resolution;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.Resolution;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.Tubulaire3;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-import java.awt.Dimension;
 import java.io.File;
 
 public class TestTubeVisit extends TestObjetSub {

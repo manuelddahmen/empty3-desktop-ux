@@ -32,7 +32,7 @@ import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.BSpline;
 import one.empty3.library.core.nurbs.CourbeParametriqueBSpline;
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjet;
 
 import one.empty3.libs.*;
 

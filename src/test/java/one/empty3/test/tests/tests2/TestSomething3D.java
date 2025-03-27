@@ -23,7 +23,7 @@
 package one.empty3.test.tests.tests2;
 
 import one.empty3.library.Representable;
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjet;
 
 /*__
  * Created by Win on 29-08-18.

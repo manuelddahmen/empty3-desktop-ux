@@ -36,7 +36,7 @@ package one.empty3.test.tests.tests2.nurbs;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.core.nurbs.SurfaceParametricPolygonalBezier;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 /*__
  *

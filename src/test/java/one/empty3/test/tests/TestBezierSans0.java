@@ -27,7 +27,7 @@ import one.empty3.library.LumierePonctuelle;
 import one.empty3.library.Point3D;
 import one.empty3.library.ZBufferImpl;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import one.empty3.libs.*;
 

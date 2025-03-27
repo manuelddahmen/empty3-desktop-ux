@@ -26,8 +26,8 @@ import one.empty3.library.Camera;
 import one.empty3.library.LumierePonctuelle;
 import one.empty3.library.Point3D;
 import one.empty3.library.ZBufferImpl;
-import one.empty3.library.core.testing.TestObjet;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.Tubulaire3;
 
 import one.empty3.libs.*;

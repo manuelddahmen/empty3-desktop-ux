@@ -29,7 +29,7 @@ import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.TextureImg;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.Plan3D;
 
 import one.empty3.libs.*;

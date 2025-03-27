@@ -23,13 +23,11 @@ package one.empty3.test.tests.tests2.blob;
 
 import one.empty3.library.*;
 import one.empty3.library.core.extra.Blob1;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
-import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

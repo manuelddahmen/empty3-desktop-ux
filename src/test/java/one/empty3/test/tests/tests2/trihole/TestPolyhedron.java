@@ -24,7 +24,7 @@ package one.empty3.test.tests.tests2.trihole;
 
 import one.empty3.library.*;
 import one.empty3.library.core.extra.Polyhedron;
-import one.empty3.library.core.testing.TestObjetStub;
+import one.empty3.library.core.testing.jvm.TestObjetStub;
 
 import one.empty3.libs.*;
 

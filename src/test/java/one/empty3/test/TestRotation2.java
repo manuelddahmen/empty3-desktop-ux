@@ -24,7 +24,7 @@ import one.empty3.growth.graphics.Rotation;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Point3D;
-import one.empty3.library.core.testing.TestObjetStub;
+import one.empty3.library.core.testing.jvm.TestObjetStub;
 import one.empty3.library.core.tribase.TRISphere;
 
 import one.empty3.libs.*;

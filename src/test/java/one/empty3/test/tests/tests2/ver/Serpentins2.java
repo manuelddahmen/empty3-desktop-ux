@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.ver;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.*;
 import one.empty3.library.core.lighting.Colors;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.TubulaireN;
 
 import one.empty3.libs.*;

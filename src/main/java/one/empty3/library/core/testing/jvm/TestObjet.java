@@ -26,13 +26,11 @@
 /*
  * 2013-2020 Manuel Dahmen
  */
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import one.empty3.feature.M;
 import one.empty3.apps.gui.DataModel;
 import one.empty3.library.*;
-import one.empty3.library.core.ECBufferedImage;
 import one.empty3.library.core.export.ObjExport;
 import one.empty3.library.core.export.STLExport;
 import one.empty3.library.core.script.ExtensionFichierIncorrecteException;

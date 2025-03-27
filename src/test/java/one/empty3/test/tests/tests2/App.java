@@ -22,7 +22,7 @@
 
 package one.empty3.test.tests.tests2;
 
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 /*__
  * Manuel Dahmen

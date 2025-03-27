@@ -20,7 +20,7 @@
  *
  */
 
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
 import java.util.ArrayList;
 import java.util.HashMap;

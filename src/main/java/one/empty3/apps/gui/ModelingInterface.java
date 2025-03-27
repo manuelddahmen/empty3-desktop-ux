@@ -35,8 +35,7 @@ import one.empty3.library.core.nurbs.FctXY;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import one.empty3.library.core.testing.Resolution;
-import one.empty3.libs.*;
+import one.empty3.library.core.testing.jvm.Resolution;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 

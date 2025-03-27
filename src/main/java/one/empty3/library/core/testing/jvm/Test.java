@@ -20,7 +20,7 @@
  *
  */
 
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
 import one.empty3.library.Camera;
 import one.empty3.library.ITexture;

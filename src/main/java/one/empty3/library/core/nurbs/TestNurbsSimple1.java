@@ -33,13 +33,10 @@ package one.empty3.library.core.nurbs;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import one.empty3.libs.*;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-import java.awt.Dimension;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

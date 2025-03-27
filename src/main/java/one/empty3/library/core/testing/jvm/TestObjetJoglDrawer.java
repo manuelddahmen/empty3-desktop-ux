@@ -20,7 +20,7 @@
  *
  */
 
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
 import com.jogamp.common.os.Platform;
 import com.jogamp.nativewindow.AbstractGraphicsDevice;
@@ -42,8 +42,6 @@ import one.empty3.library.core.tribase.TRIObjetGenerateur;
 
 import javax.swing.*;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 import one.empty3.libs.Color;
 
 import java.awt.*;

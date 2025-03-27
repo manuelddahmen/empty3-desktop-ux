@@ -35,7 +35,7 @@ import one.empty3.library.BezierCubique;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.CheminBezier;
 import one.empty3.library.core.tribase.TRIExtrusionGeneralisee;
 

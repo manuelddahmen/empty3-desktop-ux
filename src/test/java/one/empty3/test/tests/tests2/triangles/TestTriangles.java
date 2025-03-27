@@ -28,7 +28,7 @@ package one.empty3.test.tests.tests2.triangles;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.TRI;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import one.empty3.libs.*;
 

@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.aaa;
 import one.empty3.apps.atlasgen.TextureOpSphere;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CameraInPath;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;

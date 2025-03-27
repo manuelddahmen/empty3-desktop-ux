@@ -30,8 +30,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.morph.Main;
 import one.empty3.library.*;
-import one.empty3.library.core.testing.Resolution;
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.jvm.Resolution;
 import one.empty3.library.objloader.E3Model;
 
 import javax.imageio.ImageIO;

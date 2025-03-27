@@ -31,7 +31,7 @@
 
 package one.empty3.test.tests.tests2.spirale;
 
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 /*__
  * @author Manuel Dahmen <manuel.dahmen@gmx.com>

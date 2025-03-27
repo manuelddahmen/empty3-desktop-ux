@@ -30,7 +30,7 @@ package one.empty3.test.tests.tests2.courbes_bsplines;
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjet;
 
 import one.empty3.libs.*;
 

@@ -33,7 +33,7 @@ package one.empty3.test.tests.tests2.sphererotation;
 
 import one.empty3.library.*;
 import one.empty3.library.core.move.Trajectoires;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.TRISphere;
 import one.empty3.libs.Image;
 

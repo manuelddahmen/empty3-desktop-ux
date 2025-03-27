@@ -29,12 +29,10 @@ package one.empty3.apps.facedetectV0.facedetect;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.Config;
-import one.empty3.library.core.testing.Resolution;
+import one.empty3.library.core.testing.jvm.Resolution;
 import one.empty3.library.ZBufferFactory;
 
 import javax.swing.*;
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 import java.awt.Dimension;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;

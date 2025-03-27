@@ -20,38 +20,29 @@
  *
  */
 
-package one.empty3.library.core.testing;
-/*
+package one.empty3.library.core.testing.jvm;
 
-import java.awt.Color;
-import java.awt.Graphics;
+
 import one.empty3.libs.Image;
-import java.io.File;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public class ImageContainer {
 
-public class ManualVideoCompile {
-	public ManualVideoCompile(){}
-	private static final Logger logger = LoggerFactory.getLogger(ManualVideoCompile.class);
-	
-	private static final String OUTPUT_FILE = "/home/rfkrocktk/Desktop/out.flv";
+    private Image biic;
+    private String str = "";
 
-        double positionInMicroseconds;
-        int frameRate;
+    public Image getImage() {
+        return biic;
+    }
 
+    public void setImage(Image biic1) {
+        biic = biic1;
+    }
 
+    public String getStr() {
+        return str;
+    }
 
-	private static Image convert(Image value, int type) {
-		if (value.getType() == type)
-			return value;
-		
-		Image result = new Image(value.getWidth(), value.getHeight(),
-				type);
-		
-		result.getGraphics().drawImage(value, 0, 0, null);
-		
-		return result;
-	}
+    public void setStr(String str) {
+        this.str = str;
+    }
 }
-*/

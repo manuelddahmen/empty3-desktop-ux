@@ -25,7 +25,7 @@ package one.empty3.test.tests.test3;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.Sphere;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library1.tree.AlgebraicFormulaSyntaxException;
 import one.empty3.pointset.Gravity;
 import one.empty3.pointset.Move;

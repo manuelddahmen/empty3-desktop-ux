@@ -20,27 +20,25 @@
  *
  */
 
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
-public class TestObjetSub extends TestObjet {
+import one.empty3.library.Scene;
 
+public class TestSTL {
 
-    public void finit() throws Exception {
+    public static class Liste {
 
+        public int version = 11;
+
+        public String fn = ".STL";
+        public Scene scene = new Scene();
+
+        public Liste() {
+        }
+
+        public String getFilename() {
+            return scene.getObjets().getElem(0).getClass().getName() + "-" + version + ".STL";
+        }
     }
 
-    public void ginit() {
-
-    }
-
-    public void testScene() throws Exception {
-
-    }
-
-    public void afterRenderFrame() {
-    }
-
-    public void afterRender() {
-
-    }
 }

@@ -22,20 +22,16 @@
 
 package one.empty3.apps.facedetect.gcp;
 
-import one.empty3.feature.Myfacedetect.Face;
 import one.empty3.library.*;
 import one.empty3.library.core.lighting.Colors;
-import one.empty3.library.core.nurbs.ParametricSurface;
-import one.empty3.library.core.testing.Resolution;
-import one.empty3.library.core.testing.TestObjet;
-import one.empty3.library.core.testing.TestObjetStub;
+import one.empty3.library.core.testing.jvm.Resolution;
+import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetStub;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;

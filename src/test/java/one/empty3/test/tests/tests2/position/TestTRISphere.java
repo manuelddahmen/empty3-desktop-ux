@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.position;
 import one.empty3.library.Barycentre;
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.TRISphere;
 
 import one.empty3.libs.*;

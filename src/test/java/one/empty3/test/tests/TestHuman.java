@@ -24,8 +24,8 @@ package one.empty3.test.tests;
 
 import one.empty3.library.*;
 import one.empty3.library.Polygon;
-import one.empty3.library.core.testing.TestObjet;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.Tubulaire3;
 
 import one.empty3.libs.*;

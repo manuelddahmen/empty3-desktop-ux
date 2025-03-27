@@ -26,8 +26,8 @@ import one.empty3.feature.PixM;
 import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.ZBufferImpl;
-import one.empty3.library.core.testing.Resolution;
-import one.empty3.library.core.testing.TestObjetStub;
+import one.empty3.library.core.testing.jvm.Resolution;
+import one.empty3.library.core.testing.jvm.TestObjetStub;
 import one.empty3.library.objloader.E3Model;
 
 import java.awt.*;

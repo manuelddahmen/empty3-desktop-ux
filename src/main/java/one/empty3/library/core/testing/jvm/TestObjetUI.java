@@ -24,7 +24,7 @@
  * Created by JFormDesigner on Fri Mar 24 20:45:31 CET 2023
  */
 
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
 import java.awt.*;
 import net.miginfocom.swing.MigLayout;

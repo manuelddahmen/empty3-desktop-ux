@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.film_1;
 import one.empty3.library.Cube;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Matrix33;
-import one.empty3.library.core.testing.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjet;
 
 /*__
  * @author Se7en

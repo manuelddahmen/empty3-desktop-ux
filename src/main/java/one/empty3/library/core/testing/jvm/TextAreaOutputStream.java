@@ -25,7 +25,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
 /*__
  * @author Se7en

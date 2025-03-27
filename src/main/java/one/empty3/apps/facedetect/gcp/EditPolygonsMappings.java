@@ -29,17 +29,15 @@ package one.empty3.apps.facedetect.gcp;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import one.empty3.apps.gui.Main;
-import one.empty3.apps.opad.game.Unit;
 import one.empty3.library.Point3D;
 import one.empty3.library.Point;
 import one.empty3.library.Representable;
 import one.empty3.library.RepresentableConteneur;
 import one.empty3.library.ZBufferImpl;
-import one.empty3.library.core.testing.Resolution;
+import one.empty3.library.core.testing.jvm.Resolution;
 import one.empty3.library.objloader.E3Model;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Dimension2D;

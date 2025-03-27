@@ -37,11 +37,9 @@ import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.TRI;
 import one.empty3.library.ColorTexture;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
-import java.awt.Dimension;
 
 /*__
  * Future: this should be.manudahmen.empty3.tests.tests2.be very low level: like :

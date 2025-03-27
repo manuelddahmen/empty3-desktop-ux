@@ -20,7 +20,7 @@
  *
  */
 
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

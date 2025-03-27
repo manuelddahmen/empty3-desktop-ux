@@ -26,7 +26,7 @@
 package one.empty3.test.tests.tests2.cubes;
 
 import one.empty3.library.*;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import one.empty3.libs.*;
 

@@ -27,12 +27,9 @@ import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.Config;
 import one.empty3.library.P;
 import one.empty3.library.Point3D;
-import one.empty3.library.core.testing.Resolution;
+import one.empty3.library.core.testing.jvm.Resolution;
 import one.empty3.libs.Image;
 import org.jetbrains.annotations.NotNull;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -20,15 +20,12 @@
  *
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
-/*__
- * @author Manuel DAHMEN
- */
-public interface Report {
+import javax.swing.*;
 
+public class ViewerFrame extends JFrame {
+    public ViewerFrame(String title) {
+        super(title);
+    }
 }

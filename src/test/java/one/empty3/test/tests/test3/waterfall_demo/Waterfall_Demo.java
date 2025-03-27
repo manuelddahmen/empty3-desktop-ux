@@ -25,7 +25,7 @@ package one.empty3.test.tests.test3.waterfall_demo;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.ParametricCurve;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import java.util.ArrayList;
 import java.util.List;

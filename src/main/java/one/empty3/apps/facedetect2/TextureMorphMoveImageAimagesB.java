@@ -26,11 +26,10 @@ import one.empty3.apps.facedetect.DistanceAB;
 import one.empty3.apps.facedetect.DistanceProxLinear1;
 import one.empty3.apps.facedetect.DistanceProxLinear2;
 import one.empty3.library.*;
-import one.empty3.library.core.testing.Resolution;
+import one.empty3.library.core.testing.jvm.Resolution;
 
 import java.util.List;
 
-import one.empty3.library.Point;
 import one.empty3.libs.*;
 
 import java.awt.Dimension;

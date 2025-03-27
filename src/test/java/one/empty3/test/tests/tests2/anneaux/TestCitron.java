@@ -25,8 +25,8 @@ package one.empty3.test.tests.tests2.anneaux;
 import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.*;
 import one.empty3.library.core.move.Trajectoires;
-import one.empty3.library.core.testing.Resolution;
-import one.empty3.library.core.testing.TestObjetSub;
+import one.empty3.library.core.testing.jvm.Resolution;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 
 import one.empty3.libs.*;
 

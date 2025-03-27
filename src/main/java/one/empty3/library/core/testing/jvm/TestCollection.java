@@ -24,7 +24,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package one.empty3.library.core.testing;
+package one.empty3.library.core.testing.jvm;
 
 import one.empty3.library.core.script.ExtensionFichierIncorrecteException;
 import one.empty3.library.core.script.Loader;

@@ -26,8 +26,6 @@
 
 package one.empty3.apps.facedetect;
 
-import java.awt.*;
-
 import com.formdev.flatlaf.FlatDarkLaf;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
@@ -37,7 +35,7 @@ import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.Config;
 import one.empty3.library.Point3D;
 import one.empty3.library.Scene;
-import one.empty3.library.core.testing.Resolution;
+import one.empty3.library.core.testing.jvm.Resolution;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Color;
 import org.jetbrains.annotations.NotNull;
@@ -241,11 +239,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     public class SaveTexture {
-        private final one.empty3.library.core.testing.Resolution resolution;
+        private final Resolution resolution;
         private final E3Model model;
         private BufferedImage image;
 
-        public SaveTexture(@NotNull one.empty3.library.core.testing.Resolution resolution, @NotNull BufferedImage image, @NotNull E3Model model) {
+        public SaveTexture(@NotNull Resolution resolution, @NotNull BufferedImage image, @NotNull E3Model model) {
             this.resolution = resolution;
             this.model = model;
             this.image = image;
