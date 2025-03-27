@@ -62,6 +62,8 @@ public class Paysage extends TestObjetSub {
         ciel_ensoleille = new ImageTexture(new Image(ImageIO.read(new File("resources/ciel_ensoleille.jpg"))));
         sol_sableux = new ImageTexture(new Image(ImageIO.read(new File("resources/sol_sableux.jpg"))));
 
+        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
+        z().texture(new ColorTexture(new Color(0xff0000ff)));
         frame = 11;
     }
 
@@ -69,10 +71,8 @@ public class Paysage extends TestObjetSub {
     public void finit() throws Exception {
         super.finit();
 
-        setZ(new ZBufferImpl(z.la(), z.ha()));
         z().scene(scene());
 
-        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
 
         if (frame() < VUE_1 * FPS) {
             //z().setDisplayType(Representable.DISPLAY_ALL);

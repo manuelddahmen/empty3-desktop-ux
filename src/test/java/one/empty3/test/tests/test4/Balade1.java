@@ -51,7 +51,7 @@ public class Balade1 extends TestObjetSub {
         Balade1 balade1 = new Balade1();
         balade1.loop(true);
         balade1.setMaxFrames(VUE_1 * FPS);
-        balade1.setDimension(new Resolution(1920, 1080));
+        balade1.setDimension(new Resolution(1920/8, 1080/8));
         //balade1.setDimension(new Resolution(320, 200));
         //balade1.setDimension(new Resolution(640, 480));
         new Thread(balade1).start();
@@ -59,8 +59,8 @@ public class Balade1 extends TestObjetSub {
 
     @Override
     public void ginit() {
-        useRecursive = false;
         super.ginit();
+        useRecursive = false;
         ITexture ciel_ensoleille = new ColorTexture(new Color(java.awt.Color.BLUE.getRGB()));
         ITexture sol_sableux = new ColorTexture(new Color(Color.newCol(104 / 255f, 78 / 255f, 51 / 255f)));
         try {
@@ -93,17 +93,17 @@ public class Balade1 extends TestObjetSub {
         scene().add(polygonSol);
 
         frame = 0;
+        setZ(new ZBufferImpl(z.la(), z.ha()));
+        //z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Min, 10.0));
+        z().scene(scene());
+        //z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
+        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
     }
 
     @Override
     public void finit() throws Exception {
         super.finit();
 
-        setZ(new ZBufferImpl(z.la(), z.ha()));
-        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Min, 1.0));
-        z().scene(scene());
-        //z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
-        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         if (frame() < VUE_1 * FPS) {
             Point3D a = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) / getMaxFrames());
             Point3D b = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() + 2.0) / getMaxFrames());

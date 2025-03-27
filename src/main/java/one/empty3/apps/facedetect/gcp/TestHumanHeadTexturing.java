@@ -24,6 +24,7 @@ package one.empty3.apps.facedetect.gcp;
 
 import one.empty3.feature.Myfacedetect.Face;
 import one.empty3.library.*;
+import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.testing.Resolution;
 import one.empty3.library.core.testing.TestObjet;
@@ -67,6 +68,8 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             z().scene().getObjets().setElem(objFile, 0);
         }
 */
+        z().texture(new ColorTexture(new Colors().random()));
+        z().minMaxOptimium = z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMax.Max, 1/3.0/Math.max(z().la(),z().ha()));
     }
 
     @Override

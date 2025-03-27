@@ -30,7 +30,7 @@ package one.empty3.library.core.testing;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import one.empty3.feature.M;
-import one.empty3.gui.DataModel;
+import one.empty3.apps.gui.DataModel;
 import one.empty3.library.*;
 import one.empty3.library.core.ECBufferedImage;
 import one.empty3.library.core.export.ObjExport;
@@ -297,7 +297,7 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public Camera camera() {
-        return scene().cameraActive();
+        return c;
     }
 
     public void camera(Camera c) {
@@ -310,6 +310,7 @@ public abstract class TestObjet implements Test, Runnable {
         } else {
             scene = new Scene();
             scene.cameraActive(c);
+            z().scene(scene);
             z().camera(c);
         }
     }
@@ -986,7 +987,7 @@ public abstract class TestObjet implements Test, Runnable {
                     // ri.getGraphics().drawString(description, 0, 0);
 
                     if ((generate & GENERATE_MOVIE) > 0 && encoder != null && !(((generate & GENERATE_OPENGL) > 0))) {
-
+/*
                         try {
                             encoder.encodeImage(ri.getBi());
                         } catch (IOException e) {
@@ -997,6 +998,8 @@ public abstract class TestObjet implements Test, Runnable {
                             reportException(e1);
 
                         }
+
+ */
                     } else {
                         if (LOG) {
                             Logger.getAnonymousLogger().log(Level.INFO,

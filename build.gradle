@@ -221,9 +221,9 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    implementation "one.empty3.libs:partial-desktop:0.0.21"
+    implementation "one.empty3.libs:partial-desktop:0.0.22"
     implementation "one.empty3.libs:commons-mp:0.0.9"
-    implementation 'one.empty3:empty3-library-mp:2025.3.25-1'
+    implementation 'one.empty3:empty3-library-mp:2025.3.26-4'
     implementation 'com.google.cloud:google-cloud-pubsub:1.133.1' // Check for the latest version
     implementation 'com.google.cloud:google-cloud-tasks:2.59.0'
     implementation 'com.google.cloud.functions:functions-framework-api:1.1.0'

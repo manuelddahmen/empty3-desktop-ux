@@ -50,7 +50,7 @@ public class TestCubes extends TestObjetSub {
 
     @Override
     public void ginit() {
-        scene().add(new Cube(50, 10,new Color(Color.RED)));
+        scene().add(new Cube(50, 10,Color.newCol(1f,0f,1f)));
 
 
     }
