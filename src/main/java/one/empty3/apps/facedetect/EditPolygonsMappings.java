@@ -29,8 +29,8 @@ package one.empty3.apps.facedetect;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.morph.Main;
+import one.empty3.apps.testobject.Resolution;
 import one.empty3.library.*;
-import one.empty3.library.core.testing.jvm.Resolution;
 import one.empty3.library.objloader.E3Model;
 
 import javax.imageio.ImageIO;
@@ -278,7 +278,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             if (testHumanHeadTexturing.threadTest != null)
                 TestHumanHeadTexturing.threadTest.interrupt();
         }
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures? one.empty3.apps.testobject.Resolution.HD1080RESOLUTION:new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
         hasChangedAorB = true;
     }
 
@@ -477,7 +477,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
 
     public void run() {
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures? one.empty3.apps.testobject.Resolution.HD1080RESOLUTION:new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
         hasChangedAorB = true;
         boolean firstTime = true;
         AtomicBoolean oneMore = new AtomicBoolean(true);
@@ -592,7 +592,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                     && (image != null && model != null)) {
                 Logger.getAnonymousLogger().log(Level.INFO, "Le thread :TestObjet est arrêté ou non attribute");
                 testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image,imageFileRight,  model,
-                        hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+                        hdTextures? Resolution.HD1080RESOLUTION:new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
                 Logger.getAnonymousLogger().log(Level.INFO, "Une nouvelle instance a été démarrée");
             }
 
@@ -1031,7 +1031,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         threadTextureCreation = null;
         threadDistanceIsNotRunning = true;
         testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this,
-                image, imageFileRight, model, hdTextures?Resolution.HD1080RESOLUTION:new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+                image, imageFileRight, model, hdTextures? one.empty3.apps.testobject.Resolution.HD1080RESOLUTION:new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
         renderingStopped = true;
         hasChangedAorB = true;
     }

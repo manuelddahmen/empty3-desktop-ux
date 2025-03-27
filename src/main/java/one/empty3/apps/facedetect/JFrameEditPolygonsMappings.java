@@ -641,7 +641,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
         if(editPolygonsMappings2.hdTextures) {
             TestHumanHeadTexturing.startAll(editPolygonsMappings2, editPolygonsMappings2.image,
-                    editPolygonsMappings2.imageFileRight, editPolygonsMappings2.model, Resolution.HD1080RESOLUTION);
+                    editPolygonsMappings2.imageFileRight, editPolygonsMappings2.model, one.empty3.apps.testobject.Resolution.HD1080RESOLUTION);
         } else {
             TestHumanHeadTexturing.startAll(editPolygonsMappings2, editPolygonsMappings2.image,
                     editPolygonsMappings2.imageFileRight, editPolygonsMappings2.model, null);
