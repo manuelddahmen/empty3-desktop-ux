@@ -188,8 +188,11 @@ public class TextureMorphMove extends ITexture {
             p.add(convexHull2.p.get(i).multDot(new Point3D(bDimReal.getHeight(),bDimReal.getHeight()));
         }
 */
-        double d = PolygonDistance.distanceToPolygon(axPointInB, convexHull2.p);
-        return (d * (convexHull2.testIfIn((int) axPointInB.getX(), (int) axPointInB.getY()) ? 1 : -1) + 1) / 2.0;
+        if(convexHull2!=null) {
+            double d = PolygonDistance.distanceToPolygon(axPointInB, convexHull2.p);
+            return (d * (convexHull2.testIfIn((int) axPointInB.getX(), (int) axPointInB.getY()) ? 1 : -1) + 1) / 2.0;
+        }
+        return 10000;
     }
 
 

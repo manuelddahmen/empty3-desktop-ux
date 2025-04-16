@@ -58,11 +58,21 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         z().texture(new ColorTexture(new Colors().random()));
         z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 2000));
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
+        setGenerate(GENERATE_IMAGE);
     }
 
     @Override
     public void finit() {
         super.finit();
+        if(editPolygonsMappings.model!=null) {
+            int numFaces = editPolygonsMappings.model.getObjects().getListRepresentable().size();
+            if(numFaces<=0) {
+                numFaces = 1;
+            }
+            double v = 2000.0 /numFaces;
+            z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v));
+            Logger.getAnonymousLogger().info("MinMaxOptimium set "+ v);
+            }
 
         if (editPolygonsMappings == null)
             return;

@@ -736,11 +736,21 @@ public class JFrameEditPolygonsMappings extends JFrame {
                     public void accept(String s, Point3D point3D) {
                         if (i[0] == selectedPointNo) {
                             pointsInModel.remove(s);
-                            pointsInImage.remove(s);
                         }
                         i[0]++;
                     }
                 });
+            }
+                synchronized (pointsInImage) {
+                    pointsInModel.forEach(new BiConsumer<String, Point3D>() {
+                        @Override
+                        public void accept(String s, Point3D point3D) {
+                            if (i[0] == selectedPointNo) {
+                                pointsInImage.remove(s);
+                            }
+                            i[0]++;
+                        }
+                    });
             }
         }
 

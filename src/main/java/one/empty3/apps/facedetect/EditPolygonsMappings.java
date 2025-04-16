@@ -732,6 +732,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             testHumanHeadTexturing.defautZwidth = 0;
             BufferedReader bufferedReader = new BufferedReader(new FileReader(selectedFile));
             model = new E3Model(bufferedReader, true, selectedFile.getAbsolutePath());
+            Logger.getAnonymousLogger().log(Level.INFO, "Loaded model = "+model.toString());
             model.texture(iTextureMorphMove);
             testHumanHeadTexturing.setObj(model);
             Logger.getAnonymousLogger().log(Level.INFO, "Loaded model");
