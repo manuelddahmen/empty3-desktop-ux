@@ -160,12 +160,14 @@ public class JFrameEditPolygonsMappings extends JFrame {
         JFileChooser loadImage = new JFileChooser();
         if (lastDirectory != null)
             loadImage.setCurrentDirectory(lastDirectory);
-        int ret = loadImage.showOpenDialog(this);
-        if (ret == JFileChooser.APPROVE_OPTION) {
-            editPolygonsMappings2.loadImageRight(loadImage.getSelectedFile());
-            lastDirectory = loadImage.getCurrentDirectory();
-        } else if (ret == JFileChooser.ERROR_OPTION) {
-            System.exit(-1);
+        Integer ret = loadImage.showOpenDialog(this);
+        if(ret!=null) {
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                editPolygonsMappings2.loadImageRight(loadImage.getSelectedFile());
+                lastDirectory = loadImage.getCurrentDirectory();
+            } else if (ret == JFileChooser.ERROR_OPTION) {
+                System.exit(-1);
+            }
         }
     }
 

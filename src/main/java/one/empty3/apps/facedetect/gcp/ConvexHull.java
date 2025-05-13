@@ -8,7 +8,7 @@ import one.empty3.library.Point3D;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
-import java.awt.*;
+    import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -70,7 +70,7 @@ public class ConvexHull {
     }
 
 
-    private boolean isLeftTurn(Point3D p1, Point3D p2, Point3D p3) {
+    public boolean isLeftTurn(Point3D p1, Point3D p2, Point3D p3) {
         return (p2.getX() - p1.getX()) * (p3.getY() - p1.getY()) -
                 (p2.getY() - p1.getY()) * (p3.getX() - p1.getX()) > 0;
     }

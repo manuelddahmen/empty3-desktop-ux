@@ -60,7 +60,7 @@ public class PixM extends M {
         super(image.getWidth(), image.getHeight());
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
-                int rgb = image.getRGB(i, j);
+                int rgb = image.getR(i, j);
                 set(i, j, rgb);
             }
         }

@@ -246,7 +246,7 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
         return p;
     }
 
-    private Point3D searchNeighbours(int i, int j, Point3D[][] image) {
+    public  Point3D searchNeighbours(int i, int j, Point3D[][] image) {
         for(int dist = 0; dist<1000; dist++) {
             for(int c=0; c<4; c++) {
                 int incrI = 0;
@@ -282,7 +282,7 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
         return findAxPointInBa12(u, v);
     }
 
-    private Point3D findAxPointInBa11(double u, double v) {
+    public  Point3D findAxPointInBa11(double u, double v) {
         return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())] == null ? null
                 : imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
     }
@@ -307,12 +307,12 @@ public class DistanceProxLinear44 extends DistanceBezier2 {
     }*/
 
 
-    private Point3D findAxPointInBa12(double u, double v) {
+    public  Point3D findAxPointInBa12(double u, double v) {
         if(u>=0&&v>=0&&u<1&&v<1)
             return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
         return Point3D.O0;
     }
-    Point3D findAxPointInBa13(double u, double v) {
+    public Point3D findAxPointInBa13(double u, double v) {
         if(u>=0&&v>=0&&u<1&&v<1)
             return imageCB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
         return Point3D.O0;
