@@ -95,7 +95,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             editPolygonsMappings.model.getBounds(min, max);
             Point3D diff = max.moins(min);
             double surfaceBoundingCube = 2*(diff.getX()*diff.getY()+diff.getY()*diff.getZ()+diff.getZ()*diff.getX());
-            double v = 1.0/Math.sqrt(1.0/(8.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
+            double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
             if(v==Double.POSITIVE_INFINITY||v==Double.NEGATIVE_INFINITY|| Double.isNaN(v) ||v==0.0) {
                 v =( (double) (z().la() * z().ha())) /numFaces;
             }
@@ -143,7 +143,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         Point3D minBox = new Point3D(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
         Point3D maxBox = new Point3D(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
 
-        if (editPolygonsMappings.model != null) {
+        if (editPolygonsMappings!=null && editPolygonsMappings.model != null) {
             editPolygonsMappings.model.getBounds(minBox, maxBox);
 
             if (defautZheight == 0) {
