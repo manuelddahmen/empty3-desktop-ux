@@ -804,8 +804,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     public void loadTxt(File selectedFile) {
         inTxtType = SINGLE;
+        pointsInImage = new HashMap<String, Point3D>();
         if (image != null && model != null) {
-            pointsInImage = new HashMap<String, Point3D>();
             try {
                 Scanner bufferedReader = new Scanner(new FileReader(selectedFile));
                 String line = "";

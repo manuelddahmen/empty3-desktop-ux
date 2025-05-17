@@ -56,7 +56,26 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     @Override
     public void ginit() {
         z().texture(new ColorTexture(new Colors().random()));
-        z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 2000));
+        if (editPolygonsMappings.model != null) {
+            int numFaces =( (E3Model)(editPolygonsMappings.model))
+                    .getObjects().getListRepresentable().size();
+            if (numFaces <= 0) {
+                numFaces = 1;
+            }
+            Point3D min = new Point3D(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+            Point3D max = new Point3D(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
+            Point3D diff = max.moins(min);
+            editPolygonsMappings.model.getBounds(min, max);
+            double surfaceBoundingCube = 2*(diff.getX()*diff.getY()+diff.getY()*diff.getZ()+diff.getZ()*diff.getX());
+            double v = (double) 2.0  *z().la()*z().ha() / numFaces/ surfaceBoundingCube;
+            z().setMinMaxOptimium(
+                    z().new MinMaxOptimium(
+                            ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, v
+                    )
+            );
+            Logger.getAnonymousLogger().info("MinMaxOptimium set $v");
+        }
+        //z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 2000));
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         setGenerate(GENERATE_IMAGE);
     }
@@ -64,15 +83,31 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     @Override
     public void finit() {
         super.finit();
-        if(editPolygonsMappings.model!=null) {
-            int numFaces = editPolygonsMappings.model.getObjects().getListRepresentable().size();
-            if(numFaces<=0) {
+
+        if (editPolygonsMappings.model != null) {
+            int numFaces =( (E3Model)(editPolygonsMappings.model))
+                    .getObjects().getListRepresentable().size();
+            if (numFaces <= 0) {
                 numFaces = 1;
             }
-            double v = 2000.0 /numFaces;
-            z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v));
-            Logger.getAnonymousLogger().info("MinMaxOptimium set "+ v);
+            Point3D min = new Point3D(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+            Point3D max = new Point3D(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
+            editPolygonsMappings.model.getBounds(min, max);
+            Point3D diff = max.moins(min);
+            double surfaceBoundingCube = 2*(diff.getX()*diff.getY()+diff.getY()*diff.getZ()+diff.getZ()*diff.getX());
+            double v = 1.0/Math.sqrt(1.0/(8.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
+            if(v==Double.POSITIVE_INFINITY||v==Double.NEGATIVE_INFINITY|| Double.isNaN(v) ||v==0.0) {
+                v =( (double) (z().la() * z().ha())) /numFaces;
             }
+            z().setMinMaxOptimium(
+                    z().new MinMaxOptimium(
+                            ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
+                    )
+            );
+            Logger.getAnonymousLogger().info("MinMaxOptimum set "+v);
+        }
+
+
 
         if (editPolygonsMappings == null)
             return;

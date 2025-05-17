@@ -115,8 +115,8 @@ public class JFrameEditPolygonsMappings extends JFrame {
         String lastDirectoryTmpStr = config.getMap().computeIfAbsent("D3ModelFaceTexturing", k -> ".");
         config.save();
         lastDirectory = new File(lastDirectoryTmpStr);
-        if (!lastDirectory.exists())
-            config.save();
+        config.getMap().putIfAbsent("D3ModelFaceTexturing", lastDirectory.getAbsolutePath());
+        config.save();
         setContentPane(editPolygonsMappings2);
         pack();
         setVisible(true);
