@@ -32,6 +32,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -95,9 +98,10 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             editPolygonsMappings.model.getBounds(min, max);
             Point3D diff = max.moins(min);
             double surfaceBoundingCube = 2*(diff.getX()*diff.getY()+diff.getY()*diff.getZ()+diff.getZ()*diff.getX());
-            double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
+            //double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
+            double v = 2.0 *Math.pow(1.0*z().la()*z().ha() * numFaces/surfaceBoundingCube, .5)+1.0;
             if(v==Double.POSITIVE_INFINITY||v==Double.NEGATIVE_INFINITY|| Double.isNaN(v) ||v==0.0) {
-                v =( (double) (z().la() * z().ha())) /numFaces;
+                v =( (double) (z().la() * z().ha())) /numFaces+1;
             }
             z().setMinMaxOptimium(
                     z().new MinMaxOptimium(
@@ -175,6 +179,9 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         }*/
         if (z().scene().getObjets().getData1d().size() > 1)
             Logger.getAnonymousLogger().log(Level.SEVERE, "Only one model in scene allowed here");
+
+
+
     }
 
     private void addEyePolygons(Scene scene, E3Model model) {

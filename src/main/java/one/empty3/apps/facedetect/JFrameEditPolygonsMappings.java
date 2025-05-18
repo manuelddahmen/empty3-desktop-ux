@@ -26,7 +26,6 @@
 
 package one.empty3.apps.facedetect;
 
-import java.awt.*;
 import com.formdev.flatlaf.FlatDarkLaf;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
@@ -50,6 +49,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.logging.Filter;
 import java.util.logging.Level;
@@ -77,16 +77,17 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     public void setComputeMaxTime(double value) {
-        this.computeTimeMax = value*1000d;
+        this.computeTimeMax = value * 1000d;
         editPolygonsMappings2.setComputeMaxTime(computeTimeMax);
-        if(editPolygonsMappings2.iTextureMorphMove!=null)
-            if(editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d)
+        if (editPolygonsMappings2.iTextureMorphMove != null)
+            if (editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d)
                 d.setComputeMaxTime(computeTimeMax);
-        if(editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear44 d)
+        if (editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear44 d)
             d.setComputeMaxTime(computeTimeMax);
     }
+
     public double getComputeTimeMax() {
-        return computeTimeMax/1000d;
+        return computeTimeMax / 1000d;
     }
 
     public class MyFilter implements Filter {
@@ -161,7 +162,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         if (lastDirectory != null)
             loadImage.setCurrentDirectory(lastDirectory);
         Integer ret = loadImage.showOpenDialog(this);
-        if(ret!=null) {
+        if (ret != null) {
             if (ret == JFileChooser.APPROVE_OPTION) {
                 editPolygonsMappings2.loadImageRight(loadImage.getSelectedFile());
                 lastDirectory = loadImage.getCurrentDirectory();
@@ -444,11 +445,13 @@ public class JFrameEditPolygonsMappings extends JFrame {
         editPolygonsMappings2.hasChangedAorB = true;
 
     }
+
     private void menuItem44(ActionEvent e) {
         editPolygonsMappings2.distanceABClass = DistanceProxLinear44.class;
         editPolygonsMappings2.hasChangedAorB = true;
 
     }
+
     private void editPolygonsMappings2MouseDragged(MouseEvent e) {
         // TODO add your code here
     }
@@ -642,7 +645,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private void menuItemHDTextures(ActionEvent e) {
         editPolygonsMappings2.hdTextures = ((JCheckBoxMenuItem) (e.getSource())).isSelected();
 
-        if(editPolygonsMappings2.hdTextures) {
+        if (editPolygonsMappings2.hdTextures) {
             TestHumanHeadTexturing.startAll(editPolygonsMappings2, editPolygonsMappings2.image,
                     editPolygonsMappings2.imageFileRight, editPolygonsMappings2.model, one.empty3.apps.testobject.Resolution.HD1080RESOLUTION);
         } else {
@@ -726,36 +729,75 @@ public class JFrameEditPolygonsMappings extends JFrame {
         // TODO add your code here
     }
 
-    private synchronized void moveLinesDown(ActionEvent e) {
-        int selectedPointNo = editPolygonsMappings2.selectedPointNo;
-        final HashMap<String, Point3D> pointsInModel = editPolygonsMappings2.pointsInModel;
-        final HashMap<String, Point3D> pointsInImage = editPolygonsMappings2.pointsInImage;
-        if (selectedPointNo >= 0 && selectedPointNo < editPolygonsMappings2.pointsInModel.size()) {
-            final int[] i = {0};
-            synchronized (pointsInModel) {
-                pointsInModel.forEach(new BiConsumer<String, Point3D>() {
-                    @Override
-                    public void accept(String s, Point3D point3D) {
-                        if (i[0] == selectedPointNo) {
-                            pointsInModel.remove(s);
-                        }
-                        i[0]++;
-                    }
-                });
+    private void moveLinesDown(ActionEvent e) {
+        AtomicBoolean fail = new AtomicBoolean(true);
+        final String[] s0 = {""};
+        int i1 = 0;
+        int[] i = new int[]{0};
+        boolean[] p0 = new boolean[]{false, false, false};
+        final int finalSelectedPointNo = editPolygonsMappings2.selectedPointNo;
+        editPolygonsMappings2.pointsInImage.forEach(new BiConsumer<String, Point3D>() {
+            @Override
+            public void accept(String s, Point3D point3D) {
+                if(i[0]==finalSelectedPointNo) {
+                    s0[0] = s;
+                    p0[0] = true;
+                }
             }
-                synchronized (pointsInImage) {
-                    pointsInModel.forEach(new BiConsumer<String, Point3D>() {
-                        @Override
-                        public void accept(String s, Point3D point3D) {
-                            if (i[0] == selectedPointNo) {
+        });
+        editPolygonsMappings2.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
+            @Override
+            public void accept(String s, Point3D point3D) {
+                if(i[0]==finalSelectedPointNo) {
+                    if(s0[0].equals(s)) {
+                        s0[0] = s;
+                        p0[1] = true;
+                    } else if(s0[0].equals("")) {
+                        p0[1] = true;
+                        s0[0] = s;
+                    }
+                }
+            }
+        });
+        while (fail.get() && i1 < 1000) {
+            try {
+                final HashMap<String, Point3D> pointsInModel = editPolygonsMappings2.pointsInModel;
+                final HashMap<String, Point3D> pointsInImage = editPolygonsMappings2.pointsInImage;
+                i[0] = 0;
+                if(pointsInImage != null && p0[0]) {
+                        pointsInImage.forEach((s, point3D) -> {
+                            if (s0[0].equals(s)) {
                                 pointsInImage.remove(s);
+                                fail.set(false);
                             }
                             i[0]++;
-                        }
-                    });
+                        });
+                        i[0] = 0;
+                }
+                if(pointsInModel != null&& p0[1]) {
+                        pointsInModel.forEach(new BiConsumer<String, Point3D>() {
+                            @Override
+                            public void accept(String s, Point3D point3D) {
+                                if (s0[0].equals(s)) {
+                                    pointsInModel.remove(s);
+                                    fail.set(false);
+                                }
+                                i[0]++;
+                            }
+                        });
+                }
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+                i1++;
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                fail.set(true);
             }
         }
-
+        editPolygonsMappings2.selectedPointNo = -1;
     }
 
     private void menuItemModifiedVertex3(ActionEvent e) {

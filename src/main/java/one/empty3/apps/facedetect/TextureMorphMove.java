@@ -209,30 +209,50 @@ public class TextureMorphMove extends ITexture {
         if (editPanel.imageFileRight != null) {
             cDimReal = new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight());
         }
-        List<Point3D> lA = new ArrayList<>();
-        List<Point3D> lB = new ArrayList<>();
-        List<Point3D> lC = new ArrayList<>();
+        List<Point3D> lA =  new ArrayList<>();
+        List<Point3D> lB =  new ArrayList<>();
+        List<Point3D> lC =  new ArrayList<>();
+
+
         /**
          * Double A, B avec ai correspond à bi ( en se servant des HashMap)
-         * **/
+         */
+
         synchronized (editPanel.pointsInImage) {
-            editPanel.pointsInImage.forEach(new BiConsumer<String, Point3D>() {
+            final boolean[] checkC = {false};
+            editPanel.pointsInImage.forEach(new BiConsumer<>() {
                 @Override
-                public void accept(String s, Point3D point3D) {
+                public void accept(String sA, Point3D point3D) {
                     editPanel.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
                         @Override
                         public void accept(String sB, Point3D point3D) {
-                            if (s.equals(sB)) {
-                                lA.add(editPanel.pointsInImage.get(s));
-                                lB.add(editPanel.pointsInModel.get(s));
-                                if (editPanel.points3.get(s) != null)
-                                    lC.add(editPanel.points3.get(s));
+
+                            editPanel.points3.forEach(new BiConsumer<String, Point3D>() {
+                                @Override
+                                public void accept(String sC, Point3D point3D) {
+                                    if (sA.equals(sB) && sB.equals(sC) && editPanel.points3.get(sC)!=null && editPanel.pointsInImage.get(sA)!=null && editPanel.points3.get(sB)!=null) {
+                                        lA.add(editPanel.pointsInImage.get(sA));
+                                        lB.add(editPanel.pointsInModel.get(sB));
+                                        if (editPanel.points3.get(sC) != null)
+                                            lC.add(editPanel.points3.get(sC));
+
+                                    }
+                                    checkC[0] =true;
+                                }
+                            });
+
+                            if(!checkC[0] && editPanel.pointsInImage.get(sA)!=null && editPanel.pointsInModel.get(sB)!=null && !sA.equals(sB)) {
+                                lA.add(editPanel.pointsInImage.get(sA));
+                                lB.add(editPanel.pointsInModel.get(sB));
                             }
                         }
                     });
                 }
+
             });
         }
+        Logger.getAnonymousLogger().fine("List sizes before render : " + lA.size() + " " + lB.size() + " " + lC.size());
+        System.out.println("List sizes before render : " + lA.size() + " " + lB.size() + " " + lC.size());
         if (editPanel.image != null && editPanel.model != null) {
             long timeStarted = System.nanoTime();
             try {

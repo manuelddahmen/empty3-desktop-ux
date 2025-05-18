@@ -899,8 +899,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     public void loadTxtOut(File selectedFile) {
         outTxtType = SINGLE;
+        pointsInModel = new HashMap<>();
         if (image != null && model != null) {
-            pointsInModel = new HashMap<>();
             try {
                 Scanner bufferedReader = new Scanner(new FileReader(selectedFile));
                 String line = "";
@@ -1044,8 +1044,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     public void loadTxt3(File selectedFile) {
         outTxtType = SINGLE;
+        points3 = new HashMap<>();
         if (image != null && model != null) {
-            points3 = new HashMap<>();
             try {
                 Scanner bufferedReader = new Scanner(new FileReader(selectedFile));
                 String line = "";
