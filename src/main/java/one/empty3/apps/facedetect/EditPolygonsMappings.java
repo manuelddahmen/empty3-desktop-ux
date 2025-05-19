@@ -516,9 +516,19 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 if (pointsInImage != null && panelModelView != null && !pointsInImage.isEmpty()
                         && !pointsInModel.isEmpty() && model != null && image != null && distanceABClass != null
                         && threadDistanceIsNotRunning && iTextureMorphMove != null) {
+                    HashMap<String, Point3D> p1  = null;
+                    synchronized (pointsInImage) {
+                        p1 = new HashMap<>(pointsInImage);
+                    }
+                    HashMap<String, Point3D> p2 = null;
+                    synchronized (pointsInModel) {
+                        p2 = new HashMap<>(pointsInModel);
+                    }
                     if (oneMore.get() || hasChangedAorB() && threadTextureCreation == null) {
                         threadDistanceIsNotRunning = false;
                         hasChangedAorB = false;
+                        HashMap<String, Point3D> finalP = p2;
+                        HashMap<String, Point3D> finalP1 = p1;
                         threadTextureCreation = new Thread(() -> {
                             try {
                                 if (hasChangedAorB())
@@ -531,9 +541,9 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                     iTextureMorphMove = new TextureMorphMove(this, distanceABClass);
                                 }
                                 if(  !distanceABClass.getClass().equals(iTextureMorphMove.distanceAB)) {
-                                    if (pointsInModel != null && pointsInImage != null && !pointsInImage.isEmpty() && !pointsInModel.isEmpty()) {
+                                    if (finalP != null && finalP1 != null && !finalP1.isEmpty() && !finalP.isEmpty()) {
 
-                                        if (pointsInImage != null && pointsInImage.size() >= 3 && pointsInModel != null && pointsInModel.size() >= 3) {
+                                        if (finalP1 != null && finalP1.size() >= 3 && finalP != null && finalP.size() >= 3) {
                                             //iTextureMorphMove.setConvHullAB();
                                         }
                                         if (iTextureMorphMove.distanceAB != null && !iTextureMorphMove.distanceAB.isInvalidArray()) {
@@ -610,6 +620,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     private void displayPointsIn(HashMap<String, Point3D> points) {
         if (points == null) return;
+        points = new HashMap<>(points);
         JPanel panelDraw = panelPicture;
         try {
             Thread.sleep(200);
@@ -639,6 +650,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     }
 
     private void displayPointsOut(HashMap<String, Point3D> points) {
+        if (points == null) return;
+        points = new HashMap<>(points);
         JPanel panelDraw = panelModelView;
         if (image != null && panelDraw != null && testHumanHeadTexturing != null && testHumanHeadTexturing.getZ().la() == panelModelView.getWidth()
                 && testHumanHeadTexturing.getZ().ha() == panelModelView.getHeight()) {

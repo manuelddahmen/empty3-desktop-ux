@@ -218,7 +218,6 @@ public class TextureMorphMove extends ITexture {
          * Double A, B avec ai correspond à bi ( en se servant des HashMap)
          */
 
-        synchronized (editPanel.pointsInImage) {
             final boolean[] checkC = {false};
             editPanel.pointsInImage.forEach(new BiConsumer<>() {
                 @Override
@@ -250,7 +249,6 @@ public class TextureMorphMove extends ITexture {
                 }
 
             });
-        }
         Logger.getAnonymousLogger().fine("List sizes before render : " + lA.size() + " " + lB.size() + " " + lC.size());
         System.out.println("List sizes before render : " + lA.size() + " " + lB.size() + " " + lC.size());
         if (editPanel.image != null && editPanel.model != null) {

@@ -731,60 +731,68 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     private void moveLinesDown(ActionEvent e) {
         AtomicBoolean fail = new AtomicBoolean(true);
-        final String[] s0 = {""};
         int i1 = 0;
+        final int finalSelectedPointNo = editPolygonsMappings2.selectedPointNo;
+        boolean[] rp0 = new boolean[]{true, true, true};
+        final String[] s0 = {""};
         int[] i = new int[]{0};
         boolean[] p0 = new boolean[]{false, false, false};
-        final int finalSelectedPointNo = editPolygonsMappings2.selectedPointNo;
         editPolygonsMappings2.pointsInImage.forEach(new BiConsumer<String, Point3D>() {
             @Override
             public void accept(String s, Point3D point3D) {
-                if(i[0]==finalSelectedPointNo) {
+                if (i[0] == finalSelectedPointNo) {
                     s0[0] = s;
                     p0[0] = true;
                 }
+                i[0]++;
             }
         });
+        i[0] = 0;
         editPolygonsMappings2.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
             @Override
             public void accept(String s, Point3D point3D) {
-                if(i[0]==finalSelectedPointNo) {
-                    if(s0[0].equals(s)) {
-                        s0[0] = s;
-                        p0[1] = true;
-                    } else if(s0[0].equals("")) {
-                        p0[1] = true;
-                        s0[0] = s;
-                    }
+                if (s0[0].equals(s)) {
+                    p0[1] = true;
                 }
+                i[0]++;
             }
         });
         while (fail.get() && i1 < 1000) {
             try {
+                rp0[0] = p0[0] && rp0[0];
+                rp0[1] = p0[1] && rp0[1];
+
                 final HashMap<String, Point3D> pointsInModel = editPolygonsMappings2.pointsInModel;
                 final HashMap<String, Point3D> pointsInImage = editPolygonsMappings2.pointsInImage;
                 i[0] = 0;
-                if(pointsInImage != null && p0[0]) {
-                        pointsInImage.forEach((s, point3D) -> {
-                            if (s0[0].equals(s)) {
-                                pointsInImage.remove(s);
-                                fail.set(false);
+                if (pointsInImage != null && p0[0]) {
+                    while (pointsInImage.entrySet().contains(s0[0])) {
+                        try {
+                            synchronized (pointsInImage) {
+                                pointsInImage.remove(s0[0]);
                             }
-                            i[0]++;
-                        });
-                        i[0] = 0;
+                            fail.set(false);
+                            rp0[0] = false;
+                        } catch (ConcurrentModificationException ex) {
+                            ex.printStackTrace();
+                        }
+
+                    }
                 }
-                if(pointsInModel != null&& p0[1]) {
-                        pointsInModel.forEach(new BiConsumer<String, Point3D>() {
-                            @Override
-                            public void accept(String s, Point3D point3D) {
-                                if (s0[0].equals(s)) {
-                                    pointsInModel.remove(s);
-                                    fail.set(false);
-                                }
-                                i[0]++;
+                i[0] = 0;
+                if (pointsInModel != null && p0[1]) {
+                    while (pointsInModel.entrySet().contains(s0[0])) {
+                        try {
+                            synchronized (pointsInModel) {
+                                pointsInModel.remove(s0[0]);
                             }
-                        });
+                            fail.set(false);
+                            rp0[1] = false;
+                        } catch (ConcurrentModificationException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
                 }
                 try {
                     Thread.sleep(100);
@@ -792,9 +800,15 @@ public class JFrameEditPolygonsMappings extends JFrame {
                     throw new RuntimeException(ex);
                 }
                 i1++;
+                if (!rp0[0] && !rp0[1]) {
+                    fail.set(false);
+                }
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
                 fail.set(true);
+                if (!rp0[0] && !rp0[1]) {
+                    fail.set(false);
+                }
             }
         }
         editPolygonsMappings2.selectedPointNo = -1;

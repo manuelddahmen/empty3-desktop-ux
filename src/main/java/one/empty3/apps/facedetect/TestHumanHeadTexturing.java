@@ -59,7 +59,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     @Override
     public void ginit() {
         z().texture(new ColorTexture(new Colors().random()));
-        if (editPolygonsMappings.model != null) {
+        if (editPolygonsMappings!=null &&editPolygonsMappings.model != null) {
             int numFaces =( (E3Model)(editPolygonsMappings.model))
                     .getObjects().getListRepresentable().size();
             if (numFaces <= 0) {
