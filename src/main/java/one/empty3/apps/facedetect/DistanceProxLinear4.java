@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DistanceProxLinear4 extends DistanceBezier2 {
-    private Point3D[][] imageAB;
+    private float[][][] imageAB;
     private List<Point3D> pointsB;
     private List<Point3D> pointsA;
     boolean[][] checkedList;
@@ -50,7 +50,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                                @NonNull Dimension2D aDimReal, @NonNull Dimension2D bDimReal,
                                boolean opt1, boolean optimizeGrid) {
         super(A, B, aDimReal, bDimReal, opt1, optimizeGrid);
-        imageAB = new Point3D[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()];
+        imageAB = new float[((int) bDimReal.getWidth())][(int) bDimReal.getHeight()][3];
         init_1();
     }
 
@@ -104,7 +104,9 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                     checkedList[(int) pointsA.get(i).getX()][(int) pointsA.get(i).getY()] = true;
                     int j1 = (int) (pointsB.get(i).getX() * bDimReal.getWidth());
                     int j2 = (int) (pointsB.get(i).getY() * bDimReal.getHeight());
-                    imageAB[j1][j2] = pointsA.get(i);
+                    imageAB[j1][j2][0] = (float)(double) pointsA.get(i).getX();
+                    imageAB[j1][j2][1] = (float)(double) pointsA.get(i).getY();
+                    imageAB[j1][j2][2] = (float)(double) pointsA.get(i).getZ();
                     newA.add(pointsA.get(i));
                     newB.add(pointsB.get(i));
                     continue;
@@ -151,7 +153,9 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
                         stepNewPoints = true;
                         newA.add(pA);
                         newB.add(pB);
-                        imageAB[j1][j2] = pA;
+                        imageAB[j1][j2][0] =(float) (double) pA.get(0);
+                        imageAB[j1][j2][1] =(float) (double) pA.get(1);
+                        imageAB[j1][j2][2] =(float)(double)  pA.get(2);
                         gen[i1][i2] = iteration;
                         pointAdded[i1][i2] = pA;
                         checked++;
@@ -192,7 +196,7 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
     }
 
     public void init_2() {
-        imageAB = new Point3D[((int) aDimReal.getWidth())][(int) aDimReal.getHeight()];
+        imageAB = new float[((int) aDimReal.getWidth())][(int) aDimReal.getHeight()][3];
 
         pointsA = A.subList(0, A.size() - 1);
         pointsB = B.subList(0, B.size() - 1);
@@ -248,7 +252,9 @@ public class DistanceProxLinear4 extends DistanceBezier2 {
 
     private Point3D findAxPointInBa11(double u, double v) {
         return imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())] == null ? null
-                : imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())];
+                : new Point3D((double) imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())][0],
+                (double) imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())][1],
+                (double) imageAB[(int) (u * bDimReal.getWidth())][(int) (v * bDimReal.getHeight())][2]);
     }
 
     private Point3D findAxPointInBa12(double u, double v) {

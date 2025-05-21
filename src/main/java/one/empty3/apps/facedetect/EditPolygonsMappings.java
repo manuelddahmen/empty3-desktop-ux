@@ -503,7 +503,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                             }
                         }
                         try {
-                            Thread.sleep(20);
+                            Thread.sleep(200);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
@@ -517,18 +517,33 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         && !pointsInModel.isEmpty() && model != null && image != null && distanceABClass != null
                         && threadDistanceIsNotRunning && iTextureMorphMove != null) {
                     HashMap<String, Point3D> p1  = null;
-                    synchronized (pointsInImage) {
-                        p1 = new HashMap<>(pointsInImage);
-                    }
-                    HashMap<String, Point3D> p2 = null;
-                    synchronized (pointsInModel) {
-                        p2 = new HashMap<>(pointsInModel);
+                    HashMap<String, Point3D> p2  = null;
+                    try {
+                        int i = 0;
+                        while(i<2) {
+                            i = 0;
+                            synchronized (pointsInImage) {
+                                p1 = new HashMap<>(pointsInImage);
+                                i++;
+                            }
+                            synchronized (pointsInModel) {
+                                p2 = new HashMap<>(pointsInModel);
+                                i++;
+                            }
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+
+                            }
+                        }
+                    } catch (RuntimeException ex) {
+                        //ex.printStackTrace();
                     }
                     if (oneMore.get() || hasChangedAorB() && threadTextureCreation == null) {
                         threadDistanceIsNotRunning = false;
                         hasChangedAorB = false;
-                        HashMap<String, Point3D> finalP = p2;
-                        HashMap<String, Point3D> finalP1 = p1;
+                        HashMap<String, Point3D> finalP1 = p2;
+                        HashMap<String, Point3D> finalP2 = p1;
                         threadTextureCreation = new Thread(() -> {
                             try {
                                 if (hasChangedAorB())
@@ -541,9 +556,9 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                     iTextureMorphMove = new TextureMorphMove(this, distanceABClass);
                                 }
                                 if(  !distanceABClass.getClass().equals(iTextureMorphMove.distanceAB)) {
-                                    if (finalP != null && finalP1 != null && !finalP1.isEmpty() && !finalP.isEmpty()) {
+                                    if (finalP1 != null && finalP2 != null && !finalP2.isEmpty() && !finalP1.isEmpty()) {
 
-                                        if (finalP1 != null && finalP1.size() >= 3 && finalP != null && finalP.size() >= 3) {
+                                        if (finalP2 != null && finalP2.size() >= 3 && finalP1 != null && finalP1.size() >= 3) {
                                             //iTextureMorphMove.setConvHullAB();
                                         }
                                         if (iTextureMorphMove.distanceAB != null && !iTextureMorphMove.distanceAB.isInvalidArray()) {

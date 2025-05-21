@@ -748,6 +748,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
             }
         });
         i[0] = 0;
+        /*
         editPolygonsMappings2.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
             @Override
             public void accept(String s, Point3D point3D) {
@@ -757,6 +758,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 i[0]++;
             }
         });
+
+         */
+        p0[0] = true;
         while (fail.get() && i1 < 1000) {
             try {
                 rp0[0] = p0[0] && rp0[0];
@@ -766,7 +770,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 final HashMap<String, Point3D> pointsInImage = editPolygonsMappings2.pointsInImage;
                 i[0] = 0;
                 if (pointsInImage != null && p0[0]) {
-                    while (pointsInImage.entrySet().contains(s0[0])) {
+                    while (pointsInImage.get(s0[0])!= null) {
                         try {
                             synchronized (pointsInImage) {
                                 pointsInImage.remove(s0[0]);
@@ -776,12 +780,14 @@ public class JFrameEditPolygonsMappings extends JFrame {
                         } catch (ConcurrentModificationException ex) {
                             ex.printStackTrace();
                         }
-
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException exception) {}
                     }
                 }
                 i[0] = 0;
                 if (pointsInModel != null && p0[1]) {
-                    while (pointsInModel.entrySet().contains(s0[0])) {
+                    while (pointsInModel.get(s0[0])!= null) {
                         try {
                             synchronized (pointsInModel) {
                                 pointsInModel.remove(s0[0]);
@@ -791,6 +797,9 @@ public class JFrameEditPolygonsMappings extends JFrame {
                         } catch (ConcurrentModificationException ex) {
                             ex.printStackTrace();
                         }
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException exception) {}
                     }
 
                 }
@@ -799,7 +808,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 } catch (InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
-                i1++;
                 if (!rp0[0] && !rp0[1]) {
                     fail.set(false);
                 }
@@ -810,6 +818,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
                     fail.set(false);
                 }
             }
+            i1++;
         }
         editPolygonsMappings2.selectedPointNo = -1;
     }

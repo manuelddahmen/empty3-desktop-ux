@@ -74,7 +74,7 @@ public class VecMeshEditorGui extends JFrame {
     private Collection<File> imagesTextures = new HashSet<>();
     private File fileTexture = null;
     private int containerClassType = 0;
-
+    private File calcvecFile;
 
 
     public VecMeshEditorGui(E3Model model, JFrameEditPolygonsMappings parent2) {
@@ -102,7 +102,7 @@ public class VecMeshEditorGui extends JFrame {
         int columns = getTextFieldRows();
         if (currentFile != null && currentFile.exists()) {
             try {
-                PrintWriter fileOutputStream = new PrintWriter(currentFile);
+                PrintWriter fileOutputStream = new PrintWriter(calcvecFile);
                 fileOutputStream.println(columns);
                 fileOutputStream.println(text);
             } catch (FileNotFoundException ex) {
@@ -119,7 +119,7 @@ public class VecMeshEditorGui extends JFrame {
     private void getDefaultOrNewFileTextCode() {
         if (!currentFile.exists()) {
             try {
-                currentFile.createNewFile();
+                calcvecFile = new File(currentFile.getAbsolutePath() + File.separator + "FaceDetect.calcmathvec");
                 PrintWriter printWriter = new PrintWriter(currentFile);
                 printWriter.println("2");
                 printWriter.println(representableClass.getCanonicalName());
@@ -127,7 +127,7 @@ public class VecMeshEditorGui extends JFrame {
                         "heights.cols = 2");
                 printWriter.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
         try {
@@ -413,7 +413,7 @@ public class VecMeshEditorGui extends JFrame {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        ResourceBundle bundle = ResourceBundle.getBundle("one.empty3.library.core.testing.Bundle");
+        ResourceBundle bundle = ResourceBundle.getBundle("one.empty3.apps.facedetect.Bundle");
         menuBar1 = new JMenuBar();
         menu1 = new JMenu();
         menuItem12 = new JMenuItem();
