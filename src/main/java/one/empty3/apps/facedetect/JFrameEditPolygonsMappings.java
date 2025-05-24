@@ -728,99 +728,62 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private void buttonRenderNow(ActionEvent e) {
         // TODO add your code here
     }
-
-    private void moveLinesDown(ActionEvent e) {
-        AtomicBoolean fail = new AtomicBoolean(true);
-        int i1 = 0;
-        final int finalSelectedPointNo = editPolygonsMappings2.selectedPointNo;
-        boolean[] rp0 = new boolean[]{true, true, true};
-        final String[] s0 = {""};
-        int[] i = new int[]{0};
-        boolean[] p0 = new boolean[]{false, false, false};
-        editPolygonsMappings2.pointsInImage.forEach(new BiConsumer<String, Point3D>() {
-            @Override
-            public void accept(String s, Point3D point3D) {
-                if (i[0] == finalSelectedPointNo) {
-                    s0[0] = s;
-                    p0[0] = true;
-                }
-                i[0]++;
-            }
-        });
-        i[0] = 0;
-        /*
-        editPolygonsMappings2.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
-            @Override
-            public void accept(String s, Point3D point3D) {
-                if (s0[0].equals(s)) {
-                    p0[1] = true;
-                }
-                i[0]++;
-            }
-        });
-
-         */
-        p0[0] = true;
-        while (fail.get() && i1 < 1000) {
-            try {
-                rp0[0] = p0[0] && rp0[0];
-                rp0[1] = p0[1] && rp0[1];
-
-                final HashMap<String, Point3D> pointsInModel = editPolygonsMappings2.pointsInModel;
-                final HashMap<String, Point3D> pointsInImage = editPolygonsMappings2.pointsInImage;
-                i[0] = 0;
-                if (pointsInImage != null && p0[0]) {
-                    while (pointsInImage.get(s0[0])!= null) {
-                        try {
-                            synchronized (pointsInImage) {
-                                pointsInImage.remove(s0[0]);
-                            }
-                            fail.set(false);
-                            rp0[0] = false;
-                        } catch (ConcurrentModificationException ex) {
-                            ex.printStackTrace();
-                        }
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException exception) {}
-                    }
-                }
-                i[0] = 0;
-                if (pointsInModel != null && p0[1]) {
-                    while (pointsInModel.get(s0[0])!= null) {
-                        try {
-                            synchronized (pointsInModel) {
-                                pointsInModel.remove(s0[0]);
-                            }
-                            fail.set(false);
-                            rp0[1] = false;
-                        } catch (ConcurrentModificationException ex) {
-                            ex.printStackTrace();
-                        }
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException exception) {}
-                    }
-
-                }
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                if (!rp0[0] && !rp0[1]) {
-                    fail.set(false);
-                }
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-                fail.set(true);
-                if (!rp0[0] && !rp0[1]) {
-                    fail.set(false);
-                }
-            }
-            i1++;
+    private synchronized void moveLinesDown(ActionEvent e) {
+        final String key = getSelectedPointKey(); // Méthode pour obtenir la clé sélectionnée
+        if (key == null || key.isEmpty()) {
+            return;
         }
+
+        int maxRetries = 100;  // Limite pour éviter boucle infinie
+        int retries = 0;
+
+        while (retries < maxRetries) {
+            boolean removedFromImage = false;
+            boolean removedFromModel = false;
+
+            synchronized (editPolygonsMappings2.pointsInImage) {
+                if (editPolygonsMappings2.pointsInImage.containsKey(key)) {
+                    editPolygonsMappings2.pointsInImage.remove(key);
+                    removedFromImage = true;
+                }
+            }
+
+            if (removedFromImage) {
+                System.out.println("Supprimé de pointsInImage : " + key);
+            }
+
+            synchronized (editPolygonsMappings2.pointsInModel) {
+                if (editPolygonsMappings2.pointsInModel.containsKey(key)) {
+                    editPolygonsMappings2.pointsInModel.remove(key);
+                    removedFromModel = true;
+                }
+            }
+
+            if (!removedFromImage && !removedFromModel) {
+                // La clé n'existe plus dans aucune map, on peut sortir
+                break;
+            }
+
+            try {
+                Thread.sleep(10); // Pause pour laisser d'autres threads continuer
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt(); // Respecter l'interruption
+                break;
+            }
+
+            retries++;
+        }
+
+        if (retries >= maxRetries) {
+            System.out.println("Maximum de tentatives atteint pour supprimer la clé : " + key);
+        }
+
+        // Réinitialisation du point sélectionné
         editPolygonsMappings2.selectedPointNo = -1;
+    }
+
+    private String getSelectedPointKey() {
+       return editPolygonsMappings2.landmarkType;
     }
 
     private void menuItemModifiedVertex3(ActionEvent e) {

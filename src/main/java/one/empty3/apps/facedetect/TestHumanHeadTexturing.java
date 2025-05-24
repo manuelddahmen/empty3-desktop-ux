@@ -77,6 +77,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                     )
             );
             Logger.getAnonymousLogger().info("MinMaxOptimium set $v");
+            z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 10000));
         }
         //z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 2000));
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
@@ -108,6 +109,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                             ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
                     )
             );
+            z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 200));
             Logger.getAnonymousLogger().info("MinMaxOptimum set "+v);
         }
 
@@ -186,7 +188,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     private void addEyePolygons(Scene scene, E3Model model) {
         E3Model.FaceWithUv[] quads = new E3Model.FaceWithUv[2];
-        HashMap<String, Point3D> modp = editPolygonsMappings.pointsInModel;
+        Map<String, Point3D> modp = editPolygonsMappings.pointsInModel;
         if (model != null && !modp.isEmpty()) {
             quads = new E3Model.FaceWithUv[]{
                     model.new FaceWithUv(new Polygon(

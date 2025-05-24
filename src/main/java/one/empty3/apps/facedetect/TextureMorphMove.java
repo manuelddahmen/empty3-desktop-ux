@@ -55,17 +55,15 @@ public class TextureMorphMove extends ITexture {
         if (distanceABclass != null) {
             setDistanceABclass(distanceABclass);
             if (distanceABclass.equals(DistanceProxLinear43.class) && editPanel.imageFileRight != null)
-                editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(),
-                        new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
+                editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(), new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
             if (distanceABclass.equals(DistanceProxLinear44.class) && editPanel.imageFileRight != null)
-                editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(),
-                        new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
+                editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(), new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
         }
         if (!editPanel.pointsInImage.isEmpty())
             editPanel.convexHull1 = new ConvexHull(editPanel.pointsInImage.values().stream().toList(), new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()));
         if (!editPanel.pointsInModel.isEmpty())
             editPanel.convexHull2 = new ConvexHull(editPanel.pointsInModel.values().stream().toList(), new Dimension(editPanel.panelPicture.getWidth(), editPanel.panelPicture.getHeight()));
-        if(editPanel.hdTextures) {
+        if (editPanel.hdTextures) {
             Dimension dim1 = new Dimension(Resolution.HD1080RESOLUTION.x(), Resolution.HD1080RESOLUTION.y());
             if (!editPanel.pointsInModel.isEmpty())
                 editPanel.convexHull2 = new ConvexHull(editPanel.pointsInModel.values().stream().toList(), dim1);
@@ -78,8 +76,7 @@ public class TextureMorphMove extends ITexture {
     @Override
     public int getColorAt(double u, double v) {
 
-        if (distanceAB == null)
-            return 0;
+        if (distanceAB == null) return 0;
         if (distanceAB instanceof DistanceIdent) {
             Point3D ident = distanceAB.findAxPointInB(u, v);
 
@@ -103,8 +100,7 @@ public class TextureMorphMove extends ITexture {
 
             int x1 = (int) (u * (editPanel.image.getWidth() - 1));
             int y1 = (int) (v * (editPanel.image.getHeight() - 1));
-            if (distanceAB.getClass().isAssignableFrom(DistanceBezier3.class))
-                ;
+            if (distanceAB.getClass().isAssignableFrom(DistanceBezier3.class)) ;
             else if ((distanceAB.sAij == null || distanceAB.sBij == null) && !distanceAB.getClass().isAssignableFrom(DistanceBezier3.class)) {
                 //Logger.getAnonymousLogger().log(Level.SEVERE, "DistanceAB .sAij or DistanceAB . sBij is null");
                 return 0;
@@ -120,8 +116,7 @@ public class TextureMorphMove extends ITexture {
                     if (percentB < 0) {
                         percentB = 0;
                     }
-                    if (percentB > 1)
-                        percentB = 1.0;
+                    if (percentB > 1) percentB = 1.0;
 
                     //percentB = 0.5;
 
@@ -188,7 +183,7 @@ public class TextureMorphMove extends ITexture {
             p.add(convexHull2.p.get(i).multDot(new Point3D(bDimReal.getHeight(),bDimReal.getHeight()));
         }
 */
-        if(convexHull2!=null) {
+        if (convexHull2 != null) {
             double d = PolygonDistance.distanceToPolygon(axPointInB, convexHull2.p);
             return (d * (convexHull2.testIfIn((int) axPointInB.getX(), (int) axPointInB.getY()) ? 1 : -1) + 1) / 2.0;
         }
@@ -209,89 +204,78 @@ public class TextureMorphMove extends ITexture {
         if (editPanel.imageFileRight != null) {
             cDimReal = new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight());
         }
-        List<Point3D> lA =  new ArrayList<>();
-        List<Point3D> lB =  new ArrayList<>();
-        List<Point3D> lC =  new ArrayList<>();
+        List<Point3D> lA = new ArrayList<>();
+        List<Point3D> lB = new ArrayList<>();
+        List<Point3D> lC = new ArrayList<>();
 
 
         /**
          * Double A, B avec ai correspond à bi ( en se servant des HashMap)
          */
 
-            final boolean[] checkC = {false};
-            editPanel.pointsInImage.forEach(new BiConsumer<>() {
-                @Override
-                public void accept(String sA, Point3D point3D) {
-                    editPanel.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
-                        @Override
-                        public void accept(String sB, Point3D point3D) {
-
+        final boolean[] checkC = {false};
+        editPanel.pointsInImage.forEach(new BiConsumer<>() {
+            @Override
+            public void accept(String sA, Point3D point3D) {
+                editPanel.pointsInModel.forEach(new BiConsumer<String, Point3D>() {
+                    @Override
+                    public void accept(String sB, Point3D point3D) {
+                        if (sA.equals(sB)) {
+                            checkC[0] = false;
                             editPanel.points3.forEach(new BiConsumer<String, Point3D>() {
                                 @Override
                                 public void accept(String sC, Point3D point3D) {
-                                    if (sA.equals(sB) && sB.equals(sC) && editPanel.points3.get(sC)!=null && editPanel.pointsInImage.get(sA)!=null && editPanel.points3.get(sB)!=null) {
+                                    if (sA.equals(sB) && sB.equals(sC) && editPanel.points3.get(sC) != null && editPanel.pointsInImage.get(sA) != null && editPanel.points3.get(sB) != null) {
                                         lA.add(editPanel.pointsInImage.get(sA));
                                         lB.add(editPanel.pointsInModel.get(sB));
-                                        if (editPanel.points3.get(sC) != null)
-                                            lC.add(editPanel.points3.get(sC));
+                                        if (editPanel.points3.get(sC) != null) lC.add(editPanel.points3.get(sC));
 
                                     }
-                                    checkC[0] =true;
+                                    checkC[0] = true;
                                 }
                             });
 
-                            if(!checkC[0] && editPanel.pointsInImage.get(sA)!=null && editPanel.pointsInModel.get(sB)!=null && !sA.equals(sB)) {
+                            if (!checkC[0]) {
                                 lA.add(editPanel.pointsInImage.get(sA));
                                 lB.add(editPanel.pointsInModel.get(sB));
                             }
                         }
-                    });
-                }
+                    }
+                });
+            }
 
-            });
+        });
         Logger.getAnonymousLogger().fine("List sizes before render : " + lA.size() + " " + lB.size() + " " + lC.size());
         System.out.println("List sizes before render : " + lA.size() + " " + lB.size() + " " + lC.size());
         if (editPanel.image != null && editPanel.model != null) {
             long timeStarted = System.nanoTime();
             try {
                 if (distanceMap.isAssignableFrom(DistanceProxLinear1.class)) {
-                    distanceAB = new DistanceProxLinear1(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
-                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    distanceAB = new DistanceProxLinear1(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, editPanel.opt1, editPanel.optimizeGrid);
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear2.class)) {
-                    distanceAB = new DistanceProxLinear2(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
-                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    distanceAB = new DistanceProxLinear2(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, editPanel.opt1, editPanel.optimizeGrid);
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear3.class)) {
-                    distanceAB = new DistanceProxLinear3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
-                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    distanceAB = new DistanceProxLinear3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, editPanel.opt1, editPanel.optimizeGrid);
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear4.class)) {
-                    distanceAB = new DistanceProxLinear4(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
-                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
-                    if (editPanel.imageFileRight != null)
-                        distanceAB.jpgRight = editPanel.imageFileRight;
+                    distanceAB = new DistanceProxLinear4(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    if (editPanel.imageFileRight != null) distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear42.class)) {
-                    distanceAB = new DistanceProxLinear42(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
-                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
-                    if (editPanel.imageFileRight != null)
-                        distanceAB.jpgRight = editPanel.imageFileRight;
+                    distanceAB = new DistanceProxLinear42(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    if (editPanel.imageFileRight != null) distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear43.class)) {
-                    distanceAB = new DistanceProxLinear43(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
-                            bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    distanceAB = new DistanceProxLinear43(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid);
                     ((DistanceProxLinear43) distanceAB).setJpgRight(editPanel.imageFileRight);
                     ((DistanceProxLinear43) distanceAB).setComputeMaxTime(editPanel.getComputeTimeMax());
                     editPanel.convexHull3 = new ConvexHull(lC, new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
-                    if (editPanel.imageFileRight != null)
-                        distanceAB.jpgRight = editPanel.imageFileRight;
+                    if (editPanel.imageFileRight != null) distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceProxLinear44.class)) {
-                    distanceAB = new DistanceProxLinear44(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
-                            bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    distanceAB = new DistanceProxLinear44(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid);
                     distanceAB.setJpgRight(editPanel.imageFileRight);
                     ((DistanceProxLinear44) distanceAB).setComputeMaxTime(editPanel.getComputeTimeMax());
                     editPanel.convexHull3 = new ConvexHull(lC, new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
-                    if (editPanel.imageFileRight != null)
-                        distanceAB.jpgRight = editPanel.imageFileRight;
+                    if (editPanel.imageFileRight != null) distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceBezier3.class)) {
-                    distanceAB = new DistanceBezier3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()),
-                            bDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                    distanceAB = new DistanceBezier3(lA, lB, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, editPanel.opt1, editPanel.optimizeGrid);
                 } else if (distanceMap.isAssignableFrom(DistanceIdent.class)) {
                     distanceAB = new DistanceIdent();
                 } else {
@@ -315,8 +299,7 @@ public class TextureMorphMove extends ITexture {
                 ex.printStackTrace();
             }
             long nanoElapsed = System.nanoTime() - timeStarted;
-            Logger.getAnonymousLogger().log(Level.INFO, "Temps écoulé à produire l'object DistanceAB (" + distanceMap.getCanonicalName() +
-                    ") à : " + 10E-9 * nanoElapsed);
+            Logger.getAnonymousLogger().log(Level.INFO, "Temps écoulé à produire l'object DistanceAB (" + distanceMap.getCanonicalName() + ") à : " + 10E-9 * nanoElapsed);
         }
     }
 

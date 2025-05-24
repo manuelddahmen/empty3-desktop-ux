@@ -84,7 +84,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     boolean threadDistanceIsNotRunning = true;
     protected boolean isRunning = true;
     private Point3D pFound = null;
-    private String landmarkType = "";
+    String landmarkType = "";
     private double u;
     private double v;
     private int selectedPointNoOut = -1;
@@ -93,9 +93,9 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     TextureMorphMove iTextureMorphMove;
     boolean hasChangedAorB = true;
     boolean notMenuOpen = true;
-    public HashMap<String, Point3D> pointsInModel = new HashMap<>();
-    public HashMap<String, Point3D> pointsInImage = new HashMap<>();
-    public HashMap<String, Point3D> points3 = new HashMap<>();
+    public final Map<String, Point3D> pointsInModel = Collections.synchronizedMap(new HashMap<String, Point3D>());
+    public final Map<String, Point3D> pointsInImage = Collections.synchronizedMap(new HashMap<String, Point3D>());
+    public final Map<String, Point3D> points3 = Collections.synchronizedMap(new HashMap<String, Point3D>());
     BufferedImage image;
     BufferedImage imageFileRight;
     public int distanceABdimSize = 25;
@@ -174,7 +174,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         return contentPanel;
     }
 
-    private void panelModelViewMouseDragged(MouseEvent e) {
+    private synchronized void panelModelViewMouseDragged(MouseEvent e) {
         java.awt.Point point = e.getPoint();
         if (image != null && model != null && selectedPointNo > -1) {
             int x = point.x;
@@ -209,7 +209,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     }
 
 
-    private void panelPictureMouseClicked(MouseEvent e) {
+    private synchronized void panelPictureMouseClicked(MouseEvent e) {
         java.awt.Point point = e.getPoint();
         if (image != null && model != null) {
             Point3D[] pNear = new Point3D[]{new Point3D(point.getX() / panelPicture.getWidth(),
@@ -288,6 +288,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             int x = point.x;
             int y = point.y;
             //ime.getElementPoint(x, y);
+
             final Point3D finalPointIme = new Point3D((double) (1.0 * x / panelPicture.getWidth()), (double) (1.0 * y / panelPicture.getHeight()), 0.0);
             pointsInImage.forEach((landmarkTypeItem, point3D) -> {
                 if (landmarkTypeItem.equals(landmarkType)) {
@@ -633,7 +634,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         return hasChangedAorB;
     }
 
-    private void displayPointsIn(HashMap<String, Point3D> points) {
+    private void displayPointsIn(Map<String, Point3D> points) {
         if (points == null) return;
         points = new HashMap<>(points);
         JPanel panelDraw = panelPicture;
@@ -664,7 +665,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     }
 
-    private void displayPointsOut(HashMap<String, Point3D> points) {
+    private void displayPointsOut(Map<String, Point3D> points) {
         if (points == null) return;
         points = new HashMap<>(points);
         JPanel panelDraw = panelModelView;
@@ -832,7 +833,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     public void loadTxt(File selectedFile) {
         inTxtType = SINGLE;
-        pointsInImage = new HashMap<String, Point3D>();
+        pointsInImage.clear();
         if (image != null && model != null) {
             try {
                 Scanner bufferedReader = new Scanner(new FileReader(selectedFile));
@@ -865,7 +866,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 // Initialize surface bezier
 
                 if (pointsInModel.size() == 0) {
-                    pointsInModel = new HashMap<>();
+                    pointsInModel.clear();
                     if (!testHumanHeadTexturing.scene().getObjets().getData1d().isEmpty() && testHumanHeadTexturing.scene().getObjets().getElem(0) instanceof E3Model e3Model) {
                         pointsInImage.forEach((s, point3D) -> {
                             Point3D copy = new Point3D(point3D);
@@ -927,7 +928,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     public void loadTxtOut(File selectedFile) {
         outTxtType = SINGLE;
-        pointsInModel = new HashMap<>();
+        pointsInModel.clear();
         if (image != null && model != null) {
             try {
                 Scanner bufferedReader = new Scanner(new FileReader(selectedFile));
@@ -1072,7 +1073,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
     public void loadTxt3(File selectedFile) {
         outTxtType = SINGLE;
-        points3 = new HashMap<>();
+        points3.clear();
         if (image != null && model != null) {
             try {
                 Scanner bufferedReader = new Scanner(new FileReader(selectedFile));
