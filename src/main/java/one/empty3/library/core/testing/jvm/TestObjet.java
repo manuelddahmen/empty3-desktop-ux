@@ -102,7 +102,7 @@ public abstract class TestObjet implements Test, Runnable {
     protected ArrayList<TestInstance.Parameter> dynParams;
     protected ITexture couleurFond;
     protected ZBufferImpl z;
-    AWTSequenceEncoder encoder;
+    SequenceEncoder encoder;
     Properties properties = new Properties();
     one.empty3.library.core.testing2.ShowTestResult str;
     private File avif;
@@ -203,7 +203,78 @@ public abstract class TestObjet implements Test, Runnable {
         } else {
         }
     }
+    public class SequenceEncoder {
+        private SeekableByteChannel ch;
+        private Picture toEncode;
+        private RgbToYuv420 transform;
+        private H264Encoder encoder;
+        private ArrayList<ByteBuffer> spsList;
+        private ArrayList<ByteBuffer> ppsList;
+        private CompressedTrack outTrack;
+        private ByteBuffer _out;
+        private int frameNo;
+        private MP4Muxer muxer;
 
+        public SequenceEncoder(File out) throws IOException {
+            this.ch = NIOUtils.writableFileChannel(out.getAbsolutePath());
+
+            // Transform to convert between RGB and YUV
+            transform = new RgbToYuv420(0, 0);
+
+            // Muxer that will store the encoded frames
+            muxer = new MP4Muxer(ch, Brand.MP4);
+
+            // Add video track to muxer
+            outTrack = muxer.addTrackForCompressed(TrackType.VIDEO, 25);
+
+            // Allocate a buffer big enough to hold output frames
+            _out = ByteBuffer.allocate(1920 * 1080 * 6);
+
+            // Create an instance of encoder
+            encoder = new H264Encoder();
+
+            // Encoder extra data ( SPS, PPS ) to be stored in a special place of
+            // MP4
+            spsList = new ArrayList<ByteBuffer>();
+            ppsList = new ArrayList<ByteBuffer>();
+
+        }
+
+        public void encodeImage(BufferedImage bi) throws IOException {
+            if (toEncode == null) {
+                toEncode = Picture.create(bi.getWidth(), bi.getHeight(), ColorSpace.YUV420);
+            }
+
+            // Perform conversion
+            for (int i = 0; i < 3; i++)
+                Arrays.fill(toEncode.getData()[i], 0);
+            transform.transform(AWTUtil.fromBufferedImage(bi), toEncode);
+
+            // Encode image into H.264 frame, the result is stored in '_out' buffer
+            _out.clear();
+            ByteBuffer result = encoder.encodeFrame(_out, toEncode);
+
+            // Based on the frame above form correct MP4 packet
+            spsList.clear();
+            ppsList.clear();
+            H264Utils.encodeMOVPacket(result, spsList, ppsList);
+
+            // Add packet to video track
+            outTrack.addFrame(new MP4Packet(result, frameNo, 25, 1, frameNo, true, null, frameNo, 0));
+
+            frameNo++;
+        }
+
+        public void finish() throws IOException {
+            // Push saved SPS/PPS to a special storage in MP4
+            outTrack.addSampleEntry(H264Utils.createMOVSampleEntry(spsList, ppsList));
+
+            // Write MP4 header and finalize recording
+            muxer.writeHeader();
+            NIOUtils.closeQuietly(ch);
+        }
+
+    }
     /**
      * Get the ZBuffer implementation used by the class.
      *
@@ -245,11 +316,8 @@ public abstract class TestObjet implements Test, Runnable {
                 + sousdossier + this.getClass().getName() + "__" + filmName + idxFilm + ".AVI");
 
         out = null;
-        encoder = null;
         try {
-            out = NIOUtils.writableFileChannel(avif.getAbsolutePath());
-            // for Android use: AndroidSequenceEncoder
-            encoder = new AWTSequenceEncoder(out, Rational.R(getFps(), 1));
+            encoder = new SequenceEncoder(avif);
         } catch (IOException ioException) {
             ioException.printStackTrace();
             NIOUtils.closeQuietly(out);
@@ -299,8 +367,8 @@ public abstract class TestObjet implements Test, Runnable {
 
     public void camera(Camera c) {
 
-        if(scene()!=null) {
-            if(z().scene()==null)
+        if (scene() != null) {
+            if (z().scene() == null)
                 z().scene(scene());
             scene().cameraActive(c);
             z().camera(c);
@@ -448,7 +516,6 @@ public abstract class TestObjet implements Test, Runnable {
         o.addOutput(System.out);
 
         o.addOutput(Logger.getLogger(getClass().getCanonicalName()));
-
 
 
         if (initialise) {
@@ -749,10 +816,9 @@ public abstract class TestObjet implements Test, Runnable {
                 System.exit(-1);
             }
 
-            RenderedImage i = ImageIO.read(is);
-            Image bi = (Image) i;
+            Image bi = (Image) Image.getFromInputStream(is);
 
-            //biic.setImage(eci);
+            biic.setImage(bi);
         } catch (Exception ex1) {
             ex1.printStackTrace();
         }
@@ -768,23 +834,15 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public void reportSuccess(File film) {
-        try {
-            InputStream is = getClass().getResourceAsStream(
-                    "/RENDEREDOK.png");
+        InputStream is = getClass().getResourceAsStream(
+                "/RENDEREDOK.png");
 
-            if (is == null) {
-                Logger.getAnonymousLogger().log(Level.INFO, "Erreur d'initialisation: pas correct!");
-                System.exit(-1);
-            }
-
-            RenderedImage i = ImageIO.read(is);
-            Image bi = (Image) i;
-
-            //biic.setImage(eci);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (is == null) {
+            Logger.getAnonymousLogger().log(Level.INFO, "Erreur d'initialisation: pas correct!");
+            System.exit(-1);
         }
+
+        biic.setImage((Image) Image.getFromInputStream(is));
         try {
             if (file.exists()) {
                 Desktop dt = Desktop.getDesktop();
@@ -984,7 +1042,7 @@ public abstract class TestObjet implements Test, Runnable {
                     // ri.getGraphics().drawString(description, 0, 0);
 
                     if ((generate & GENERATE_MOVIE) > 0 && encoder != null && !(((generate & GENERATE_OPENGL) > 0))) {
-/*
+
                         try {
                             encoder.encodeImage(ri.getBi());
                         } catch (IOException e) {
@@ -996,7 +1054,6 @@ public abstract class TestObjet implements Test, Runnable {
 
                         }
 
- */
                     } else {
                         if (LOG) {
                             Logger.getAnonymousLogger().log(Level.INFO,
@@ -1080,7 +1137,7 @@ public abstract class TestObjet implements Test, Runnable {
         setRunning(false);
 
         if (img() == null) {
-            ri = new Image(getResx(), getResy(), Image.TYPE_INT_ARGB);
+            ri = new Image(getResx(), getResy());
         } else {
             afterRender();
 
@@ -1342,7 +1399,7 @@ public abstract class TestObjet implements Test, Runnable {
         if (z() != null) {
             z = z();
             Scene scene1 = z().scene();
-            if(scene1==null) scene1 = scene();
+            if (scene1 == null) scene1 = scene();
             Camera camera = camera();
             z().scene(scene1);
             z().camera(camera);
@@ -1358,8 +1415,8 @@ public abstract class TestObjet implements Test, Runnable {
             this.dimension = dimension;
             setZ(new ZBufferImpl(resx, resy));
             //z().camera(camera());
-            z().scene(scene()!=null?scene():new Scene());
-            z().camera(camera()!=null?camera():new Camera());
+            z().scene(scene() != null ? scene() : new Scene());
+            z().camera(camera() != null ? camera() : new Camera());
         }
         z.minMaxOptimium = z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 0.001);
     }
@@ -1407,5 +1464,15 @@ public abstract class TestObjet implements Test, Runnable {
     public boolean isRunning() {
         return running;
     }
+    private void endMovie() {
 
+    }
+
+    private void addFrame(Image ri) {
+
+    }
+
+    private void createMovie() {
+
+    }
 }

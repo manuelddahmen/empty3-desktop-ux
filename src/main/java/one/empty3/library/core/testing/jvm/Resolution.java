@@ -26,6 +26,8 @@ package one.empty3.library.core.testing.jvm;
  * @author Se7en
  */
 public class Resolution {
+    public static final Resolution VGARESOLUTION = new Resolution(640, 480);
+    public static final Resolution XVGARESOLUTION = new Resolution(1280, 764);
     public static final Resolution HD1080RESOLUTION = new Resolution(1920, 1080);
     public static final Resolution K4RESOLUTION = new Resolution(4096, 2160);
     protected int x;

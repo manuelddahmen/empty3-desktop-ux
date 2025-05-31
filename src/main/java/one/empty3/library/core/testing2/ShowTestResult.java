@@ -465,7 +465,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
 
         // create UI here...
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setBackground(new Color(0xccccff));
+        setBackground(new java.awt.Color(0xccccff));
         setIconImage(new ImageIcon(getClass().getResource("/one/empty3/library/mite.png")).getImage());
         setUndecorated(false);
         setPreferredSize(new Dimension(640, 800));
