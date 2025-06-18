@@ -111,7 +111,7 @@ public class ThreadGraphicalEditor extends Thread implements PropertyChangeListe
                                 if (cellList != null) {
                                     cellList.forEach(cell -> {
                                         if (cell.pRot != null) {
-                                            Point point = getMain().getUpdateView().getzRunner().getzBuffer().camera().coordonneesPoint2D(cell.pRot
+                                            Point point = getMain().getUpdateView().getzRunner().getzBuffer().camera().coordinatesPoint2D(cell.pRot
                                                     ,
                                                     getMain().getUpdateView().getzRunner().getzBuffer());
                                             if (point != null &&
@@ -256,8 +256,8 @@ public class ThreadGraphicalEditor extends Thread implements PropertyChangeListe
 
                         lsXYZ[i] = new LineSegment(p.mult(-10.0).plus(centre),
                                 p.mult(10.0).plus(centre));
-                        Point p1 = getMain().getUpdateView().getzRunner().getzBuffer().camera().coordonneesPoint2D(lsXYZ[i].getOrigine(), getMain().getUpdateView().getzRunner().getzBuffer());
-                        Point p2 = getMain().getUpdateView().getzRunner().getzBuffer().camera().coordonneesPoint2D(lsXYZ[i].getExtremite(), getMain().getUpdateView().getzRunner().getzBuffer());
+                        Point p1 = getMain().getUpdateView().getzRunner().getzBuffer().camera().coordinatesPoint2D(lsXYZ[i].getOrigine(), getMain().getUpdateView().getzRunner().getzBuffer());
+                        Point p2 = getMain().getUpdateView().getzRunner().getzBuffer().camera().coordinatesPoint2D(lsXYZ[i].getExtremite(), getMain().getUpdateView().getzRunner().getzBuffer());
 
 
                         if (p1 != null && p2 != null) {
@@ -315,7 +315,7 @@ public class ThreadGraphicalEditor extends Thread implements PropertyChangeListe
         ZBufferImpl zBuffer = getMain().getUpdateView().getzRunner()
                 .getzBuffer();
         if (zBuffer.camera() != null) {
-            Point point = zBuffer.camera().coordonneesPoint2D(p, zBuffer);
+            Point point = zBuffer.camera().coordinatesPoint2D(p, zBuffer);
             if (point != null)
                 for (int i = -2; i <= 2; i++)
                     for (int j = -2; j <= 2; j++) {

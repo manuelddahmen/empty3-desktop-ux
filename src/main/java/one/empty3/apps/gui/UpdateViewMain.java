@@ -147,8 +147,8 @@ public class UpdateViewMain extends JPanel implements RepresentableEditor {
                             arcBall.moveTo((int) mousePoint.getX(), (int) mousePoint.getY());
                             ZBufferImpl zBuffer = main.getUpdateView().getzRunner().getzBuffer();
                             //unit3t2
-                            Point p1 = zBuffer.camera().coordonneesPoint2D(mousePoint3D.plus(Point3D.random(1.0).norme1()), zBuffer);
-                            Point p2 = zBuffer.camera().coordonneesPoint2D(mousePoint3D.plus(Point3D.random(1.0).norme1()), zBuffer);
+                            Point p1 = zBuffer.camera().coordinatesPoint2D(mousePoint3D.plus(Point3D.random(1.0).norme1()), zBuffer);
+                            Point p2 = zBuffer.camera().coordinatesPoint2D(mousePoint3D.plus(Point3D.random(1.0).norme1()), zBuffer);
 
                             double sqrt = Math.sqrt(p1.getX() * p2.getX() + p2.getY() + p2.getY());
 

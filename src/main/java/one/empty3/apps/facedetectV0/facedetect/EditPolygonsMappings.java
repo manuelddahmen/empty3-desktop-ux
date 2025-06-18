@@ -498,7 +498,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                     uvCoordinates.getX(),
                                     uvCoordinates.getY());
                             if (uvFace != null) {
-                                Point point = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.getZ());
+                                Point point = testHumanHeadTexturing.scene().cameraActive().coordinatesPoint2D(uvFace, testHumanHeadTexturing.getZ());
                                 point.setLocation(point.getX() / testHumanHeadTexturing.getZ().la() * panelDraw.getWidth(),
                                         point.getY() / testHumanHeadTexturing.getZ().ha() * panelDraw.getHeight());
                                 Graphics graphics = panelDraw.getGraphics();
@@ -537,7 +537,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
             if (mode == SELECT_POINT_POSITION && selectedPointOutUv != null) {
                 Point3D uvFace = model.findUvFace(selectedPointOutUv.getX(), selectedPointOutUv.getY());
-                Point point = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(uvFace, testHumanHeadTexturing.getZ());
+                Point point = testHumanHeadTexturing.scene().cameraActive().coordinatesPoint2D(uvFace, testHumanHeadTexturing.getZ());
                 point.setLocation(point.getX() / testHumanHeadTexturing.getZ().la() * panelDraw.getWidth(),
                         point.getY() / testHumanHeadTexturing.getZ().ha() * panelDraw.getHeight());
                 Graphics graphics = panelDraw.getGraphics();
@@ -547,7 +547,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         7, 7);
 
             } else if (mode == SELECT_POINT_POSITION && selectedPointVertexOut != null && selectedPointNoOut >= 0) {
-                Point point = testHumanHeadTexturing.scene().cameraActive().coordonneesPoint2D(selectedPointVertexOut, testHumanHeadTexturing.getZ());
+                Point point = testHumanHeadTexturing.scene().cameraActive().coordinatesPoint2D(selectedPointVertexOut, testHumanHeadTexturing.getZ());
                 point.setLocation(point.getX() / testHumanHeadTexturing.getZ().la() * panelDraw.getWidth(),
                         point.getY() / testHumanHeadTexturing.getZ().ha() * panelDraw.getHeight());
                 Graphics graphics = panelDraw.getGraphics();

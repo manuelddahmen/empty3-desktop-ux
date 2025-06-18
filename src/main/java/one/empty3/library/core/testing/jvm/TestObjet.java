@@ -41,6 +41,7 @@ import one.empty3.libs.Image;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.FileChannelWrapper;
 import org.jcodec.common.io.NIOUtils;
+import org.jcodec.common.io.SeekableByteChannel;
 import org.jcodec.common.model.Rational;
 
 import javax.imageio.ImageIO;
@@ -49,6 +50,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.text.DateFormat;
@@ -102,7 +104,7 @@ public abstract class TestObjet implements Test, Runnable {
     protected ArrayList<TestInstance.Parameter> dynParams;
     protected ITexture couleurFond;
     protected ZBufferImpl z;
-    SequenceEncoder encoder;
+    HomeEncoder encoder;
     Properties properties = new Properties();
     one.empty3.library.core.testing2.ShowTestResult str;
     private File avif;
@@ -203,75 +205,32 @@ public abstract class TestObjet implements Test, Runnable {
         } else {
         }
     }
-    public class SequenceEncoder {
-        private SeekableByteChannel ch;
-        private Picture toEncode;
-        private RgbToYuv420 transform;
-        private H264Encoder encoder;
-        private ArrayList<ByteBuffer> spsList;
-        private ArrayList<ByteBuffer> ppsList;
-        private CompressedTrack outTrack;
-        private ByteBuffer _out;
-        private int frameNo;
-        private MP4Muxer muxer;
-
-        public SequenceEncoder(File out) throws IOException {
-            this.ch = NIOUtils.writableFileChannel(out.getAbsolutePath());
-
-            // Transform to convert between RGB and YUV
-            transform = new RgbToYuv420(0, 0);
-
-            // Muxer that will store the encoded frames
-            muxer = new MP4Muxer(ch, Brand.MP4);
-
-            // Add video track to muxer
-            outTrack = muxer.addTrackForCompressed(TrackType.VIDEO, 25);
-
-            // Allocate a buffer big enough to hold output frames
-            _out = ByteBuffer.allocate(1920 * 1080 * 6);
-
-            // Create an instance of encoder
-            encoder = new H264Encoder();
-
-            // Encoder extra data ( SPS, PPS ) to be stored in a special place of
-            // MP4
-            spsList = new ArrayList<ByteBuffer>();
-            ppsList = new ArrayList<ByteBuffer>();
-
+    public class HomeEncoder {
+        private AWTSequenceEncoder encoder;
+        private boolean initialized = false;
+        public HomeEncoder(File avif) throws IOException {
+            SeekableByteChannel out = null;
+            try {
+                out = NIOUtils.writableFileChannel(avif.getAbsolutePath());
+                // for Android use: AndroidSequenceEncoder
+                 this.encoder = new AWTSequenceEncoder(out, Rational.R(25, 1));
+                 initialized = true;
+                // Finalize the encoding, i.e. clear the buffers, write the header, etc.
+            } catch (RuntimeException ex){
+                initialized = false;
+                NIOUtils.closeQuietly(out);
+            }
         }
 
         public void encodeImage(BufferedImage bi) throws IOException {
-            if (toEncode == null) {
-                toEncode = Picture.create(bi.getWidth(), bi.getHeight(), ColorSpace.YUV420);
+            if(initialized) {
+                encoder.encodeImage(bi);
             }
-
-            // Perform conversion
-            for (int i = 0; i < 3; i++)
-                Arrays.fill(toEncode.getData()[i], 0);
-            transform.transform(AWTUtil.fromBufferedImage(bi), toEncode);
-
-            // Encode image into H.264 frame, the result is stored in '_out' buffer
-            _out.clear();
-            ByteBuffer result = encoder.encodeFrame(_out, toEncode);
-
-            // Based on the frame above form correct MP4 packet
-            spsList.clear();
-            ppsList.clear();
-            H264Utils.encodeMOVPacket(result, spsList, ppsList);
-
-            // Add packet to video track
-            outTrack.addFrame(new MP4Packet(result, frameNo, 25, 1, frameNo, true, null, frameNo, 0));
-
-            frameNo++;
         }
 
         public void finish() throws IOException {
-            // Push saved SPS/PPS to a special storage in MP4
-            outTrack.addSampleEntry(H264Utils.createMOVSampleEntry(spsList, ppsList));
-
-            // Write MP4 header and finalize recording
-            muxer.writeHeader();
-            NIOUtils.closeQuietly(ch);
+            if(initialized)
+                encoder.finish();
         }
 
     }
@@ -313,11 +272,11 @@ public abstract class TestObjet implements Test, Runnable {
     public void startNewMovie() {
         idxFilm++;
         avif = new File(this.dir.getAbsolutePath() + File.separator
-                + sousdossier + this.getClass().getName() + "__" + filmName + idxFilm + ".AVI");
+                + sousdossier + this.getClass().getName() + "__" + filmName + idxFilm + ".mpg");
 
         out = null;
         try {
-            encoder = new SequenceEncoder(avif);
+            encoder = new HomeEncoder(avif);
         } catch (IOException ioException) {
             ioException.printStackTrace();
             NIOUtils.closeQuietly(out);
@@ -885,7 +844,7 @@ public abstract class TestObjet implements Test, Runnable {
 
         z = ZBufferFactory.newInstance(resx, resy);
         z.scene(scene);
-        z.setMinMaxOptimium(z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100));
+        z.setMinMaxOptimium(new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100));
         //z.next();
         long timeStart = System.currentTimeMillis();
 
@@ -1418,7 +1377,7 @@ public abstract class TestObjet implements Test, Runnable {
             z().scene(scene() != null ? scene() : new Scene());
             z().camera(camera() != null ? camera() : new Camera());
         }
-        z.minMaxOptimium = z.new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 0.001);
+        z.minMaxOptimium = new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 0.001);
     }
 
     public void setName(String name) {

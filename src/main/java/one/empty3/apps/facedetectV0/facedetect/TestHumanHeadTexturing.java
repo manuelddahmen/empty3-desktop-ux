@@ -141,7 +141,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             ((RepresentableConteneur) scene().getObjets().getElem(0)).getListRepresentable().forEach(representable -> {
                 if (representable instanceof Polygon p && representable.texture().getColorAt(0.5, 0.5) == java.awt.Color.BLACK.getRGB()) {
                     p.getPoints().getData1d().forEach(point3D -> {
-                        Point point = camera().coordonneesPoint2D(point3D, z());
+                        Point point = camera().coordinatesPoint2D(point3D, z());
                         Rectangle r2 = new Rectangle(rectangleFace.x, rectangleFace.y,
                                 rectangleFace.width, rectangleFace.height);
                         if (point.getX() < rectangleFace.x) {

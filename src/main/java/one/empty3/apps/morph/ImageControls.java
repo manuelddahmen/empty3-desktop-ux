@@ -170,7 +170,7 @@ public class ImageControls implements Runnable {
         if (!moving && !isPressed && isSelected) {
             Logger.getAnonymousLogger().log(Level.INFO, "::update a point position");
             Logger.getAnonymousLogger().log(Level.INFO, selectedPoint.toString());
-            Point point = camera.coordonneesPoint2D(
+            Point point = camera.coordinatesPoint2D(
                     new Point3D(1.0 * x, 1.0 * y, 0d), zBuffer);
             grid.setElem(new Point3D(getResX() - 1.0 * point.x, 1.0 * point.y, 0d),
                     this.xGrid, this.yGrid);

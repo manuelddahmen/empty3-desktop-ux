@@ -20,13 +20,14 @@
  *
  */
 
-package one.empty3.tests;
+package one.empty3.test.tests.test4;
 
-import one.empty3.apps.testobject.Resolution;
-import one.empty3.apps.testobject.TestObjetSub;
+import one.empty3.library.core.testing.jvm.Resolution;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.*;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.FctXY;
+import one.empty3.library.core.tribase.Tubulaire3;
 import one.empty3.library.core.tribase.Tubulaire3refined;
 
 import one.empty3.library.Point;
@@ -40,9 +41,9 @@ public class Balade1 extends TestObjetSub {
 
     private static final int VUE_1 = 30;
     private static final int FPS = 50;
-    Tubulaire3refined polygonSol = new Tubulaire3refined();
+    Tubulaire3 polygonSol = new Tubulaire3();
     ImageTexture imageTextureTrunk;
-    private boolean useRecursive;
+    //private boolean useRecursive;
 
     public static void main(String[] args) {
         Balade1 balade1 = new Balade1();
@@ -51,7 +52,7 @@ public class Balade1 extends TestObjetSub {
         //balade1.setDimension(new Resolution(1920 / 8, 1080 / 8));
         //balade1.setDimension(new Resolution(320, 200));
         //balade1.setDimension(new Resolution(640, 480));
-        balade1.setDimension(new Resolution(640, 480));
+        balade1.setDimension(new Resolution(320, 200));
         balade1.setGenerate(GENERATE_IMAGE | GENERATE_SAVE_IMAGE|GENERATE_MOVIE|GENERATE_LOG|GENERATE_SAVE_ZIP);
         balade1.setPublish(true);
         new Thread(balade1).start();
@@ -59,7 +60,6 @@ public class Balade1 extends TestObjetSub {
 
     @Override
     public void ginit() {
-        useRecursive = false;
         super.ginit();
         ITexture ciel_ensoleille = new ColorTexture(new Color(Color.newCol(0f, 0f, 1f)));
         ITexture sol_sableux = new ColorTexture(Color.newCol(104 / 255f, 78 / 255f, 51 / 255f));
@@ -68,7 +68,7 @@ public class Balade1 extends TestObjetSub {
         ciel_ensoleille = new ImageTexture((Image) Image.getFromFile(new File("resources/ciel_ensoleille.jpg")));
         sol_sableux = new ImageTexture((Image) Image.getFromFile(new File("res/img/planets2/others/8k_saturn_ring_alpha.png")));
 
-        polygonSol = new Tubulaire3refined();
+        polygonSol = new Tubulaire3();
         polygonSol.getSoulCurve().setElem(
                 new CourbeParametriquePolynomialeBezier());
 
@@ -89,10 +89,8 @@ public class Balade1 extends TestObjetSub {
 
         scene().add(polygonSol);
 
-        frame = 0;
-
         z().scene(scene());
-        z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
+        z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         z().texture(new ColorTexture(0x00FF0000));
         int numFaces = 1;
         //double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
@@ -101,12 +99,12 @@ public class Balade1 extends TestObjetSub {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
         z().setMinMaxOptimium(
-                z().new MinMaxOptimium(
+                new ZBufferImpl.MinMaxOptimium(
                         ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
                 )
         );
         z().setMinMaxOptimium(
-                z().new MinMaxOptimium(
+                new ZBufferImpl.MinMaxOptimium(
                         ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 100.0
                 )
         );
@@ -117,18 +115,19 @@ public class Balade1 extends TestObjetSub {
     public void finit() throws Exception {
         super.finit();
 
-        if (frame() < VUE_1 * FPS) {
+        if (frame() < getMaxFrames()) {
             Point3D a = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() * 1.0) / getMaxFrames());
-            Point3D b = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() + 2.0) / getMaxFrames());
+            Point3D b = polygonSol.getSoulCurve().getElem().calculerPoint3D((frame() + 1.0) / getMaxFrames());
 
-            Point3D y = polygonSol.calculerPoint3D(0.25, 1.0 * frame() / getMaxFrames());
-            Point3D ym = polygonSol.calculerPoint3D(0.75, 1.0 * frame() / getMaxFrames());
+            Point3D y = polygonSol.calculerPoint3D(0.0, 1.0 * frame() / getMaxFrames());
+            Point3D ym = polygonSol.calculerPoint3D(0.5, 1.0 * frame() / getMaxFrames());
+            Point3D yV = y.moins(ym).mult(1.0 / Point3D.distance(y, ym));
 
-
-            Camera camera = new Camera(a, b, y.moins(ym).mult(1.0 / Point3D.distance(y, ym)));
-
+            camera(new Camera(a, b,yV));
+            camera().declareProperties();
+            camera().calculerMatrice(yV);
             //camera.getScale().setElem(100.0);
-            scene().cameraActive(camera);
+            scene().cameraActive(camera());
 
             //z().setDisplayType(Representable.DISPLAY_ALL);
             //z().texture(new ColorTexture(java.awt.Color.newCol(0f,0f,0f).getRGB()));
@@ -165,7 +164,4 @@ public class Balade1 extends TestObjetSub {
 
     }
 
-    private boolean useRecursive() {
-        return useRecursive;
-    }
 }

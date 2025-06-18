@@ -148,7 +148,7 @@ public class MeshGEditorThread extends Thread implements PropertyChangeListener 
                                 Logger.getAnonymousLogger().log(Level.INFO, "Surface : " + surface);
                                 cellList.forEach(cell -> {
                                     if (cell.pRot != null) {
-                                        Point point = getMain().getUpdateView().getzRunner().getzBuffer().camera().coordonneesPoint2D(cell.pRot,
+                                        Point point = getMain().getUpdateView().getzRunner().getzBuffer().camera().coordinatesPoint2D(cell.pRot,
                                                 getMain().getUpdateView().getzRunner().getzBuffer());
                                         if (point != null &&
                                                 e.getX() - 2 < point.getX() && e.getX() + 2 > point.getX()
@@ -331,7 +331,7 @@ public class MeshGEditorThread extends Thread implements PropertyChangeListener 
             ZBufferImpl zBuffer = getMain().getUpdateView().getzRunner().getzBuffer();
             if (r instanceof Point3D) {
                 Point3D p = (Point3D) r;
-                Point p2d = zBuffer.camera().coordonneesPoint2D(p, zBuffer);
+                Point p2d = zBuffer.camera().coordinatesPoint2D(p, zBuffer);
                 int x = (int) (p2d.getX());
                 int y = (int) (p2d.getY());
                 Representable r1 = zBuffer.ime.getrMap()[x][y];
@@ -351,14 +351,14 @@ public class MeshGEditorThread extends Thread implements PropertyChangeListener 
 
                             lsXYZ[i] = new LineSegment(p0,
                                     pv.mult(10.0).plus(p0));
-                            Point p1 = zBuffer.camera().coordonneesPoint2D(lsXYZ[i].getOrigine(), zBuffer);
-                            Point p2 = zBuffer.camera().coordonneesPoint2D(lsXYZ[i].getExtremite(), zBuffer);
+                            Point p1 = zBuffer.camera().coordinatesPoint2D(lsXYZ[i].getOrigine(), zBuffer);
+                            Point p2 = zBuffer.camera().coordinatesPoint2D(lsXYZ[i].getExtremite(), zBuffer);
 
                             new ModelBrowser(getMain().getDataModel().getScene(), zBuffer).getObjects().forEach(
                                     cell -> {
                                         drawPoint(cell.getpRot(), new Color(Color.YELLOW));
                                         Graphics g = getMain().getUpdateView().getGraphics();
-                                        Point point = zBuffer.camera().coordonneesPoint2D(cell.getpRot(), zBuffer);
+                                        Point point = zBuffer.camera().coordinatesPoint2D(cell.getpRot(), zBuffer);
                                         g.drawString("(r:" + cell.getRow() + "; c" + cell.getRow() + ")", (int) point.getX(), (int) point.getY());
                                     });
                             getMain().getMeshEditorProps().getInSelectionMoves().forEach((pMove, point3D) -> drawPoint(pMove.getPout(), new Color(Color.BLUE)));
@@ -414,7 +414,7 @@ public class MeshGEditorThread extends Thread implements PropertyChangeListener 
         ZBufferImpl zBuffer = getMain().getUpdateView().getzRunner()
                 .getzBuffer();
         if (zBuffer.camera() != null) {
-            Point point = zBuffer.camera().coordonneesPoint2D(p, zBuffer);
+            Point point = zBuffer.camera().coordinatesPoint2D(p, zBuffer);
             if (point != null)
                 for (int i = -2; i <= 2; i++)
                     for (int j = -2; j <= 2; j++) {

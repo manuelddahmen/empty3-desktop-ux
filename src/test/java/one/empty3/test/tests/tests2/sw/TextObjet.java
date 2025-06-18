@@ -71,7 +71,7 @@ public class TextObjet extends Plan3D {
 
     public void setText(String txt) {
         this.textString = txt;
-        prerenderedImg = new Image(new BufferedImage(1920, 1080 / 5 * textString.length(), BufferedImage.TYPE_INT_RGB));
+        prerenderedImg = new Image(1920, 1080 / 5 * textString.length());
 
         Graphics prerenderedImgGraphics = prerenderedImg.getGraphics();
 

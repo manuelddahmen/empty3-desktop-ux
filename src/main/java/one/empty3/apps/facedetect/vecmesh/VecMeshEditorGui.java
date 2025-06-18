@@ -843,7 +843,7 @@ public class VecMeshEditorGui extends JFrame {
             zBuffer = new ZBufferImpl(getPanelGraphics().getWidth(),
                     getPanelGraphics().getHeight());
             zBuffer.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_POINTS);
-            zBuffer.minMaxOptimium = zBuffer.new MinMaxOptimium(MinMaxOptimium.MinMaxIncr.Max, 0.01);
+            zBuffer.minMaxOptimium = new MinMaxOptimium(MinMaxOptimium.MinMaxIncr.Max, 0.01);
             if (zBuffer != null) {
                 zBuffer.setDisplayType(zBuffer.getDisplayType());
             } else {

@@ -72,12 +72,12 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             double surfaceBoundingCube = 2*(diff.getX()*diff.getY()+diff.getY()*diff.getZ()+diff.getZ()*diff.getX());
             double v = (double) 2.0  *z().la()*z().ha() / numFaces/ surfaceBoundingCube;
             z().setMinMaxOptimium(
-                    z().new MinMaxOptimium(
+                    new ZBufferImpl.MinMaxOptimium(
                             ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, v
                     )
             );
             Logger.getAnonymousLogger().info("MinMaxOptimium set $v");
-            z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 10000));
+            z().setMinMaxOptimium( new ZBufferImpl .MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 10000));
         }
         //z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 2000));
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
@@ -105,11 +105,11 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 v =( (double) (z().la() * z().ha())) /numFaces+1;
             }
             z().setMinMaxOptimium(
-                    z().new MinMaxOptimium(
+                    new ZBufferImpl.MinMaxOptimium(
                             ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
-                    )
+                )
             );
-            z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 200));
+            z().setMinMaxOptimium(new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 200));
             Logger.getAnonymousLogger().info("MinMaxOptimum set "+v);
         }
 
