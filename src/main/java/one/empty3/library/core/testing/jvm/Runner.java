@@ -34,9 +34,9 @@ import java.util.List;
  * Created by manue on 08-02-20.
  */
 public class Runner {
-    private List<TestObjet> testObjetList;
+    private List<TestObjetUx> testObjetList;
     private HashMap<String, List<Object>> defaultProperties;
-    private HashMap<TestObjet, HashMap<String, List<Object>>> properties;
+    private HashMap<TestObjetUx, HashMap<String, List<Object>>> properties;
 
     public Runner() {
         this.testObjetList = new ArrayList<>();
@@ -44,15 +44,15 @@ public class Runner {
     }
 
 
-    public Runner queue(TestObjet testObjet) {
+    public Runner queue(TestObjetUx testObjet) {
         testObjetList.add(testObjet);
         return this;
     }
 
-    public Runner queue(Class<? extends TestObjet> testObjetClass) {
+    public Runner queue(Class<? extends TestObjetUx> testObjetClass) {
         try {
-            TestObjet testObjet = testObjetClass.newInstance();
-            this.testObjetList.add(testObjet);
+            TestObjetUx TtestObjetUx = testObjetClass.newInstance();
+            this.testObjetList.add(TtestObjetUx);
             return this;
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class Runner {
         return this;
     }
 
-    public Runner setProperty(TestObjet testObjet, String setterName, Object... values) {
+    public Runner setProperty(TestObjetUx testObjet, String setterName, Object... values) {
 
         ArrayList<Object> objects = new ArrayList<>();
         objects.addAll(Arrays.asList(values));
@@ -86,20 +86,20 @@ public class Runner {
     }
 
     private Runner activateproperty() {
-        testObjetList.forEach(testObjet -> {
+        testObjetList.forEach(TestObjetUx -> {
             for (int i = 0; i < 2; i++) {
-                HashMap<String, List<Object>> p01 = i == 0 ? defaultProperties : properties.get(testObjet);
+                HashMap<String, List<Object>> p01 = i == 0 ? defaultProperties : properties.get(TestObjetUx);
                 if (p01 == null)
                     continue;
                 p01.forEach((s, objects) -> {
-                    Class[] parameters = new Class[defaultProperties.get(testObjet).size()];
+                    Class[] parameters = new Class[defaultProperties.get(TestObjetUx).size()];
                     int i1 = 0;
-                    for (Object o : defaultProperties.get(testObjet)) {
+                    for (Object o : defaultProperties.get(TestObjetUx)) {
                         parameters[i1] = o.getClass();
                     }
                     try {
-                        Method method = testObjet.getClass().getMethod(s, parameters);
-                        method.invoke(testObjet, defaultProperties.get(testObjet));
+                        Method method = TestObjetUx.getClass().getMethod(s, parameters);
+                        method.invoke(TestObjetUx, defaultProperties.get(TestObjetUx));
                     } catch (NoSuchMethodException e) {
 
                         e.printStackTrace();
@@ -118,7 +118,7 @@ public class Runner {
 
     public Runner run() {
         activateproperty();
-        testObjetList.forEach(testObjet -> new Thread(testObjet).start()
+        testObjetList.forEach(TestObjetUx -> new Thread(TestObjetUx).start()
         );
         return this;
     }

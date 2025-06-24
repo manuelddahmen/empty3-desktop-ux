@@ -22,7 +22,7 @@
 
 package one.empty3.library.core.testing.jvm;
 
-public class TestObjetStub extends TestObjet {
+public class TestObjetStub extends TestObjetUx {
 
     public static void main(String[] args) {
 

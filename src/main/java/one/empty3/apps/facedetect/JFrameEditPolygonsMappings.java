@@ -203,7 +203,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
             editPolygonsMappings2.testHumanHeadTexturing.setMaxFrames(0);
             editPolygonsMappings2.isRunning = false;
             if (TestHumanHeadTexturing.threadTest != null) {
-                editPolygonsMappings2.testHumanHeadTexturing.stop(); // TestObjet stop method
+                editPolygonsMappings2.testHumanHeadTexturing.stop(); // TestObjetUx stop method
                 TestHumanHeadTexturing.threadTest.join(); // join thread as it's dying
             }
             Thread.sleep(1000);

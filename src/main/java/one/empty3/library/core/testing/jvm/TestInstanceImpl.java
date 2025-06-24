@@ -46,7 +46,7 @@ public class TestInstanceImpl extends TestInstance {
 
     @Override
     public ArrayList<Parameter> getInitParameters() {
-        ArrayList<Parameter> params = test.getInitParams();
+        ArrayList<one.empty3.apps.testobject.TestInstance.Parameter> params = test.getInitParams();
         return null;
 
     }

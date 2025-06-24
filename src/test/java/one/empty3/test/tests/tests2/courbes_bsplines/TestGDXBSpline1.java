@@ -25,7 +25,7 @@ package one.empty3.test.tests.tests2.courbes_bsplines;
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.BSpline;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.tribase.TubulaireN2;
 
 import one.empty3.libs.*;
@@ -34,7 +34,7 @@ import one.empty3.libs.*;
  * Meta Description missing
  * @author Manuel Dahmen dathewolf@gmail.com
  */
-public class TestGDXBSpline1 extends TestObjet {
+public class TestGDXBSpline1 extends TestObjetUx {
     private static final double INCR_PRECISION = 0.00001;
     TubulaireN2 t = new TubulaireN2();
     private BSpline b;

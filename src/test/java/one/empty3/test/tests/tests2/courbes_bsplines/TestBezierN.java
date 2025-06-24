@@ -30,7 +30,7 @@ package one.empty3.test.tests.tests2.courbes_bsplines;
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 
 import one.empty3.libs.*;
 
@@ -40,7 +40,7 @@ import one.empty3.libs.*;
  * Meta Description missing
  * @author Manuel Dahmen dathewolf@gmail.com
  */
-public class TestBezierN extends TestObjet {
+public class TestBezierN extends TestObjetUx {
     private CourbeParametriquePolynomialeBezier b;
 
     public static void main(String[] args) {

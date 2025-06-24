@@ -31,7 +31,7 @@ import one.empty3.library.Camera;
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.core.move.Trajectoires;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.tribase.TRISphere;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ import java.util.ArrayList;
  * Meta Description missing
  * @author Manuel Dahmen dathewolf@gmail.com
  */
-public class Scene1 extends TestObjet {
+public class Scene1 extends TestObjetUx {
     private static final int NUMBRE = 50;
     private TRISphere s1;
     private TRISphere s2;

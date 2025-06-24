@@ -26,7 +26,7 @@ import one.empty3.library.Camera;
 import one.empty3.library.LumierePonctuelle;
 import one.empty3.library.Point3D;
 import one.empty3.library.ZBufferImpl;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.Tubulaire3;
 
@@ -66,7 +66,7 @@ public class TestHumainMarche2 extends TestObjetSub {
     public static void main(String[] args) {
         TestHumainMarche2 testHumain = new TestHumainMarche2();
         testHumain.setPublish(true);
-        testHumain.setDimension(TestObjet.HD1080);
+        testHumain.setDimension(TestObjetUx.HD1080);
         testHumain.setGenerate(testHumain.getGenerate()|GENERATE_MODEL);
         new Thread(testHumain).start();
     }

@@ -72,7 +72,7 @@ import java.util.logging.Logger;
 /*__
  * @author Manuel DAHMEN
  */
-public abstract class TestObjet implements Test, Runnable {
+public abstract class TestObjetUx implements Test, Runnable {
     public static Resolution PAL    = new Resolution(1280, 720);
     public static Resolution HD720  = new Resolution(1280, 720);
     public static Resolution HD1080 = new Resolution(1920, 1080);
@@ -179,7 +179,7 @@ public abstract class TestObjet implements Test, Runnable {
     }
 
     public static void main(String[] args) {
-        TestObjet gui = new TestObjetSub();
+        TestObjetUx gui = new TestObjetSub();
         gui.loop(true);
         gui.setMaxFrames(2000);
         new Thread(gui).start();
@@ -1134,7 +1134,7 @@ public abstract class TestObjet implements Test, Runnable {
         this.onMaxFrameEvent = maxFramesEvent;
     }
 
-    public TestObjet getInstance() throws ClassNotFoundException {
+    public TestObjetUx getInstance() throws ClassNotFoundException {
         try {
             return this.getClass().newInstance();
         } catch (InstantiationException | IllegalAccessException e) {

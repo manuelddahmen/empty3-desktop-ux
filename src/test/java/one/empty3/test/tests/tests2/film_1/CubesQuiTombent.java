@@ -25,12 +25,12 @@ package one.empty3.test.tests.tests2.film_1;
 import one.empty3.library.Cube;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Matrix33;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 
 /*__
  * @author Se7en
  */
-public class CubesQuiTombent extends TestObjet {
+public class CubesQuiTombent extends TestObjetUx {
     private Cube mouvement(LineSegment d, double pc, Matrix33 rot, double a, double b) {
         return null;
     }

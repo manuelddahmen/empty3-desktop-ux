@@ -26,6 +26,7 @@
  */
 package one.empty3.library.core.testing.jvm;
 
+import one.empty3.apps.testobject.TestObjet;
 import one.empty3.library.core.script.ExtensionFichierIncorrecteException;
 import one.empty3.library.core.script.Loader;
 import one.empty3.library.core.script.VersionNonSupporteeException;
@@ -41,11 +42,11 @@ import java.util.logging.Logger;
  */
 public class TestCollection {
 
-    private final ArrayList<TestObjet> tests = new ArrayList<TestObjet>();
+    private final ArrayList<TestObjetUx> tests = new ArrayList<TestObjetUx>();
     private boolean dr;
 
     public void add(final File fichier) {
-        TestObjet to = new TestObjetSub() {
+        TestObjetUx to = new TestObjetSub() {
 
 
             @Override
@@ -70,7 +71,7 @@ public class TestCollection {
         }
     }
 
-    public void add(TestObjet to) {
+    public void add(TestObjetUx to) {
         tests.add(to);
     }
 
@@ -80,16 +81,16 @@ public class TestCollection {
     }
 
     public void run() {
-        Iterator<TestObjet> it = tests.iterator();
+        Iterator<TestObjetUx> it = tests.iterator();
         while (it.hasNext()) {
-            TestObjet next = it.next();
+            TestObjetUx next = it.next();
             next.publishResult(dr);
             next.run();
         }
     }
 
     public void testCollection() {
-        Iterator<TestObjet> it = tests.iterator();
+        Iterator<TestObjetUx> it = tests.iterator();
         while (it.hasNext()) {
             it.next().run();
         }

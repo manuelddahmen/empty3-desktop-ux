@@ -30,14 +30,14 @@ import one.empty3.library.EOFVideoException;
 import one.empty3.library.Point3D;
 import one.empty3.library.TextureMov;
 import one.empty3.library.core.nurbs.CameraInPath;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.tribase.TRIEllipsoide;
 
 /*__
  *
  * @author Manuel Dahmen
  */
-public class TestCameraEnMouvement extends TestObjet {
+public class TestCameraEnMouvement extends TestObjetUx {
 
     TextureMov textureMov;
     private CameraInPath cam;

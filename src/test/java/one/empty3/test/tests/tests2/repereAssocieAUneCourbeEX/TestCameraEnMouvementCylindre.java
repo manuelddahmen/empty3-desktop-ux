@@ -30,7 +30,7 @@ import one.empty3.library.core.nurbs.CameraInPath;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.ExtrusionCurveCurve;
 import one.empty3.library.core.testing.jvm.Resolution;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 
 import one.empty3.libs.*;
 
@@ -38,7 +38,7 @@ import one.empty3.libs.*;
  *
  * @author Manuel Dahmen
  */
-public class TestCameraEnMouvementCylindre extends TestObjet {
+public class TestCameraEnMouvementCylindre extends TestObjetUx {
 
     TextureMov textureMov;
     private CameraInPath cam;

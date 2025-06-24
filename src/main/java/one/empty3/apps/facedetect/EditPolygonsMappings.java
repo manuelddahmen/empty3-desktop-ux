@@ -616,7 +616,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
             if ((testHumanHeadTexturing == null || !testHumanHeadTexturing.isRunning())
                     && (image != null && model != null)) {
-                Logger.getAnonymousLogger().log(Level.INFO, "Le thread :TestObjet est arrêté ou non attribute");
+                Logger.getAnonymousLogger().log(Level.INFO, "Le thread :TestObjetUx est arrêté ou non attribute");
                 testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image,imageFileRight,  model,
                         hdTextures? Resolution.HD1080RESOLUTION:new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
                 Logger.getAnonymousLogger().log(Level.INFO, "Une nouvelle instance a été démarrée");

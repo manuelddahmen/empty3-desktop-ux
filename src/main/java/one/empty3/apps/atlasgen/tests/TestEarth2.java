@@ -22,12 +22,13 @@
 
 package one.empty3.apps.atlasgen.tests;
 
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetSub;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 
 /*__
  * Created by manue on 11-05-19.
  */
-public class TestEarth2 extends TestObjet {
+public class TestEarth2 extends TestObjetSub {
     @Override
     public void afterRenderFrame() {
 

@@ -31,11 +31,11 @@ import java.io.PrintWriter;
  * Created by manuel on 01-06-17.
  */
 public class ExportAnimationData {
-    private final TestObjet animation;
+    private final TestObjetUx animation;
     private final File file;
     private PrintWriter printWriter;
 
-    public ExportAnimationData(File file, TestObjet animation) throws FileNotFoundException {
+    public ExportAnimationData(File file, TestObjetUx animation) throws FileNotFoundException {
         this.file = file;
         this.animation = animation;
 

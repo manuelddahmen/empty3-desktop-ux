@@ -24,7 +24,7 @@ package one.empty3.test.tests.tests2.paintingActs;
 
 import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.TRISphere;
 
@@ -35,7 +35,7 @@ import one.empty3.libs.*;
  */
 public class TestSpheres extends TestObjetSub {
     public static void main(String[] args) {
-        TestObjet to = new TestSpheres();
+        TestObjetUx to = new TestSpheres();
 
         to.loop(true);
         to.unterminable(false);

@@ -25,7 +25,7 @@ package one.empty3.apps.facedetect.gcp;
 import one.empty3.library.*;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.testing.jvm.Resolution;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.testing.jvm.TestObjetStub;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
@@ -219,7 +219,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             } else {
                 testHumanHeadTexturing.setResx(resolution.x());
                 testHumanHeadTexturing.setResy(resolution.y());
-                testHumanHeadTexturing.setDimension(TestObjet.HD1080);
+                testHumanHeadTexturing.setDimension(TestObjetUx.HD1080);
                 testHumanHeadTexturing.z().minMaxOptimium = new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 0.01);
             }
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);

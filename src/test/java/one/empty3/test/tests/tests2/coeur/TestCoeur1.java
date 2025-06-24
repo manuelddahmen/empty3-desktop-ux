@@ -33,7 +33,7 @@
 package one.empty3.test.tests.tests2.coeur;
 
 import one.empty3.library.*;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 
 import javax.imageio.ImageIO;
 
@@ -47,7 +47,7 @@ import java.util.logging.Logger;
  *
  * @author Manuel Dahmen <manuel.dahmen@gmx.com>
  */
-public class TestCoeur1 extends TestObjet {
+public class TestCoeur1 extends TestObjetUx {
 
     private SurfaceElasticite coeur;
 

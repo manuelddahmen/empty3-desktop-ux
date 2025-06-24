@@ -27,7 +27,7 @@ import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.move.Trajectoires;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.tribase.TRISphere;
 
 import one.empty3.libs.*;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * Meta Description missing
  * @author Manuel Dahmen dathewolf@gmail.com
  */
-public class AnneauDeSpheresQuiTournent extends TestObjet {
+public class AnneauDeSpheresQuiTournent extends TestObjetUx {
 
     private final int NOMBRE = 6;
     private final double PCPS = 0.1;

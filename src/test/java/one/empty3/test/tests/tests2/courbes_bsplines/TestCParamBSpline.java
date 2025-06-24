@@ -32,8 +32,9 @@ import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.core.nurbs.BSpline;
 import one.empty3.library.core.nurbs.CourbeParametriqueBSpline;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.libs.*;
 
 /*__
@@ -43,7 +44,7 @@ import one.empty3.libs.*;
  * @author Manuel Dahmen dathewolf@gmail.com
  */
 public class
-TestCParamBSpline extends TestObjet {
+TestCParamBSpline extends TestObjetUx {
     private BSpline b;
 
     public static void main(String[] args) {

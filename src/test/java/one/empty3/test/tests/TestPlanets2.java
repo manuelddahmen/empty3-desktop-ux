@@ -22,8 +22,9 @@
 
 package one.empty3.test.tests;
 
-import one.empty3.library.*;
 import one.empty3.library.core.testing.jvm.TestObjetSub;
+import one.empty3.library.*;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.libs.*;
 import java.io.File;
 import java.util.logging.Level;
@@ -74,13 +75,25 @@ public class TestPlanets2 extends TestObjetSub {
 
     }
 
+    @Override
+    public void testScene() throws Exception {
+
+    }
+
     public void incr() {
         int i1 = (int) ((1.0*frame() / (FPS * SECONDS))*planetsImagesFiles.length);
         if (i1 != i) {
             i = i1;
             if (i1 < planetsImagesFiles.length) {
-                image = (Image) Image.loadFile(planetsImagesFiles[i1]);
-                textureImg = new TextureImg(new Image(image));
+                while ((planetsImagesFiles[i1] == null || !planetsImagesFiles[i1].exists() || !planetsImagesFiles[i1].isFile())&& i1<planetsImagesFiles.length) {
+                    i1 ++;
+                }
+                if(i1<planetsImagesFiles.length) {
+                    image = (Image) Image.loadFile(planetsImagesFiles[i1]);
+                    textureImg = new ImageTexture(image);
+                    if (image != null)
+                        Logger.getLogger(this.getClass().getCanonicalName()).info("Color at center of texure : " + textureImg.getColorAt(0.5, 0.5));
+                }
             }
         }
     }
@@ -91,6 +104,11 @@ public class TestPlanets2 extends TestObjetSub {
                 vecOrigY.mult(Math.sin(2 * Math.PI * ratio))));
         outY.changeTo(vecOrigX.mult(-Math.sin(2 * Math.PI * ratio)).plus(
                 vecOrigY.mult(Math.cos(2 * Math.PI * ratio))));
+    }
+
+    @Override
+    public void afterRenderFrame() {
+
     }
 
     @Override
@@ -147,13 +165,25 @@ public class TestPlanets2 extends TestObjetSub {
                 .plus(axesSphereHorizontaux[1].mult(Math.sin(2 * Math.PI * v2))));
         circle.setVectY(axesSphereHorizontaux[0].mult(-Math.sin(2 * Math.PI * v2))
                 .plus(axesSphereHorizontaux[1].mult(Math.cos(2 * Math.PI * v2))));
+        circle.setPosition(Point3D.O0);
+        sphere.setPosition(Point3D.O0);
         circle.setCalculerRepere1(true);
         sphere.setCircle(circle);
         Logger.getAnonymousLogger().log(Level.INFO, "Camera t : " + 2);
+
+        for (int j = 0; j < (sphere.getVectors()).getData1d().size(); j++) {
+            if(sphere.getVectors().getData1d().get(j)!=null);
+
+        }
     }
 
     @Override
     public void afterRender() {
+
+    }
+
+    @Override
+    public void publishResult() {
 
     }
 }

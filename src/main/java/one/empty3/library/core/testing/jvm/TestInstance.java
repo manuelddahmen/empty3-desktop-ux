@@ -38,7 +38,7 @@ import java.util.ArrayList;
  */
 public abstract class TestInstance {
 
-    protected TestObjet test;
+    protected TestObjetUx test;
 
     public abstract Parameter getDynParameter(String name);
 
@@ -50,7 +50,7 @@ public abstract class TestInstance {
 
     public abstract boolean setDynParameter(Parameter parameter);
 
-    public void theTest(TestObjet test) {
+    public void theTest(TestObjetUx test) {
         this.test = test;
     }
 

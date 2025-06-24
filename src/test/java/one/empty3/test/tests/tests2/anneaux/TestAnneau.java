@@ -27,7 +27,7 @@ import one.empty3.library.Point3D;
 import one.empty3.library.ColorTexture;
 import one.empty3.library.core.move.Trajectoires;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 
 import one.empty3.libs.*;
 
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TestAnneau extends TestObjet {
+public class TestAnneau extends TestObjetUx {
 
     private int N = 20;
     List<Point3D> point3D = new ArrayList<>();

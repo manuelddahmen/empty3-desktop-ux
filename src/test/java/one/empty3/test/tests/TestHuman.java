@@ -24,7 +24,7 @@ package one.empty3.test.tests;
 
 import one.empty3.library.*;
 import one.empty3.library.Polygon;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.testing.jvm.TestObjetSub;
 import one.empty3.library.core.tribase.Tubulaire3;
 
@@ -40,10 +40,10 @@ public class TestHuman extends TestObjetSub {
     public static void main(String[] args) {
         TestHuman testHumanModel = new TestHuman();
         testHumanModel.setPublish(true);
-        testHumanModel.setGenerate(testHumanModel.getGenerate() | TestObjet.GENERATE_MODEL);
+        testHumanModel.setGenerate(testHumanModel.getGenerate() | TestObjetUx.GENERATE_MODEL);
         testHumanModel.setMaxFrames(100);
 
-        testHumanModel.setDimension(TestObjet.VGA);
+        testHumanModel.setDimension(TestObjetUx.VGA);
         new Thread(testHumanModel).start();
     }
 

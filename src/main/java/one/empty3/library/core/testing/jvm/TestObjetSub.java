@@ -22,7 +22,7 @@
 
 package one.empty3.library.core.testing.jvm;
 
-public class TestObjetSub extends TestObjet {
+public class TestObjetSub extends TestObjetUx {
 
 
     public void finit() throws Exception {

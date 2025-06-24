@@ -23,12 +23,12 @@
 package one.empty3.test.tests.tests2;
 
 import one.empty3.library.Representable;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 
 /*__
  * Created by Win on 29-08-18.
  */
-public abstract class TestSomething3D<T extends Representable> extends TestObjet {
+public abstract class TestSomething3D<T extends Representable> extends TestObjetUx {
 
 
     @Override

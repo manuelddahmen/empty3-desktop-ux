@@ -28,11 +28,13 @@ package one.empty3.library.core.testing2;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import net.miginfocom.swing.MigLayout;
+import one.empty3.apps.testobject.IShowTestResult;
+import one.empty3.library.ImageContainer;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
-import one.empty3.library.core.testing.jvm.ImageContainer;
-import one.empty3.library.core.testing.jvm.TestObjet;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.testing.jvm.TextAreaOutputStream;
 import one.empty3.library.core.testing.jvm.ViewerFrame;
 import org.jcodec.api.awt.AWTSequenceEncoder;
@@ -56,7 +58,7 @@ import java.util.logging.Logger;
 /*__
  * @author Manuel DAHMEN
  */
-public final class ShowTestResult extends JFrame implements Runnable {
+public final class ShowTestResult extends JFrame implements Runnable, IShowTestResult {
 
     /*__
      *
@@ -94,7 +96,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
     private JScrollPane scrollPane1;
     private JEditorPane editorPane1;
     // End of variables declaration//GEN-END:variables
-    private TestObjet testRef;
+    private TestObjetUx testRef;
 
     private Throwable throwable;
     private int movieNo = 1;
@@ -187,9 +189,10 @@ public final class ShowTestResult extends JFrame implements Runnable {
         pack();
     }
 
+
     public void dessine() {
         if (biic != null && biic.getImage() != null) {
-            image = new Image(biic.getImage());
+            image = new Image(biic.getImage().getElem());
             if (image.getBi() != null) {
                 if (jPanel1 != null) {
                     Graphics g = jPanel1.getGraphics();
@@ -660,14 +663,14 @@ public final class ShowTestResult extends JFrame implements Runnable {
     }
 
     private void jCheckBoxOGLActionPerformed(ActionEvent evt) {
-        toggleTestOption(TestObjet.GENERATE_OPENGL, jCheckBoxOGL.isSelected());
-        if ((testRef.getGenerate() & TestObjet.GENERATE_OPENGL) > 0
+        toggleTestOption(TestObjetUx.GENERATE_OPENGL, jCheckBoxOGL.isSelected());
+        if ((testRef.getGenerate() & TestObjetUx.GENERATE_OPENGL) > 0
                 && windowGl == null) {
             testRef.setThreadGLafter(new Thread() {
                 {
                     windowGl = new
 
-                            ViewerFrame("TestObjet : " + testRef.getClass());
+                            ViewerFrame("TestObjetUx : " + testRef.getClass());
                     if (!windowGl.isVisible()) {
                         windowGl.setVisible(true);
 
@@ -678,15 +681,15 @@ public final class ShowTestResult extends JFrame implements Runnable {
     }
 
     private void jCheckBoxModelesActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jCheckBoxModelesActionPerformed
-        toggleTestOption(TestObjet.GENERATE_MODEL, jCheckBoxModeles.isSelected());
+        toggleTestOption(TestObjetUx.GENERATE_MODEL, jCheckBoxModeles.isSelected());
     }//GEN-LAST:event_jCheckBoxModelesActionPerformed
 
     private void jCheckBoxFilmRecActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jCheckBoxFilmRecActionPerformed
-        toggleTestOption(TestObjet.GENERATE_MOVIE, jCheckBoxFilmRec.isSelected());
+        toggleTestOption(TestObjetUx.GENERATE_MOVIE, jCheckBoxFilmRec.isSelected());
     }//GEN-LAST:event_jCheckBoxFilmRecActionPerformed
 
     private void jCheckBoxImagesRecActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jCheckBoxImagesRecActionPerformed
-        toggleTestOption(TestObjet.GENERATE_IMAGE, jCheckBoxImagesRec.isSelected());
+        toggleTestOption(TestObjetUx.GENERATE_IMAGE, jCheckBoxImagesRec.isSelected());
     }//GEN-LAST:event_jCheckBoxImagesRecActionPerformed
 
     private void jButtonDemarrerNouveauFilmActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButtonDemarrerNouveauFilmActionPerformed
@@ -748,19 +751,19 @@ public final class ShowTestResult extends JFrame implements Runnable {
         }
     }
 
-    public void setImageContainer(ImageContainer ic) {
-        this.biic = ic;
+    public void setImageContainer(one.empty3.library.ImageContainer imageContainer) {
+        this.biic = imageContainer;
     }
 
-    public void setTestObjet(TestObjet testObjet) {
+    public void setTestObjetUx(TestObjetUx testObjet) {
         this.testRef = testObjet;
 
         jCheckBoxImagesRec.setSelected(
-                testRef.getGenerate(TestObjet.GENERATE_IMAGE));
+                testRef.getGenerate(TestObjetUx.GENERATE_IMAGE));
         jCheckBoxFilmRec.setSelected(
-                testRef.getGenerate(TestObjet.GENERATE_MOVIE));
+                testRef.getGenerate(TestObjetUx.GENERATE_MOVIE));
         jCheckBoxModeles.setSelected(
-                testRef.getGenerate(TestObjet.GENERATE_MODEL));
+                testRef.getGenerate(TestObjetUx.GENERATE_MODEL));
         //jCheckBoxOpenGl.setSelected(
         //toggleTestOption(testRef.GENERATE_OPENGL, testRef.getGenerate(testRef.GENERATE_IMAGE));
         setTitle(testObjet.getClass().getCanonicalName());
@@ -806,5 +809,7 @@ public final class ShowTestResult extends JFrame implements Runnable {
         this.windowGl = windowGl;
     }
 
+    public void setTestObjet(TestObjetUx testObjetUx) {
+    }
 }
 
