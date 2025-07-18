@@ -261,7 +261,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             if (resolution == null || !resolution.equals(Resolution.HD1080RESOLUTION)) {
                 testHumanHeadTexturing.setResx(editPolygonsMappings.panelModelView.getWidth());
                 testHumanHeadTexturing.setResy(editPolygonsMappings.panelModelView.getHeight());
-                testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
+                //testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
 
             } else {
                 testHumanHeadTexturing.setResx(resolution.x());
