@@ -11,7 +11,7 @@ plugins {
 //"empty3-desktop-ux"
 
 group = 'one.empty3'
-version = '2025.5.31-2'
+version = '2025.8.15'
 
 kotlin {
     jvmToolchain(24)
@@ -355,13 +355,13 @@ signing {
     //sign configurations.archives
 }
 
-def versionName = '2025.5.31-2'
+def versionName = '2025.8.15'
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-desktop-ux'
-            version = '2025.5.31-2'
+            version = '2025.8.15'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -377,7 +377,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-desktop-ux"
-                version "2025.5.31-2"
+                version "2025.8.15"
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -461,8 +461,8 @@ jreleaser {
         name = 'empty3-desktop-ux'
         java.artifactId = 'empty3-desktop-ux'
         java.groupId = 'one.empty3'
-        java.version = '2025.5.31-2'
-        version = '2025.5.31-2'
+        java.version = '2025.8.15'
+        version = '2025.8.15'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
