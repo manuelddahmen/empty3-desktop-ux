@@ -70,16 +70,13 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             Point3D diff = max.moins(min);
             editPolygonsMappings.model.getBounds(min, max);
             double surfaceBoundingCube = 2*(diff.getX()*diff.getY()+diff.getY()*diff.getZ()+diff.getZ()*diff.getX());
-            double v = (double) 2.0  *z().la()*z().ha() / numFaces/ surfaceBoundingCube;
-            z().setMinMaxOptimium(
-                    new ZBufferImpl.MinMaxOptimium(
-                            ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, v
-                    )
-            );
+            double v =Math.min(1.0/z.ha (), Math.min(1.0/z().ha(), 1.0/( 2.0  *Math.sqrt(z().la()*z().ha()) / numFaces/ surfaceBoundingCube)));
+            z().setIncrementOptimizer(
+                    new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL , 0.001));
             Logger.getAnonymousLogger().info("MinMaxOptimium set $v");
-            z().setMinMaxOptimium( new ZBufferImpl .MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 10000));
+            //z().setIncrementOptimizer( new ZBufferImpl .MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 10000));
         }
-        //z().setMinMaxOptimium(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 2000));
+        //z().setIncrementOptimizer(z().new MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 2000));
         z().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         setGenerate(GENERATE_IMAGE);
     }
@@ -104,12 +101,11 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             if(v==Double.POSITIVE_INFINITY||v==Double.NEGATIVE_INFINITY|| Double.isNaN(v) ||v==0.0) {
                 v =( (double) (z().la() * z().ha())) /numFaces+1;
             }
-            z().setMinMaxOptimium(
-                    new ZBufferImpl.MinMaxOptimium(
-                            ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
+            z().setIncrementOptimizer(
+                    new ZBufferImpl.IncrementOptimizer(
+                            ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001
                 )
             );
-            z().setMinMaxOptimium(new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 200));
             Logger.getAnonymousLogger().info("MinMaxOptimum set "+v);
         }
 

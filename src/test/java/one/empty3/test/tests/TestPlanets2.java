@@ -137,9 +137,9 @@ public class TestPlanets2 extends TestObjetSub {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
         v = v;
-        z().setMinMaxOptimium(
-                new ZBufferImpl.MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min,v
+        z().setIncrementOptimizer(
+                new ZBufferImpl.IncrementOptimizer(
+                        ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL,v
                 )
         );
         System.out.println("v = " + v);

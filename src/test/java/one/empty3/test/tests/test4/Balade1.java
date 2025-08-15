@@ -98,14 +98,14 @@ public class Balade1 extends TestObjetSub {
         if (v == Double.POSITIVE_INFINITY || v == Double.NEGATIVE_INFINITY || Double.isNaN(v) || v == 0.0) {
             v = ((double) (z().la() * z().ha())) / numFaces + 1;
         }
-        z().setMinMaxOptimium(
-                new ZBufferImpl.MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, v
+        z().setIncrementOptimizer(
+                new ZBufferImpl.IncrementOptimizer(
+                        ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, v
                 )
         );
-        z().setMinMaxOptimium(
-                new ZBufferImpl.MinMaxOptimium(
-                        ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 100.0
+        z().setIncrementOptimizer(
+                new ZBufferImpl.IncrementOptimizer(
+                        ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 100.0
                 )
         );
         Logger.getAnonymousLogger().info("MinMaxOptimum set " + v);

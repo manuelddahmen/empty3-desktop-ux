@@ -844,7 +844,7 @@
 //
 //        z = ZBufferFactory.newInstance(resx, resy);
 //        z.scene(scene);
-//        z.setMinMaxOptimium(new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100));
+//        z.setIncrementOptimizer(new ZBufferImpl.MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Max, 100));
 //        //z.next();
 //        long timeStart = System.currentTimeMillis();
 //

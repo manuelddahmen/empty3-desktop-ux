@@ -14,13 +14,13 @@ group = 'one.empty3'
 version = '2025.5.31-2'
 
 kotlin {
-    jvmToolchain(22)
+    jvmToolchain(24)
 }
-sourceCompatibility = 23
-targetCompatibility = 23
+sourceCompatibility = 24
+targetCompatibility = 24
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 23
+    options.release = 24
 }
 
 configurations {
@@ -211,19 +211,19 @@ tasks.register('deployCloudFunction', Exec) {
 //gradle runFunction -Prun.functionTarget=one.empty3.apps.facedetect.gcp.ImageProcessor  -Prun.port=8080
 //java --classpath 'build/libs' --target one.empty3.apps.facedetect.gcp.ImageProcessor com.google.cloud.functions.invoker.runner.Invoker
 kotlin {
-    jvmToolchain(23)
+    jvmToolchain(24)
 }
-sourceCompatibility = 23
-targetCompatibility = 23
+sourceCompatibility = 24
+targetCompatibility = 24
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 23
+    options.release = 24
 }
 
 dependencies {
     implementation 'one.empty3.libs:partial-desktop:0.0.31'
     implementation 'one.empty3.libs:commons-mp:0.0.11'
-    implementation 'one.empty3:empty3-library-mp:2025.6.23'
+    implementation 'one.empty3:empty3-library-mp:2025.8.10'
     implementation 'com.google.cloud:google-cloud-pubsub:1.133.1' // Check for the latest version
     implementation 'com.google.cloud:google-cloud-tasks:2.59.0'
     implementation 'com.google.cloud.functions:functions-framework-api:1.1.0'
@@ -267,7 +267,13 @@ dependencies {
     implementation "com.google.auth:google-auth-library-oauth2-http:1.23.0"
     implementation "com.google.http-client:google-http-client-jackson2:1.44.2"
     implementation('org.jdesktop:beansbinding:1.2.1')
-}
+    // Groovy (Gradle)
+    /*
+        implementation "com.google.api-client:google-api-client:"
+        implementation "com.google.http-client:google-http-client-gson:"
+        implementation "com.google.apis:google-api-services-vision:v1-rev"
+        implementation "com.google.auth:google-auth-library-oauth2-http:<version>"
+    */}
 
 tasks.register('javadocJar', Jar) {
     dependsOn javadoc
