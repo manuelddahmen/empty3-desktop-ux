@@ -25,6 +25,7 @@ package one.empty3.apps.facedetect;
 import one.empty3.library.*;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.apps.testobject.*;
+import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
 
@@ -72,7 +73,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             double surfaceBoundingCube = 2*(diff.getX()*diff.getY()+diff.getY()*diff.getZ()+diff.getZ()*diff.getX());
             double v =Math.min(1.0/z.ha (), Math.min(1.0/z().ha(), 1.0/( 2.0  *Math.sqrt(z().la()*z().ha()) / numFaces/ surfaceBoundingCube)));
             z().setIncrementOptimizer(
-                    new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL , 0.001));
+                    new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL , 0.001*numFaces));
             Logger.getAnonymousLogger().info("MinMaxOptimium set $v");
             //z().setIncrementOptimizer( new ZBufferImpl .MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 10000));
         }
@@ -103,7 +104,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             }
             z().setIncrementOptimizer(
                     new ZBufferImpl.IncrementOptimizer(
-                            ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001
+                            ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.001*numFaces
                 )
             );
             Logger.getAnonymousLogger().info("MinMaxOptimum set "+v);
@@ -254,16 +255,29 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             }
             editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
 
+            int numFaces = 1;
+            if(editPolygonsMappings!=null && editPolygonsMappings.model!=null && editPolygonsMappings.model instanceof E3Model e3Model) {
+                numFaces = ((E3Model) (editPolygonsMappings.model))
+                        .getObjects().getListRepresentable().size();
+
+            }
+            if(testHumanHeadTexturing.z()==null) {
+                testHumanHeadTexturing.z = new ZBufferImpl(resolution==null?editPolygonsMappings.panelModelView.getWidth():resolution.x(), resolution==null?editPolygonsMappings.panelModelView.getHeight():resolution.y());
+            }
+            double factor = Math.max(1, numFaces / Math.sqrt(testHumanHeadTexturing.z().ha()) / testHumanHeadTexturing.z().la());
             if (resolution == null || !resolution.equals(Resolution.HD1080RESOLUTION)) {
                 testHumanHeadTexturing.setResx(editPolygonsMappings.panelModelView.getWidth());
                 testHumanHeadTexturing.setResy(editPolygonsMappings.panelModelView.getHeight());
                 //testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
+                testHumanHeadTexturing.z().setIncrementOptimizer ( new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001*factor));
 
             } else {
                 testHumanHeadTexturing.setResx(resolution.x());
                 testHumanHeadTexturing.setResy(resolution.y());
                 testHumanHeadTexturing.setDimension(TestObjet.HD1080);
+                testHumanHeadTexturing.z().setIncrementOptimizer ( new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001*factor));
             }
+
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
             testHumanHeadTexturing.setJpg(jpg);
             testHumanHeadTexturing.setJpgRight(jpgRight);

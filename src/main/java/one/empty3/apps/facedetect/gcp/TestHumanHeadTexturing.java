@@ -29,6 +29,7 @@ import one.empty3.library.core.testing.jvm.TestObjetUx;
 import one.empty3.library.core.testing.jvm.TestObjetStub;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Image;
+import org.mockito.internal.matchers.Null;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -208,19 +209,27 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                     editPolygonsMappings.iTextureMorphMove.distanceAB.jpgRight = editPolygonsMappings.imageFileRight;
 
             }
-            editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
 
+                editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
+
+            int numFaces = 1;
+            if(editPolygonsMappings!=null && editPolygonsMappings.model!=null && editPolygonsMappings.model instanceof E3Model e3Model) {
+                numFaces = ((E3Model) (editPolygonsMappings.model))
+                        .getObjects().getListRepresentable().size();
+
+            }
+            double factor = Math.max(1, numFaces / Math.sqrt(testHumanHeadTexturing.z().ha()) / testHumanHeadTexturing.z().la());
             if (resolution == null||!resolution.equals(Resolution.HD1080RESOLUTION) ) {
                 testHumanHeadTexturing.setResx((int) editPolygonsMappings.dimModelBox.getWidth());
                 testHumanHeadTexturing.setResy((int) editPolygonsMappings.dimModelBox.getHeight());
                 testHumanHeadTexturing.setDimension(new Resolution((int) editPolygonsMappings.dimModelBox.getWidth(), (int) editPolygonsMappings.dimModelBox.getHeight()));
-                testHumanHeadTexturing.z().setIncrementOptimizer ( new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.001));
+                testHumanHeadTexturing.z().setIncrementOptimizer ( new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001*factor));
 
             } else {
                 testHumanHeadTexturing.setResx(resolution.x());
                 testHumanHeadTexturing.setResy(resolution.y());
                 testHumanHeadTexturing.setDimension(TestObjetUx.HD1080);
-                testHumanHeadTexturing.z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.001));
+                testHumanHeadTexturing.z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001*factor));
             }
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
             testHumanHeadTexturing.setJpg(jpg);
