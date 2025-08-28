@@ -25,27 +25,44 @@ package one.empty3.apps.opad;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 
 public class Sounds {
 
     public static synchronized void playSound(String resourcePath) {
         new Thread(new Runnable() {
-            // The wrapper thread is unnecessary, unless it blocks on the
-            // Clip finishing; see comments.
             public void run() {
                 try {
-/*
-                    BufferedInputStream myStream = new BufferedInputStream(new FileInputStream(new File(resourcePath)));
-                    AudioInputStream audio2 = AudioSystem.getAudioInputStream(myStream);
-                   */
-                    InputStream myStream = getClass().getResourceAsStream(resourcePath);
+                    // Essayez d'abord de charger en tant que ressource de classe
+                    InputStream myStream = Sounds.class.getResourceAsStream(resourcePath);
+                    
+                    // Si null, essayez avec le classloader
+                    if (myStream == null) {
+                        myStream = Sounds.class.getClassLoader().getResourceAsStream(resourcePath);
+                    }
+                    
+                    // Si toujours null, essayez comme fichier local
+                    if (myStream == null) {
+                        File file = new File(resourcePath);
+                        if (file.exists()) {
+                            myStream = new BufferedInputStream(new FileInputStream(file));
+                        } else {
+                            System.err.println("Fichier audio introuvable: " + resourcePath);
+                            return;
+                        }
+                    }
+                    
+                    // À ce stade, myStream ne devrait pas être null
                     AudioInputStream audio2 = AudioSystem.getAudioInputStream(myStream);
                     Clip clip = AudioSystem.getClip();
                     clip.open(audio2);
                     clip.start();
                 } catch (Exception e) {
-                    System.err.println(e.getMessage());
+                    System.err.println("Erreur lors de la lecture du son '" + resourcePath + "': " + e.getMessage());
                     e.printStackTrace();
                 }
             }

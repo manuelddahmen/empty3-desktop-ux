@@ -50,11 +50,9 @@ public class EcDrawer extends Drawer implements Runnable {
         this.component = darkFortress;
 
         z = new ZBufferImpl(640, 480);
-
-        ((ZBufferImpl) z).setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_TRI);
-
+        ((ZBufferImpl) z).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, 0.1));
+        ((ZBufferImpl) z).setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
         darkFortress.setSize(640, 480);
-
         new Thread(this).start();
 
         initFrame(component);
@@ -64,13 +62,14 @@ public class EcDrawer extends Drawer implements Runnable {
     public void resize() {
         z = ZBufferFactory.instance(w, h);
         z.couleurDeFond(new ColorTexture( new Color(Color.black)));
-        ((ZBufferImpl) z).setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_TRI);
-
+        ((ZBufferImpl) z).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, 0.1));
+        ((ZBufferImpl) z).setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
         ah = h;
         aw = w;
     }
 
     @Override
+
     public void setLogic(PositionUpdate m) {
         this.mover = m;
         vaisseau = new Vaisseau(mover);

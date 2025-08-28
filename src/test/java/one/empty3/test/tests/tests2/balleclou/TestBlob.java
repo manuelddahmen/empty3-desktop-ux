@@ -53,7 +53,9 @@ import java.util.logging.Logger;
         @Override
         public void ginit() {
 
+            ZBufferImpl.NEW_VERSION_ALPHA = true;
             z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
+            ((ZBufferImpl) z()).setIncrementOptimizer (new ZBufferImpl.IncrementOptimizer(0.0001, 0.01));
             z().setFORCE_POSITIVE_NORMALS(true);
             try {
                 tc = new ImageTexture(new Image(ImageIO.read(new File("resources/img/2018-03-31 11.51_edited.jpg"))));

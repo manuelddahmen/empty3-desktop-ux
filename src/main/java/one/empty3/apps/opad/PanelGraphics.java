@@ -30,9 +30,7 @@ import one.empty3.apps.opad.menu.LevelMenu;
 import one.empty3.library.Point3D;
 
 import javax.swing.*;
-import one.empty3.library.Point;
 import one.empty3.libs.*;
-//import one.empty3.libs.Color;
 
 import java.awt.*;
 import java.awt.Color;
