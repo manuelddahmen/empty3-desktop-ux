@@ -168,7 +168,7 @@ public class Hist4Contour2 extends ProcessFile {
         // Colorier en fonction des pixels voisins
         //        Circle c2 = getLevel(cc, inP, cc.r/2);
         //new one.empty3.libs.Image(outP.normalize(0, 1).getImage()).saveFile( out);
-        outP.getImage2().saveFile(out);
+        outP.getImage().saveFile(out);
         //new one.empty3.libs.Image(outP0.normalize(0, 1).getImage()).saveFile( out);
         return true;
 

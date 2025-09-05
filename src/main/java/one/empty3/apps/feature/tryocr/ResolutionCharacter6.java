@@ -261,7 +261,7 @@ public class ResolutionCharacter6 implements Runnable {
         if (!dirOut.exists() || !dirOut.isDirectory())
             dirOut.mkdirs();
 
-        input = new PixM(read);
+        input = new PixM(new Image(read));
 
 
         try {
@@ -554,7 +554,7 @@ public class ResolutionCharacter6 implements Runnable {
                             File file = new File(dirOutChars + "-" + j + "-" + i + "-" + w + "-" + h + "-" + s[0] + ".png");
                             if (!file.getParentFile().exists() || file.getParentFile().isDirectory()) {
                                 file.getParentFile().mkdirs();
-                                outChar.getImage2().saveFile( file);
+                                outChar.getImage().saveFile( file);
                             }
                         }
                     }

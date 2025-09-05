@@ -176,7 +176,7 @@ public class Histogram1 extends ProcessFile {
 // Colorier en fonction des pixels voisins
 //        Circle c2 = getLevel(cc, inP, cc.r/2);
 
-        outP.getImage2().saveFile(out);
+        outP.getImage().saveFile(out);
 
         return true;
 

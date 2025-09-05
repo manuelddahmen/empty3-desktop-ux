@@ -50,7 +50,7 @@ public class Mix extends ProcessNFiles {
                         }
                     }
                 }
-                outPixM.getImage2().saveFile(out);
+                outPixM.getImage().saveFile(out);
                 return true;
             }
         }

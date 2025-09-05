@@ -48,7 +48,7 @@ public class IdentNullProcess extends ProcessFile {
     public boolean process(File in, File out) {
 
         PixM pixM = null;
-        pixM = PixM.getPixM(in, maxRes);
+        pixM = PixM.getPixM(new Image(in), maxRes);
 
         double l = (double) getProperties().getProperty("luminanceFactor");
         double r = (double) getProperties().getProperty("redFactor");
@@ -61,15 +61,23 @@ public class IdentNullProcess extends ProcessFile {
                 pixM.set(pixM.index(i,j), pixM.getInt(i,j));
             }
         }*/
-/** GOOD
+/** BAD
         BufferedImage image = pixM.getImage();
         try {
             new one.empty3.libs.Image(image).saveFile( out);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+GOOD
+ Image image = pixM.getImage();
+ try {
+ image.saveFile( out);
+ } catch (IOException e) {
+ throw new RuntimeException(e);
+ }
+
  */
-        Image image = pixM.getImage2();
+        Image image = pixM.getImage();
         image.saveFile(out);
 
         addSource(out);

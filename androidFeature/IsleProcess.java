@@ -61,7 +61,7 @@ public class IsleProcess extends ProcessFile {
         il.filter();
         try {
 
-            pix.getImage2().saveFile( out);
+            pix.getImage().saveFile( out);
 
         } catch (Exception ex) {
 

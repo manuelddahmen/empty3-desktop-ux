@@ -227,8 +227,8 @@ private int sizeElement = 20, elementSize=20;
 
                             }
             //one.empty3.Image.saveFile(pi.getImage().getBitmap(), "JPEG", out);
-            moutA.normalize(0., 1.).getImage2().saveFile(new File(out.getParent() + "a" + "jpg"));
-            moutB.normalize(0., 1.).getImage2().saveFile( new File(out.getParent() + "b" + "jpg"));
+            moutA.normalize(0., 1.).getImage().saveFile(new File(out.getParent() + "a" + "jpg"));
+            moutB.normalize(0., 1.).getImage().saveFile( new File(out.getParent() + "b" + "jpg"));
 
             //one.empty3.Image.saveFile(m2g, "JPEG", new File(out.getParent()+5+"jpg"));
             return true;

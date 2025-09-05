@@ -161,7 +161,7 @@ public class HighlightFeatures extends ProcessFile {
                         }
                 }
             }
-        original.normalize(0., 1., 0., 1.).getImage2().saveFile(out);
+        original.normalize(0., 1., 0., 1.).getImage().saveFile(out);
 
         return true;
     }

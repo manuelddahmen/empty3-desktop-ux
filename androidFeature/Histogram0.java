@@ -122,7 +122,7 @@ public class Histogram0 extends ProcessFile {
         }
 
 
-        outP.normalize(0, 1).getImage2().saveFile( out);
+        outP.normalize(0, 1).getImage().saveFile( out);
         return true;
 
     }

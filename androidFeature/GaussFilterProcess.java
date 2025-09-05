@@ -74,7 +74,7 @@ public class GaussFilterProcess extends ProcessFile {
 
         try {
 
-            normalize.getImage2().saveFile( out);
+            normalize.getImage().saveFile( out);
             return true;
         } catch (Exception ex) {
 

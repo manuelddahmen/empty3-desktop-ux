@@ -32,6 +32,7 @@ import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import javax.imageio.ImageIO;
 
 import one.empty3.libs.Color;
+import one.empty3.libs.Image;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -96,295 +97,289 @@ public class Lines4 extends ProcessFile {
 
     @Override
     public boolean process(File in, File out) {
-        try {
-            if (!in.getName().endsWith("jpg"))
-                return false;
-            pixM = null;
-            pixM = new PixM(ImageIO.read(in));
-            ArrayList<List<Point3D>> lists = new ArrayList<>();
-            lists.add(new ArrayList<>());
-            PixM o = new PixM(pixM.getColumns(), pixM.getLines());
+        if (!in.getName().endsWith("jpg"))
+            return false;
+        pixM = null;
+        pixM = new PixM((Image) Image.getFromFile(in));
+        ArrayList<List<Point3D>> lists = new ArrayList<>();
+        lists.add(new ArrayList<>());
+        PixM o = new PixM(pixM.getColumns(), pixM.getLines());
 
-            double valueDiff = 0.1;
-
-
-            for (double levels : Arrays.asList(1.0, 0.8, 0.6, 0.4/*,0.3,0.2,0.1,0.0*/)) {
-                int[][] p = new int[pixM.getColumns()][pixM.getLines()];//!!
-
-                pz = 0.0;
-                py = 0.0;
-                px = 0.0;
-                distMax = (pixM.getColumns() + pixM.getLines()) / 2;//???
-                random = new Random();
-                listTmpCurve = new ArrayList<Point3D>();
-                listTmpX = new ArrayList<Double>();
-                listTmpY = new ArrayList<Double>();
-                listTmpZ = new ArrayList<Double>();
+        double valueDiff = 0.1;
 
 
-                for (int x = 0; x < pixM.getColumns(); x++)
-                    for (int y = 0; y < pixM.getLines(); y++)
-                        p[x][y] = 0;
+        for (double levels : Arrays.asList(1.0, 0.8, 0.6, 0.4/*,0.3,0.2,0.1,0.0*/)) {
+            int[][] p = new int[pixM.getColumns()][pixM.getLines()];//!!
 
-                for (int i = 0; i < pixM.getColumns(); i++) {
-                    for (int j = 0; j < pixM.getLines(); j++) {
-
-
-                        int x = i;
-                        int y = j;
-                        if (!isInBound(new Point3D((double) x, (double) y, 0.0)))
-                            continue;
-                        double valueAvg = pixM.luminance(x, y);
-
-                        if (p[x][y] == 0) {
-                            listTmpCurve.add(new Point3D((double) x, (double) y, valueAvg));
-                        } else {
-                            continue;
-                        }
-
-                        int cont = 1;
-
-                        while (valueAvg >= levels - valueDiff && valueAvg <= levels + valueDiff && cont == 1 && p[x][y] == 0) {//2nd condition
-
-                            p[x][y] = 1;
+            pz = 0.0;
+            py = 0.0;
+            px = 0.0;
+            distMax = (pixM.getColumns() + pixM.getLines()) / 2;//???
+            random = new Random();
+            listTmpCurve = new ArrayList<Point3D>();
+            listTmpX = new ArrayList<Double>();
+            listTmpY = new ArrayList<Double>();
+            listTmpZ = new ArrayList<Double>();
 
 
-                            neighborhood((int) (double) x, (int) (double) y, valueAvg, valueDiff, levels);
+            for (int x = 0; x < pixM.getColumns(); x++)
+                for (int y = 0; y < pixM.getLines(); y++)
+                    p[x][y] = 0;
+
+            for (int i = 0; i < pixM.getColumns(); i++) {
+                for (int j = 0; j < pixM.getLines(); j++) {
+
+
+                    int x = i;
+                    int y = j;
+                    if (!isInBound(new Point3D((double) x, (double) y, 0.0)))
+                        continue;
+                    double valueAvg = pixM.luminance(x, y);
+
+                    if (p[x][y] == 0) {
+                        listTmpCurve.add(new Point3D((double) x, (double) y, valueAvg));
+                    } else {
+                        continue;
+                    }
+
+                    int cont = 1;
+
+                    while (valueAvg >= levels - valueDiff && valueAvg <= levels + valueDiff && cont == 1 && p[x][y] == 0) {//2nd condition
+
+                        p[x][y] = 1;
+
+
+                        neighborhood((int) (double) x, (int) (double) y, valueAvg, valueDiff, levels);
 //
-                            while (listTmpX.size() > 0) {
-                                getTmp(0);
-                                x = (int) px;
-                                y = (int) py;
-                                removeTmp(0);
-                                if (!isInBound(new Point3D(px, py, 0.0)))
-                                    break;
-
-                                if (p[x][y] == 0) {
-                                    listTmpCurve.add(new Point3D((double) x, (double) y, levels));
-
-                                    cont = 1;
-
-                                    valueAvg = pixM.luminance(x, y);
-
-                                } else cont = 0;
-                            }
-
-                        }
-                        /*
-                        for (List<Point3D> ps : lists)
-                            for (int k = 0; k < ps.size(); k++) {
-                                Point3D p0 = ps.get(k);
-                                for (int c = 0; c < listTmpCurve.size(); c++)
-                                    if (listTmpCurve.get(c).equals(p0) &&
-                                            lists.get(0).contains(p0)) {
-                                        Point3D p1 = listTmpCurve.get(c);
-                                        if (isInBound(p1))
-                                            p[(int) (double) p1.getX()]
-                                                    [(int) (double) p1.getY()] = 1;
-                                        //listTmpCurve.remove(c);
-                                        lists.get(0).remove(p0);
-                                    }
-                            }*/
-                        if (listTmpCurve.size() == 1)
-                            lists.get(0).add(listTmpCurve.get(0));
-                        else if (listTmpCurve.size() > 1 && !lists.contains(listTmpCurve)) {
-                            lists.add(listTmpCurve);
-                            //listTmpCurve = new ArrayList<>();//!!
-                        }
-                    }
-                }
-            }
-
-
-            List<List<Point3D>> lists2 = new ArrayList<>();
-            int index3 = 0;
-            while (index3 < lists.size() && lists.get(index3).size() == 0)
-                index3++;
-            if (index3 < lists.size() && lists.get(index3).size() > 0) {
-
-                List<Point3D> point3DS = relierPoints(lists, lists.get(index3).get(0));
-                int index = 0;
-                do {
-                    if (point3DS != null) {
-                        index++;
-                        lists2.add(point3DS);
-                    }
-                    while (index3 < lists.size() && lists.get(index3).size() == 0)
-                        index3++;
-                    if (index3 < lists.size()) {
-                        point3DS = relierPoints(lists, lists.get(index3).get(index));
-                    }
-                } while (index3 < lists.size() && point3DS != null && point3DS.size() > 0 && index < lists.get(0).size() - 1);
-            }
-
-            List<LineSegment> lines = new ArrayList<>();
-            List<List<Point3D>> list3 = new ArrayList<>();
-
-            for (List<Point3D> listP : lists2) {
-                int i = 0;
-                int a = 0;
-                int b = listP.size() - 1;
-                list3.add(new ArrayList<>());
-                if (listP.size() > 0) {
-                    boolean passed = false;
-                    list3.get(list3.size() - 1).add(listP.get(0));
-                    for (Point3D point3D : listP) {
-                        Double distNormal = 1.0;//0.9??
-                        if (isInBound(point3D)) {
-                            int j = 0;
-                            for (j = 1; j < listP.size(); j++) {
-                                if (Point3D.distance(point3D, listP.get(j)) >= distNormal) {
-                                    distNormal = Point3D.distance(point3D, listP.get(j));
-                                    list3.get(list3.size() - 1).add(listP.get(j));
-                                }  //j--;break;
-
-
-                            }
-                            if (j == listP.size()) {
+                        while (listTmpX.size() > 0) {
+                            getTmp(0);
+                            x = (int) px;
+                            y = (int) py;
+                            removeTmp(0);
+                            if (!isInBound(new Point3D(px, py, 0.0)))
                                 break;
-                            }
-                            a = j - 1;
-                            int k;
-                            for (k = 0; k >= -listP.size(); k--) {
-                                if (Point3D.distance(point3D, listP.get((listP.size() + k) % listP.size())) >= distNormal) {
-                                    distNormal = Point3D.distance(point3D, listP.get((listP.size() + k) % listP.size()));
-                                    list3.get(list3.size() - 1).add(listP.get((listP.size() + k) % listP.size()));
+
+                            if (p[x][y] == 0) {
+                                listTmpCurve.add(new Point3D((double) x, (double) y, levels));
+
+                                cont = 1;
+
+                                valueAvg = pixM.luminance(x, y);
+
+                            } else cont = 0;
+                        }
+
+                    }
+                    /*
+                    for (List<Point3D> ps : lists)
+                        for (int k = 0; k < ps.size(); k++) {
+                            Point3D p0 = ps.get(k);
+                            for (int c = 0; c < listTmpCurve.size(); c++)
+                                if (listTmpCurve.get(c).equals(p0) &&
+                                        lists.get(0).contains(p0)) {
+                                    Point3D p1 = listTmpCurve.get(c);
+                                    if (isInBound(p1))
+                                        p[(int) (double) p1.getX()]
+                                                [(int) (double) p1.getY()] = 1;
+                                    //listTmpCurve.remove(c);
+                                    lists.get(0).remove(p0);
                                 }
-                            }
-                            if (k == -listP.size()) {
-                                break;
-                            }
-                            b = (k + 1 + listP.size()) % listP.size();
-
-                            passed = true;
-                        }
-
-                    }
-                    if (list3.get(list3.size() - 1).size() >= 2 && passed) {
-                        Point3D p1 = list3.get(list3.size() - 1).get(a);
-                        Point3D p2 = list3.get(list3.size() - 1).get(b);
-                        list3.remove(list3.size() - 1);
-                        list3.add(new ArrayList<>());
-                        list3.get(list3.size() - 1).add(p1);
-                        list3.get(list3.size() - 1).add(p2);
-
+                        }*/
+                    if (listTmpCurve.size() == 1)
+                        lists.get(0).add(listTmpCurve.get(0));
+                    else if (listTmpCurve.size() > 1 && !lists.contains(listTmpCurve)) {
+                        lists.add(listTmpCurve);
+                        //listTmpCurve = new ArrayList<>();//!!
                     }
                 }
+            }
+        }
 
+
+        List<List<Point3D>> lists2 = new ArrayList<>();
+        int index3 = 0;
+        while (index3 < lists.size() && lists.get(index3).size() == 0)
+            index3++;
+        if (index3 < lists.size() && lists.get(index3).size() > 0) {
+
+            List<Point3D> point3DS = relierPoints(lists, lists.get(index3).get(0));
+            int index = 0;
+            do {
+                if (point3DS != null) {
+                    index++;
+                    lists2.add(point3DS);
+                }
+                while (index3 < lists.size() && lists.get(index3).size() == 0)
+                    index3++;
+                if (index3 < lists.size()) {
+                    point3DS = relierPoints(lists, lists.get(index3).get(index));
+                }
+            } while (index3 < lists.size() && point3DS != null && point3DS.size() > 0 && index < lists.get(0).size() - 1);
+        }
+
+        List<LineSegment> lines = new ArrayList<>();
+        List<List<Point3D>> list3 = new ArrayList<>();
+
+        for (List<Point3D> listP : lists2) {
+            int i = 0;
+            int a = 0;
+            int b = listP.size() - 1;
+            list3.add(new ArrayList<>());
+            if (listP.size() > 0) {
+                boolean passed = false;
+                list3.get(list3.size() - 1).add(listP.get(0));
+                for (Point3D point3D : listP) {
+                    Double distNormal = 1.0;//0.9??
+                    if (isInBound(point3D)) {
+                        int j = 0;
+                        for (j = 1; j < listP.size(); j++) {
+                            if (Point3D.distance(point3D, listP.get(j)) >= distNormal) {
+                                distNormal = Point3D.distance(point3D, listP.get(j));
+                                list3.get(list3.size() - 1).add(listP.get(j));
+                            }  //j--;break;
+
+
+                        }
+                        if (j == listP.size()) {
+                            break;
+                        }
+                        a = j - 1;
+                        int k;
+                        for (k = 0; k >= -listP.size(); k--) {
+                            if (Point3D.distance(point3D, listP.get((listP.size() + k) % listP.size())) >= distNormal) {
+                                distNormal = Point3D.distance(point3D, listP.get((listP.size() + k) % listP.size()));
+                                list3.get(list3.size() - 1).add(listP.get((listP.size() + k) % listP.size()));
+                            }
+                        }
+                        if (k == -listP.size()) {
+                            break;
+                        }
+                        b = (k + 1 + listP.size()) % listP.size();
+
+                        passed = true;
+                    }
+
+                }
+                if (list3.get(list3.size() - 1).size() >= 2 && passed) {
+                    Point3D p1 = list3.get(list3.size() - 1).get(a);
+                    Point3D p2 = list3.get(list3.size() - 1).get(b);
+                    list3.remove(list3.size() - 1);
+                    list3.add(new ArrayList<>());
+                    list3.get(list3.size() - 1).add(p1);
+                    list3.get(list3.size() - 1).add(p2);
+
+                }
             }
 
-            List<double[]> coefficients = new ArrayList<>();
+        }
+
+        List<double[]> coefficients = new ArrayList<>();
 
 
-            lists2.forEach(p3s -> {
-                Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
-                double xA;
-                double yA;
-                p3s.forEach(point3D -> {
-                    if (isInBound(point3D)) {
-                        o.setValues((int) (double) (point3D.getX()), (int) (double) (point3D.getY()), r.getRed() / 255., r.getGreen() / 255., r.getBlue() / 255.);
-                    }
-
-
-                });
-            });
-
-            PixM img3 = new PixM(pixM.getColumns(), pixM.getLines());
-
-            list3.forEach(p3s -> {
-                Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
-                if (p3s.size() > 2) {
-                    for (int j = 0; j < p3s.size() - 1; j++) {
-                        Point3D p1 = p3s.get(j);
-                        Point3D p2 = p3s.get(j + 1);
-                        double length = p1.moins(p2).norme();
-                        for (double i = 0; i < 1.0; i += 1. / length) {
-                            Point3D point3D = p1.plus(p2.moins(p1).mult(i));
-                            img3.setValues((int) (double) (point3D.getX()), (int) (double) (point3D.getY()),
-                                    p1.getZ(), p1.getZ(), p1.getZ()
-                                    /*        r.getRed() / 255., r.getGreen() / 255., r.getBlue() / 255.*/
-                            );
-                        }
-                    }
+        lists2.forEach(p3s -> {
+            Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
+            double xA;
+            double yA;
+            p3s.forEach(point3D -> {
+                if (isInBound(point3D)) {
+                    o.setValues((int) (double) (point3D.getX()), (int) (double) (point3D.getY()), r.getRed() / 255., r.getGreen() / 255., r.getBlue() / 255.);
                 }
-            });
-            List<List<Point3D>> points = new ArrayList<>();
-            CourbeParametriquePolynomialeBezier[] courbeParametriquePolynomialeBeziers = new CourbeParametriquePolynomialeBezier[lists2.size()];
 
-            list3.forEach(p3s -> {
-                Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
-                if (p3s.size() > 2) {
-                    Point3D p1 = p3s.get(0);
-                    Point3D p2 = p3s.get(p3s.size() - 1);
+
+            });
+        });
+
+        PixM img3 = new PixM(pixM.getColumns(), pixM.getLines());
+
+        list3.forEach(p3s -> {
+            Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
+            if (p3s.size() > 2) {
+                for (int j = 0; j < p3s.size() - 1; j++) {
+                    Point3D p1 = p3s.get(j);
+                    Point3D p2 = p3s.get(j + 1);
                     double length = p1.moins(p2).norme();
                     for (double i = 0; i < 1.0; i += 1. / length) {
                         Point3D point3D = p1.plus(p2.moins(p1).mult(i));
-                        img3.setValues((int) (double) (point3D.getX()), (int) (double) (point3D.getY()), r.getRed() / 255., r.getGreen() / 255., r.getBlue() / 255.);
-                    }
-                }
-            });
-
-            lists2.forEach(p3s -> {
-                Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
-                final Point3D[][] extremes = {new Point3D[2], new Point3D[2]};
-                final Double[] distMaxMinP1 = {2.5, 1000.0};
-                List<Point3D> pointsCurrent = new ArrayList<>();
-                points.add(pointsCurrent);
-
-                for (int k = 0; k < p3s.size() - 1; k++) {
-
-                    Point3D p1 = p3s.get(k);
-                    if (p3s.size() > k + 1) {
-                        Point3D p2 = p3s.get(k + 1);
-                        if (Point3D.distance(p1, p2) >= distMaxMinP1[0] && isInBound(p1) && isInBound(p2)) {
-                            extremes[0][0] = p1;
-                            extremes[0][1] = p2;
-                            distMaxMinP1[0] = Point3D.distance(p1, p2);
-                        }
-                        if (Point3D.distance(p1, p2) <= distMaxMinP1[1] && isInBound(p1) && isInBound(p2)) {
-                            extremes[1][0] = p1;
-                            extremes[1][1] = p2;
-                            distMaxMinP1[1] = Point3D.distance(p1, p2);
-                            pointsCurrent.add(p2);
-                        }
-                    }
-                }
-                if (extremes[0][0] != null && extremes[0][1] != null && isInBound(extremes[0][0]) && isInBound(extremes[0][1])) {
-                    lines.add(new LineSegment(extremes[0][0], extremes[0][1], new ColorTexture(r)));
-                }
-
-                if (pointsCurrent.size() > 2)
-                    lines.add(new LineSegment(extremes[1][0], extremes[1][1], new ColorTexture(r)));
-
-            });
-
-            BufferedImage bLines = new BufferedImage(o.getColumns(), o.getLines(), BufferedImage.TYPE_INT_RGB);
-            Graphics g = bLines.getGraphics();
-            for (LineSegment line : lines) {
-                g.setColor(Color.RED);
-                if (line.getLength() >= 1.2) {
-
-                    Point3D pDraw1 = line.getOrigine().plus(
-                            line.getOrigine().plus(line.getExtremite().moins(line.getOrigine().mult(0.0))));
-                    Point3D pDraw2 = line.getOrigine().plus(
-                            line.getOrigine().plus(line.getExtremite().moins(line.getOrigine().mult(1.0))));
-                    int x1 = (int) (double) pDraw1.getX();
-                    int y1 = (int) (double) pDraw1.getY();
-                    int x2 = (int) (double) pDraw2.getX();
-                    int y2 = (int) (double) pDraw2.getY();
-                    if (isInBound(pDraw1) && isInBound(pDraw2)) {
-                        g.drawLine(x1, y1, x2, y2);
+                        img3.setValues((int) (double) (point3D.getX()), (int) (double) (point3D.getY()),
+                                p1.getZ(), p1.getZ(), p1.getZ()
+                                /*        r.getRed() / 255., r.getGreen() / 255., r.getBlue() / 255.*/
+                        );
                     }
                 }
             }
-            new one.empty3.libs.Image(o.getImage()).saveFile( out);
+        });
+        List<List<Point3D>> points = new ArrayList<>();
+        CourbeParametriquePolynomialeBezier[] courbeParametriquePolynomialeBeziers = new CourbeParametriquePolynomialeBezier[lists2.size()];
 
-            return true;
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-            return false;
+        list3.forEach(p3s -> {
+            Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
+            if (p3s.size() > 2) {
+                Point3D p1 = p3s.get(0);
+                Point3D p2 = p3s.get(p3s.size() - 1);
+                double length = p1.moins(p2).norme();
+                for (double i = 0; i < 1.0; i += 1. / length) {
+                    Point3D point3D = p1.plus(p2.moins(p1).mult(i));
+                    img3.setValues((int) (double) (point3D.getX()), (int) (double) (point3D.getY()), r.getRed() / 255., r.getGreen() / 255., r.getBlue() / 255.);
+                }
+            }
+        });
+
+        lists2.forEach(p3s -> {
+            Color r = new Color(Lumiere.getIntFromFloats((float) r(), (float) r(), (float) r()));
+            final Point3D[][] extremes = {new Point3D[2], new Point3D[2]};
+            final Double[] distMaxMinP1 = {2.5, 1000.0};
+            List<Point3D> pointsCurrent = new ArrayList<>();
+            points.add(pointsCurrent);
+
+            for (int k = 0; k < p3s.size() - 1; k++) {
+
+                Point3D p1 = p3s.get(k);
+                if (p3s.size() > k + 1) {
+                    Point3D p2 = p3s.get(k + 1);
+                    if (Point3D.distance(p1, p2) >= distMaxMinP1[0] && isInBound(p1) && isInBound(p2)) {
+                        extremes[0][0] = p1;
+                        extremes[0][1] = p2;
+                        distMaxMinP1[0] = Point3D.distance(p1, p2);
+                    }
+                    if (Point3D.distance(p1, p2) <= distMaxMinP1[1] && isInBound(p1) && isInBound(p2)) {
+                        extremes[1][0] = p1;
+                        extremes[1][1] = p2;
+                        distMaxMinP1[1] = Point3D.distance(p1, p2);
+                        pointsCurrent.add(p2);
+                    }
+                }
+            }
+            if (extremes[0][0] != null && extremes[0][1] != null && isInBound(extremes[0][0]) && isInBound(extremes[0][1])) {
+                lines.add(new LineSegment(extremes[0][0], extremes[0][1], new ColorTexture(r)));
+            }
+
+            if (pointsCurrent.size() > 2)
+                lines.add(new LineSegment(extremes[1][0], extremes[1][1], new ColorTexture(r)));
+
+        });
+
+        BufferedImage bLines = new BufferedImage(o.getColumns(), o.getLines(), BufferedImage.TYPE_INT_RGB);
+        Graphics g = bLines.getGraphics();
+        for (LineSegment line : lines) {
+            g.setColor(Color.RED);
+            if (line.getLength() >= 1.2) {
+
+                Point3D pDraw1 = line.getOrigine().plus(
+                        line.getOrigine().plus(line.getExtremite().moins(line.getOrigine().mult(0.0))));
+                Point3D pDraw2 = line.getOrigine().plus(
+                        line.getOrigine().plus(line.getExtremite().moins(line.getOrigine().mult(1.0))));
+                int x1 = (int) (double) pDraw1.getX();
+                int y1 = (int) (double) pDraw1.getY();
+                int x2 = (int) (double) pDraw2.getX();
+                int y2 = (int) (double) pDraw2.getY();
+                if (isInBound(pDraw1) && isInBound(pDraw2)) {
+                    g.drawLine(x1, y1, x2, y2);
+                }
+            }
         }
+        new Image(o.getImage()).saveFile( out);
+
+        return true;
 
     }
 

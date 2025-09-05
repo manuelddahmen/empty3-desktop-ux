@@ -237,7 +237,7 @@ public class K_Clusterer /*extends ReadDataset*/ {
                 });
             });
 
-            pix2.normalize(0.0, 1.0).getImage2().saveFile(out);
+            pix2.normalize(0.0, 1.0).getImage().saveFile(out);
         } catch (Exception ex1) {
             System.err.println(ex1.getMessage());
             ex1.printStackTrace();

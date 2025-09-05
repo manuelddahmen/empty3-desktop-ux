@@ -162,7 +162,7 @@ public class Hist4Contour4colors extends ProcessFile {
         //        Circle c2 = getLevel(cc, inP, cc.r/2);
         try {
             //one.empty3.Image.saveFile(outP.normalize(0, 1).getImage().getBitmap(), "jpg", out);
-            outP.getImage2().saveFile(out);
+            outP.getImage().saveFile(out);
             //one.empty3.Image.saveFile(outP0.normalize(0, 1).getImage().getBitmap(), "jpg", out);
             return true;
 

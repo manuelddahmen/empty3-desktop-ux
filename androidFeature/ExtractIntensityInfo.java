@@ -132,7 +132,7 @@ public class ExtractIntensityInfo extends
 
 
         try {
-            pix.getImage2().saveFile(out);
+            pix.getImage().saveFile(out);
         } catch (Exception ex) {
         }
 

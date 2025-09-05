@@ -24,6 +24,7 @@ package one.empty3.feature;
 
 import one.empty3.apps.feature.ClassSchemaBuilder;
 import one.empty3.feature.PixM;
+import one.empty3.libs.Image;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -56,12 +57,12 @@ public abstract class Motion /*extends ProcessFile */ {
             return null;
         if (frames.size() >= 2 && frames.size() < BUFFER_MAX_FRAMES) {
 
-            frame1 = new PixM(frames.get(0));
-            frame2 = new PixM(frames.get(1));
+            frame1 = new PixM(new Image(frames.get(0)));
+            frame2 = new PixM(new Image(frames.get(1)));
             frames.remove(0);
         } else if (frames.size() >= BUFFER_MAX_FRAMES) {
-            frame1 = new PixM(frames.get(0));
-            frame2 = new PixM(frames.get(1));
+            frame1 = new PixM(new Image(frames.get(0)));
+            frame2 = new PixM(new Image(frames.get(1)));
             frames.remove(0);
         } else {
             return null;

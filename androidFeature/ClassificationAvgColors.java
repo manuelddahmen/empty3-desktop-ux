@@ -84,7 +84,7 @@ public class ClassificationAvgColors extends ProcessFile {
         });
 
 
-        toProcess.getImage2().saveFile( out);
+        toProcess.getImage().saveFile( out);
         return true;
     }
 }

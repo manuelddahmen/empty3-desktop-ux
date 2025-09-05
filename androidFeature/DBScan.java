@@ -140,7 +140,7 @@ public class DBScan extends ProcessFile {
                             colorCluster.green(), colorCluster.blue());
                 }
             }
-            p.getImage2().saveFile( out);
+            p.getImage().saveFile( out);
 
         } catch (IOException e) {
             e.printStackTrace();

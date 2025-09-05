@@ -11,7 +11,7 @@ plugins {
 //"empty3-desktop-ux"
 
 group = 'one.empty3'
-version = '2025.8.19'
+var version_date = '2025.9.1'
 
 var JAVA_VERSION = 21
 
@@ -225,7 +225,7 @@ tasks.withType(JavaCompile).configureEach {
 dependencies {
     implementation 'one.empty3.libs:partial-desktop:0.0.31'
     implementation 'one.empty3.libs:commons-mp:0.0.11'
-    implementation 'one.empty3:empty3-library-mp:2025.8.20-1'
+    implementation 'one.empty3:empty3-library-mp:2025.9.1'
     implementation 'com.google.cloud:google-cloud-pubsub:1.133.1' // Check for the latest version
     implementation 'com.google.cloud:google-cloud-tasks:2.59.0'
     implementation 'com.google.cloud.functions:functions-framework-api:1.1.0'
@@ -357,13 +357,13 @@ signing {
     //sign configurations.archives
 }
 
-def versionName = '2025.8.19'
+def versionName = version_date
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-desktop-ux'
-            version = '2025.8.19'
+            version = version_date
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -379,7 +379,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-desktop-ux"
-                version "2025.8.19"
+                version version_date
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -463,8 +463,8 @@ jreleaser {
         name = 'empty3-desktop-ux'
         java.artifactId = 'empty3-desktop-ux'
         java.groupId = 'one.empty3'
-        java.version = '2025.8.19'
-        version = '2025.8.19'
+        java.version = version_date
+        version = version_date
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +

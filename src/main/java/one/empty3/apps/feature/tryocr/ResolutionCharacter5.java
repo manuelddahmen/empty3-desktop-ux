@@ -500,7 +500,7 @@ public class ResolutionCharacter5 implements Runnable {
                                     rectangle2.getY(), rectangle2.getW(), rectangle2.getH());
                             if (!file.getParentFile().exists() || file.getParentFile().isDirectory()) {
                                 file.getParentFile().mkdirs();
-                                outChar.getImage2().saveFile(file);
+                                outChar.getImage().saveFile(file);
                             }
                             outRecompose.pasteSubImage(outChar,
                                     rectangle2.getX(), rectangle2.getY(), rectangle2.getW(), rectangle2.getH());

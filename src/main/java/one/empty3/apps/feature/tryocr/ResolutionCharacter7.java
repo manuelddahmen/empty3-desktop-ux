@@ -553,7 +553,7 @@ public class ResolutionCharacter7 implements Runnable {
                             File file = new File(dirOutChars + "-" + j + "-" + i + "-" + w + "-" + h + "-" + s[0] + ".png");
                             if (!file.getParentFile().exists() || file.getParentFile().isDirectory()) {
                                 file.getParentFile().mkdirs();
-                                outChar.getImage2().saveFile( file);
+                                outChar.getImage().saveFile( file);
                             }
                         }
                     }

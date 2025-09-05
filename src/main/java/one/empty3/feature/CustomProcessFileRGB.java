@@ -28,6 +28,7 @@ import one.empty3.library.StructureMatrix;
 import one.empty3.library1.shader.Vec;
 import one.empty3.library1.tree.ListInstructions;
 import one.empty3.feature.PixM;
+import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -64,7 +65,7 @@ public class CustomProcessFileRGB extends ProcessFile {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            pixIn = one.empty3.feature.PixM.getPixM(readIn, maxRes);
+            pixIn = one.empty3.feature.PixM.getPixM(new Image(readIn), maxRes);
             one.empty3.feature.PixM pix = pixIn;
             PixM pixOut = pixIn.copy();
             HashMap<String, String> currentVecs = new HashMap<>();
@@ -112,7 +113,7 @@ public class CustomProcessFileRGB extends ProcessFile {
             }
 
             assert pixOut != null;
-            pixOut.getImage2().saveFile( out);
+            pixOut.getImage().saveFile( out);
             assert out.exists();
             Logger.getAnonymousLogger().log(Level.INFO, "Image written" + out.getAbsolutePath());
             return true;

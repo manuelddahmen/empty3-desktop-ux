@@ -69,7 +69,7 @@ public class BrushGradientMaximumColor extends ProcessFile {
                     }
             }
         }
-        pixM2.normalize(0, 1).getImage2().saveFile( out);
+        pixM2.normalize(0, 1).getImage().saveFile( out);
         return true;
     }
 }

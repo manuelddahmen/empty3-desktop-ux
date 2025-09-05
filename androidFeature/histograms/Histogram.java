@@ -123,7 +123,7 @@ public class Histogram extends ProcessFile {
                 outP.setP(i, j, Point3D.n(maxIJ, maxIJ, maxIJ).mult(maxIJ * maxR / rIJ));
             }
         }
-        outP.getImage2().saveFile(out);
+        outP.getImage().saveFile(out);
 
         return true;
 

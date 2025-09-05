@@ -66,7 +66,7 @@ public class ExtremaProcess extends ProcessFile {
         PixM m = le.filter(new M3(pix, 1, 1)).getImagesMatrix()[0][0];
 
         try {
-            m.normalize(0, 1).getImage2().saveFile(out);
+            m.normalize(0, 1).getImage().saveFile(out);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

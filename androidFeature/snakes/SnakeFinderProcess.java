@@ -47,7 +47,7 @@ public class SnakeFinderProcess extends ProcessFile {
 
         //image.fillIn(snake, new ColorTexture(Color.WHITE), new ColorTexture(Color.WHITE));
 
-        image.normalize(0, 1).getImage2().saveFile(out);
+        image.normalize(0, 1).getImage().saveFile(out);
         return true;
     }
 

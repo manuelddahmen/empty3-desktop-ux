@@ -36,7 +36,7 @@ public class HarrisProcess extends ProcessFile {
 
             m2.applyFilter(h);
 
-            m2.normalize(0.0, 1.0).getImage2().saveFile(out);
+            m2.normalize(0.0, 1.0).getImage().saveFile(out);
 
             return true;
         } catch (Exception ex) {

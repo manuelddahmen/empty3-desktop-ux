@@ -141,7 +141,7 @@ public class Snake extends ProcessFile {
         classification();
 
         try {
-            pix3.normalize(0., 1.).getImage2().saveFile( out);
+            pix3.normalize(0., 1.).getImage().saveFile( out);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

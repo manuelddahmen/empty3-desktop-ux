@@ -380,7 +380,7 @@
 //        return l;
 //    }
 //
-//    public Image getImage2() {
+//    public Image getImage() {
 //        return getImage();
 //    }
 //

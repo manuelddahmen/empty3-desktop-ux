@@ -67,7 +67,7 @@ public class ProxyValue extends ProcessFile {
 
 
         try {
-            copy.getImage2().saveFile( out);
+            copy.getImage().saveFile( out);
 
         } catch (Exception ex) {
             ex.printStackTrace();

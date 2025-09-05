@@ -31,6 +31,6 @@ public abstract class DiffMotion extends Motion {
         linear.op2d2d(new char[]{'-'}, new int[][]{{1, 0, 2}}, new int[]{2});
 
         //TOFIX
-        return linear.getImages()[2].normalize(-1, 1, 0, 1).normalize(0, 1).getImage2();
+        return linear.getImages()[2].normalize(-1, 1, 0, 1).normalize(0, 1).getImage();
     }
 }

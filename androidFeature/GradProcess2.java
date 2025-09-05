@@ -46,7 +46,7 @@ public class GradProcess2 extends ProcessFile {
                             + 4 *pixMout.get(x, y + 1));
                 }
 
-        pixMout.normalize(0, 1).getImage2().saveFile( out);
+        pixMout.normalize(0, 1).getImage().saveFile( out);
         return true;
     }
 }
