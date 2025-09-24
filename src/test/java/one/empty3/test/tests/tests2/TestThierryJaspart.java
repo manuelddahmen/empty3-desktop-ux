@@ -59,7 +59,7 @@ public class TestThierryJaspart extends TestObjetSub {
         scene().cameraActive(camera);
         scene().cameraActive().setEye(Point3D.Z.mult(10d));
         try {
-            texture = new ImageTexture((Image) Image.loadFile(
+            texture = new ImageTexture((Image) Image.staticLoadFile(
                     new File("res/img/IMG_20240510_152936.jpg")));
         } catch (Exception ex) {
             ex.printStackTrace();

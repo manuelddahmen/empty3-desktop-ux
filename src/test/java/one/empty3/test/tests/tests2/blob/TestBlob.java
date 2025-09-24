@@ -53,7 +53,7 @@ public class TestBlob extends TestObjetSub {
 
         z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
         z().setFORCE_POSITIVE_NORMALS(true);
-        tc = new ImageTexture((Image) Image.loadFile(new File("resources/img/2018-03-31 11.51_edited.jpg")));
+        tc = new ImageTexture((Image) Image.staticLoadFile(new File("resources/img/2018-03-31 11.51_edited.jpg")));
         blobC = new Blob1(Point3D.O0, 1.0);
         int m, n;
         m = 5;

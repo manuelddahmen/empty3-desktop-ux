@@ -89,7 +89,7 @@ public class TestPlanets2 extends TestObjetSub {
                     i1 ++;
                 }
                 if(i1<planetsImagesFiles.length) {
-                    image = (Image) Image.loadFile(planetsImagesFiles[i1]);
+                    image = (Image) Image.staticLoadFile(planetsImagesFiles[i1]);
                     textureImg = new ImageTexture(image);
                     if (image != null)
                         Logger.getLogger(this.getClass().getCanonicalName()).info("Color at center of texure : " + textureImg.getColorAt(0.5, 0.5));

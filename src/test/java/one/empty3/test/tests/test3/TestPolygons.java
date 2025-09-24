@@ -69,7 +69,7 @@ public class TestPolygons extends TestObjetSub {
         scene().add(s);
         scene().cameraActive(new Camera(Point3D.Z.mult(-10.0), Point3D.O0, Point3D.Y));
         try {
-            texture = new ImageTexture((Image) Image.loadFile(
+            texture = new ImageTexture((Image) Image.staticLoadFile(
                     new File("resources/img/2020-10-19 13.24.58.jpg")));
             texture = new TextureMov("resources/mov/VID_20200416_201314.mp4");
         } catch (Exception ex) {
