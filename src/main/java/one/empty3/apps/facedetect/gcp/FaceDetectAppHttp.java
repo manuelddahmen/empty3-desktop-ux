@@ -48,8 +48,6 @@ public class FaceDetectAppHttp implements HttpFunction {
         this.vision = visionService;
     }
 
-    // ... (Other methods: initStructurePolygons, frontal, getVisionService, detectFaces, writeFaceData) ...
-
     private void writeFaceData(BufferedImage img, FaceAnnotation faceAnnotation) {
 
         for (int i = 0; i < landmarks.length; i++) {
@@ -190,10 +188,10 @@ public class FaceDetectAppHttp implements HttpFunction {
 
             result.put("completion", "100");
             result.put("faces", faces);
-            result.put("image", Base64.getEncoder().encode(byteArrayOutputStream.toByteArray()));
+            result.put("image", Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
             app.dataWriter.close();
             httpResponse.setStatusCode(200);
-            gson.toJson(httpResponse, httpResponse.getWriter());
+            gson.toJson(result, httpResponse.getWriter());
 
         } catch (Exception ex) {
             httpResponse.setStatusCode(500);
