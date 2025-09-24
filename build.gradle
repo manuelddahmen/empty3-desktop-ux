@@ -207,8 +207,46 @@ tasks.register('deployCloudFunction', Exec) {
             environment("GOOGLE_APPLICATION_CREDENTIALS", "/path/to/your/credentials.json")
 }
 
+tasks.register('deployCloudFunctionCreateTxt', Exec) {
+//define variables that you want to use
+    def buildDirJars = 'build/libs'
+    def functionName = "create-text-face-points"
+    def fullyQualifiedEntryPoint = 'one.empty3.apps.facedetect.gcp.FaceDetectAppHttp'
+    def jarFileName = "*"
+    commandLine "gcloud functions deploy $functionName --runtime java21 --trigger-http --entry-point $fullyQualifiedEntryPoint --source $buildDirJars",
+            // Add any other necessary gcloud options here, such as memory settings, etc.
+
+            // Set environment variables if needed
+            environment("GOOGLE_APPLICATION_CREDENTIALS", "/path/to/your/credentials.json")
+}
 
 
+tasks.register('extractDeps', Jar) {
+    archiveFileName = 'empty3-library-mp-with-dependencies.jar'
+    destinationDirectory = file('build/libs')
+
+    // Activer Zip64 pour gérer plus de 65535 entrées
+    zip64 = true
+
+    // Inclure le contenu de toutes les dépendances
+    from {
+        configurations.runtimeClasspath.collect { zipTree(it) }
+    }
+
+    // Inclure vos classes compilées (optionnel)
+    from sourceSets.main.output
+
+    // Exclure les fichiers qui peuvent causer des conflits
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/LICENSE*'
+    exclude 'META-INF/license*'
+    exclude 'META-INF/NOTICE*'
+
+    // Stratégie pour les fichiers dupliqués
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
 
 //gradle runFunction -Prun.functionTarget=one.empty3.apps.facedetect.gcp.ImageProcessor  -Prun.port=8080
 //java --classpath 'build/libs' --target one.empty3.apps.facedetect.gcp.ImageProcessor com.google.cloud.functions.invoker.runner.Invoker
