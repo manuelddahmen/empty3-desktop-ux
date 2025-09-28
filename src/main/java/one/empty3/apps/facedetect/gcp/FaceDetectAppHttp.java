@@ -161,9 +161,7 @@ public class FaceDetectAppHttp implements HttpFunction {
             return;
         }
         String imageString = null;
-            if(jsonObject!=null) {
-                imageString = jsonObject.get("image").getAsString();
-            }
+        imageString = jsonObject.get("image").getAsString();
 
         try {
 
