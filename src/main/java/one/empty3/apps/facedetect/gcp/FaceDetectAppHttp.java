@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,7 +49,7 @@ public class FaceDetectAppHttp implements HttpFunction {
         this.vision = visionService;
     }
 
-    private void writeFaceData(BufferedImage img, FaceAnnotation faceAnnotation) {
+    private void writeFaceData(FaceAnnotation faceAnnotation, int w, int h) {
 
         for (int i = 0; i < landmarks.length; i++) {
             for (int j = 0; j < landmarks[i].length; j++) {
@@ -58,11 +59,15 @@ public class FaceDetectAppHttp implements HttpFunction {
                     int finalK = k;
                     Optional<Landmark> landmark1 = faceAnnotation.getLandmarks().stream().filter(landmark ->
                             landmark.getType() != null && landmark.getType().equals(landmarks[finalI][finalJ][finalK])).findFirst();
-                    if (!landmark1.isEmpty()) {
+                    if (landmark1.isPresent()) {
                         Landmark landmark2 = landmark1.get();
                         dataWriter.println(landmark2.getType());
-                        dataWriter.println((double) landmark2.getPosition().getX() / img.getWidth());
-                        dataWriter.println((double) landmark2.getPosition().getY() / img.getHeight());
+                        double x = landmark2.getPosition().getX();
+                        double y = landmark2.getPosition().getY();
+                        double normalizedX = Math.max(0.0, Math.min(1.0, x / w));
+                        double normalizedY = Math.max(0.0, Math.min(1.0, y / h));
+                        dataWriter.println(normalizedX);
+                        dataWriter.println(normalizedY);
                         dataWriter.println();
                     }
                 }
@@ -83,7 +88,7 @@ public class FaceDetectAppHttp implements HttpFunction {
                 .setApplicationName(APPLICATION_NAME)
                 .build();
     }
-    public List<FaceAnnotation> detectFaces(byte[] read, int maxResults) throws IOException {
+    public List<FaceAnnotation> detectFaces(byte[] read, int maxResults, BufferedImage img) throws IOException {
         AnnotateImageRequest request =
                 new AnnotateImageRequest()
                         .setImage(new Image().encodeContent(read))
@@ -100,6 +105,25 @@ public class FaceDetectAppHttp implements HttpFunction {
         BatchAnnotateImagesResponse batchResponse = annotate.execute();
         assert batchResponse.getResponses().size() == 1;
         AnnotateImageResponse response = batchResponse.getResponses().get(0);
+        response.getFaceAnnotations().forEach(new Consumer<FaceAnnotation>() {
+            @Override
+            public void accept(FaceAnnotation faceAnnotation) {
+                faceAnnotation.getLandmarks().forEach(
+                        new Consumer<Landmark>() {
+                            @Override
+                            public void accept(Landmark landmark) {
+                                Float x = landmark.getPosition().getX();
+                                Float y = landmark.getPosition().getY();
+                                Float z = landmark.getPosition().getZ();
+                                Point3D point3D = new Point3D((double) x / img.getWidth(), (double) y / img.getHeight(), (double) z);
+                                landmark.getPosition().setX((float) point3D.getX());
+                                landmark.getPosition().setY((float) point3D.getY());
+                                landmark.getPosition().setZ((float) (double) point3D.getZ());
+                            }
+                        });
+            }
+        });
+
         if (response.getFaceAnnotations() == null) {
             throw new IOException(
                     response.getError() != null
@@ -167,19 +191,21 @@ public class FaceDetectAppHttp implements HttpFunction {
 
             byte[] decode = Base64.getDecoder().decode(imageString);
             BufferedImage img = ImageIO.read(new ByteArrayInputStream(decode));
+            int w  = img.getWidth();
+            int h  = img.getHeight();
             if (img == null) {
                 httpResponse.setStatusCode(500);
                 gson.toJson(Map.of("error", "Error reading image."), httpResponse.getWriter());
                 return;
             }
             FaceDetectAppHttp app = new FaceDetectAppHttp(getVisionService());
-            List<FaceAnnotation> faces = app.detectFaces(decode, MAX_RESULTS);
+            List<FaceAnnotation> faces = app.detectFaces(decode, MAX_RESULTS, img);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             app.dataWriter = new PrintWriter(byteArrayOutputStream);
             app.initStructurePolygons();
             faces.forEach(faceAnnotation -> {
-                app.writeFaceData(img, faceAnnotation);
+                app.writeFaceData(faceAnnotation, w, h);
             });
             // Process data
             Map<String, Object> result = new HashMap<>();
