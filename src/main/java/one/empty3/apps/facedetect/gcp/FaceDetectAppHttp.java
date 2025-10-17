@@ -204,9 +204,9 @@ public class FaceDetectAppHttp implements HttpFunction {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             app.dataWriter = new PrintWriter(byteArrayOutputStream);
             app.initStructurePolygons();
-            faces.forEach(faceAnnotation -> {
-                app.writeFaceData(faceAnnotation, w, h);
-            });
+            //faces.forEach(faceAnnotation -> {
+            //    app.writeFaceData(faceAnnotation, w, h);
+            //});
             // Process data
             Map<String, Object> result = new HashMap<>();
 

@@ -383,7 +383,26 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishAllPublicationsToOSSRHRepository", true))
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
+tasks.register('genText', Exec) {
+    description = 'Calls the gen-text POST method with a base64 encoded image in a JSON payload'
+    workingDir project.rootDir
 
+    doFirst {
+        def imageFile = file('res/img/IMG_20240510_152114.jpg')
+        if (!imageFile.exists()) {
+            throw new java.io.FileNotFoundException("Image file not found at: ${imageFile.absolutePath}")
+        }
+        def encodedImage = imageFile.bytes.encodeBase64().toString()
+        def jsonPayload = '{"image": "' + encodedImage + '"}'
+
+        standardInput = new java.io.ByteArrayInputStream(jsonPayload.getBytes('UTF-8'))
+
+        commandLine './curl.exe', '--insecure', '-X', 'POST',
+                '-H', 'Content-Type: application/json',
+                '-d', '@-',
+                'https://us-central1-meshmasks-1dd55.cloudfunctions.net/gen-text'
+    }
+}
 signing {
     def signingKey = load.get("signing.keyId")
     def signingPassword = load.get("signing.password")
