@@ -38,6 +38,7 @@ import javax.swing.*;
 
 import one.empty3.library.Point;
 import one.empty3.libs.Color;
+import one.empty3.libs.Image;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -574,8 +575,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                             if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d43 && imageFileRight != null) {
                                                 d43.jpgRight = imageFileRight;
                                             }
-                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear44 d44 && imageFileRight != null) {
-                                                d44.jpgRight = imageFileRight;
+                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear44_2 d44 && imageFileRight != null) {
+                                                d44.jpgRight = new Image(imageFileRight);
                                             }
                                         } else {
                                             Logger.getAnonymousLogger().log(Level.INFO, "Invalid array in DistanceAB");

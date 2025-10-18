@@ -56,7 +56,7 @@ public class TextureMorphMove extends ITexture {
             setDistanceABclass(distanceABclass);
             if (distanceABclass.equals(DistanceProxLinear43.class) && editPanel.imageFileRight != null)
                 editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(), new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
-            if (distanceABclass.equals(DistanceProxLinear44.class) && editPanel.imageFileRight != null)
+            if (distanceABclass.equals(DistanceProxLinear44_2.class) && editPanel.imageFileRight != null)
                 editPanel.convexHull3 = new ConvexHull(editPanel.points3.values().stream().toList(), new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
         }
         if (!editPanel.pointsInImage.isEmpty())
@@ -140,7 +140,7 @@ public class TextureMorphMove extends ITexture {
                                 return dist4.jpgRight.getRGB(x3, y3);
                             }
                         }
-                    } else if (distanceAB instanceof DistanceProxLinear44 dist4 && dist4.jpgRight != null) {
+                    } else if (distanceAB instanceof DistanceProxLinear44_2 dist4 && dist4.jpgRight != null) {
                         Point3D c = dist4.findAxPointInBa13(u, v);
                         if (c != null) {
                             c = c.multDot(new Point3D((double) dist4.jpgRight.getWidth(), (double) dist4.jpgRight.getHeight(), 0.0));
@@ -162,7 +162,7 @@ public class TextureMorphMove extends ITexture {
                                 return new Color((float) color[0], (float) color[1], (float) color[2]).getRGB();
                             }
                         }
-                    } else if (!(distanceAB instanceof DistanceProxLinear44)) {
+                    } else if (!(distanceAB instanceof DistanceProxLinear44_2)) {
                         return editPanel.image.getRGB(xLeft, yLeft);
                     }
                 }
@@ -268,10 +268,10 @@ public class TextureMorphMove extends ITexture {
                     ((DistanceProxLinear43) distanceAB).setComputeMaxTime(editPanel.getComputeTimeMax());
                     editPanel.convexHull3 = new ConvexHull(lC, new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
                     if (editPanel.imageFileRight != null) distanceAB.jpgRight = editPanel.imageFileRight;
-                } else if (distanceMap.isAssignableFrom(DistanceProxLinear44.class)) {
-                    distanceAB = new DistanceProxLinear44(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid);
+                } else if (distanceMap.isAssignableFrom(DistanceProxLinear44_2.class)) {
+                    distanceAB = new DistanceProxLinear44_2(lA, lB, lC, new Dimension(editPanel.image.getWidth(), editPanel.image.getHeight()), bDimReal, cDimReal, editPanel.opt1, editPanel.optimizeGrid, new one.empty3.libs.Image(editPanel.imageFileRight));
                     distanceAB.setJpgRight(editPanel.imageFileRight);
-                    ((DistanceProxLinear44) distanceAB).setComputeMaxTime(editPanel.getComputeTimeMax());
+                    ((DistanceProxLinear44_2) distanceAB).setComputeMaxTime(editPanel.getComputeTimeMax());
                     editPanel.convexHull3 = new ConvexHull(lC, new Dimension(editPanel.imageFileRight.getWidth(), editPanel.imageFileRight.getHeight()));
                     if (editPanel.imageFileRight != null) distanceAB.jpgRight = editPanel.imageFileRight;
                 } else if (distanceMap.isAssignableFrom(DistanceBezier3.class)) {

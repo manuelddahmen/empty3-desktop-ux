@@ -382,7 +382,7 @@ public class EditPolygonsMappings implements Runnable {
                                             if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d43 && imageFileRight != null) {
                                                 d43.jpgRight = imageFileRight;
                                             }
-                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear44 d44 && imageFileRight != null) {
+                                            if (iTextureMorphMove.distanceAB instanceof DistanceProxLinear44_2 d44 && imageFileRight != null) {
                                                 d44.jpgRight = imageFileRight;
                                             }
                                         } else {

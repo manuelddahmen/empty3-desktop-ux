@@ -11,7 +11,7 @@ plugins {
 //"empty3-desktop-ux"
 
 group = 'one.empty3'
-var version_date = '2025.9.24'
+var version_date = '2025.10.18'
 
 var JAVA_VERSION = 21
 

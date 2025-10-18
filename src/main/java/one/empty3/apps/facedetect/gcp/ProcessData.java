@@ -53,7 +53,7 @@ public class ProcessData implements Runnable {
                     editPolygonsMappings.distanceABClass = DistanceProxLinear43.class;
                     break;
                 case 44:
-                    editPolygonsMappings.distanceABClass = DistanceProxLinear44.class;
+                    editPolygonsMappings.distanceABClass = DistanceProxLinear44_2.class;
                     break;
                 default:
                     editPolygonsMappings.distanceABClass = DistanceIdent.class;

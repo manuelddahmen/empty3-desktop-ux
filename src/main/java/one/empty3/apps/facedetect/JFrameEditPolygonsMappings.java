@@ -82,7 +82,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         if (editPolygonsMappings2.iTextureMorphMove != null)
             if (editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear43 d)
                 d.setComputeMaxTime(computeTimeMax);
-        if (editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear44 d)
+        if (editPolygonsMappings2.iTextureMorphMove.distanceAB instanceof DistanceProxLinear44_2 d)
             d.setComputeMaxTime(computeTimeMax);
     }
 
@@ -447,7 +447,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void menuItem44(ActionEvent e) {
-        editPolygonsMappings2.distanceABClass = DistanceProxLinear44.class;
+        editPolygonsMappings2.distanceABClass = DistanceProxLinear44_2.class;
         editPolygonsMappings2.hasChangedAorB = true;
 
     }
