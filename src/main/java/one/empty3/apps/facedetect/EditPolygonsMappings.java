@@ -183,15 +183,14 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             ZBufferImpl.ImageMapElement ime = ((ZBufferImpl) testHumanHeadTexturing.getZ()).ime;
             Point3D pointIme = null;
             if (ime.checkCoordinates(x, y)) {
+                //Representable elementRepresentable = ime.getrMap()[x][y];
                 Representable elementRepresentable = ime.getrMap()[x][y];
                 System.out.println(elementRepresentable);
                 if (elementRepresentable instanceof E3Model.FaceWithUv
-                        && ((E3Model.FaceWithUv) elementRepresentable).model.equals(model)) {
+                       /* && ((E3Model.FaceWithUv) elementRepresentable).model.equals(model)*/) {
                     u = ime.getuMap()[x][y];
                     v = ime.getvMap()[x][y];
                     pointIme = new Point3D(u, v, 0.0);//ime.getElementPoint(x, y);
-
-
                     final Point3D finalPointIme = pointIme;
                     Logger.getAnonymousLogger().log(Level.INFO, "Point final ime : " + finalPointIme);
                     pointsInModel.forEach((landmarkTypeItem, point3D) -> {
@@ -199,7 +198,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                             pointsInModel.put(landmarkTypeItem, finalPointIme);
                         }
                     });
-                    hasChangedAorB = true;
+                    //hasChangedAorB = true;
                 } else {
                     Logger.getAnonymousLogger().log(Level.INFO, "Representable null : " + elementRepresentable);
                 }
@@ -296,7 +295,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                     pointsInImage.put(landmarkTypeItem, finalPointIme);
                 }
             });
-            hasChangedAorB = true;
+            //hasChangedAorB = true;
 
         }
 

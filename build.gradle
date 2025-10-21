@@ -3,9 +3,9 @@ plugins {
     id("java")
     id 'java-library'
     id 'maven-publish'
-    id 'org.jreleaser' version '1.14.0'
+    id 'org.jreleaser' version '1.20.0'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version "2.2.0-RC"
+    id 'org.jetbrains.kotlin.jvm' version "2.2.10"
 //    id 'com.google.cloud.functions-framework' version '0.6.0'
 }
 //"empty3-desktop-ux"
@@ -13,13 +13,13 @@ plugins {
 group = 'one.empty3'
 var version_date = '2025.10.18'
 
-var JAVA_VERSION = 21
+var JAVA_VERSION = 24
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
-sourceCompatibility = JAVA_VERSION
-targetCompatibility = JAVA_VERSION
+//sourceCompatibility = JAVA_VERSION
+//targetCompatibility = JAVA_VERSION
 
 tasks.withType(JavaCompile).configureEach {
     options.release = JAVA_VERSION
@@ -200,11 +200,11 @@ tasks.register('deployCloudFunction', Exec) {
             "--runtime", "java22",
             "--trigger-http",
             "--entry-point", "$fullyQualifiedEntryPoint",
-            "--source", "$buildDirJars/$jarFileName",
+            "--source", "$buildDirJars/$jarFileName"
             // Add any other necessary gcloud options here, such as memory settings, etc.
 
-            // Set environment variables if needed
-            environment("GOOGLE_APPLICATION_CREDENTIALS", "/path/to/your/credentials.json")
+    // Set environment variables if needed
+    environment "GOOGLE_APPLICATION_CREDENTIALS", "/path/to/your/credentials.json"
 }
 
 tasks.register('deployCloudFunctionCreateTxt', Exec) {
@@ -212,12 +212,11 @@ tasks.register('deployCloudFunctionCreateTxt', Exec) {
     def buildDirJars = 'build/libs'
     def functionName = "create-text-face-points"
     def fullyQualifiedEntryPoint = 'one.empty3.apps.facedetect.gcp.FaceDetectAppHttp'
-    def jarFileName = "*"
-    commandLine "gcloud functions deploy $functionName --runtime java21 --trigger-http --entry-point $fullyQualifiedEntryPoint --source $buildDirJars",
+    commandLine "gcloud", "functions", "deploy", "$functionName", "--runtime", "java21", "--trigger-http", "--entry-point", "$fullyQualifiedEntryPoint", "--source", "$buildDirJars"
             // Add any other necessary gcloud options here, such as memory settings, etc.
 
-            // Set environment variables if needed
-            environment("GOOGLE_APPLICATION_CREDENTIALS", "/path/to/your/credentials.json")
+    // Set environment variables if needed
+    environment "GOOGLE_APPLICATION_CREDENTIALS", "/path/to/your/credentials.json"
 }
 
 
@@ -253,8 +252,6 @@ tasks.register('extractDeps', Jar) {
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
-sourceCompatibility = JAVA_VERSION
-targetCompatibility = JAVA_VERSION
 
 tasks.withType(JavaCompile).configureEach {
     options.release = JAVA_VERSION
@@ -263,7 +260,7 @@ tasks.withType(JavaCompile).configureEach {
 dependencies {
     implementation 'one.empty3.libs:partial-desktop:0.0.34'
     implementation 'one.empty3.libs:commons-mp:0.0.13'
-    implementation 'one.empty3:empty3-library-mp:2025.9.5-2'
+    implementation 'one.empty3:empty3-library-mp:2025.10.20'
     implementation 'com.google.cloud:google-cloud-pubsub:1.133.1' // Check for the latest version
     implementation 'com.google.cloud:google-cloud-tasks:2.59.0'
     implementation 'com.google.cloud.functions:functions-framework-api:1.1.0'
