@@ -287,16 +287,31 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         if (image != null && model != null && selectedPointNo > -1) {
             int x = point.x;
             int y = point.y;
-            //ime.getElementPoint(x, y);
-
-            final Point3D finalPointIme = new Point3D((double) (1.0 * x / panelPicture.getWidth()), (double) (1.0 * y / panelPicture.getHeight()), 0.0);
-            pointsInImage.forEach((landmarkTypeItem, point3D) -> {
-                if (landmarkTypeItem.equals(landmarkType)) {
-                    pointsInImage.put(landmarkTypeItem, finalPointIme);
+            ZBufferImpl.ImageMapElement ime = ((ZBufferImpl) testHumanHeadTexturing.getZ()).ime;
+            Point3D pointIme = null;
+            if (ime.checkCoordinates(x, y)) {
+                //Representable elementRepresentable = ime.getrMap()[x][y];
+                Representable elementRepresentable = ime.getrMap()[x][y];
+                System.out.println(elementRepresentable);
+                if (elementRepresentable instanceof E3Model.FaceWithUv
+                    /* && ((E3Model.FaceWithUv) elementRepresentable).model.equals(model)*/) {
+                    u = ime.getuMap()[x][y];
+                    v = ime.getvMap()[x][y];
+                    pointIme = new Point3D(u, v, 0.0);//ime.getElementPoint(x, y);
+                    final Point3D finalPointIme = pointIme;
+                    Logger.getAnonymousLogger().log(Level.INFO, "Point final ime : " + finalPointIme);
+                    synchronized (pointsInModel) {
+                        pointsInModel.forEach((landmarkTypeItem, point3D) -> {
+                            if (landmarkTypeItem.equals(landmarkType)) {
+                                pointsInModel.put(landmarkTypeItem, finalPointIme);
+                            }
+                        });
+                    }
+                    //hasChangedAorB = true;
+                } else {
+                    Logger.getAnonymousLogger().log(Level.INFO, "Representable null : " + elementRepresentable);
                 }
-            });
-            //hasChangedAorB = true;
-
+            }
         }
 
     }
@@ -654,6 +669,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                     (int) (double) (point3D.getY() * panelDraw.getHeight()) - 3, 7, 7);
                         });
                     } catch (ConcurrentModificationException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 
                     }
                     // Display 3D scene
@@ -728,7 +744,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                     Logger.getAnonymousLogger().log(Level.SEVERE, "Concurrent exception while drawing");
                 }
             }
-/*
+
             if (mode == SELECT_POINT_POSITION && selectedPointOutUv != null) {
                 Point3D uvFace = model.findUvFace(selectedPointOutUv.getX(), selectedPointOutUv.getY());
                 Point point = testHumanHeadTexturing.scene().cameraActive().coordinatesPoint2D(uvFace, testHumanHeadTexturing.getZ());
@@ -751,7 +767,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                         7, 7);
 
             }
-  */
+
         }
     }
 
