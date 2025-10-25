@@ -761,8 +761,10 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             testHumanHeadTexturing.defautZwidth = 0;
             BufferedReader bufferedReader = new BufferedReader(new FileReader(selectedFile));
             model = new E3Model(bufferedReader, true, selectedFile.getAbsolutePath());
-            Logger.getAnonymousLogger().log(Level.INFO, "Loaded model = "+model.toString());
-            model.texture(iTextureMorphMove);
+            if(testHumanHeadTexturing==null) {
+                TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));;
+            }
+            TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));;
             testHumanHeadTexturing.setObj(model);
             Logger.getAnonymousLogger().log(Level.INFO, "Loaded model");
             testHumanHeadTexturing.defautZheight = 0;
@@ -772,6 +774,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         }
         hasChangedAorB = true;
     }
+
 
     public void add3DModelFillPanel(File selectedFile) {
         try {
@@ -1146,5 +1149,9 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             Logger.getAnonymousLogger().log(Level.INFO, "Load image and model first before points", pointsInModel.size());
         }
 
+    }
+
+    public Dimension getDimPictureBox() {
+        return image==null?null:new Dimension(image.getWidth(), image.getHeight());
     }
 }

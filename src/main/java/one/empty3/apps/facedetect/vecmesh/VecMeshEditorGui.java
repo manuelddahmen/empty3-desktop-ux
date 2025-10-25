@@ -572,7 +572,6 @@ public class VecMeshEditorGui extends JFrame {
                 menuItemRenderPoints.setText(bundle.getString("VecMeshEditorGui.menuItemRenderPoints.text"));
                 menuItemRenderPoints.addActionListener(e -> {
 			renderPoints(e);
-			renderPoints(e);
 		});
                 menu2.add(menuItemRenderPoints);
 

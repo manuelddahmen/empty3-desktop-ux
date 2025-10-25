@@ -75,6 +75,125 @@ public class TextureMorphMove extends ITexture {
 
     @Override
     public int getColorAt(double u, double v) {
+        if (editPanel == null || this.distanceAB == null) {
+            System.exit(-1);
+        }
+        if (distanceAB instanceof DistanceIdent) {
+            Point3D ident = ((DistanceIdent) distanceAB).findAxPointInB(u, v);
+
+            Point3D point3D =
+                    new Point3D(ident.getX() * editPanel.image.getWidth(), ident.getY() * editPanel.image.getHeight(), 0.0);
+
+            int x = (int) (Math.max(0.0, Math.min(point3D.getX(), (double) editPanel.image.getWidth() - 1)));
+            int y = (int) (Math.max(0.0, Math.min((point3D.getY()), (double) editPanel.image.getHeight() - 1)));
+
+            /*if (x == 0 || y == 0 || x == editPanel.getWidth() - 1 || y == editPanel.getHeight() - 1) {
+                return 0;
+            }*/
+            return editPanel.image.getRGB(x, y);
+        }
+
+        if (editPanel.image != null) {
+            int x1 = (int) (u * (editPanel.image.getWidth() - 1));
+            int y1 = (int) (v * (editPanel.image.getHeight() - 1));
+            if (distanceAB instanceof DistanceBezier3) ;
+            else if (((distanceAB.sAij == null)
+                    || (distanceAB.sBij == null))
+                    && !(distanceAB.getClass().isAssignableFrom(
+                    DistanceBezier3.class
+            ))
+            ) {
+                //Logger.getAnonymousLogger().log(Level.SEVERE, "DistanceAB .sAij or DistanceAB . sBij is null");
+                return 0;
+            }
+            try {
+                Point3D axPointInB = distanceAB.findAxPointInB(u, v);
+                if (axPointInB != null) {
+                    Point3D p = new Point3D(
+                            axPointInB.getX() * editPanel.image.getWidth(),
+                            axPointInB.getY() * editPanel.image.getHeight(),
+                            0.0
+                    );
+
+                    double percentB =
+                            distanceToConvexHull(distanceAB.bDimReal, editPanel.convexHull1, p) + 10;
+
+                    percentB = percentB / 20;
+                    if (percentB < 0) {
+                        percentB = 0.0;
+                    }
+                    if (percentB > 1) percentB = 1.0;
+
+
+                    //percentB = 0.5;
+                    int xLeft = (int) (Math.max(0.0, Math.min(p.getX(), (double) editPanel.image.getWidth() - 1)));
+                    int yLeft =
+                            (int) (Math.max(0.0, Math.min(p.getY(), (double) editPanel.image.getHeight() - 1)));
+
+                    boolean markA = false;
+
+                    if (distanceAB instanceof DistanceProxLinear43 && ((DistanceProxLinear43) distanceAB).jpgRight != null) {
+                        Point3D c = ((DistanceProxLinear43) distanceAB).findAxPointInBa13(u, v);
+                        if (c != null) {
+                            c = c.multDot(
+                                    new Point3D(
+                                            (double) ((DistanceProxLinear43) distanceAB).jpgRight.getWidth(),
+                                            (double) ((DistanceProxLinear43) distanceAB).jpgRight.getHeight(),
+                                            0.0
+                                    )
+                            );
+                            int x3 = (int) (Math.max(
+                                    0.0,
+                                    Math.min(c.getX(), (double) editPanel.imageFileRight.getWidth() - 1)
+                            ));
+                            int y3 = (int) (Math.max(
+                                    0.0,
+                                    Math.min(c.getY(), (double) editPanel.imageFileRight.getHeight() - 1)
+                            ));
+                            if (editPanel.convexHull1 != null && editPanel.convexHull1.isPointInHull((double) xLeft, (double) yLeft)
+                            ) {
+                                markA = true;
+                                return ((DistanceProxLinear43) distanceAB).jpgRight.getRGB(x3, y3);
+                            }
+
+                        }
+                    } else if (distanceAB instanceof DistanceProxLinear44_2 && ((DistanceProxLinear44_2) distanceAB).jpgRight != null) {
+                        DistanceProxLinear44_2 dist4 = (DistanceProxLinear44_2) distanceAB;
+                        Point3D c = dist4.findAxPointInBa13(u, v);
+                        c = c.multDot(new Point3D((double) dist4.jpgRight.getWidth(), (double) dist4.jpgRight.getHeight(), 0.0));
+                        int x3 = (int) Math.max(0.0,
+                                Math.min(c.getX(),
+                                        (double) editPanel.imageFileRight.getWidth() - 1
+                                ));
+                        int y3 = (int) Math.max(0.0,
+                                Math.min(c.getY(),
+                                        (double) editPanel.imageFileRight.getHeight() - 1
+                                ));
+                        if (editPanel.convexHull1 != null && editPanel.convexHull1.isPointInHull((double) xLeft, (double) yLeft)
+                        ) {
+                            markA = true;
+                            double[] color = new double[3];
+                            double[] rgb3 = Lumiere.getDoubles(dist4.jpgRight.getRGB(x3, y3));
+                            double[] rgb1 = Lumiere.getDoubles(editPanel.image.getRGB(xLeft, yLeft));
+                            for (int k = 0; k < 3; k++) {
+                                color[k] = rgb1[k] + (rgb3[k] - rgb1[k]) * percentB;
+                            }
+
+                            return new Color((float) color[0], (float) color[1], (float) color[2]).getRGB();
+                        }
+                    } else if (!(distanceAB instanceof DistanceProxLinear44_2)) {
+                        return editPanel.image.getRGB(xLeft, yLeft);
+                    }
+                }
+                return editPanel.image.getRGB(x1, y1);
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new Color(255, 255, 0).getRGB();
+    }
+    public int getColorAt_old(double u, double v) {
 
         if (distanceAB == null) return 0;
         if (distanceAB instanceof DistanceIdent) {

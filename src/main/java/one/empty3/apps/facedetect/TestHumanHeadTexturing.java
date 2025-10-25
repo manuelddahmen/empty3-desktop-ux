@@ -166,7 +166,12 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         }
         camera(c);
         scene().cameraActive(c);
-/*
+
+        try {
+            //addEyePolygons(scene(), editPolygonsMappings.model);
+        } catch (Exception ex) {
+            Logger.getLogger(TestHumanHeadTexturing.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if(editPolygonsMappings!=null &&editPolygonsMappings.model instanceof E3Model e3Model) {
             for (int i = 0; i < e3Model.getListRepresentable().size(); i++) {
                 Representable representable = e3Model.getListRepresentable().get(i);
@@ -175,7 +180,8 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                     faceWithUv.setIncrV(0.1);
                 }
             }
-        }*/
+        }
+
         if (z().scene().getObjets().getData1d().size() > 1)
             Logger.getAnonymousLogger().log(Level.SEVERE, "Only one model in scene allowed here");
 

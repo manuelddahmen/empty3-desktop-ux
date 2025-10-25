@@ -295,7 +295,7 @@ public class FaceDetectApp {
     /**
      * Annotates an image using the Vision API.
      */
-    public static void main(String[] args) throws IOException, GeneralSecurityException {
+    public static void main(String... args) throws IOException, GeneralSecurityException {
 
         if (args.length != 3) {
             System.err.println("Usage:");

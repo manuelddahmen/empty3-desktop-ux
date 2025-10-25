@@ -153,7 +153,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
             editPolygonsMappings2.loadImage(loadImage.getSelectedFile());
             lastDirectory = loadImage.getCurrentDirectory();
         } else if (ret == JFileChooser.ERROR_OPTION) {
-            System.exit(-1);
+            //System.exit(-1);
         }
     }
 
@@ -167,7 +167,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 editPolygonsMappings2.loadImageRight(loadImage.getSelectedFile());
                 lastDirectory = loadImage.getCurrentDirectory();
             } else if (ret == JFileChooser.ERROR_OPTION) {
-                System.exit(-1);
+                //System.exit(-1);
             }
         }
     }
@@ -211,7 +211,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
             ex.printStackTrace();
         }
         super.dispose();
-        System.exit(0);
+        //System.exit(0);
     }
 
     private void menuItemSelectPoint(ActionEvent e) {
@@ -635,8 +635,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         try {
             String s = (editPolygonsMappings2.txtFile != null ? editPolygonsMappings2.txtFile.getAbsolutePath() :
                     editPolygonsMappings2.imageFile.getAbsolutePath()) + ".txt";
-            FaceDetectApp.main(new String[]{editPolygonsMappings2.imageFile.getAbsolutePath(),
-                    editPolygonsMappings2.imageFile.getAbsolutePath() + ".jpg", s});
+            FaceDetectApp.main(editPolygonsMappings2.imageFile.getAbsolutePath(), editPolygonsMappings2.imageFile.getAbsolutePath() + ".jpg", s);
             editPolygonsMappings2.loadTxt(new File(s));
         } catch (IOException | GeneralSecurityException ex) {
             throw new RuntimeException(ex);
