@@ -47,6 +47,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,6 +117,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     Thread threadTextureCreation;
     ConvexHull convexHull3;
     private double computeTimeMax;
+    public boolean isThreadDisplayRunning = true;
 
 
     public EditPolygonsMappings(Window owner) {
@@ -151,6 +153,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public void setComputeMaxTime(double value) {
         this.computeTimeMax = value;
     }
+
     public double getComputeTimeMax() {
         return computeTimeMax;
     }
@@ -187,7 +190,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 Representable elementRepresentable = ime.getrMap()[x][y];
                 System.out.println(elementRepresentable);
                 if (elementRepresentable instanceof E3Model.FaceWithUv
-                       /* && ((E3Model.FaceWithUv) elementRepresentable).model.equals(model)*/) {
+                    /* && ((E3Model.FaceWithUv) elementRepresentable).model.equals(model)*/) {
                     u = ime.getuMap()[x][y];
                     v = ime.getvMap()[x][y];
                     pointIme = new Point3D(u, v, 0.0);//ime.getElementPoint(x, y);
@@ -228,7 +231,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     }
 
     private void panelModelViewMouseClicked(MouseEvent e) {
-/*        Point point = e.getPoint();
+        java.awt.Point point = e.getPoint();
         if (model != null) {
             int x = point.x;
             int y = point.y;
@@ -265,7 +268,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             }
             selectedPointOutUv = new Point3D(u, v);
         }
-*/
+
     }
 
     private void panelModelViewComponentResized(ComponentEvent e) {
@@ -278,7 +281,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             if (testHumanHeadTexturing.threadTest != null)
                 TestHumanHeadTexturing.threadTest.interrupt();
         }
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures? one.empty3.apps.testobject.Resolution.HD1080RESOLUTION:new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures ? one.empty3.apps.testobject.Resolution.HD1080RESOLUTION : new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
         hasChangedAorB = true;
     }
 
@@ -287,31 +290,16 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         if (image != null && model != null && selectedPointNo > -1) {
             int x = point.x;
             int y = point.y;
-            ZBufferImpl.ImageMapElement ime = ((ZBufferImpl) testHumanHeadTexturing.getZ()).ime;
-            Point3D pointIme = null;
-            if (ime.checkCoordinates(x, y)) {
-                //Representable elementRepresentable = ime.getrMap()[x][y];
-                Representable elementRepresentable = ime.getrMap()[x][y];
-                System.out.println(elementRepresentable);
-                if (elementRepresentable instanceof E3Model.FaceWithUv
-                    /* && ((E3Model.FaceWithUv) elementRepresentable).model.equals(model)*/) {
-                    u = ime.getuMap()[x][y];
-                    v = ime.getvMap()[x][y];
-                    pointIme = new Point3D(u, v, 0.0);//ime.getElementPoint(x, y);
-                    final Point3D finalPointIme = pointIme;
-                    Logger.getAnonymousLogger().log(Level.INFO, "Point final ime : " + finalPointIme);
-                    synchronized (pointsInModel) {
-                        pointsInModel.forEach((landmarkTypeItem, point3D) -> {
-                            if (landmarkTypeItem.equals(landmarkType)) {
-                                pointsInModel.put(landmarkTypeItem, finalPointIme);
-                            }
-                        });
-                    }
-                    //hasChangedAorB = true;
-                } else {
-                    Logger.getAnonymousLogger().log(Level.INFO, "Representable null : " + elementRepresentable);
+            //ime.getElementPoint(x, y);
+
+            final Point3D finalPointIme = new Point3D((double) (1.0 * x / panelPicture.getWidth()), (double) (1.0 * y / panelPicture.getHeight()), 0.0);
+            pointsInImage.forEach((landmarkTypeItem, point3D) -> {
+                if (landmarkTypeItem.equals(landmarkType)) {
+                    pointsInImage.put(landmarkTypeItem, finalPointIme);
                 }
-            }
+            });
+            //hasChangedAorB = true;
+
         }
 
     }
@@ -468,12 +456,12 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     public void loadImage(File selectedFile) {
         try {
             image = ImageIO.read(selectedFile);
+            imageFile = selectedFile;
         } catch (IOException e) {
             Logger.getAnonymousLogger().log(Level.SEVERE, "Seems file is not good ", e);
         }
         if (image != null && testHumanHeadTexturing != null) {
             testHumanHeadTexturing.setJpg(image);
-            imageFile = selectedFile;
         }
         Logger.getAnonymousLogger().log(Level.INFO, "Loaded image");
     }
@@ -493,50 +481,65 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
 
 
     public void run() {
-        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures? one.empty3.apps.testobject.Resolution.HD1080RESOLUTION:new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+        testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, hdTextures ? Resolution.HD1080RESOLUTION : new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
         hasChangedAorB = true;
         boolean firstTime = true;
         AtomicBoolean oneMore = new AtomicBoolean(true);
         while (isRunning) {
             try {
-                threadDisplay = new Thread(() -> {
-                    while (isRunning) {
-                        //if (isNotMenuOpen()) {
-                        zBufferImage = testHumanHeadTexturing.zBufferImage();
-                        // Display 3D scene
-                        if (zBufferImage != null) {
-                            Graphics graphics = panelModelView.getGraphics();
-                            if (graphics != null) {
-                                graphics.drawImage(zBufferImage, 0, 0, panelModelView.getWidth()-1, panelModelView.getHeight()-1, null);
-                                displayPointsOut(pointsInModel);
+                if (firstTime || threadDisplay==null||!threadDisplay.isAlive() ||!isThreadDisplayRunning) {
+                    threadDisplay = new Thread(() -> {
+                        isThreadDisplayRunning = true;
+                        while (isThreadDisplayRunning && isRunning) {
+                            try {
+                                //if (isNotMenuOpen()) {
+                                try {
+                                    zBufferImage = testHumanHeadTexturing.zBufferImage();
+                                    // Display 3D scene
+                                    if (zBufferImage != null) {
+                                        Graphics graphics = panelModelView.getGraphics();
+                                        if (graphics != null) {
+                                            graphics.drawImage(zBufferImage, 0, 0, panelModelView.getWidth() - 1, panelModelView.getHeight() - 1, null);
+                                        }
+                                    }
+                                } catch (RuntimeException ex) {
+                                    ex.printStackTrace();
+                                }
+                                if(!pointsInModel.isEmpty()) {
+                                        displayPointsOut(pointsInModel);
+                                }
+                                if (image != null) {
+                                    Graphics graphics = panelPicture.getGraphics();
+                                    if (graphics != null) {
+                                        graphics.drawImage(image, 0, 0, panelPicture.getWidth(), panelPicture.getHeight(), null);
+                                    }
+                                }
+                                if(!pointsInImage.isEmpty()) {
+                                    displayPointsIn(pointsInImage);
+                                }
+                                try {
+                                    Thread.sleep(200);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            } catch (RuntimeException ex) {
+                                ex.printStackTrace();
                             }
                         }
-                        if (image != null) {
-                            Graphics graphics = panelPicture.getGraphics();
-                            if (graphics != null) {
-                                graphics.drawImage(image, 0, 0, panelPicture.getWidth(), panelPicture.getHeight(), null);
-                                displayPointsIn(pointsInImage);
-                            }
-                        }
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
-                if (firstTime || !isRunning) {
+                    });
                     threadDisplay.start();
+                }
+                if (isThreadDisplayRunning) {
                     firstTime = false;
                 }
                 if (pointsInImage != null && panelModelView != null && !pointsInImage.isEmpty()
                         && !pointsInModel.isEmpty() && model != null && image != null && distanceABClass != null
                         && threadDistanceIsNotRunning && iTextureMorphMove != null) {
-                    HashMap<String, Point3D> p1  = null;
-                    HashMap<String, Point3D> p2  = null;
+                    HashMap<String, Point3D> p1 = null;
+                    HashMap<String, Point3D> p2 = null;
                     try {
                         int i = 0;
-                        while(i<2) {
+                        while (i < 2) {
                             i = 0;
                             synchronized (pointsInImage) {
                                 p1 = new HashMap<>(pointsInImage);
@@ -571,14 +574,13 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                                 if (iTextureMorphMove == null) {
                                     iTextureMorphMove = new TextureMorphMove(this, distanceABClass);
                                 }
-                                if(  !distanceABClass.getClass().equals(iTextureMorphMove.distanceAB)) {
+                                if (!distanceABClass.getClass().equals(iTextureMorphMove.distanceAB)) {
                                     if (finalP1 != null && finalP2 != null && !finalP2.isEmpty() && !finalP1.isEmpty()) {
 
                                         if (finalP2 != null && finalP2.size() >= 3 && finalP1 != null && finalP1.size() >= 3) {
                                             //iTextureMorphMove.setConvHullAB();
                                         }
                                         if (iTextureMorphMove.distanceAB != null && !iTextureMorphMove.distanceAB.isInvalidArray()) {
-                                            // Display 3D scene
                                             if (model != null) {
                                                 iTextureMorphMove.distanceAB.setModel(model);
                                                 model.texture(iTextureMorphMove);
@@ -632,8 +634,8 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             if ((testHumanHeadTexturing == null || !testHumanHeadTexturing.isRunning())
                     && (image != null && model != null)) {
                 Logger.getAnonymousLogger().log(Level.INFO, "Le thread :TestObjetUx est arrêté ou non attribute");
-                testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image,imageFileRight,  model,
-                        hdTextures? Resolution.HD1080RESOLUTION:new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+                testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this, image, imageFileRight, model,
+                        hdTextures ? Resolution.HD1080RESOLUTION : new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
                 Logger.getAnonymousLogger().log(Level.INFO, "Une nouvelle instance a été démarrée");
             }
 
@@ -777,10 +779,12 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
             testHumanHeadTexturing.defautZwidth = 0;
             BufferedReader bufferedReader = new BufferedReader(new FileReader(selectedFile));
             model = new E3Model(bufferedReader, true, selectedFile.getAbsolutePath());
-            if(testHumanHeadTexturing==null) {
-                TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));;
+            if (testHumanHeadTexturing == null) {
+                TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+                ;
             }
-            TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));;
+            TestHumanHeadTexturing.startAll(this, image, imageFileRight, model, new Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+            ;
             testHumanHeadTexturing.setObj(model);
             Logger.getAnonymousLogger().log(Level.INFO, "Loaded model");
             testHumanHeadTexturing.defautZheight = 0;
@@ -1080,7 +1084,7 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
         threadTextureCreation = null;
         threadDistanceIsNotRunning = true;
         testHumanHeadTexturing = TestHumanHeadTexturing.startAll(this,
-                image, imageFileRight, model, hdTextures? one.empty3.apps.testobject.Resolution.HD1080RESOLUTION:new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
+                image, imageFileRight, model, hdTextures ? one.empty3.apps.testobject.Resolution.HD1080RESOLUTION : new one.empty3.apps.testobject.Resolution(panelModelView.getWidth(), panelModelView.getHeight()));
         renderingStopped = true;
         hasChangedAorB = true;
     }
@@ -1155,7 +1159,6 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
                 bufferedReader.close();
 
 
-
                 hasChangedAorB = true;
 
             } catch (IOException | RuntimeException ex) {
@@ -1168,6 +1171,6 @@ public class EditPolygonsMappings extends JPanel implements Runnable {
     }
 
     public Dimension getDimPictureBox() {
-        return image==null?null:new Dimension(image.getWidth(), image.getHeight());
+        return image == null ? null : new Dimension(image.getWidth(), image.getHeight());
     }
 }

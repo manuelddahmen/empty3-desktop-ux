@@ -76,7 +76,7 @@ public class TextureMorphMove extends ITexture {
     @Override
     public int getColorAt(double u, double v) {
         if (editPanel == null || this.distanceAB == null) {
-            System.exit(-1);
+            return -1;
         }
         if (distanceAB instanceof DistanceIdent) {
             Point3D ident = ((DistanceIdent) distanceAB).findAxPointInB(u, v);
@@ -157,10 +157,9 @@ public class TextureMorphMove extends ITexture {
                             }
 
                         }
-                    } else if (distanceAB instanceof DistanceProxLinear44_2 && ((DistanceProxLinear44_2) distanceAB).jpgRight != null) {
-                        DistanceProxLinear44_2 dist4 = (DistanceProxLinear44_2) distanceAB;
+                    } else if (distanceAB instanceof DistanceProxLinear44_2 dist4 && distanceAB.jpgRight != null) {
                         Point3D c = dist4.findAxPointInBa13(u, v);
-                        c = c.multDot(new Point3D((double) dist4.jpgRight.getWidth(), (double) dist4.jpgRight.getHeight(), 0.0));
+                        c = c.multDot(new Point3D((double) editPanel.imageFileRight.getWidth(), (double) dist4.jpgRight.getHeight(), 0.0));
                         int x3 = (int) Math.max(0.0,
                                 Math.min(c.getX(),
                                         (double) editPanel.imageFileRight.getWidth() - 1
@@ -173,7 +172,7 @@ public class TextureMorphMove extends ITexture {
                         ) {
                             markA = true;
                             double[] color = new double[3];
-                            double[] rgb3 = Lumiere.getDoubles(dist4.jpgRight.getRGB(x3, y3));
+                            double[] rgb3 = Lumiere.getDoubles(editPanel.imageFileRight.getRGB(x3, y3));
                             double[] rgb1 = Lumiere.getDoubles(editPanel.image.getRGB(xLeft, yLeft));
                             for (int k = 0; k < 3; k++) {
                                 color[k] = rgb1[k] + (rgb3[k] - rgb1[k]) * percentB;

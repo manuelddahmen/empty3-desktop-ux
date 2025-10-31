@@ -27,6 +27,7 @@
 package one.empty3.apps.facedetect;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
 import one.empty3.apps.facedetect.vecmesh.Rotate;
@@ -63,6 +64,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     public double computeTimeMax;
     private Rotate rotate;
+    private Thread threadPaint;
 
 
     public void validateCameraPosition(VecMeshEditor model) {
@@ -255,7 +257,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         }
 
         public BufferedImage computeTexture() {
-            image = editPolygonsMappings2.image;
+            final BufferedImage image = editPolygonsMappings2.image;
             TextureMorphMove iTextureMorphMoveImage = new TextureMorphMove(editPolygonsMappings2, editPolygonsMappings2.distanceABClass);
             BufferedImage imageOut = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
             model.texture(iTextureMorphMoveImage);
@@ -271,10 +273,10 @@ public class JFrameEditPolygonsMappings extends JFrame {
         }
     }
 
-    private void menuItemHD(ActionEvent e) {
-        if (resolutionOut == null) {
+    private void menuItemHD(ActionEvent e, Resolution resolutionOut) {
+        if(resolutionOut==null || !resolutionOut.equals(Resolution.K4RESOLUTION))
             resolutionOut = Resolution.HD1080RESOLUTION;
-        }
+        final Resolution resolutionOutFinal = resolutionOut;
         Runnable jpg = () -> {
             if (editPolygonsMappings2.image == null || editPolygonsMappings2.pointsInImage == null || editPolygonsMappings2.pointsInModel == null
                     || editPolygonsMappings2.model == null) {
@@ -291,18 +293,17 @@ public class JFrameEditPolygonsMappings extends JFrame {
              */
             E3Model model = editPolygonsMappings2.model;
             File defaultFileOutput = config.getDefaultFileOutput();
-            SaveTexture saveTexture = new SaveTexture(resolutionOut, editPolygonsMappings2.image, model);
+            SaveTexture saveTexture = new SaveTexture(resolutionOutFinal, editPolygonsMappings2.image, model);
             BufferedImage bufferedImage = saveTexture.computeTexture();
             File file = new File(config.getDefaultFileOutput()
                     + File.separator + "output-face-on-model-texture" + UUID.randomUUID() + ".jpg");
             ImageIO.write(bufferedImage, "jpg", file);
 
-            if (resolutionOut.equals(Resolution.HD1080RESOLUTION))
+            if (resolutionOutFinal.equals(Resolution.HD1080RESOLUTION))
                 Logger.getAnonymousLogger().log(Level.INFO, "Smart generated HD image");
             else
                 Logger.getAnonymousLogger().log(Level.INFO, "Smart generated 4K image");
             Logger.getAnonymousLogger().log(Level.INFO, file.getAbsolutePath());
-            resolutionOut = null;
         };
         Thread thread = new Thread(jpg);
         thread.start();
@@ -310,7 +311,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
     private void menuItem4K(ActionEvent e) {
         this.resolutionOut = Resolution.K4RESOLUTION;
-        menuItemHD(e);
+        menuItemHD(e, resolutionOut);
     }
 
 
@@ -491,15 +492,25 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void startRenderer(ActionEvent e) {
+        try {
+            threadPaint = new Thread() {
+                public void run() {
+                    editPolygonsMappings2.iTextureMorphMove = new
 
-        editPolygonsMappings2.iTextureMorphMove = new TextureMorphMove(editPolygonsMappings2, editPolygonsMappings2.distanceABClass);
+                            TextureMorphMove(editPolygonsMappings2, editPolygonsMappings2.distanceABClass);
 
-        if (editPolygonsMappings2.pointsInImage.size() >= 3 && editPolygonsMappings2.pointsInModel.size() >= 3) {
+                    if (editPolygonsMappings2.pointsInImage.size() >= 3 && editPolygonsMappings2.pointsInModel.size() >= 3) {
+                    }
+
+                    editPolygonsMappings2.threadDistanceIsNotRunning = true;
+                    editPolygonsMappings2.hasChangedAorB = true;
+                    editPolygonsMappings2.renderingStarted = true;
+                }
+            };
+            threadPaint.start();
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
         }
-        editPolygonsMappings2.threadDistanceIsNotRunning = true;
-        editPolygonsMappings2.hasChangedAorB = true;
-        editPolygonsMappings2.renderingStarted = true;
-
     }
 
     private void photoPlaneRepresentable(ActionEvent e) {
@@ -690,7 +701,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         if (lastDirectory != null)
             saveImageDeformed.setCurrentDirectory(lastDirectory);
         if (saveImageDeformed.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            ImageIO.write(editPolygonsMappings2.zBufferImage, "jpg", saveImageDeformed.getSelectedFile());
+            ImageIO.write(editPolygonsMappings2.testHumanHeadTexturing.zBufferImage(), "jpg", saveImageDeformed.getSelectedFile());
         }
         lastDirectory = saveImageDeformed.getCurrentDirectory();
     }
@@ -1067,7 +1078,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItemAddPlane.addActionListener(e -> {
 			photoPlaneRepresentable(e);
 			addPlane(e);
-			addPlane(e);
 		});
                 menu6.add(menuItemAddPlane);
             }
@@ -1079,7 +1089,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
 
                 //---- menuItem10 ----
                 menuItem10.setText(bundle.getString("JFrameEditPolygonsMappings.menuItem10.text"));
-                menuItem10.addActionListener(e -> menuItemHD(e));
+                menuItem10.addActionListener(e -> menuItemHD(e, resolutionOut));
                 menu4.add(menuItem10);
 
                 //---- menuItem11 ----
@@ -1365,6 +1375,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 
     public static void main(String[] args) {
+        FlatLaf.setUseNativeWindowDecorations(true);
         FlatDarkLaf.setup();
         JFrameEditPolygonsMappings jFrameEditPolygonsMappings = new JFrameEditPolygonsMappings();
     }

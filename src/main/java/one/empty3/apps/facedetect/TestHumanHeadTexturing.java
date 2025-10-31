@@ -96,9 +96,9 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             Point3D max = new Point3D(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
             editPolygonsMappings.model.getBounds(min, max);
             Point3D diff = max.moins(min);
-            double surfaceBoundingCube = 2*(diff.getX()*diff.getY()+diff.getY()*diff.getZ()+diff.getZ()*diff.getX());
+            double surfaceBoundingCube = 2*diff.norme();
             //double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
-            double v = 2.0 *Math.pow(1.0*z().la()*z().ha() * numFaces/surfaceBoundingCube, .5)+1.0;
+            double v = 2.0 *Math.pow(numFaces/surfaceBoundingCube/Math.sqrt(1.0*z().la()*z().ha()), 1.0)+1.0;
             if(v==Double.POSITIVE_INFINITY||v==Double.NEGATIVE_INFINITY|| Double.isNaN(v) ||v==0.0) {
                 v =( (double) (z().la() * z().ha())) /numFaces+1;
             }
@@ -270,7 +270,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             if(testHumanHeadTexturing.z()==null) {
                 testHumanHeadTexturing.z = new ZBufferImpl(resolution==null?editPolygonsMappings.panelModelView.getWidth():resolution.x(), resolution==null?editPolygonsMappings.panelModelView.getHeight():resolution.y());
             }
-            double factor = Math.max(1, numFaces / Math.sqrt(testHumanHeadTexturing.z().ha()) / testHumanHeadTexturing.z().la());
+            double factor = Math.max(1, numFaces / Math.sqrt(testHumanHeadTexturing.z().ha() * testHumanHeadTexturing.z().la()));
             if (resolution == null || !resolution.equals(Resolution.HD1080RESOLUTION)) {
                 testHumanHeadTexturing.setResx(editPolygonsMappings.panelModelView.getWidth());
                 testHumanHeadTexturing.setResy(editPolygonsMappings.panelModelView.getHeight());
