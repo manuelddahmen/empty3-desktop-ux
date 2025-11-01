@@ -1,0 +1,90 @@
+/**
+ * Module pour l'application Empty3 Desktop UX.
+ */
+module empty3_desktop_ux {
+    requires com.google.api.client;
+    requires com.google.api.client.json.gson;
+    requires com.google.api.services.vision;
+    requires com.google.auth.oauth2;
+    requires com.google.common;
+    requires com.google.gson;
+    requires google.api.client;
+    requires java.datatransfer;
+    requires java.desktop;
+    requires java.logging;
+    requires nu.xom;
+    requires org.apache.commons.net;
+    requires org.checkerframework.checker.qual;
+    requires partial.desktop;
+    requires  org.junit.jupiter.api;
+    requires com.google.protobuf;
+/*
+    // Exports de tous les packages
+    exports one.empty3;
+    exports one.empty3.apps;
+    exports one.empty3.apps.atlasgen;
+    exports one.empty3.apps.atlasgen.tests;
+    exports one.empty3.apps.facedetect;
+    exports one.empty3.apps.facedetect.dist_model_normalizable;
+    exports one.empty3.apps.facedetect.gcp;
+    exports one.empty3.apps.facedetect.sol1;
+    exports one.empty3.apps.facedetect.vecmesh;
+    exports one.empty3.apps.facedetect2;
+    exports one.empty3.apps.facedetect2.gcp;
+    exports one.empty3.apps.facedetect2.sol1;
+    exports one.empty3.apps.facedetectV0.facedetect;
+    exports one.empty3.apps.facedetectV0.facedetect.gcp;
+    exports one.empty3.apps.facedetectV0.facedetect.sol1;
+    exports one.empty3.apps.feature;
+    exports one.empty3.apps.feature.app.replace.java.awt;
+    exports one.empty3.apps.feature.app.replace.javax.imageio;
+    exports one.empty3.apps.feature.facemorph;
+    exports one.empty3.apps.feature.gui;
+    exports one.empty3.apps.feature.histograms;
+    exports one.empty3.apps.feature.jviolajones;
+    exports one.empty3.apps.feature.kmeans;
+    exports one.empty3.apps.feature.kmeansbinary;
+    exports one.empty3.apps.feature.lbp;
+    exports one.empty3.apps.feature.motion;
+    exports one.empty3.apps.feature.myfacedetect;
+    exports one.empty3.apps.feature.opsNto1;
+    exports one.empty3.apps.feature.pio;
+    exports one.empty3.apps.feature.process;
+    exports one.empty3.apps.feature.selection;
+    exports one.empty3.apps.feature.shape;
+    exports one.empty3.apps.feature.snakes;
+    exports one.empty3.apps.feature.stack;
+    exports one.empty3.apps.feature.tryocr;
+    exports one.empty3.apps.feature.violajonesclassifier;
+    exports one.empty3.apps.gui;
+    exports one.empty3.apps.lasttests;
+    exports one.empty3.apps.manul;
+    exports one.empty3.apps.morph;
+    exports one.empty3.apps.newboardgames;
+    exports one.empty3.apps.opad;
+    exports one.empty3.apps.opad.game;
+    exports one.empty3.apps.opad.help;
+    exports one.empty3.apps.opad.menu;
+    exports one.empty3.apps.opad.models;
+    exports one.empty3.apps.opad.objloader;
+    exports one.empty3.apps.opad.trikombat;
+    exports one.empty3.apps.vecmesh;
+    exports one.empty3.feature;
+    exports one.empty3.feature.Myfacedetect;
+    exports one.empty3.library.core;
+    exports one.empty3.library.core.nurbs;
+    exports one.empty3.library.core.testing.jvm;
+    exports one.empty3.library.core.testing2;
+*/
+    // Modules Java standard requis
+    requires java.prefs;
+    requires java.xml;
+    // Bibliothèques tierces
+    requires com.formdev.flatlaf;
+    requires kotlin.stdlib;
+    requires empty3_library_mp;
+
+    // Module de la bibliothèque empty3-library-mp
+    //requires proto.google.cloud.vision.v1;
+    //requires google.cloud.vision;
+}
