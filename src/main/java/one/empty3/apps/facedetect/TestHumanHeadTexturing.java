@@ -149,7 +149,6 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             editPolygonsMappings.model.texture(new ImageTexture(new Image(editPolygonsMappings.image)));
         } else if (editPolygonsMappings != null && editPolygonsMappings.model != null && editPolygonsMappings.iTextureMorphMove != null) {
             editPolygonsMappings.model.texture(editPolygonsMappings.iTextureMorphMove);
-        } else {
         }
         if (!scene().getObjets().getData1d().isEmpty()) {
             z().scene(scene());
@@ -193,7 +192,6 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 }
             }
         }
-
         if (z().scene().getObjets().getData1d().size() > 1)
             Logger.getAnonymousLogger().log(Level.SEVERE, "Only one model in scene allowed here");
 
@@ -324,7 +322,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
 
     public void setJpgRight(BufferedImage image) {
         this.jpgFileRight = image;
-        if (editPolygonsMappings != null && editPolygonsMappings.iTextureMorphMove != null && editPolygonsMappings.iTextureMorphMove.distanceAB instanceof DistanceProxLinear4)
+        if (editPolygonsMappings != null && editPolygonsMappings.iTextureMorphMove != null && editPolygonsMappings.iTextureMorphMove.distanceAB!=null)
             editPolygonsMappings.iTextureMorphMove.distanceAB.jpgRight = image;
     }
 
