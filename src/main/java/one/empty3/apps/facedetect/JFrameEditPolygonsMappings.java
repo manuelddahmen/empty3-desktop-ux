@@ -1,21 +1,28 @@
 /*
  *
- *  * Copyright (c) 2024. Manuel Daniel Dahmen
+ *  *
+ *  *  * Copyright (c) 2025. Manuel Daniel Dahmen
+ *  *  *
+ *  *  *
+ *  *  *    Copyright 2024 Manuel Daniel Dahmen
+ *  *  *
+ *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *    you may not use this file except in compliance with the License.
+ *  *  *    You may obtain a copy of the License at
+ *  *  *
+ *  *  *        http://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  *    Unless required by applicable law or agreed to in writing, software
+ *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *    See the License for the specific language governing permissions and
+ *  *  *    limitations under the License.
  *  *
  *  *
- *  *    Copyright 2024 Manuel Daniel Dahmen
- *  *
- *  *    Licensed under the Apache License, Version 2.0 (the "License");
- *  *    you may not use this file except in compliance with the License.
- *  *    You may obtain a copy of the License at
- *  *
- *  *        http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  *    Unless required by applicable law or agreed to in writing, software
- *  *    distributed under the License is distributed on an "AS IS" BASIS,
- *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *    See the License for the specific language governing permissions and
- *  *    limitations under the License.
+ *
+ *
+ *
+ *  * Created by $user $date
  *
  *
  */
@@ -28,11 +35,21 @@ package one.empty3.apps.facedetect;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.vision.v1.VisionScopes;
 import net.miginfocom.swing.MigLayout;
 import one.empty3.apps.facedetect.gcp.FaceDetectApp;
 import one.empty3.apps.facedetect.vecmesh.Rotate;
 import one.empty3.apps.facedetect.vecmesh.VecMeshEditor;
-import one.empty3.apps.feature.app.replace.javax.imageio.ImageIO;
 import one.empty3.library.Config;
 import one.empty3.library.Point3D;
 import one.empty3.library.Scene;
@@ -41,17 +58,16 @@ import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Color;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BiConsumer;
+import java.util.List;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -61,6 +77,13 @@ import java.util.logging.Logger;
  * @author manue
  */
 public class JFrameEditPolygonsMappings extends JFrame {
+    EditPolygonsMappings editPolygonsMappings2;
+    private static final String CREDENTIALS_FILE_PATH = "/resources/credentials.json";
+    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+    private static final List<String> SCOPES = Collections.singletonList(VisionScopes.CLOUD_VISION);
+    private static final String TOKENS_DIRECTORY_PATH = "tokens";
+    private Credential credential;
+
 
     public double computeTimeMax;
     private Rotate rotate;
@@ -274,7 +297,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void menuItemHD(ActionEvent e, Resolution resolutionOut) {
-        if(resolutionOut==null || !resolutionOut.equals(Resolution.K4RESOLUTION))
+        if (resolutionOut == null || !resolutionOut.equals(Resolution.K4RESOLUTION))
             resolutionOut = Resolution.HD1080RESOLUTION;
         final Resolution resolutionOutFinal = resolutionOut;
         Runnable jpg = () -> {
@@ -297,7 +320,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
             BufferedImage bufferedImage = saveTexture.computeTexture();
             File file = new File(config.getDefaultFileOutput()
                     + File.separator + "output-face-on-model-texture" + UUID.randomUUID() + ".jpg");
-            ImageIO.write(bufferedImage, "jpg", file);
+            try {
+                ImageIO.write(bufferedImage, "jpg", file);
+            } catch (IOException ex) {
+                Logger.getAnonymousLogger().severe("Cannot save/read" + ex.getMessage());
+            }
 
             if (resolutionOutFinal.equals(Resolution.HD1080RESOLUTION))
                 Logger.getAnonymousLogger().log(Level.INFO, "Smart generated HD image");
@@ -391,7 +418,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private void menuItem4Plus(ActionEvent e) {
         try {
             String name = ((JMenuItem) (e.getSource())).getText();
-            if(name.equals("44")) name = "44_2";//!!!!!!!!!!!!!!!!
+            if (name.equals("44")) name = "44_2";//!!!!!!!!!!!!!!!!
             Class<?> aClass = Class.forName("one.empty3.apps.facedetect.DistanceProxLinear" + name);
             editPolygonsMappings2.distanceABClass = (Class<? extends DistanceAB>) aClass;
             editPolygonsMappings2.hasChangedAorB = true;
@@ -587,12 +614,16 @@ public class JFrameEditPolygonsMappings extends JFrame {
                         try {
                             Thread.sleep(199);
                         } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
+                            Logger.getAnonymousLogger().severe("Cannot save/read" + ex.getMessage());
                         }
                         currentZbufferImage = editPolygonsMappings2.testHumanHeadTexturing.zBufferImage();
                     }
 
-                    ImageIO.write(currentZbufferImage, "xjpg", new File(config.getDefaultFileOutput() + File.separator + String.format("FRAME%d.jpg", j)));
+                    try {
+                        ImageIO.write(currentZbufferImage, "xjpg", new File(config.getDefaultFileOutput() + File.separator + String.format("FRAME%d.jpg", j)));
+                    } catch (IOException ex) {
+                        Logger.getAnonymousLogger().severe("Cannot save/read" + ex.getMessage());
+                    }
 
                 }
             }
@@ -642,16 +673,124 @@ public class JFrameEditPolygonsMappings extends JFrame {
         lastDirectory = loadImageDeformed.getCurrentDirectory();
     }
 
+    private void loginWithGoogle(ActionEvent e) {
+        try {
+            credential = getCredentials();
+            JOptionPane.showMessageDialog(this, "Login successful!");
+        } catch (IOException | GeneralSecurityException ex) {
+            Logger.getLogger(JFrameEditPolygonsMappings.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Login failed: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private Credential getCredentials() throws IOException, GeneralSecurityException {
+        try (InputStream credentialsStream =
+                     JFrameEditPolygonsMappings.class.getResourceAsStream(CREDENTIALS_FILE_PATH)) {
+            if (credentialsStream == null) {
+                throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
+            }
+
+            try (InputStreamReader reader =
+                         new InputStreamReader(credentialsStream, StandardCharsets.UTF_8)) {
+                GoogleClientSecrets clientSecrets =
+                        GoogleClientSecrets.load(JSON_FACTORY, reader);
+
+                final NetHttpTransport httpTransport =
+                        GoogleNetHttpTransport.newTrustedTransport();
+                File tokensDirectory = new File(TOKENS_DIRECTORY_PATH);
+
+                GoogleAuthorizationCodeFlow authorizationFlow =
+                        new GoogleAuthorizationCodeFlow.Builder(
+                                httpTransport,
+                                JSON_FACTORY,
+                                clientSecrets,
+                                SCOPES
+                        )
+                                .setDataStoreFactory(new FileDataStoreFactory(tokensDirectory))
+                                .setAccessType("offline")
+                                .build();
+
+                final int localServerPort = 8888;
+                LocalServerReceiver localServerReceiver =
+                        new LocalServerReceiver.Builder()
+                                .setPort(localServerPort)
+                                .build();
+
+                return new AuthorizationCodeInstalledApp(authorizationFlow, localServerReceiver)
+                        .authorize("user");
+            }
+        }
+    }
+
     private void faceDetector(ActionEvent e) {
+
+
+        try {/*
+            // Si l'utilisateur n'est pas encore connecté, on lui propose de se connecter
+            if (credential == null) {
+                int choice = JOptionPane.showConfirmDialog(
+                        this,
+                        "Vous devez d'abord vous connecter avec Google pour utiliser la détection de visages.\n" +
+                                "Voulez-vous vous connecter maintenant ?",
+                        "Connexion Google requise",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    // Réutilise la logique existante de connexion
+                    loginWithGoogle(e);
+                } else {
+//                    return;
+                }
+            }
+
+            // On vérifie à nouveau après la tentative de login
+            if (credential == null) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Connexion Google non effectuée. Impossible de lancer la détection.",
+                        "Erreur",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+*/
+            String s1 = new LoadTxtFromImage().loadText(editPolygonsMappings2.image);
+            String s = editPolygonsMappings2.imageFile.getAbsolutePath() + ".txt";
+/*            FaceDetectApp.main(
+                    editPolygonsMappings2.imageFile.getAbsolutePath(),
+                    editPolygonsMappings2.imageFile.getAbsolutePath() + ".jpg",
+                    s
+            );*/
+            File file = new File(s);
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.println(s1);
+            printWriter.flush();
+            printWriter.close();
+            editPolygonsMappings2.loadTxt(new File(s));
+        } catch (IOException ex) {
+            Logger.getAnonymousLogger().severe("Cannot save/read" + ex.getMessage());
+        }
+/*
+        // ... existing code ... try {
+        if (credential == null) {
+            JOptionPane.showMessageDialog(this, "Please login with Google first.");
+            return;
+        }
         try {
             String s = (editPolygonsMappings2.txtFile != null ? editPolygonsMappings2.txtFile.getAbsolutePath() :
                     editPolygonsMappings2.imageFile.getAbsolutePath()) + ".txt";
             FaceDetectApp.main(editPolygonsMappings2.imageFile.getAbsolutePath(), editPolygonsMappings2.imageFile.getAbsolutePath() + ".jpg", s);
-            editPolygonsMappings2.loadTxt(new File(s));
-        } catch (IOException | GeneralSecurityException ex) {
+            editPolygonsMappings2.loadTxt(new
+
+                    File(s));
+        } catch (RuntimeException ex) {
+            Logger.getAnonymousLogger().severe("Cannot save/read" + ex.getMessage());
+        } catch (GeneralSecurityException | IOException ex) {
             throw new RuntimeException(ex);
-        }
+        }*/
     }
+
 
     private void menuItemHDTextures(ActionEvent e) {
         editPolygonsMappings2.hdTextures = ((JCheckBoxMenuItem) (e.getSource())).isSelected();
@@ -676,7 +815,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void wiredTextures(ActionEvent e) {
-        editPolygonsMappings2.textureWired = ((JCheckBoxMenuItem) (e.getSource())).isSelected();
+        //editPolygonsMappings2.textureWired = ((JCheckBoxMenuItem) (e.getSource())).isSelected();
     }
 
     private void textureDirect(ActionEvent e) {
@@ -691,7 +830,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
         if (lastDirectory != null)
             saveImageDeformed.setCurrentDirectory(lastDirectory);
         if (saveImageDeformed.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            ImageIO.write(editPolygonsMappings2.image, "jpg", saveImageDeformed.getSelectedFile());
+            try {
+                ImageIO.write(editPolygonsMappings2.image, "jpg", saveImageDeformed.getSelectedFile());
+            } catch (IOException ex) {
+                Logger.getAnonymousLogger().severe("Cannot save/read" + ex.getMessage());
+            }
         }
         lastDirectory = saveImageDeformed.getCurrentDirectory();
     }
@@ -700,8 +843,33 @@ public class JFrameEditPolygonsMappings extends JFrame {
         JFileChooser saveImageDeformed = new JFileChooser();
         if (lastDirectory != null)
             saveImageDeformed.setCurrentDirectory(lastDirectory);
-        if (saveImageDeformed.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            ImageIO.write(editPolygonsMappings2.testHumanHeadTexturing.zBufferImage(), "jpg", saveImageDeformed.getSelectedFile());
+        try {
+            if (saveImageDeformed.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = saveImageDeformed.getSelectedFile();
+                try {
+                    String ext = "";
+                    switch (selectedFile.getName().substring(selectedFile.getName().lastIndexOf(".") + 1).toLowerCase()) {
+                        case "jpg" -> {
+                            ext = "jpg";
+                        }
+                        case "png" -> {
+                            ext = "png";
+                        }
+                        default -> {
+                            Logger.getLogger(String.valueOf(this.getClass())).severe("Unsupported file format: " + ext);
+                        }
+                    }
+                    if (ImageIO.write(editPolygonsMappings2.testHumanHeadTexturing.zBufferImage(), ext, selectedFile)) {
+                        Logger.getLogger(String.valueOf(this.getClass())).info("Image saved successfully: " + selectedFile.getAbsolutePath());
+                    } else {
+                        Logger.getLogger(String.valueOf(this.getClass())).severe("Failed to save image: " + selectedFile.getAbsolutePath());
+                    }
+                } catch (IOException ex) {
+                    Logger.getAnonymousLogger().severe("Cannot save/read" + ex.getMessage());
+                }
+            }
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
         }
         lastDirectory = saveImageDeformed.getCurrentDirectory();
     }
@@ -739,6 +907,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private void buttonRenderNow(ActionEvent e) {
         // TODO add your code here
     }
+
     private synchronized void moveLinesDown(ActionEvent e) {
         final String key = getSelectedPointKey(); // Méthode pour obtenir la clé sélectionnée
         if (key == null || key.isEmpty()) {
@@ -794,7 +963,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private String getSelectedPointKey() {
-       return editPolygonsMappings2.landmarkType;
+        return editPolygonsMappings2.landmarkType;
     }
 
     private void menuItemModifiedVertex3(ActionEvent e) {
@@ -811,6 +980,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         ComputeTimeMax computeTimeMax1 = new ComputeTimeMax(this);
         computeTimeMax1.setVisible(true);
     }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -832,6 +1002,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         menuItemSaveImageLeft = new JMenuItem();
         menuItemSaveImageRight = new JMenuItem();
         menuItemFaceDetector = new JMenuItem();
+        menuItemLoginWithGoogle = new JMenuItem();
         menu7 = new JMenu();
         menu1 = new JMenu();
         menuItemAddPoint = new JMenuItem();
@@ -1000,6 +1171,11 @@ public class JFrameEditPolygonsMappings extends JFrame {
                 menuItemFaceDetector.setText(bundle.getString("JFrameEditPolygonsMappings.menuItemFaceDetector.text"));
                 menuItemFaceDetector.addActionListener(e -> faceDetector(e));
                 menu2.add(menuItemFaceDetector);
+
+                //---- menuItemLoginWithGoogle ----
+                menuItemLoginWithGoogle.setText("Login with Google");
+                menuItemLoginWithGoogle.addActionListener(e -> loginWithGoogle(e));
+                menu2.add(menuItemLoginWithGoogle);
             }
             menuBar1.add(menu2);
 
@@ -1321,6 +1497,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuItem menuItemSaveImageLeft;
     private JMenuItem menuItemSaveImageRight;
     private JMenuItem menuItemFaceDetector;
+    private JMenuItem menuItemLoginWithGoogle;
     private JMenu menu7;
     private JMenu menu1;
     private JMenuItem menuItemAddPoint;
@@ -1370,7 +1547,6 @@ public class JFrameEditPolygonsMappings extends JFrame {
     private JMenuItem menuItem18;
     private JMenuItem menuItem9;
     private JMenu menu8;
-    EditPolygonsMappings editPolygonsMappings2;
     private JMenu menu3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 

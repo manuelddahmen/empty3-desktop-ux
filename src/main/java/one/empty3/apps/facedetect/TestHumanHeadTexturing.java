@@ -1,21 +1,28 @@
 /*
  *
- *  * Copyright (c) 2024. Manuel Daniel Dahmen
+ *  *
+ *  *  * Copyright (c) 2025. Manuel Daniel Dahmen
+ *  *  *
+ *  *  *
+ *  *  *    Copyright 2024 Manuel Daniel Dahmen
+ *  *  *
+ *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *    you may not use this file except in compliance with the License.
+ *  *  *    You may obtain a copy of the License at
+ *  *  *
+ *  *  *        http://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  *    Unless required by applicable law or agreed to in writing, software
+ *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *    See the License for the specific language governing permissions and
+ *  *  *    limitations under the License.
  *  *
  *  *
- *  *    Copyright 2024 Manuel Daniel Dahmen
- *  *
- *  *    Licensed under the Apache License, Version 2.0 (the "License");
- *  *    you may not use this file except in compliance with the License.
- *  *    You may obtain a copy of the License at
- *  *
- *  *        http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  *    Unless required by applicable law or agreed to in writing, software
- *  *    distributed under the License is distributed on an "AS IS" BASIS,
- *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *    See the License for the specific language governing permissions and
- *  *    limitations under the License.
+ *
+ *
+ *
+ *  * Created by $user $date
  *
  *
  */
@@ -60,8 +67,8 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     @Override
     public void ginit() {
         z().texture(new ColorTexture(new Colors().random()));
-        if (editPolygonsMappings!=null &&editPolygonsMappings.model != null) {
-            int numFaces =( (E3Model)(editPolygonsMappings.model))
+        if (editPolygonsMappings != null && editPolygonsMappings.model != null) {
+            int numFaces = ((E3Model) (editPolygonsMappings.model))
                     .getObjects().getListRepresentable().size();
             if (numFaces <= 0) {
                 numFaces = 1;
@@ -70,10 +77,12 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             Point3D max = new Point3D(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
             Point3D diff = max.moins(min);
             editPolygonsMappings.model.getBounds(min, max);
-            double surfaceBoundingCube = 2*(diff.getX()*diff.getY()+diff.getY()*diff.getZ()+diff.getZ()*diff.getX());
-            double v =Math.min(1.0/z.ha (), Math.min(1.0/z().ha(), 1.0/( 2.0  *Math.sqrt(z().la()*z().ha()) / numFaces/ surfaceBoundingCube)));
-            z().setIncrementOptimizer(
-                    new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL , 0.001*numFaces));
+            double surfaceBoundingCube = 2 * (diff.getX() * diff.getY() + diff.getY() * diff.getZ() + diff.getZ() * diff.getX());
+            //double v =Math.min(1.0/z.ha (), Math.min(1.0/z().ha(), 1.0/( 2.0  *Math.sqrt(z().la()*z().ha()) / numFaces/ surfaceBoundingCube)));
+            //z().setIncrementOptimizer(
+            //        new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL , 0.001*numFaces));
+
+            z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(1 / 100.0, 1 / 1000.0));
             Logger.getAnonymousLogger().info("MinMaxOptimium set $v");
             //z().setIncrementOptimizer( new ZBufferImpl .MinMaxOptimium(ZBufferImpl.MinMaxOptimium.MinMaxIncr.Min, 10000));
         }
@@ -87,7 +96,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         super.finit();
 
         if (editPolygonsMappings.model != null) {
-            int numFaces =( (E3Model)(editPolygonsMappings.model))
+            int numFaces = ((E3Model) (editPolygonsMappings.model))
                     .getObjects().getListRepresentable().size();
             if (numFaces <= 0) {
                 numFaces = 1;
@@ -96,20 +105,23 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             Point3D max = new Point3D(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
             editPolygonsMappings.model.getBounds(min, max);
             Point3D diff = max.moins(min);
-            double surfaceBoundingCube = 2*diff.norme();
+            double surfaceBoundingCube = 2 * diff.norme();
             //double v = 1.0/Math.sqrt(1.0/(64.0 *z().la()*z().ha() / numFaces/Math.pow(surfaceBoundingCube, 2./3.)));
-            double v = 2.0 *Math.pow(numFaces/surfaceBoundingCube/Math.sqrt(1.0*z().la()*z().ha()), 1.0)+1.0;
-            if(v==Double.POSITIVE_INFINITY||v==Double.NEGATIVE_INFINITY|| Double.isNaN(v) ||v==0.0) {
-                v =( (double) (z().la() * z().ha())) /numFaces+1;
+            double v = 2.0 * Math.pow(numFaces / surfaceBoundingCube / Math.sqrt(1.0 * z().la() * z().ha()), 1.0) + 1.0;
+            if (v == Double.POSITIVE_INFINITY || v == Double.NEGATIVE_INFINITY || Double.isNaN(v) || v == 0.0) {
+                v = ((double) (z().la() * z().ha())) / numFaces + 1;
             }
+
+/*
             z().setIncrementOptimizer(
                     new ZBufferImpl.IncrementOptimizer(
-                            ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.001*numFaces
-                )
+                            ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.001 * numFaces
+                    )
             );
-            Logger.getAnonymousLogger().info("MinMaxOptimum set "+v);
+*/
+            z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(1 / 100.0, 1 / 1000.0));
+            Logger.getAnonymousLogger().info("MinMaxOptimum set " + v);
         }
-
 
 
         if (editPolygonsMappings == null)
@@ -146,7 +158,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         Point3D minBox = new Point3D(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
         Point3D maxBox = new Point3D(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
 
-        if (editPolygonsMappings!=null && editPolygonsMappings.model != null) {
+        if (editPolygonsMappings != null && editPolygonsMappings.model != null) {
             editPolygonsMappings.model.getBounds(minBox, maxBox);
 
             if (defautZheight == 0) {
@@ -172,19 +184,18 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         } catch (Exception ex) {
             Logger.getLogger(TestHumanHeadTexturing.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(editPolygonsMappings!=null &&editPolygonsMappings.model instanceof E3Model e3Model) {
+        if (editPolygonsMappings != null && editPolygonsMappings.model instanceof E3Model e3Model) {
             for (int i = 0; i < e3Model.getListRepresentable().size(); i++) {
                 Representable representable = e3Model.getListRepresentable().get(i);
-                if(representable instanceof E3Model.FaceWithUv faceWithUv) {
-                    faceWithUv.setIncrU(0.2);
-                    faceWithUv.setIncrV(0.1);
+                if (representable instanceof E3Model.FaceWithUv faceWithUv) {
+                    //faceWithUv.setIncrU(0.2);
+                    //faceWithUv.setIncrV(0.1);
                 }
             }
         }
 
         if (z().scene().getObjets().getData1d().size() > 1)
             Logger.getAnonymousLogger().log(Level.SEVERE, "Only one model in scene allowed here");
-
 
 
     }
@@ -262,26 +273,28 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             editPolygonsMappings.testHumanHeadTexturing = testHumanHeadTexturing;
 
             int numFaces = 1;
-            if(editPolygonsMappings!=null && editPolygonsMappings.model!=null && editPolygonsMappings.model instanceof E3Model e3Model) {
+            if (editPolygonsMappings != null && editPolygonsMappings.model != null && editPolygonsMappings.model instanceof E3Model e3Model) {
                 numFaces = ((E3Model) (editPolygonsMappings.model))
                         .getObjects().getListRepresentable().size();
 
             }
-            if(testHumanHeadTexturing.z()==null) {
-                testHumanHeadTexturing.z = new ZBufferImpl(resolution==null?editPolygonsMappings.panelModelView.getWidth():resolution.x(), resolution==null?editPolygonsMappings.panelModelView.getHeight():resolution.y());
+            if (testHumanHeadTexturing.z() == null) {
+                testHumanHeadTexturing.z = new ZBufferImpl(resolution == null ? editPolygonsMappings.panelModelView.getWidth() : resolution.x(), resolution == null ? editPolygonsMappings.panelModelView.getHeight() : resolution.y());
             }
             double factor = Math.max(1, numFaces / Math.sqrt(testHumanHeadTexturing.z().ha() * testHumanHeadTexturing.z().la()));
             if (resolution == null || !resolution.equals(Resolution.HD1080RESOLUTION)) {
                 testHumanHeadTexturing.setResx(editPolygonsMappings.panelModelView.getWidth());
                 testHumanHeadTexturing.setResy(editPolygonsMappings.panelModelView.getHeight());
                 //testHumanHeadTexturing.setDimension(new Resolution(editPolygonsMappings.panelModelView.getWidth(), editPolygonsMappings.panelModelView.getHeight()));
-                testHumanHeadTexturing.z().setIncrementOptimizer ( new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001*factor));
+                testHumanHeadTexturing.z().
+                        setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(1 / 100.0, 1 / 1000.0));
 
             } else {
                 testHumanHeadTexturing.setResx(resolution.x());
                 testHumanHeadTexturing.setResy(resolution.y());
                 testHumanHeadTexturing.setDimension(TestObjet.HD1080);
-                testHumanHeadTexturing.z().setIncrementOptimizer ( new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001*factor));
+                testHumanHeadTexturing.
+                        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(1 / 100.0, 1 / 1000.0));
             }
 
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
@@ -354,6 +367,6 @@ public class TestHumanHeadTexturing extends TestObjetStub {
     }
 
     public BufferedImage zBufferImage() {
-        return getPicture()!=null?getPicture().getBi():null;
+        return getPicture() != null ? getPicture().getBi() : null;
     }
 }

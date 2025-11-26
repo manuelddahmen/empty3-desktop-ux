@@ -1,3 +1,32 @@
+/*
+ *
+ *  *
+ *  *  * Copyright (c) 2025. Manuel Daniel Dahmen
+ *  *  *
+ *  *  *
+ *  *  *    Copyright 2024 Manuel Daniel Dahmen
+ *  *  *
+ *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *    you may not use this file except in compliance with the License.
+ *  *  *    You may obtain a copy of the License at
+ *  *  *
+ *  *  *        http://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  *    Unless required by applicable law or agreed to in writing, software
+ *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *    See the License for the specific language governing permissions and
+ *  *  *    limitations under the License.
+ *  *
+ *  *
+ *
+ *
+ *
+ *  * Created by $user $date
+ *
+ *
+ */
+
 package one.empty3.apps.facedetect.gcp;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -99,6 +128,13 @@ public class FaceDetectAppHttp implements HttpFunction {
                 vision
                         .images()
                         .annotate(new BatchAnnotateImagesRequest().setRequests(com.google.common.collect.ImmutableList.of(request)));
+
+
+        // --- FIX IS HERE ---
+        // Check if the list is null (meaning no faces were detected)
+        if (annotate == null) {
+            return null;
+        }
         // Due to a bug: requests to Vision API containing large images fail when GZipped.
         annotate.setDisableGZipContent(true);
 
@@ -125,10 +161,7 @@ public class FaceDetectAppHttp implements HttpFunction {
         });
 
         if (response.getFaceAnnotations() == null) {
-            throw new IOException(
-                    response.getError() != null
-                            ? response.getError().getMessage()
-                            : "Unknown error getting image annotations");
+            return null;
         }
         return response.getFaceAnnotations();
     }
@@ -195,12 +228,17 @@ public class FaceDetectAppHttp implements HttpFunction {
             int h  = img.getHeight();
             if (img == null) {
                 httpResponse.setStatusCode(500);
-                gson.toJson(Map.of("error", "Error reading image."), httpResponse.getWriter());
+                gson.toJson(Map.of("error", "Error reading image. : entered image is null"), httpResponse.getWriter());
                 return;
             }
             FaceDetectAppHttp app = new FaceDetectAppHttp(getVisionService());
             List<FaceAnnotation> faces = app.detectFaces(decode, MAX_RESULTS, img);
-
+            if(faces==null) {
+                // No faces found, return a clear message to the client instead of crashing.
+                httpResponse.getWriter().write("{\"error\":\"No faces detected in the image.\"}");
+                httpResponse.setStatusCode(400); // Bad Request is a suitable status code here
+                return;
+            }
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             app.dataWriter = new PrintWriter(byteArrayOutputStream);
             app.initStructurePolygons();

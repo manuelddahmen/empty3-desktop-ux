@@ -1,0 +1,7 @@
+.\gradlew.bat jar extractDeps
+
+gcloud functions deploy gen-text --runtime java21 --trigger-http --entry-point one.empty3.apps.facedetect.gcp.FaceDetectAppHttp --source build/libs --service-account gen-text@meshmasks-1dd55.iam.gserviceaccount.com
+
+gcloud config set project meshmasks-1dd55
+
+serviceAccountName: gen-text@meshmasks-1dd55.iam.gserviceaccount.com
