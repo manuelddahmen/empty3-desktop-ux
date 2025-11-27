@@ -290,7 +290,7 @@ public class TestHumanHeadTexturing extends TestObjetStub {
             } else {
                 testHumanHeadTexturing.setResx(resolution.x());
                 testHumanHeadTexturing.setResy(resolution.y());
-                testHumanHeadTexturing.setDimension(TestObjet.HD1080);
+                //testHumanHeadTexturing.setDimension(TestObjet.HD1080);
                 testHumanHeadTexturing.
                         z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(1 / 100.0, 1 / 1000.0));
             }

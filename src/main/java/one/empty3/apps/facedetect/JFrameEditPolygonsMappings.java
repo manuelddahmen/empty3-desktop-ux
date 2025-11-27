@@ -321,7 +321,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
             File file = new File(config.getDefaultFileOutput()
                     + File.separator + "output-face-on-model-texture" + UUID.randomUUID() + ".jpg");
                 BufferedImage bi = null;
-                while(bi==null) {
+                while(t.zBufferImage()==null) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
@@ -329,7 +329,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
                     }
                 }
             try {
-                ImageIO.write(bi, "jpg", file);
+                ImageIO.write(t.zBufferImage(), "jpg", file);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
