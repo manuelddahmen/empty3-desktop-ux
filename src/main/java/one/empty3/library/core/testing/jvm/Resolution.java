@@ -29,6 +29,8 @@
 
 package one.empty3.library.core.testing.jvm;
 
+import java.awt.*;
+
 /*__
  * @author Se7en
  */
@@ -67,5 +69,9 @@ public class Resolution {
         if(!(obj instanceof Resolution))
             return false;
         return x==((Resolution)obj).x&&y==((Resolution)obj).y;
+    }
+
+    public Dimension toDimension() {
+        return new Dimension(x, y);
     }
 }

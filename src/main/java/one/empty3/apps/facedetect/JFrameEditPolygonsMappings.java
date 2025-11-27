@@ -47,7 +47,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.vision.v1.VisionScopes;
 import net.miginfocom.swing.MigLayout;
-import one.empty3.apps.facedetect.gcp.FaceDetectApp;
+import one.empty3.apps.facedetect.gcp.DistanceProxLinear44;
 import one.empty3.apps.facedetect.vecmesh.Rotate;
 import one.empty3.apps.facedetect.vecmesh.VecMeshEditor;
 import one.empty3.library.Config;
@@ -56,6 +56,7 @@ import one.empty3.library.Scene;
 import one.empty3.library.core.testing.jvm.Resolution;
 import one.empty3.library.objloader.E3Model;
 import one.empty3.libs.Color;
+import one.empty3.libs.Image;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -272,7 +273,7 @@ public class JFrameEditPolygonsMappings extends JFrame {
         private final E3Model model;
         private BufferedImage image;
 
-        public SaveTexture(@NotNull Resolution resolution, @NotNull BufferedImage image, @NotNull E3Model model) {
+        public SaveTexture(@NotNull Resolution resolution, @NotNull BufferedImage image, @NotNull E3Model model, BufferedImage imageFileRight) {
             this.resolution = resolution;
             this.model = model;
             this.image = image;
@@ -282,12 +283,12 @@ public class JFrameEditPolygonsMappings extends JFrame {
         public BufferedImage computeTexture() {
             final BufferedImage image = editPolygonsMappings2.image;
             TextureMorphMove iTextureMorphMoveImage = new TextureMorphMove(editPolygonsMappings2, editPolygonsMappings2.distanceABClass);
-            BufferedImage imageOut = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+            BufferedImage imageOut = new BufferedImage(resolution.x(), resolution.y(), BufferedImage.TYPE_INT_RGB);
             model.texture(iTextureMorphMoveImage);
             for (double u = 0; u < 1.0; u += 1.0 / image.getWidth()) {
                 for (double v = 0; v < 1.0; v += 1.0 / image.getHeight()) {
                     int colorAt1 = editPolygonsMappings2.iTextureMorphMove.getColorAt(u, v);
-                    imageOut.setRGB((int) Math.min(editPolygonsMappings2.image.getWidth() - 1, u * editPolygonsMappings2.image.getWidth()),
+                    imageOut.setRGB((int) Math.min(editPolygonsMappings2.image.getWidth() - 1, u * editPolygonsMappings2.image.getHeight()),
                             (int) Math.min(editPolygonsMappings2.image.getHeight() - 1, v * editPolygonsMappings2.image.getHeight()), colorAt1);
                 }
                 Logger.getAnonymousLogger().log(Level.INFO, "Image column #" + ((int) (u * 100)) + "% : done");
@@ -297,33 +298,40 @@ public class JFrameEditPolygonsMappings extends JFrame {
     }
 
     private void menuItemHD(ActionEvent e, Resolution resolutionOut) {
-        if (resolutionOut == null || !resolutionOut.equals(Resolution.K4RESOLUTION))
-            resolutionOut = Resolution.HD1080RESOLUTION;
+        resolutionOut = Resolution.HD1080RESOLUTION;
         final Resolution resolutionOutFinal = resolutionOut;
         Runnable jpg = () -> {
             if (editPolygonsMappings2.image == null || editPolygonsMappings2.pointsInImage == null || editPolygonsMappings2.pointsInModel == null
                     || editPolygonsMappings2.model == null) {
                 return;
             }
-            /*
             TextureMorphMove textureMorphMoveImage = new TextureMorphMove(editPolygonsMappings2, DistanceProxLinear1.class);
-            textureMorphMoveImage.distanceAB = new DistanceProxLinear1(editPolygonsMappings2.pointsInImage.values().stream().toList(),
+            textureMorphMoveImage.distanceAB = new DistanceProxLinear44_2(editPolygonsMappings2.pointsInImage.values().stream().toList(),
                     editPolygonsMappings2.pointsInModel.values().stream().toList(),
-                    new Dimension(editPolygonsMappings2.image.getWidth(),
-                            editPolygonsMappings2.image.getHeight()), new Dimension(Resolution.HD1080RESOLUTION.x(), Resolution.HD1080RESOLUTION.y(), false, false)
-            );
+                    editPolygonsMappings2.points3.values().stream().toList(),
+                    new Dimension(editPolygonsMappings2.image.getWidth(), editPolygonsMappings2.image.getHeight()),
+                    new Dimension(Resolution.HD1080RESOLUTION.x(), Resolution.HD1080RESOLUTION.y()),
+                    new Dimension(editPolygonsMappings2.imageFileRight.getWidth(), editPolygonsMappings2.imageFileRight.getHeight()),
+                    true, true, new Image(editPolygonsMappings2.imageFileRight));
 
-             */
-            E3Model model = editPolygonsMappings2.model;
-            File defaultFileOutput = config.getDefaultFileOutput();
-            SaveTexture saveTexture = new SaveTexture(resolutionOutFinal, editPolygonsMappings2.image, model);
-            BufferedImage bufferedImage = saveTexture.computeTexture();
+            TestHumanHeadTexturing t = TestHumanHeadTexturing.startAll(editPolygonsMappings2, editPolygonsMappings2.image, editPolygonsMappings2.imageFileRight,
+                    (E3Model) editPolygonsMappings2.model, one.empty3.apps.testobject.Resolution.HD1080RESOLUTION );
+
+
             File file = new File(config.getDefaultFileOutput()
                     + File.separator + "output-face-on-model-texture" + UUID.randomUUID() + ".jpg");
+                BufferedImage bi = null;
+                while(bi==null) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getAnonymousLogger().severe("Cannot save/read" + ex.getMessage());
+                    }
+                }
             try {
-                ImageIO.write(bufferedImage, "jpg", file);
+                ImageIO.write(bi, "jpg", file);
             } catch (IOException ex) {
-                Logger.getAnonymousLogger().severe("Cannot save/read" + ex.getMessage());
+                ex.printStackTrace();
             }
 
             if (resolutionOutFinal.equals(Resolution.HD1080RESOLUTION))
