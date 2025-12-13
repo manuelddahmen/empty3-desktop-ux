@@ -280,7 +280,10 @@ public class DataModel {
             int i = 0;
             byte[] data = new byte[(int) zipEntry.getSize()];
             while (i < zipEntry.getSize()) {
-                int read = inputStream.read(data, i, data.length);
+                // Fix: Calculate remaining bytes to prevent IndexOutOfBoundsException
+                int remaining = data.length - i;
+                int read = inputStream.read(data, i, remaining);
+                if (read == -1) break; // Safety check for unexpected EOF
                 i += read;
             }
             String s = new String(data, "UTF-8");

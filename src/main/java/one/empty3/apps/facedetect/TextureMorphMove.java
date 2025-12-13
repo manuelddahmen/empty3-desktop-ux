@@ -121,17 +121,18 @@ public class TextureMorphMove extends ITexture {
                             axPointInB.getY() * editPanel.image.getHeight(),
                             0.0
                     );
-
-                    double percentB =
-                            distanceToConvexHull(distanceAB.bDimReal, editPanel.convexHull1, p) + 10;
-
+/*
+                    double percentB = distanceToConvexHull(distanceAB.bDimReal, editPanel.convexHull1, p) + 10;
                     percentB = percentB / 20;
-                    if (percentB < 0) {
-                        percentB = 0.0;
-                    }
-                    if (percentB > 1) percentB = 1.0;
-
-
+                    percentB = clamp(percentB, 0.0, 1.0);
+*/
+                    /*
+                    double percentB = clamp((R - Math.abs(dSigned)) / R, 0.0, 1.0);
+                     */
+                    double dSigned = signedDistanceToHull(editPanel.convexHull1, p); // pixels
+                    double R = 10.0; // half-width of your contour band (total width ≈ 2R)
+// Smooth 0..1 blend across the hull boundary, 20px wide
+                    double percentB = smoothstep(-R, +R, dSigned);
                     //percentB = 0.5;
                     int xLeft = (int) (Math.max(0.0, Math.min(p.getX(), (double) editPanel.image.getWidth() - 1)));
                     int yLeft =
@@ -198,6 +199,24 @@ public class TextureMorphMove extends ITexture {
         }
 
         return new Color(255, 255, 0).getRGB();
+    }
+
+    private static double clamp(double x, double a, double b) {
+        return Math.max(a, Math.min(b, x));
+    }
+
+    private static double smoothstep(double edge0, double edge1, double x) {
+        double t = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
+        return t * t * (3.0 - 2.0 * t);
+    }
+
+    private double signedDistanceToHull(ConvexHull hull, Point3D p) {
+        if (hull == null) return Double.POSITIVE_INFINITY;
+        // IMPORTANT: p and hull points must be in the same coordinate space (pixels).
+        // If hull points are normalized [0,1], multiply them by the target image dims first.
+        double d = PolygonDistance.distanceToPolygon(p, hull.p); // unsigned distance in pixels
+        boolean inside = hull.isPointInHull(p.getX(), p.getY());
+        return inside ? +d : -d;
     }
     public int getColorAt_old(double u, double v) {
 

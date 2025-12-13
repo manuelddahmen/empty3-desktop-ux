@@ -5,7 +5,7 @@ plugins {
     id 'maven-publish'
     id 'org.jreleaser' version '1.20.0'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version "2.2.10"
+    id 'org.jetbrains.kotlin.jvm' version "2.2.21"
 //    id 'com.google.cloud.functions-framework' version '0.6.0'
 }
 /*
@@ -40,7 +40,7 @@ plugins {
 //"empty3-desktop-ux"
 
 group = 'one.empty3'
-var version_date = '2025.11.1'
+var version_date = '2025.12.1'
 
 var JAVA_VERSION = 21
 
@@ -216,6 +216,11 @@ tasks.register('RunClass', JavaExec) {
     dependsOn(jar)
 }
 
+tasks.register('Empty3Designer', JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    mainClass = 'one.empty3.apps.sculpt.Empty3Design'
+    dependsOn(jar)
+}
 
 
 
@@ -252,7 +257,13 @@ tasks.register('deployCloudFunctionCreateTxt', Exec) {
 tasks.register('extractDeps', Jar) {
     archiveFileName = 'empty3-library-mp-with-dependencies.jar'
     destinationDirectory = file('build/libs')
-
+    manifest {
+        attributes(
+                'Implementation-Title': 'Mesh Masks',
+                'Implementation-Version': '0.1',
+                'Main-Class': 'one.empty3.apps.facedetect.JFrameEditPolygonsMappings'
+        )
+    }
     // Activer Zip64 pour gérer plus de 65535 entrées
     zip64 = true
 
@@ -287,9 +298,9 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-    implementation 'one.empty3.libs:partial-desktop:0.0.35'
+    implementation 'one.empty3.libs:partial-desktop:0.0.36'
     implementation 'one.empty3.libs:commons-mp:0.0.15'
-    implementation 'one.empty3:empty3-library-mp:2025.11.1'
+    implementation 'one.empty3:empty3-library-mp:2025.12.11'
     implementation 'com.google.cloud:google-cloud-pubsub:1.133.1' // Check for the latest version
     implementation 'com.google.cloud:google-cloud-tasks:2.59.0'
     implementation 'com.google.cloud.functions:functions-framework-api:1.1.0'
@@ -418,7 +429,7 @@ tasks.register('genText', Exec) {
     doFirst {
         def imageFile = file("C:\\Users\\manue\\D2\\20250507_093825.jpg")
         if (!imageFile.exists()) {
-            throw new java.io.FileNotFoundException("Image file not found at: ${imageFile.absolutePath}")
+            throw new FileNotFoundException("Image file not found at: ${imageFile.absolutePath}")
         }
         def encodedImage = imageFile.bytes.encodeBase64().toString()
         def jsonPayload = '{"image": "' + encodedImage + '"}'

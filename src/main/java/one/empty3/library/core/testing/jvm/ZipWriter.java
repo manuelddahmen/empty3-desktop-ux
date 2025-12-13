@@ -43,14 +43,22 @@ public class ZipWriter {
     }
 
     public void addFile(File image) throws IOException {
-        byte[] b = new byte[1024];
-        FileInputStream fis = new FileInputStream(image);
-        fis.read(b, 0, b.length);
-        ZipEntry ze = new ZipEntry(image.getName());
-        ze.setSize((long) b.length);
-        zos.setLevel(6);
-        zos.putNextEntry(ze);
-        zos.write(b, 0, b.length);
+        // Fix: Use try-with-resources to ensure file handle is released
+        try (FileInputStream fis = new FileInputStream(image)) {
+            ZipEntry ze = new ZipEntry(image.getName());
+            // Fix: Use actual file length, not a fixed buffer size
+            ze.setSize(image.length());
+            zos.setLevel(6);
+            zos.putNextEntry(ze);
+
+            // Fix: Read file in chunks until EOF
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                zos.write(buffer, 0, length);
+            }
+            zos.closeEntry();
+        }
     }
 
     public void addFile(String name, byte[] b) throws IOException {

@@ -29,6 +29,7 @@
 
 package one.empty3.apps.facedetect.gcp;
 
+import one.empty3.apps.facedetect.ZBufferConfig;
 import one.empty3.library.*;
 import one.empty3.library.core.lighting.Colors;
 import one.empty3.library.core.testing.jvm.Resolution;
@@ -73,7 +74,8 @@ public class TestHumanHeadTexturing extends TestObjetStub {
         }
 */
         z().texture(new ColorTexture(new Colors().random()));
-        z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.001));
+        ZBufferConfig.getConfig(z(), editPolygonsMappings.model);
+
     }
 
     @Override
@@ -230,13 +232,15 @@ public class TestHumanHeadTexturing extends TestObjetStub {
                 testHumanHeadTexturing.setResx((int) editPolygonsMappings.dimModelBox.getWidth());
                 testHumanHeadTexturing.setResy((int) editPolygonsMappings.dimModelBox.getHeight());
                 testHumanHeadTexturing.setDimension(new Resolution((int) editPolygonsMappings.dimModelBox.getWidth(), (int) editPolygonsMappings.dimModelBox.getHeight()));
-                testHumanHeadTexturing.z().setIncrementOptimizer ( new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001*factor));
+                ZBufferConfig.getConfig(testHumanHeadTexturing.z(), editPolygonsMappings.model);
+
 
             } else {
                 testHumanHeadTexturing.setResx(resolution.x());
                 testHumanHeadTexturing.setResy(resolution.y());
                 testHumanHeadTexturing.setDimension(TestObjetUx.HD1080);
-                testHumanHeadTexturing.z().setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.0001*factor));
+                ZBufferConfig.getConfig(testHumanHeadTexturing.z(), editPolygonsMappings.model);
+
             }
             testHumanHeadTexturing.setGenerate(GENERATE_IMAGE);
             testHumanHeadTexturing.setJpg(jpg);

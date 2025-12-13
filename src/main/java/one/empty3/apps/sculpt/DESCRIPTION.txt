@@ -1,0 +1,16 @@
+Générez une interface graphqiue "Empty3 Designer" avec un menu "Fichiers"
+"Ouvrir design", "Sauver Design". "Importer image" Un menu "Paramètres"
+avec un checkbox "Charger automatiquement à partir du fichier image.
+Un menu "Help" avec "Lien vers le site empty3.one", et "Voir licence"
+qui oouvre dans une fenêtre "License Apache v 2.0" . Dans la fenêtre pricipale,
+un panneau extensible à gauche contenant l'image de l'objet (= map de hauteur
+sur l'objet "heightMapSurface" contenant la distance perpendiculaire au sol en
+niveaux de couleurs. Le now de la classe est T3D
+De l'autre côté (à droite), une représentation 3D
+de l'objet T3D qui représente une rotation le long d'un axe courbe
+de l'image de niveaux. La couleur est stockée dans une image au fomat
+4K affichée dans un 3ème paneau. La vue en perspective possède des repères
+à la souris pour tourner zoomer, dézoomer et déplacer l'objet ou les points
+de contrôles de la courbe dans la fenêtre 3D. -- Instructions : 1 si il
+ny'a pas de méthode mettez des méthode vides avec des TODOS.  2 utiliser
+JOGL (opengl for java) qui est déjà inclus dans les dépendances gradle.
