@@ -270,14 +270,14 @@ public class Empty3Design extends JFrame {
                     if(x>=0&&x<heightMapImage.getWidth()&&y>=0&&y<heightMapImage.getHeight()) {
                         return ( heightMapImage.getRGB(x, y)&0xff) / 256.0f;
                     } else
-                        return 1.0;
+                        return 0.0;
                 }
                 @Override
                 public Point3D calculerPoint3D(double u, double v) {
                     int x = (int) (u * (heightMapImage.getWidth() - 1));
                     int y = (int) (v * (heightMapImage.getHeight() - 1));
                     float height = new Color(heightMapImage.getRGB(x, y)).getRed() / 255.0f;
-                    return new Point3D(u * 2 - 1, v * 2 - 1, (double) height);
+                    return new Point3D(u , v , (double) height);
                 }
             };
             surface0.setIncrU(0.05);
@@ -286,9 +286,9 @@ public class Empty3Design extends JFrame {
         ((T3D) surface).getSurfaceUV().setElem(surface0);
         CourbeParametriquePolynomialeBezier courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier();
         courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.O0, 0);
-        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.Z.mult(10.0),1);
-        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.Z.mult(20.0),2);
-        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.Z.mult(30.0),3);
+        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.Z.mult(1.0),1);
+        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.Z.mult(2.0),2);
+        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.Z.mult(3.0),3);
         ((T3D) surface).getSoulCurve().setElem(courbeParametriquePolynomialeBezier);
         ((T3D) surface).getDiameterFunction().setElem(new FctXY() {
             @Override
@@ -305,6 +305,8 @@ public class Empty3Design extends JFrame {
 
         if(surface!=null) {
             System.out.println("surface!=null");
+            surface.setIncrU(0.01);
+            surface.setIncrV(0.01);
         } else {
             System.out.println("surface==null");
         }
