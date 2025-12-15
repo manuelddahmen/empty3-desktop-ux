@@ -29,9 +29,11 @@
 
 package one.empty3.apps.sculpt;
 
+import com.google.api.services.vision.v1.model.FaceAnnotation;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.glu.GLU;
+import one.empty3.apps.facedetect.jvm.FaceDetectApp;
 import one.empty3.library.*;
 import one.empty3.library.Polygon;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
@@ -51,6 +53,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -134,6 +140,13 @@ public class Empty3Design extends JFrame {
         fileMenu.add(importTextureItem);
         menuBar.add(fileMenu);
 
+        // Generate Menu
+        JMenu generateMenu = new JMenu("Générer");
+        JMenuItem fromFaceDetectItem = new JMenuItem("Carte de hauteur depuis visage");
+        fromFaceDetectItem.addActionListener(e -> generateHeightMapFromFaceAction());
+        generateMenu.add(fromFaceDetectItem);
+        menuBar.add(generateMenu);
+
         // Settings Menu
         JMenu settingsMenu = new JMenu("Paramètres");
         autoLoadMenuItem = new JCheckBoxMenuItem("Charger automatiquement à partir du fichier image");
@@ -170,6 +183,74 @@ public class Empty3Design extends JFrame {
         menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);
+    }
+
+    private void generateHeightMapFromFaceAction() {
+        try {
+            if(textureImage==null)
+                return;
+            File texture = File.createTempFile("texture", ".png");
+            File textureOut = File.createTempFile("texture", ".png");
+            File textureTxt = File.createTempFile("texture", ".png");
+
+            new one.empty3.libs.Image(textureImage).saveFile(texture);
+            one.empty3.apps.sculpt.FaceDetectApp faceDetectApp = new one.empty3.apps.sculpt.FaceDetectApp(FaceDetectApp.getVisionService());
+            List<FaceAnnotation> faceAnnotations = faceDetectApp.detectFaces(texture.toPath(), 1000);
+            if(faceAnnotations.size()==0) {
+                return;
+            }
+            List<Point3D> point3DS = faceDetectApp.writeFaceDataWithZ(new one.empty3.libs.Image(textureImage), faceAnnotations.get(0));
+
+
+            class HeightMapSurface1 extends HeightMapSurface {
+                List<Point3D> point3DS1 = new ArrayList<>();
+
+
+                @Override
+                public double heightDouble(double u, double v) {
+                    return search(u, v).getZ();
+                }
+                public void setList(List<Point3D> point3DS) {
+                    this.point3DS1 = point3DS;
+                }
+
+                public Point3D search(double u, double v) {
+                    Point3D current = new Point3D(u, v, 0.0);
+
+                    int near = -1;
+                    for (double i = getStartU(); i < getEndU(); i += getIncrU()) {
+                        for (double j = getStartU(); j < getEndV(); j += getIncrV()) {
+                            Double distance = Double.MAX_VALUE;
+                            for (Point3D comparing : point3DS) {
+                                if (comparing.distance(current) < distance) {
+                                    distance = comparing.distance(current);
+                                    near = point3DS.indexOf(comparing);
+                                }
+                            }
+                        }
+                    }
+                    if(near>=0) {
+                        return point3DS1.get(near);
+                    }else {
+                        return Point3D.O0;
+                    }
+                }
+            };
+            HeightMapSurface1 surface1 = new HeightMapSurface1();
+            ((HeightMapSurface1)surface1).setList(point3DS);
+            if (surface.getClass().isAssignableFrom(HeightMapSurface.class)) {
+                surface = surface;
+            }
+            if (surface.getClass().isAssignableFrom(T3D.class)) {
+                ((T3D) surface).getSurfaceUV().setElem(surface1);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void initPanels() {
