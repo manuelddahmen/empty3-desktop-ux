@@ -350,18 +350,9 @@ public class FaceDetectApp {
                     int finalK = k;
                     Optional<Landmark> landmark1 = faceAnnotation.getLandmarks().stream().filter(landmark ->
                             landmark.getType() != null && landmark.getType().equals(landmarks[finalI][finalJ][finalK])).findFirst();
-                    if (!landmark1.isEmpty()) {
-                        Landmark landmark2 = landmark1.get();
-                        dataWriter.println(landmark2.getType());
-                        dataWriter.println((double) landmark2.getPosition().getX() / img.getWidth());
-                        dataWriter.println((double) landmark2.getPosition().getY() / img.getHeight());
-                        dataWriter.println((double) landmark2.getPosition().getZ());
-                        dataWriter.println();
-                        listLandmarks.add(new Point3D((double) landmark2.getPosition().getX() / img.getWidth(),
-                                (double) landmark2.getPosition().getY() / img.getHeight(),
-                                (double) landmark2.getPosition().getZ()));
-
-                    }
+                    landmark1.ifPresent(landmark2 -> listLandmarks.add(new Point3D((double) landmark2.getPosition().getX() / img.getWidth(),
+                            (double) landmark2.getPosition().getY() / img.getHeight(),
+                            (double) landmark2.getPosition().getZ())));
                 }
             }
         }

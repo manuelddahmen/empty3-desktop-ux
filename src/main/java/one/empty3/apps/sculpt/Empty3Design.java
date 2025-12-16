@@ -63,6 +63,43 @@ import java.util.zip.ZipOutputStream;
 
 public class Empty3Design extends JFrame {
 
+
+    private boolean generateByFaceDetetion = false;
+
+    class HeightMapSurface1 extends HeightMapSurface {
+        List<Point3D> point3DS1 = new ArrayList<>();
+
+
+        @Override
+        public double heightDouble(double u, double v) {
+            return search(u, v).getZ();
+        }
+        public void setList(List<Point3D> point3DS) {
+            this.point3DS1 = point3DS;
+        }
+
+        public Point3D search(double u, double v) {
+            Point3D current = new Point3D(u, v, 0.0);
+
+            int near = -1;
+            for (double i = getStartU(); i < getEndU(); i += getIncrU()) {
+                for (double j = getStartU(); j < getEndV(); j += getIncrV()) {
+                    Double distance = Double.MAX_VALUE;
+                    for (Point3D comparing : point3DS1) {
+                        if (comparing.distance(current) < distance) {
+                            distance = comparing.distance(current);
+                            near = point3DS1.indexOf(comparing);
+                        }
+                    }
+                }
+            }
+            if(near>=0) {
+                return point3DS1.get(near);
+            }else {
+                return Point3D.O0;
+            }
+        }
+    }
     private File currentDirectoryTexture;
     private File currentDirectoryHeightMap;
     private File currentDirectoryProject;
@@ -87,6 +124,7 @@ public class Empty3Design extends JFrame {
     private int prevMouseY;
     private boolean isT3d;
     private JCheckBoxMenuItem displayHeightMapOnlyMenuItem;
+    private HeightMapSurface1 surface1;
 
     public Empty3Design() {
         setTitle("Empty3 Designer");
@@ -187,69 +225,33 @@ public class Empty3Design extends JFrame {
 
     private void generateHeightMapFromFaceAction() {
         try {
-            if(textureImage==null)
+            if(textureImage==null) {
+                setGenerateByFaceDetetion(false);
                 return;
+            }
             File texture = File.createTempFile("texture", ".png");
-            File textureOut = File.createTempFile("texture", ".png");
-            File textureTxt = File.createTempFile("texture", ".png");
 
             new one.empty3.libs.Image(textureImage).saveFile(texture);
             one.empty3.apps.sculpt.FaceDetectApp faceDetectApp = new one.empty3.apps.sculpt.FaceDetectApp(FaceDetectApp.getVisionService());
             List<FaceAnnotation> faceAnnotations = faceDetectApp.detectFaces(texture.toPath(), 1000);
             if(faceAnnotations.size()==0) {
+                setGenerateByFaceDetetion(false);
                 return;
             }
             List<Point3D> point3DS = faceDetectApp.writeFaceDataWithZ(new one.empty3.libs.Image(textureImage), faceAnnotations.get(0));
 
-
-            class HeightMapSurface1 extends HeightMapSurface {
-                List<Point3D> point3DS1 = new ArrayList<>();
-
-
-                @Override
-                public double heightDouble(double u, double v) {
-                    return search(u, v).getZ();
-                }
-                public void setList(List<Point3D> point3DS) {
-                    this.point3DS1 = point3DS;
-                }
-
-                public Point3D search(double u, double v) {
-                    Point3D current = new Point3D(u, v, 0.0);
-
-                    int near = -1;
-                    for (double i = getStartU(); i < getEndU(); i += getIncrU()) {
-                        for (double j = getStartU(); j < getEndV(); j += getIncrV()) {
-                            Double distance = Double.MAX_VALUE;
-                            for (Point3D comparing : point3DS) {
-                                if (comparing.distance(current) < distance) {
-                                    distance = comparing.distance(current);
-                                    near = point3DS.indexOf(comparing);
-                                }
-                            }
-                        }
-                    }
-                    if(near>=0) {
-                        return point3DS1.get(near);
-                    }else {
-                        return Point3D.O0;
-                    }
-                }
-            };
-            HeightMapSurface1 surface1 = new HeightMapSurface1();
-            ((HeightMapSurface1)surface1).setList(point3DS);
-            if (surface.getClass().isAssignableFrom(HeightMapSurface.class)) {
-                surface = surface;
+            if(!point3DS.isEmpty()) {
+                surface1 = new HeightMapSurface1();
+                surface1.setList(point3DS);
+                setGenerateByFaceDetetion(true);
+                return;
             }
-            if (surface.getClass().isAssignableFrom(T3D.class)) {
-                ((T3D) surface).getSurfaceUV().setElem(surface1);
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (GeneralSecurityException e) {
+        } catch (IOException | GeneralSecurityException e) {
             throw new RuntimeException(e);
         }
+
+        setGenerateByFaceDetetion(false);
+
 
     }
 
@@ -386,16 +388,31 @@ public class Empty3Design extends JFrame {
 
         if(surface!=null) {
             System.out.println("surface!=null");
-            surface.setIncrU(0.01);
-            surface.setIncrV(0.01);
+            surface.setIncrU(0.05);
+            surface.setIncrV(0.05);
         } else {
             System.out.println("surface==null");
+        }
+
+        if(isGenerateByFaceDetetion()) {
+            if (surface.getClass().isAssignableFrom(HeightMapSurface.class)) {
+                surface = surface1;
+            }
+            if (surface.getClass().isAssignableFrom(T3D.class)) {
+                ((T3D) surface).getSurfaceUV().setElem(surface1);
+            }
         }
 
 
         glJPanel.display(); // Redraw
     }
 
+    private boolean isGenerateByFaceDetetion() {
+        return generateByFaceDetetion;
+    }
+    private void setGenerateByFaceDetetion(boolean b) {
+        generateByFaceDetetion = b;
+    }
     private boolean isT3d() {
         return isT3d;
     }
