@@ -52,6 +52,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -233,26 +234,57 @@ public class Empty3Design extends JFrame {
 
             new one.empty3.libs.Image(textureImage).saveFile(texture);
             one.empty3.apps.sculpt.FaceDetectApp faceDetectApp = new one.empty3.apps.sculpt.FaceDetectApp(FaceDetectApp.getVisionService());
+            faceDetectApp.initStructurePolygons();
             List<FaceAnnotation> faceAnnotations = faceDetectApp.detectFaces(texture.toPath(), 1000);
-            if(faceAnnotations.size()==0) {
+            if(faceAnnotations.isEmpty()) {
                 setGenerateByFaceDetetion(false);
                 return;
             }
             List<Point3D> point3DS = faceDetectApp.writeFaceDataWithZ(new one.empty3.libs.Image(textureImage), faceAnnotations.get(0));
 
+            normalizeZ(point3DS);
+
+            for (Point3D point3D : point3DS) {
+                System.out.println(point3D.toString());
+                point3D.setZ(point3D.getZ() +1);
+            }
+
+            // Creates surface from face data if available
             if(!point3DS.isEmpty()) {
                 surface1 = new HeightMapSurface1();
                 surface1.setList(point3DS);
+                System.out.printf("Face successfully imported : %d\n", point3DS.size());
+                System.out.printf("Face successfully imported : %d\n", point3DS.size());
                 setGenerateByFaceDetetion(true);
+                createObject();
+
                 return;
             }
         } catch (IOException | GeneralSecurityException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         setGenerateByFaceDetetion(false);
 
 
+    }
+
+    private void normalizeZ(List<Point3D> point3DS) {
+        double min = Double.MAX_VALUE;
+        double max = Double.MIN_VALUE;
+        // Determines minimum and maximum Z values
+        for (Point3D point3D : point3DS) {
+            if (point3D.getZ() <= min) {
+                min = point3D.getZ();
+            }
+            if (point3D.getZ() >= max) {
+                max = point3D.getZ();
+            }
+        }
+
+        for (Point3D point3D : point3DS) {
+            point3D.setZ((point3D.getZ() - min) / (max - min));
+        }
     }
 
     private void initPanels() {
@@ -277,6 +309,7 @@ public class Empty3Design extends JFrame {
         caps.setHardwareAccelerated(true);
 
         glJPanel = new GLJPanel(caps);
+        // Implements OpenGL event handling for rendering and interaction
         glJPanel.addGLEventListener(new GLEventListener() {
             @Override
             public void init(GLAutoDrawable drawable) {
@@ -344,67 +377,82 @@ public class Empty3Design extends JFrame {
     private void createObject() {
         surface = new T3D();
         HeightMapSurface surface0 = null;
+        // Creates surface from heightmap or face detection; textures it
         if (heightMapImage != null) {
-            surface0 = new HeightMapSurface() {
-                @Override
-                public double heightDouble(double u, double v) {
-                    int x = (int) (u * (heightMapImage.getWidth() - 1));
-                    int y = (int) (v * (heightMapImage.getHeight() - 1));
-                    if(x>=0&&x<heightMapImage.getWidth()&&y>=0&&y<heightMapImage.getHeight()) {
-                        return ( heightMapImage.getRGB(x, y)&0xff) / 256.0f;
-                    } else
-                        return 0.0;
+            if(isGenerateByFaceDetetion()) {
+                // Assigns face‑detected surface or sets UV coordinates
+                if (!isT3d && surface1 != null) {
+                    surface = surface1;
+                } else if (isT3d && surface1 != null) {
+                    ((T3D) surface).getSurfaceUV().setElem(surface1);
+
                 }
-                @Override
-                public Point3D calculerPoint3D(double u, double v) {
-                    int x = (int) (u * (heightMapImage.getWidth() - 1));
-                    int y = (int) (v * (heightMapImage.getHeight() - 1));
-                    float height = new Color(heightMapImage.getRGB(x, y)).getRed() / 255.0f;
-                    return new Point3D(u , v , (double) height);
+                surface.texture(new ImageTexture(new one.empty3.libs.Image(textureImage)));
+            } else {
+                // Creates heightmap surface from image data
+                surface0 = new HeightMapSurface() {
+                    @Override
+                    public double heightDouble(double u, double v) {
+                        int x = (int) (u * (heightMapImage.getWidth() - 1));
+                        int y = (int) (v * (heightMapImage.getHeight() - 1));
+                        // Returns height value if within image bounds
+                        if (x >= 0 && x < heightMapImage.getWidth() && y >= 0 && y < heightMapImage.getHeight()) {
+                            return (heightMapImage.getRGB(x, y) & 0x00ff0000) / 256.0f;
+                        } else
+                            return 0.0;
+                    }
+
+                    // Computes heightmap point from image coordinates and color
+                    @Override
+                    public Point3D calculerPoint3D(double u, double v) {
+                        int x = (int) (u * (heightMapImage.getWidth() - 1));
+                        int y = (int) (v * (heightMapImage.getHeight() - 1));
+                        float height = new Color(heightMapImage.getRGB(x, y)).getRed() / 255.0f;
+                        return new Point3D(u, v, (double) height);
+                    }
+
+                };
+
+                if(isT3d) {
+                    ((T3D) surface).getSurfaceUV().setElem(surface0);
+                    ((T3D) surface).getSurfaceUV().getElem().texture(new ImageTexture(new one.empty3.libs.Image(textureImage)));
+                } else {
+                    surface0.texture(new ImageTexture(new one.empty3.libs.Image(textureImage)));
+                    surface = surface0;
                 }
-            };
-            surface0.setIncrU(0.05);
-            surface0.setIncrV(0.05);
-        }
-        ((T3D) surface).getSurfaceUV().setElem(surface0);
-        CourbeParametriquePolynomialeBezier courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier();
-        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.O0, 0);
-        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.Z.mult(1.0),1);
-        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.Z.mult(2.0),2);
-        courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.Z.mult(3.0),3);
-        ((T3D) surface).getSoulCurve().setElem(courbeParametriquePolynomialeBezier);
-        ((T3D) surface).getDiameterFunction().setElem(new FctXY() {
-            @Override
-            public double result(double input) {
-                return 3.0;
+
             }
-        });
-        if (!isT3d()) {
-            surface = surface0;
-        }
-        if (textureImage != null&&surface != null) {
-            surface.texture(new ImageTexture(new one.empty3.libs.Image(textureImage)));
-        }
-
-        if(surface!=null) {
-            System.out.println("surface!=null");
-            surface.setIncrU(0.05);
-            surface.setIncrV(0.05);
-        } else {
-            System.out.println("surface==null");
-        }
-
-        if(isGenerateByFaceDetetion()) {
-            if (surface.getClass().isAssignableFrom(HeightMapSurface.class)) {
-                surface = surface1;
+            // Sets curve and diameter for 3D surface
+            if(isT3d) {
+                CourbeParametriquePolynomialeBezier courbeParametriquePolynomialeBezier = new CourbeParametriquePolynomialeBezier();
+                courbeParametriquePolynomialeBezier.getCoefficients().setElem(Point3D.O0, 0);
+                courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0.0, 0.1, 0.25), 1);
+                courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0.1, 0.1, 0.50), 1);
+                courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0.1, 0.0, 0.75), 1);
+                courbeParametriquePolynomialeBezier.getCoefficients().setElem(new Point3D(0.0, 0.0, 1.00), 1);
+                ((T3D) surface).getSoulCurve().setElem(courbeParametriquePolynomialeBezier);
+                ((T3D) surface).getDiameterFunction().setElem(new FctXY() {
+                    @Override
+                    public double result(double input) {
+                        return 1.0;
+                    }
+                });
+                ((FctXY)((T3D) surface).getDiameterFunction().getElem()).setFormulaX("1.0");
             }
-            if (surface.getClass().isAssignableFrom(T3D.class)) {
-                ((T3D) surface).getSurfaceUV().setElem(surface1);
+            if (textureImage != null&&surface != null) {
+                surface.texture(new ImageTexture(new one.empty3.libs.Image(textureImage)));
             }
+
+            if(surface!=null) {
+                System.out.println("surface!=null");
+                surface.setIncrU(0.05);
+                surface.setIncrV(0.05);
+            } else {
+                System.out.println("surface==null");
+            }
+
+            glJPanel.display(); // Redraw
         }
-
-
-        glJPanel.display(); // Redraw
     }
 
     private boolean isGenerateByFaceDetetion() {
@@ -425,28 +473,37 @@ public class Empty3Design extends JFrame {
     protected void draw(ParametricSurface s, GLU glu, GL2 gl) {
         if (s == null) return;
         gl.glBegin(GL2.GL_TRIANGLES);
+        // Iterates surface elements; draws two triangles each
         for (double i = s.getStartU(); i < s.getEndU(); i += s.getIncrU()) {
+            // Iterates surface elements; draws two triangles each
             for (double j = s.getStartV(); j < s.getEndV(); j += s.getIncrV()) {
                 Polygon elementSurface = s.getElementSurface(i, s.getIncrU(), j, s.getIncrV());
+                double u = (i-s.getStartU())/(s.getEndU()-s.getStartU());
+                double v = (j-s.getStartV())/(s.getEndV()-s.getStartV());
+                // Draws first triangle from parametric surface element
                 draw2(new TRI(elementSurface.getPoints().getElem(0),
                         elementSurface.getPoints().getElem(1),
                         elementSurface.getPoints().getElem(2), s.texture()
-                ), glu, gl, true);
+                ), glu, gl, true, u, v);
+                // Draws second triangle from parametric surface element
                 draw2(new TRI(elementSurface.getPoints().getElem(2),
                                 elementSurface.getPoints().getElem(3),
                                 elementSurface.getPoints().getElem(0), s.texture()),
-                        glu, gl, true);
+                        glu, gl, true, u, v);
             }
         }
         gl.glEnd();
     }
 
-    private void draw2(TRI tri, GLU glu, GL2 gl, boolean useTexture) {
+    private void draw2(TRI tri, GLU glu, GL2 gl, boolean useTexture, double u, double v) {
         if (tri == null) return;
+        // Iterates triangle vertices; sets color; draws vertex
         for (int i = 0; i < 3; i++) {
             Point3D p = tri.getSommet().getElem(i);
+            // Chooses color based on texture availability
             if (useTexture && tri.getTexture() != null && p.texture() != null) {
-                Color c = new Color(tri.getTexture().getColorAt((double) (p.get(0)), (double) (p.get(1))));
+                Color c = new Color(tri.getTexture().getColorAt(u, v));
+                // Sets vertex color based on texture sample
                 gl.glColor4f(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
             } else {
                 gl.glColor3f(0.8f, 0.8f, 0.8f);
@@ -456,6 +513,9 @@ public class Empty3Design extends JFrame {
     }
 
 
+    /**
+     * Adds mouse controls for rotation and zoom
+     */
     private void addMouseControls(Component canvas) {
         canvas.addMouseListener(new MouseAdapter() {
             @Override
@@ -465,6 +525,7 @@ public class Empty3Design extends JFrame {
             }
         });
 
+        // Implements mouse drag for scene rotation
         canvas.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -500,6 +561,9 @@ public class Empty3Design extends JFrame {
 
     // --- Menu Action Methods ---
 
+    /**
+     * Opens design file; handles image loading errors
+     */
     private void openDesign() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Ouvrir Design");
@@ -508,9 +572,11 @@ public class Empty3Design extends JFrame {
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.setCurrentDirectory(currentDirectoryProject);
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            // Opens zipped design file; handles image loading errors
             try (ZipInputStream zis = new ZipInputStream(new FileInputStream(fileChooser.getSelectedFile()))) {
                 ZipEntry entry;
                 while ((entry = zis.getNextEntry()) != null) {
+                    // Reads heightmap and texture images from zip entry
                     if (entry.getName().equalsIgnoreCase("heightmap.png")) {
                         heightMapImage = ImageIO.read(zis);
                     } else if (entry.getName().equalsIgnoreCase("texture.png")) {
@@ -526,6 +592,9 @@ public class Empty3Design extends JFrame {
         }
     }
 
+    /**
+     * Saves design images to zipped file
+     */
     private void saveDesign() {
         if (heightMapImage == null && textureImage == null) {
             JOptionPane.showMessageDialog(this, "Aucune image à sauvegarder.", "Avertissement", JOptionPane.WARNING_MESSAGE);
@@ -566,6 +635,9 @@ public class Empty3Design extends JFrame {
         }
     }
 
+    /**
+     * Imports heightmap image from user selection
+     */
     private void importHeightMap() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Importer une image pour la carte de hauteur");
@@ -582,6 +654,9 @@ public class Empty3Design extends JFrame {
         }
     }
 
+    /**
+     * Imports texture image from user selection
+     */
     private void importTexture() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Importer une image pour la texture");
@@ -600,6 +675,7 @@ public class Empty3Design extends JFrame {
 
 
     private void updateImagePanels() {
+        // Updates height map label with scaled image or placeholder
         if (heightMapImage != null) {
             heightMapLabel.setIcon(new ImageIcon(heightMapImage.getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
             heightMapLabel.setText(null);
@@ -607,6 +683,7 @@ public class Empty3Design extends JFrame {
             heightMapLabel.setIcon(null);
             heightMapLabel.setText("Image de la carte de hauteur");
         }
+        // Updates texture label with scaled image or placeholder
         if (textureImage != null) {
             textureLabel.setIcon(new ImageIcon(textureImage.getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
             textureLabel.setText(null);
@@ -625,6 +702,7 @@ public class Empty3Design extends JFrame {
 
     private void openWebsite() {
         try {
+            // Opens default browser to project website
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI("http://empty3.one"));
             }
@@ -634,184 +712,26 @@ public class Empty3Design extends JFrame {
         }
     }
 
+    private String loadLicenseFromResource() {
+        // Loads license text from resource file
+        try (InputStream is = getClass().getResourceAsStream("/LICENSE.txt")) {
+            if (is == null) {
+                return "License file not found.";
+            }
+            StringBuilder sb = new StringBuilder();
+            int c;
+            while ((c = is.read()) != -1) {
+                sb.append((char) c);
+            }
+            return sb.toString();
+        } catch (IOException e) {
+            return "Error loading license: " + e.getMessage();
+        }
+    }
+
     private void showLicense() {
         JDialog licenseDialog = new JDialog(this, "Licence", true);
-        String licenseText = "                                 Apache License\n" +
-                "                           Version 2.0, January 2004\n" +
-                "                        http://www.apache.org/licenses/\n" +
-                "\n" +
-                "   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n" +
-                "\n" +
-                "   1. Definitions.\n" +
-                "\n" +
-                "      \"License\" shall mean the terms and conditions for use, reproduction,\n" +
-                "      and distribution as defined by Sections 1 through 9 of this document.\n" +
-                "\n" +
-                "      \"Licensor\" shall mean the copyright owner or entity authorized by\n" +
-                "      the copyright owner that is granting the License.\n" +
-                "\n" +
-                "      \"Legal Entity\" shall mean the union of the acting entity and all\n" +
-                "      other entities that control, are controlled by, or are under common\n" +
-                "      control with that entity. For the purposes of this definition,\n" +
-                "      \"control\" means (i) the power, direct or indirect, to cause the\n" +
-                "      direction or management of such entity, whether by contract or\n" +
-                "      otherwise, or (ii) ownership of fifty percent (50%) or more of the\n" +
-                "      outstanding shares, or (iii) beneficial ownership of such entity.\n" +
-                "\n" +
-                "      \"You\" (or \"Your\") shall mean an individual or Legal Entity\n" +
-                "      exercising permissions granted by this License.\n" +
-                "\n" +
-                "      \"Source\" form shall mean the preferred form for making modifications,\n" +
-                "      including but not limited to software source code, documentation\n" +
-                "      source, and configuration files.\n" +
-                "\n" +
-                "      \"Object\" form shall mean any form resulting from mechanical\n" +
-                "      transformation or translation of a Source form, including but\n" +
-                "      not limited to compiled object code, generated documentation,\n" +
-                "      and conversions to other media types.\n" +
-                "\n" +
-                "      \"Work\" shall mean the work of authorship, whether in Source or\n" +
-                "      Object form, made available under the License, as indicated by a\n" +
-                "      copyright notice that is included in or attached to the work\n" +
-                "      (an example is provided in the Appendix below).\n" +
-                "\n" +
-                "      \"Derivative Works\" shall mean any work, whether in Source or Object\n" +
-                "      form, that is based on (or derived from) the Work and for which the\n" +
-                "      editorial revisions, annotations, elaborations, or other modifications\n" +
-                "      represent, as a whole, an original work of authorship. For the purposes\n" +
-                "      of this License, Derivative Works shall not include works that remain\n" +
-                "      separable from, or merely link (or bind by name) to the interfaces of,\n" +
-                "      the Work and Derivative Works thereof.\n" +
-                "\n" +
-                "      \"Contribution\" shall mean any work of authorship, including\n" +
-                "      the original version of the Work and any modifications or additions\n" +
-                "      to that Work or Derivative Works thereof, that is intentionally\n" +
-                "      submitted to Licensor for inclusion in the Work by the copyright owner\n" +
-                "      or by an individual or Legal Entity authorized to submit on behalf of\n" +
-                "      the copyright owner. For the purposes of this definition, \"submitted\"\n" +
-                "      means any form of electronic, verbal, or written communication sent\n" +
-                "      to the Licensor or its representatives, including but not limited to\n" +
-                "      communication on electronic mailing lists, source code control systems,\n" +
-                "      and issue tracking systems that are managed by, or on behalf of, the\n" +
-                "      Licensor for the purpose of discussing and improving the Work, but\n" +
-                "      excluding communication that is conspicuously marked or otherwise\n" +
-                "      designated in writing by the copyright owner as \"Not a Contribution.\"\n" +
-                "\n" +
-                "      \"Contributor\" shall mean Licensor and any individual or Legal Entity\n" +
-                "      on behalf of whom a Contribution has been received by Licensor and\n" +
-                "      subsequently incorporated within the Work.\n" +
-                "\n" +
-                "   2. Grant of Copyright License. Subject to the terms and conditions of\n" +
-                "      this License, each Contributor hereby grants to You a perpetual,\n" +
-                "      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n" +
-                "      copyright license to reproduce, prepare Derivative Works of,\n" +
-                "      publicly display, publicly perform, sublicense, and distribute the\n" +
-                "      Work and such Derivative Works in Source or Object form.\n" +
-                "\n" +
-                "   3. Grant of Patent License. Subject to the terms and conditions of\n" +
-                "      this License, each Contributor hereby grants to You a perpetual,\n" +
-                "      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n" +
-                "      (except as stated in this section) patent license to make, have made,\n" +
-                "      use, offer to sell, sell, import, and otherwise transfer the Work,\n" +
-                "      where such license applies only to those patent claims licensable\n" +
-                "      by such Contributor that are necessarily infringed by their\n" +
-                "      Contribution(s) alone or by combination of their Contribution(s)\n" +
-                "      with the Work to which such Contribution(s) was submitted. If You\n" +
-                "      institute patent litigation against any entity (including a\n" +
-                "      cross-claim or counterclaim in a lawsuit) alleging that the Work\n" +
-                "      or a Contribution incorporated within the Work constitutes direct\n" +
-                "      or contributory patent infringement, then any patent licenses\n" +
-                "      granted to You under this License for that Work shall terminate\n" +
-                "      as of the date such litigation is filed.\n" +
-                "\n" +
-                "   4. Redistribution. You may reproduce and distribute copies of the\n" +
-                "      Work or Derivative Works thereof in any medium, with or without\n" +
-                "      modifications, and in Source or Object form, provided that You\n" +
-                "      meet the following conditions:\n" +
-                "\n" +
-                "      (a) You must give any other recipients of the Work or\n" +
-                "          Derivative Works a copy of this License; and\n" +
-                "\n" +
-                "      (b) You must cause any modified files to carry prominent notices\n" +
-                "          stating that You changed the files; and\n" +
-                "\n" +
-                "      (c) You must retain, in the Source form of any Derivative Works\n" +
-                "          that You distribute, all copyright, patent, trademark, and\n" +
-                "          attribution notices from the Source form of the Work,\n" +
-                "          excluding those notices that do not pertain to any part of\n" +
-                "          the Derivative Works; and\n" +
-                "\n" +
-                "      (d) If the Work includes a \"NOTICE\" text file as part of its\n" +
-                "          distribution, then any Derivative Works that You distribute must\n" +
-                "          include a readable copy of the attribution notices contained\n" +
-                "          within such NOTICE file, excluding those notices that do not\n" +
-                "          pertain to any part of the Derivative Works, in at least one\n" +
-                "          of the following places: within a NOTICE text file distributed\n" +
-                "          as part of the Derivative Works; within the Source form or\n" +
-                "          documentation, if provided along with the Derivative Works; or,\n" +
-                "          within a display generated by the Derivative Works, if and\n" +
-                "          wherever such third-party notices normally appear. The contents\n" +
-                "          of the NOTICE file are for informational purposes only and\n" +
-                "          do not modify the License. You may add Your own attribution\n" +
-                "          notices within Derivative Works that You distribute, alongside\n" +
-                "          or as an addendum to the NOTICE text from the Work, provided\n" +
-                "          that such additional attribution notices cannot be construed\n" +
-                "          as modifying the License.\n" +
-                "\n" +
-                "      You may add Your own copyright statement to Your modifications and\n" +
-                "      may provide additional or different license terms and conditions\n" +
-                "      for use, reproduction, or distribution of Your modifications, or\n" +
-                "      for any such Derivative Works as a whole, provided Your use,\n" +
-                "      reproduction, and distribution of the Work otherwise complies with\n" +
-                "      the conditions stated in this License.\n" +
-                "\n" +
-                "   5. Submission of Contributions. Unless You explicitly state otherwise,\n" +
-                "      any Contribution intentionally submitted for inclusion in the Work\n" +
-                "      by You to the Licensor shall be under the terms and conditions of\n" +
-                "      this License, without any additional terms or conditions.\n" +
-                "      Notwithstanding the above, nothing herein shall supersede or modify\n" +
-                "      the terms of any separate license agreement you may have executed\n" +
-                "      with Licensor regarding such Contributions.\n" +
-                "\n" +
-                "   6. Trademarks. This License does not grant permission to use the trade\n" +
-                "      names, trademarks, service marks, or product names of the Licensor,\n" +
-                "      except as required for reasonable and customary use in describing the\n" +
-                "      origin of the Work and reproducing the content of the NOTICE file.\n" +
-                "\n" +
-                "   7. Disclaimer of Warranty. Unless required by applicable law or\n" +
-                "      agreed to in writing, Licensor provides the Work (and each\n" +
-                "      Contributor provides its Contributions) on an \"AS IS\" BASIS,\n" +
-                "      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n" +
-                "      implied, including, without limitation, any warranties or conditions\n" +
-                "      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n" +
-                "      PARTICULAR PURPOSE. You are solely responsible for determining the\n" +
-                "      appropriateness of using or redistributing the Work and assume any\n" +
-                "      risks associated with Your exercise of permissions under this License.\n" +
-                "\n" +
-                "   8. Limitation of Liability. In no event and under no legal theory,\n" +
-                "      whether in tort (including negligence), contract, or otherwise,\n" +
-                "      unless required by applicable law (such as deliberate and grossly\n" +
-                "      negligent acts) or agreed to in writing, shall any Contributor be\n" +
-                "      liable to You for damages, including any direct, indirect, special,\n" +
-                "      incidental, or consequential damages of any character arising as a\n" +
-                "      result of this License or out of the use or inability to use the\n" +
-                "      Work (including but not limited to damages for loss of goodwill,\n" +
-                "      work stoppage, computer failure or malfunction, or any and all\n" +
-                "      other commercial damages or losses), even if such Contributor\n" +
-                "      has been advised of the possibility of such damages.\n" +
-                "\n" +
-                "   9. Accepting Warranty or Additional Liability. While redistributing\n" +
-                "      the Work or Derivative Works thereof, You may choose to offer,\n" +
-                "      and charge a fee for, acceptance of support, warranty, indemnity,\n" +
-                "      or other liability obligations and/or rights consistent with this\n" +
-                "      License. However, in accepting such obligations, You may act only\n" +
-                "      on Your own behalf and on Your sole responsibility, not on behalf\n" +
-                "      of any other Contributor, and only if You agree to indemnify,\n" +
-                "      defend, and hold each Contributor harmless for any liability\n" +
-                "      incurred by, or claims asserted against, such Contributor by reason\n" +
-                "      of your accepting any such warranty or additional liability.\n" +
-                "\n" +
-                "   END OF TERMS AND CONDITIONS";
+        String licenseText = loadLicenseFromResource();
         JTextArea textArea = new JTextArea(licenseText);
         textArea.setEditable(false);
         textArea.setWrapStyleWord(true);
