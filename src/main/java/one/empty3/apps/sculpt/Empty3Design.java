@@ -32,6 +32,8 @@ package one.empty3.apps.sculpt;
 import com.google.api.services.vision.v1.model.FaceAnnotation;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLJPanel;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 import com.jogamp.opengl.glu.GLU;
 import one.empty3.apps.facedetect.jvm.FaceDetectApp;
 import one.empty3.library.*;
@@ -39,7 +41,9 @@ import one.empty3.library.Polygon;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.nurbs.ParametricSurface;
+import one.empty3.library.core.nurbs.Point3DS;
 import one.empty3.library.core.tribase.Plan3D;
+import org.mockito.internal.matchers.Null;
 //import one.empty3.library.core.tribase.T3D;
 
 import javax.imageio.ImageIO;
@@ -126,6 +130,8 @@ public class Empty3Design extends JFrame {
     private boolean isT3d;
     private JCheckBoxMenuItem displayHeightMapOnlyMenuItem;
     private HeightMapSurface1 surface1;
+    private Texture glTexture;
+    private boolean textureChanged = false;
 
     public Empty3Design() {
         setTitle("Empty3 Designer");
@@ -335,8 +341,32 @@ public class Empty3Design extends JFrame {
                 gl.glRotatef(rotateX, 1.0f, 0.0f, 0.0f);
                 gl.glRotatef(rotateY, 0.0f, 1.0f, 0.0f);
 
+                if (textureChanged) {
+                    if (glTexture != null) {
+                        glTexture.destroy(gl);
+                        glTexture = null;
+                    }
+                    if (textureImage != null) {
+                        glTexture = AWTTextureIO.newTexture(gl.getGLProfile(), textureImage, true);
+                        glTexture.setTexParameteri(gl, GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT);
+                        glTexture.setTexParameteri(gl, GL2.GL_TEXTURE_WRAP_T, GL2.GL_REPEAT);
+                    }
+                    textureChanged = false;
+                }
+
+                if (glTexture != null) {
+                    glTexture.enable(gl);
+                    glTexture.bind(gl);
+                    gl.glColor3f(1.0f, 1.0f, 1.0f);
+                }
+
                 if (surface != null) {
-                    draw(surface, glu, gl);
+                    drawFine(surface, glu, gl);
+                    //drawFine(surface, glu, gl);
+                }
+
+                if (glTexture != null) {
+                    glTexture.disable(gl);
                 }
             }
 
@@ -513,6 +543,59 @@ public class Empty3Design extends JFrame {
     }
 
 
+    protected void drawFine(ParametricSurface s, GLU glu, GL2 gl) {
+        if (s == null) return;
+        gl.glBegin(GL2.GL_TRIANGLES);
+        // Iterates surface elements; draws two triangles each
+        for (double i = s.getStartU(); i < s.getEndU(); i += s.getIncrU()) {
+            // Iterates surface elements; draws two triangles each
+            for (double j = s.getStartV(); j < s.getEndV(); j += s.getIncrV()) {
+                // Handles exceptions during surface element processing
+                try {
+                    Polygon elementSurface = s.getElementSurface(i, s.getIncrU(), j, s.getIncrV());
+                    double u1 = (i - s.getStartU()) / (s.getEndU() - s.getStartU());
+                    double v1 = (j - s.getStartV()) / (s.getEndV() - s.getStartV());
+                    double u2 = (i - s.getStartU() + s.getIncrU()) / (s.getEndU() - s.getStartU());
+                    double v2 = (j - s.getStartV() + s.getIncrV()) / (s.getEndV() - s.getStartV());
+                    // Draws first triangle from parametric surface element
+                    draw2QuadFine(new Polygon(new Point3D[]{elementSurface.getPoints().getElem(0),
+                            elementSurface.getPoints().getElem(1),
+                            elementSurface.getPoints().getElem(2),
+                            elementSurface.getPoints().getElem(3)},
+                            s.texture()
+                    ), glu, gl, s.texture(), u1, v1, u2, v2);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        gl.glEnd();
+    }
+
+    private void draw2QuadFine(Polygon quad, GLU glu, GL2 gl, ITexture texture, double u1, double v1, double u2, double v2) {
+        if (quad == null) return;
+        List<Point3D> ps = quad.getPoints().getData1d();
+        
+        // Quad vertices indices in ps: 0, 1, 2, 3
+        // Triangle 1: 0, 1, 2
+        // Triangle 2: 0, 2, 3
+        int[][] indices = {{0, 1, 2}, {0, 2, 3}};
+        
+        // UV coordinates for the 4 corners of the quad
+        // 0: (u1, v1), 1: (u2, v1), 2: (u2, v2), 3: (u1, v2)
+        double[][] uvs = {{u1, v1}, {u2, v1}, {u2, v2}, {u1, v2}};
+
+        for (int j = 0; j < 2; j++) {
+            // Iterates triangles; sets texture and vertex coordinates
+            for (int i = 0; i < 3; i++) {
+                int idx = indices[j][i];
+                Point3D p = ps.get(idx);
+                
+                gl.glTexCoord2d(uvs[idx][0], uvs[idx][1]);
+                gl.glVertex3d(p.get(0), p.get(1), p.get(2));
+            }
+        }
+    }
     /**
      * Adds mouse controls for rotation and zoom
      */
@@ -581,6 +664,7 @@ public class Empty3Design extends JFrame {
                         heightMapImage = ImageIO.read(zis);
                     } else if (entry.getName().equalsIgnoreCase("texture.png")) {
                         textureImage = ImageIO.read(zis);
+                        textureChanged = true;
                     }
                     zis.closeEntry();
                 }
@@ -665,6 +749,7 @@ public class Empty3Design extends JFrame {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             try {
                 textureImage = ImageIO.read(fileChooser.getSelectedFile());
+                textureChanged = true;
                 updateImagePanels();
                 createObject();
             } catch (IOException e) {
