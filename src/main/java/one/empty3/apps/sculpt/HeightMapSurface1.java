@@ -60,8 +60,9 @@ public class HeightMapSurface1 extends HeightMapSurface {
         Double distance = Double.MAX_VALUE;
         // Finds the nearest point and its index in list
         for (Point3D comparing : point3DS1) {
-            if (comparing.distance(current) < distance) {
-                distance = comparing.distance(current);
+            Point3D comparingZ0 = new Point3D(comparing.get(0), comparing.get(1), 0.0);
+            if (comparingZ0.distance(current) < distance) {
+                distance = comparingZ0.distance(current);
                 p = new Point3D(u, v, comparing.get(2));
                 near = point3DS1.indexOf(comparing);
             }

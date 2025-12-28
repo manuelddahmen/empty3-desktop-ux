@@ -42,9 +42,6 @@ import one.empty3.libs.Image;
  * Tube (cylindre à âme courbe et sculptée par une image en niveauc de gris (0-255)
  */
 public class T3D extends Tubulaire3 {
-    /***
-     * @serialField surfaceUV
-     */
     protected StructureMatrix<HeightMapSurface> surfaceUV = new StructureMatrix<HeightMapSurface>(0, HeightMapSurface.class);
     private ITexture texture2;
 
