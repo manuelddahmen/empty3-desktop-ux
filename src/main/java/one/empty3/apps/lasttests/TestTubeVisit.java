@@ -61,7 +61,8 @@ public class TestTubeVisit extends TestObjetSub {
         z().texture(new ColorTexture(java.awt.Color.BLACK.getRGB()));
         z().setFORCE_POSITIVE_NORMALS(true);
         z().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS );
-        CourbeParametriquePolynomialeBezier elem = tubulaire3refined.getSoulCurve().getElem();
+        CourbeParametriquePolynomialeBezier elem = new CourbeParametriquePolynomialeBezier();
+        tubulaire3refined.getSoulCurve().setElem(elem);
         for(int i=0; i<10; i++) {
             elem.getCoefficients().setElem(Point3D.random(1000.0), i);
             currentPoint++;

@@ -383,25 +383,101 @@ public class JoglDrawer extends Drawer implements GLEventListener {
     }
 
     protected void draw(ParametricSurface s, GLU glu, GL2 gl) {
+        if (s == null) return;
         gl.glBegin(GL2.GL_TRIANGLES);
+        // Iterates surface elements; draws two triangles each
         for (double i = s.getStartU(); i < s.getEndU(); i += s.getIncrU()) {
+            // Iterates surface elements; draws two triangles each
             for (double j = s.getStartV(); j < s.getEndV(); j += s.getIncrV()) {
                 Polygon elementSurface = s.getElementSurface(i, s.getIncrU(), j, s.getIncrV());
-                Point3D INFINI = Point3D.INFINI;
+                double u = (i-s.getStartU())/(s.getEndU()-s.getStartU());
+                double v = (j-s.getStartV())/(s.getEndV()-s.getStartV());
+                // Draws first triangle from parametric surface element
                 draw2(new TRI(elementSurface.getPoints().getElem(0),
                         elementSurface.getPoints().getElem(1),
                         elementSurface.getPoints().getElem(2), s.texture()
-                ), glu, gl, true);
+                ), glu, gl, true, u, v);
+                // Draws second triangle from parametric surface element
                 draw2(new TRI(elementSurface.getPoints().getElem(2),
                                 elementSurface.getPoints().getElem(3),
                                 elementSurface.getPoints().getElem(0), s.texture()),
-                        glu, gl, true);
+                        glu, gl, true, u, v);
             }
         }
         gl.glEnd();
-
     }
 
+    private void draw2(TRI tri, GLU glu, GL2 gl, boolean useTexture, double u, double v) {
+        if (tri == null) return;
+        // Iterates triangle vertices; sets color; draws vertex
+        for (int i = 0; i < 3; i++) {
+            Point3D p = tri.getSommet().getElem(i);
+            // Chooses color based on texture availability
+            if (useTexture && tri.getTexture() != null && p.texture() != null) {
+                java.awt.Color c = new java.awt.Color(tri.getTexture().getColorAt(u, v));
+                // Sets vertex color based on texture sample
+                gl.glColor4f(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
+            } else {
+                gl.glColor3f(0.8f, 0.8f, 0.8f);
+            }
+            gl.glVertex3d(p.get(0), p.get(1), p.get(2));
+        }
+    }
+
+
+    protected void drawFine(ParametricSurface s, GLU glu, GL2 gl) {
+        if (s == null) return;
+        gl.glBegin(GL2.GL_TRIANGLES);
+        // Iterates surface elements; draws two triangles each
+        for (double i = s.getStartU(); i < s.getEndU(); i += s.getIncrU()) {
+            // Iterates surface elements; draws two triangles each
+            for (double j = s.getStartV(); j < s.getEndV(); j += s.getIncrV()) {
+                // Handles exceptions during surface element processing
+                try {
+                    Polygon elementSurface = s.getElementSurface(i, s.getIncrU(), j, s.getIncrV());
+                    double u1 = (i - s.getStartU()) / (s.getEndU() - s.getStartU());
+                    double v1 = (j - s.getStartV()) / (s.getEndV() - s.getStartV());
+                    double u2 = (i - s.getStartU() + s.getIncrU()) / (s.getEndU() - s.getStartU());
+                    double v2 = (j - s.getStartV() + s.getIncrV()) / (s.getEndV() - s.getStartV());
+                    // Draws first triangle from parametric surface element
+                    draw2QuadFine(new Polygon(new Point3D[]{elementSurface.getPoints().getElem(0),
+                            elementSurface.getPoints().getElem(1),
+                            elementSurface.getPoints().getElem(2),
+                            elementSurface.getPoints().getElem(3)},
+                            s.texture()
+                    ), glu, gl, s.texture(), u1, v1, u2, v2);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        gl.glEnd();
+    }
+
+    private void draw2QuadFine(Polygon quad, GLU glu, GL2 gl, ITexture texture, double u1, double v1, double u2, double v2) {
+        if (quad == null) return;
+        java.util.List<Point3D> ps = quad.getPoints().getData1d();
+
+        // Quad vertices indices in ps: 0, 1, 2, 3
+        // Triangle 1: 0, 1, 2
+        // Triangle 2: 0, 2, 3
+        int[][] indices = {{0, 1, 2}, {0, 2, 3}};
+
+        // UV coordinates for the 4 corners of the quad
+        // 0: (u1, v1), 1: (u2, v1), 2: (u2, v2), 3: (u1, v2)
+        double[][] uvs = {{u1, v1}, {u2, v1}, {u2, v2}, {u1, v2}};
+
+        for (int j = 0; j < 2; j++) {
+            // Iterates triangles; sets texture and vertex coordinates
+            for (int i = 0; i < 3; i++) {
+                int idx = indices[j][i];
+                Point3D p = ps.get(idx);
+
+                gl.glTexCoord2d(uvs[idx][0], uvs[idx][1]);
+                gl.glVertex3d(p.get(0), p.get(1), p.get(2));
+            }
+        }
+    }
     protected void draw(Terrain t, ParametricSurface s, GLU glu, GL2 gl) {
         gl.glBegin(GL2.GL_TRIANGLES);
         for (double i = s.getStartU(); i < s.getEndU(); i += s.getIncrU()) {

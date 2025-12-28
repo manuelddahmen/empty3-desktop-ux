@@ -35,16 +35,11 @@ import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 import com.jogamp.opengl.glu.GLU;
-import one.empty3.apps.facedetect.jvm.FaceDetectApp;
 import one.empty3.library.*;
 import one.empty3.library.Polygon;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomialeBezier;
 import one.empty3.library.core.nurbs.FctXY;
 import one.empty3.library.core.nurbs.ParametricSurface;
-import one.empty3.library.core.nurbs.Point3DS;
-import one.empty3.library.core.tribase.Plan3D;
-import org.mockito.internal.matchers.Null;
-//import one.empty3.library.core.tribase.T3D;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -71,40 +66,7 @@ public class Empty3Design extends JFrame {
 
     private boolean generateByFaceDetetion = false;
 
-    class HeightMapSurface1 extends HeightMapSurface {
-        List<Point3D> point3DS1 = new ArrayList<>();
 
-
-        @Override
-        public double heightDouble(double u, double v) {
-            return search(u, v).getZ();
-        }
-        public void setList(List<Point3D> point3DS) {
-            this.point3DS1 = point3DS;
-        }
-
-        public Point3D search(double u, double v) {
-            Point3D current = new Point3D(u, v, 0.0);
-
-            int near = -1;
-            for (double i = getStartU(); i < getEndU(); i += getIncrU()) {
-                for (double j = getStartU(); j < getEndV(); j += getIncrV()) {
-                    Double distance = Double.MAX_VALUE;
-                    for (Point3D comparing : point3DS1) {
-                        if (comparing.distance(current) < distance) {
-                            distance = comparing.distance(current);
-                            near = point3DS1.indexOf(comparing);
-                        }
-                    }
-                }
-            }
-            if(near>=0) {
-                return point3DS1.get(near);
-            }else {
-                return Point3D.O0;
-            }
-        }
-    }
     private File currentDirectoryTexture;
     private File currentDirectoryHeightMap;
     private File currentDirectoryProject;
@@ -258,6 +220,7 @@ public class Empty3Design extends JFrame {
             // Creates surface from face data if available
             if(!point3DS.isEmpty()) {
                 surface1 = new HeightMapSurface1();
+                surface1.getImage().setElem(new ImageContainer(new one.empty3.libs.Image(textureImage)));
                 surface1.setList(point3DS);
                 System.out.printf("Face successfully imported : %d\n", point3DS.size());
                 System.out.printf("Face successfully imported : %d\n", point3DS.size());
@@ -277,7 +240,7 @@ public class Empty3Design extends JFrame {
 
     private void normalizeZ(List<Point3D> point3DS) {
         double min = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
+        double max = -Double.MAX_VALUE;
         // Determines minimum and maximum Z values
         for (Point3D point3D : point3DS) {
             if (point3D.getZ() <= min) {
@@ -728,6 +691,7 @@ public class Empty3Design extends JFrame {
         fileChooser.setCurrentDirectory(currentDirectoryHeightMap);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Images", "png", "jpg", "jpeg", "bmp"));
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            // Loads heightmap image; handles file I/O errors
             try {
                 heightMapImage = ImageIO.read(fileChooser.getSelectedFile());
                 updateImagePanels();
@@ -747,6 +711,7 @@ public class Empty3Design extends JFrame {
         fileChooser.setFileFilter(new FileNameExtensionFilter("Images", "png", "jpg", "jpeg", "bmp"));
         fileChooser.setCurrentDirectory(currentDirectoryTexture);
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            // Loads texture image; handles file I/O errors
             try {
                 textureImage = ImageIO.read(fileChooser.getSelectedFile());
                 textureChanged = true;

@@ -342,13 +342,16 @@ public class FaceDetectApp {
 
     public List<Point3D> writeFaceDataWithZ(Image img, FaceAnnotation faceAnnotation) {
         List<Point3D> listLandmarks = new ArrayList<>();
+        // Iterates landmark types; adds normalized positions to list
         for (int i = 0; i < landmarks.length; i++) {
             for (int j = 0; j < landmarks[i].length; j++) {
                 for (int k = 0; k < landmarks[i][j].length; k++) {
                     int finalI = i;
                     int finalJ = j;
                     int finalK = k;
+                    // Filters landmarks by type using stream API
                     Optional<Landmark> landmark1 = faceAnnotation.getLandmarks().stream().filter(landmark ->
+                    // Adds normalized landmark position to result list
                             landmark.getType() != null && landmark.getType().equals(landmarks[finalI][finalJ][finalK])).findFirst();
                     landmark1.ifPresent(landmark2 -> listLandmarks.add(new Point3D((double) landmark2.getPosition().getX() / img.getWidth(),
                             (double) landmark2.getPosition().getY() / img.getHeight(),

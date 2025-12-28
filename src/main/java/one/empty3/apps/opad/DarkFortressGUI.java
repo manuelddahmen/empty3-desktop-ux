@@ -73,6 +73,7 @@ public class DarkFortressGUI extends JFrame {
     }
 
     public void setLevel(Class<Terrain> sol, Player player) {
+        // Sets level; initializes and starts game components
         try {
             Terrain t = sol.getConstructor().newInstance();
             mover = new PositionUpdateImpl(t, player);
@@ -87,6 +88,7 @@ public class DarkFortressGUI extends JFrame {
 
             Logger.getLogger(DarkFortressGUI.class.getName()).log(Level.INFO, drawerType.getSimpleName());
 
+            // Selects rendering backend; configures title and drawer
             if (drawerType.equals(JoglDrawer.class)) {
                 Title += "with OpenGL bindings";
                 drawer = new JoglDrawer(this);

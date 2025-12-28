@@ -47,15 +47,15 @@ public class Chien extends RepresentableConteneur {
 
         for (int i = 0; i < 4; i++) {
             patte[i] = new Tubulaire3();
-            patte[i].getSoulCurve().getElem().getCoefficients().getData1d().clear();
+            ((CourbeParametriquePolynomialeBezier)(patte[i].getSoulCurve().getElem())).getCoefficients().getData1d().clear();
             patte[i].texture(new ColorTexture(new Color(Color.ORANGE)));
             ((FctXY) (patte[i].getDiameterFunction().getElem())).setFormulaX("0.6");
         }
         Tubulaire3 corps;
         corps = new Tubulaire3();
-        corps.getSoulCurve().getElem().getCoefficients().getData1d().clear();
-        corps.getSoulCurve().getElem().getCoefficients().setElem(P.n(0., 1., 0.));
-        corps.getSoulCurve().getElem().getCoefficients().setElem(P.n(1., 1., 0.));
+        ((CourbeParametriquePolynomialeBezier)(corps.getSoulCurve().getElem())).getCoefficients().getData1d().clear();
+        ((CourbeParametriquePolynomialeBezier)(corps.getSoulCurve().getElem())).getCoefficients().setElem(P.n(0., 1., 0.));
+        ((CourbeParametriquePolynomialeBezier)(corps.getSoulCurve().getElem())).getCoefficients().setElem(P.n(1., 1., 0.));
         corps.texture(new ColorTexture(new Color(Color.ORANGE)));
         ((FctXY) (corps.getDiameterFunction().getElem())).setFormulaX("1.5");
 // patte AVANT

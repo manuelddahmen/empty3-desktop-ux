@@ -133,10 +133,10 @@ public class ModelingInterface extends JFrame {
         tubulaire4 = new Tubulaire4map();
         tubulaire4.declareProperties();
         tubulaire4.getSoulCurve().setElem(new CourbeParametriquePolynomialeBezier());
-        tubulaire4.getSoulCurve().getElem().getCoefficients().setElem(new Point3D(0.25, 0., 10.), 0);
-        tubulaire4.getSoulCurve().getElem().getCoefficients().setElem(new Point3D(0., 0., 2.5), 1);
-        tubulaire4.getSoulCurve().getElem().getCoefficients().setElem(new Point3D(0., 0., -2.5), 2);
-        tubulaire4.getSoulCurve().getElem().getCoefficients().setElem(new Point3D(0., 0.25, -10.), 3);
+        ((CourbeParametriquePolynomialeBezier)(tubulaire4.getSoulCurve().getElem())).getCoefficients().setElem(new Point3D(0.25, 0., 10.), 0);
+        ((CourbeParametriquePolynomialeBezier)(tubulaire4.getSoulCurve().getElem())).getCoefficients().setElem(new Point3D(0., 0., 2.5), 1);
+        ((CourbeParametriquePolynomialeBezier)(tubulaire4.getSoulCurve().getElem())).getCoefficients().setElem(new Point3D(0., 0., -2.5), 2);
+        ((CourbeParametriquePolynomialeBezier)(tubulaire4.getSoulCurve().getElem())).getCoefficients().setElem(new Point3D(0., 0.25, -10.), 3);
         tubulaire4.getDiameterFunction().setElem(new FctXY());
         tubulaire4.getDiameterFunction().getElem().setFormulaX("20.0");
         try {

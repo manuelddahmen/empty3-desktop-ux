@@ -41,16 +41,16 @@ import java.awt.Dimension;
 public class HumainMarche extends RepresentableConteneur {
     protected double t;
     public void rotateZ(Tubulaire3 tubulaire3, int index0, int indexP, double angle, double fract) {
-        Point3D elem0 = tubulaire3.getSoulCurve().getElem().getCoefficients().getElem(index0);
-        int size = tubulaire3.getSoulCurve().getElem().getCoefficients().getData1d().size();
+        Point3D elem0 =         ((CourbeParametriquePolynomialeBezier)(tubulaire3.getSoulCurve().getElem())).getCoefficients().getElem(index0);
+        int size =         ((CourbeParametriquePolynomialeBezier)(tubulaire3.getSoulCurve().getElem())).getCoefficients().getData1d().size();
         int signum = (int) Math.signum(indexP - index0);
 
         Matrix33 matrix33 = Matrix33.rotationZ(angle*fract);
 
         for(int i=index0+signum; i<size&&i>=0; i+=signum) {
-            Point3D elemI = tubulaire3.getSoulCurve().getElem().getCoefficients().getElem(i);
+            Point3D elemI =         ((CourbeParametriquePolynomialeBezier)(tubulaire3.getSoulCurve().getElem())).getCoefficients().getElem(i);
             Point3D mult = matrix33.mult(elemI.moins(elem0)).plus(elem0);
-            tubulaire3.getSoulCurve().getElem().getCoefficients().getData1d().set(i, mult);
+            ((CourbeParametriquePolynomialeBezier)(tubulaire3.getSoulCurve().getElem())).getCoefficients().getData1d().set(i, mult);
             System.out.print("i:" + i+" p:" + mult);
         }
     }
@@ -62,7 +62,7 @@ public class HumainMarche extends RepresentableConteneur {
 
     }
     public void tubeAddPoint(Tubulaire3 tube, Point3D p) {
-        tube.getSoulCurve().getElem().getCoefficients().getData1d().add(p);
+        ((CourbeParametriquePolynomialeBezier)(tube.getSoulCurve().getElem())).getCoefficients().getData1d().add(p);
     }
 
     public HumainMarche() {
@@ -79,16 +79,16 @@ public class HumainMarche extends RepresentableConteneur {
         Cube ventre = new Cube(5.0, P.n(0., 15., 0));
         for (int i = 0; i < 4; i++) {
             patte[i] = new Tubulaire3();
-            patte[i].getSoulCurve().getElem().getCoefficients().getData1d().clear();
+            ((CourbeParametriquePolynomialeBezier)(patte[i].getSoulCurve().getElem())).getCoefficients().getData1d().clear();
             patte[i].texture(new ColorTexture(new Color(Color.ORANGE)));
             patte[i].getDiameterFunction().getElem().setFormulaX("0.6");
         }
         Tubulaire3 corps;
         corps = new Tubulaire3();
-        corps.getSoulCurve().getElem().getCoefficients().getData1d().clear();
-        corps.getSoulCurve().getElem().getCoefficients().setElem(P.n(0., 1., 0.), 0);
-        corps.getSoulCurve().getElem().getCoefficients().setElem(P.n(1., 1., 0.), 1);
-        corps.texture(new ColorTexture(new Color(Color.ORANGE)));
+        ((CourbeParametriquePolynomialeBezier)(corps.getSoulCurve().getElem())).getCoefficients().getData1d().clear();
+        ((CourbeParametriquePolynomialeBezier)(corps.getSoulCurve().getElem())).getCoefficients().setElem(P.n(0., 1., 0.), 0);
+        ((CourbeParametriquePolynomialeBezier)(corps.getSoulCurve().getElem())).getCoefficients().setElem(P.n(1., 1., 0.), 1);
+        ((CourbeParametriquePolynomialeBezier)(corps.getSoulCurve().getElem())).texture(new ColorTexture(new Color(Color.ORANGE)));
         corps.getDiameterFunction().getElem().setFormulaX("1.5");
 // JAMBE AVANT DROIT
 // §1

@@ -80,7 +80,7 @@ public class Balade extends TestObjetSub {
                 new CourbeParametriquePolynomialeBezier());
 
         for (int i = 0; i < 5; i++) {
-            polygonSol.getSoulCurve().getElem().getCoefficients().setElem(Point3D.random(10.0), i);
+            ((CourbeParametriquePolynomialeBezier)( polygonSol.getSoulCurve().getElem())).getCoefficients().setElem(Point3D.random(10.0), i);
         }
         polygonSol.getDiameterFunction().setElem(new FctXY() {
             @Override

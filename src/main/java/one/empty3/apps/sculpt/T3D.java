@@ -90,7 +90,7 @@ public class T3D extends Tubulaire3 {
                         surfaceUV.getElem().heightDouble(u, v)
                     ));
     }
-
+/*
     @Override
     public void texture(ITexture tc) {
         super.texture(tc);
@@ -111,7 +111,7 @@ public class T3D extends Tubulaire3 {
     public ITexture texture() {
         return texture2;
     }
-
+*/
     public StructureMatrix<HeightMapSurface> getSurfaceUV() {
         return surfaceUV;
     }
