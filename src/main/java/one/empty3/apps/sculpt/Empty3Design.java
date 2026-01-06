@@ -406,6 +406,7 @@ public class Empty3Design extends JFrame {
 
                 };
 
+                // Applies texture to surface based on surface type
                 if(isT3d) {
                     ((T3D) surface).getSurfaceUV().setElem(surface0);
                     ((T3D) surface).getSurfaceUV().getElem().texture(new ImageTexture(new one.empty3.libs.Image(textureImage)));
