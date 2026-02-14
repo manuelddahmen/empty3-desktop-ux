@@ -1,10 +1,10 @@
 /*
  *
  *  *
- *  *  * Copyright (c) 2025. Manuel Daniel Dahmen
+ *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
  *  *  *
  *  *  *
- *  *  *    Copyright 2024 Manuel Daniel Dahmen
+ *  *  *    Copyright 2026 Manuel Daniel Dahmen
  *  *  *
  *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *    you may not use this file except in compliance with the License.
@@ -65,20 +65,21 @@ public class T3D extends Tubulaire3 {
      * Calculates 3D point using curve, diameter, and surface
      */
     @Override
-    public Point3D calculerPoint3D(double v, double u) {
+    public Point3D calculerPoint3D(double u, double v) {
         if (level == 0 && quad_not_computed > 0) {
             super.calculerPoint3D(v, u);
         }
         Point3D[] vectPerp = vectPerp(v, u);
 
         // Computes point offset by cosine scaled by height
-        return soulCurve.getElem().calculerPoint3D(u).plus(
+        return transformVec(soulCurve.getElem().calculerPoint3D(u).plus(
                 vectPerp[1].mult(diameterFunction.getElem().result(u) * Math.cos(2 * Math.PI * v)*
                         surfaceUV.getElem().heightDouble(u, v)
                     )).plus(
                 vectPerp[2].mult(diameterFunction.getElem().result(u) * Math.sin(2 * Math.PI * v)*
                         surfaceUV.getElem().heightDouble(u, v)
-                    ));
+                    ))
+        );
     }
 /*
     @Override
