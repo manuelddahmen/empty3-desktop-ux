@@ -51,7 +51,7 @@ public class GreenCubeAnimation extends TestObjetSub {
         scene().add(cube);
 
         // Positionnement de la caméra (vue de face)
-        Camera camera = new Camera(new Point3D(0d, 0d, -5d), Point3D.O0);
+        Camera camera = new Camera(new Point3D(0d, 0d, 5d), Point3D.O0);
         scene.cameraActive(camera);
     }
 
