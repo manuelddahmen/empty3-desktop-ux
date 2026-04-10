@@ -37,12 +37,13 @@ plugins {
  *
  */
 
-//"empty3-desktop-ux"
+
+def artifactId = "empty3-desktop-ux"
 
 group = 'one.empty3'
-var version_date = '2026.1.10'
+def version_date = '2026.1.10'
 
-var JAVA_VERSION = 25
+def JAVA_VERSION = 25
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -165,6 +166,20 @@ jar {
 def load = properties
 java {
     withSourcesJar()
+}
+
+tasks.register('runClass', JavaExec) {
+    group = "application"
+    description = "Run a main class: ./gradlew runClass -PclassName=my.package.MyClass"
+    classpath = sourceSets.test.runtimeClasspath
+    if (project.hasProperty('className')) {
+        mainClass = project.getProperty('className')
+    } else {
+        mainClass = 'one.empty3.HelloWorld'
+    }
+    if (project.hasProperty('args')) {
+        args(project.getProperty('args').split(' '))
+    }
 }
 
 tasks.register('FaceDetect', JavaExec) {

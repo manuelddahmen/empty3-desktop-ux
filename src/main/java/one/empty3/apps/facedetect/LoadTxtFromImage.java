@@ -1,4 +1,4 @@
-/*
+/***
  *
  *  *
  *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
@@ -22,53 +22,42 @@
  *
  *
  *
- *  * Created by $user $date
+ * @author Manuel Dahmen
  *
  *
  */
 
 package one.empty3.apps.facedetect;
 
-import com.formdev.flatlaf.json.Json;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+
 import com.google.api.services.vision.v1.model.FaceAnnotation;
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.logging.Logger;
-
-import com.google.api.services.vision.v1.model.*;
-
-
-import com.google.gson.Gson;
-// ... existing code ...
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-// ... existing code ...
-// Supprimer ces imports, ils ne seront plus utilisés :
-// import com.google.api.services.vision.v1.model.FaceAnnotation;
-// import com.google.gson.reflect.TypeToken;
-// import com.google.api.services.vision.v1.model.*;
-
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.logging.Logger;
+import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
+import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
+import com.google.api.services.vision.v1.model.AnnotateImageRequest;
+import com.google.api.services.vision.v1.model.AnnotateImageResponse;
+import com.google.api.services.vision.v1.model.Feature;
+import com.google.api.services.vision.v1.model.Image;
+import com.google.api.services.vision.v1.model.ImageContext;
 
 public class LoadTxtFromImage {
 
