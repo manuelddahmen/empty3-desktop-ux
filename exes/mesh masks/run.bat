@@ -1,0 +1,1 @@
+java -jar ".\empty3-library-mp-with-dependencies.jar"

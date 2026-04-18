@@ -1,0 +1,13 @@
+<component name="CopyrightManager">
+  <settings default="Free lib profile">
+    <module2copyright>
+      <element module="Project Files" copyright="Free lib profile" />
+      <element module="Apache 2 License" copyright="Free lib profile" />
+      <element module="All" copyright="Free lib profile" />
+      <element module="Production" copyright="Free lib profile" />
+      <element module="Tests" copyright="Free lib profile" />
+      <element module="Open Files" copyright="Free lib profile" />
+      <element module="All Changed Files" copyright="Free lib profile" />
+    </module2copyright>
+  </settings>
+</component>
