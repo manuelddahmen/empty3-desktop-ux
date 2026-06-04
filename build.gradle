@@ -8,42 +8,13 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version "2.3.0"
 //    id 'com.google.cloud.functions-framework' version '0.6.0'
 }
-/*
- *
- *  *
- *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
- *  *  *
- *  *  *
- *  *  *    Copyright 2026 Manuel Daniel Dahmen
- *  *  *
- *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *    you may not use this file except in compliance with the License.
- *  *  *    You may obtain a copy of the License at
- *  *  *
- *  *  *        http://www.apache.org/licenses/LICENSE-2.0
- *  *  *
- *  *  *    Unless required by applicable law or agreed to in writing, software
- *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *    See the License for the specific language governing permissions and
- *  *  *    limitations under the License.
- *  *
- *  *
- *
- *
- *
- *  * Created by $user $date
- *
- *
- */
-
 
 def artifactId = "empty3-desktop-ux"
 
 group = 'one.empty3'
+def version_date = '2026.6.4'
 
 def JAVA_VERSION = 25
-def version_date = '2026.4.26'+JAVA_VERSION
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -170,7 +141,7 @@ java {
 
 tasks.register('runClass', JavaExec) {
     group = "application"
-    description = "Run a main class: gradle jar  runClass -P className=one.empty3.testagentcode_jvm.MoonRotation4K"
+    description = "Run a main class: ./gradlew runClass -PclassName=my.package.MyClass"
     classpath = sourceSets.test.runtimeClasspath
     if (project.hasProperty('className')) {
         mainClass = project.getProperty('className')
@@ -223,21 +194,14 @@ tasks.register("runFunction", JavaExec) {
         args('--classpath', files(configurations.runtimeClasspath, sourceSets.main.output).asPath)
     }
 }
-/*
-tasks.register('runClass', JavaExec) {
-    group = "application"
-    description = "Run a main class: ./gradlew runClass -PclassName=my.package.MyClass"
+
+tasks.register('RunClass', JavaExec) {
     classpath sourceSets.main.runtimeClasspath
-    if (project.hasProperty('className')) {
-        mainClass = project.getProperty('className')
-    } else {
-        mainClass = 'one.empty3.test.tests.test4.Balade1'
-    }
-    if (project.hasProperty('args')) {
-        args(project.getProperty('args').split(' '))
-    }
+    mainClass = 'one.empty3.test.tests.test4.Balade1'
+    args 'one.empty3.test.tests.test4.Balade1'
+    dependsOn(jar)
 }
-*/
+
 tasks.register('Empty3Designer', JavaExec) {
     classpath sourceSets.main.runtimeClasspath
     mainClass = 'one.empty3.apps.sculpt.Empty3Design'
@@ -323,7 +287,7 @@ dependencies {
     // Empty3 libraries
     implementation 'one.empty3.libs:partial-desktop:0.0.39-17'
     implementation 'one.empty3.libs:commons-mp:0.0.17-17'
-    implementation 'one.empty3:empty3-library-mp:2026.5.18-21'
+    implementation 'one.empty3:empty3-library-mp:2026.6.4-21'
 
     implementation 'org.jcodec:jcodec-javase:0.2.5'
     //implementation 'org.bytedeco:javacv-platform:1.5.10'
@@ -462,7 +426,7 @@ tasks.register('genText', Exec) {
         def encodedImage = imageFile.bytes.encodeBase64().toString()
         def jsonPayload = '{"image": "' + encodedImage + '"}'
 
-        standardInput = new ByteArrayInputStream(jsonPayload.getBytes('UTF-8'))
+        standardInput = new java.io.ByteArrayInputStream(jsonPayload.getBytes('UTF-8'))
 
         commandLine './curl.exe', '--insecure', '-X', 'POST',
                 '-H', 'Content-Type: application/json',
@@ -481,13 +445,13 @@ signing {
     //sign configurations.archives
 }
 
-def versionName = version_date
+def versionName = version_date+"-1"+JAVA_VERSION
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3'
             artifactId = 'empty3-desktop-ux'
-            version = version_date
+            version = versionName
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -503,7 +467,7 @@ publishing {
                         '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/empty3-desktop-ux"
-                version version_date
+                version versionName
                 inceptionYear = '2024'
                 licenses {
                     license {
