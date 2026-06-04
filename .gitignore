@@ -44,3 +44,6 @@ bin/
 ### Mac OS ###
 .DS_Store!/cacert.pem
 !/base64.zip
+
+# Ignore credentials
+*credentials.json
