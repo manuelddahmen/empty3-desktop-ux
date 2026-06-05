@@ -7,9 +7,11 @@ group = "org.example"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    gradlePluginPortal()
+    google()
     mavenCentral()
+    maven("https://www.jetbrains.com/intellij-repository/releases")
 }
-
 dependencies {
     testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -19,6 +21,13 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+tasks.register<JavaExec>("runClass") {
+    group = "application"
+    description = "Run a main class: ./gradlew runClass -PclassName=my.package.MyClass"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set(project.findProperty("className")?.toString() ?: "one.empty3.HelloWorld")
+    (project.findProperty("args") as? String)?.split(' ')?.let { args(it) }
 }
 
 tasks.register<Exec>("buildDockerImage") {
