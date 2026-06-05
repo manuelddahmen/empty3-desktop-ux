@@ -106,10 +106,7 @@ public class TestGravity2 extends TestObjetSub {
         //Polyhedron polyhedron = new Polyhedron();
         for (int i = 0; i < X * Y * Z; i++) {
             Point3D position = f.getCourant().get(i).position;
-            Point3D pA = position.plus(Point3D.X.mult(position.norme()));
-            Point3D pB = position.moins(Point3D.X.mult(-position.norme()));
-            Axe axe = new Axe(pA, pB);
-            Representable r = new Sphere(axe, f.dMin(i) / 5);
+            Representable r = new Sphere(position, f.dMin(i) / 5);
 
 //            ((TRISphere) r).setMaxX(7);
 //            ((TRISphere) r).setMaxY(7);

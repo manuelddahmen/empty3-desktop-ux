@@ -1,11 +1,11 @@
 plugins {
-    id("application") // enabling the plugin here
-    id("java")
+    id 'application' // enabling the plugin here
+    id 'java'
     id 'java-library'
     id 'maven-publish'
     id 'org.jreleaser' version '1.20.0'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version "2.3.0"
+//    id 'org.jetbrains.kotlin.jvm' version "2.3.0"
 //    id 'com.google.cloud.functions-framework' version '0.6.0'
 }
 
@@ -13,8 +13,7 @@ def artifactId = "empty3-desktop-ux"
 
 group = 'one.empty3'
 def version_date = '2026.6.4'
-
-def JAVA_VERSION = 25
+def JAVA_VERSION = 21
 
 kotlin {
     jvmToolchain(JAVA_VERSION)
@@ -445,7 +444,7 @@ signing {
     //sign configurations.archives
 }
 
-def versionName = version_date+"-1"+JAVA_VERSION
+def versionName = version_date+"-"+JAVA_VERSION
 publishing {
     publications {
         maven(MavenPublication) {
@@ -551,8 +550,8 @@ jreleaser {
         name = 'empty3-desktop-ux'
         java.artifactId = 'empty3-desktop-ux'
         java.groupId = 'one.empty3'
-        java.version = version_date
-        version = version_date
+        java.version = versionName
+        version = versionName
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
