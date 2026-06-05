@@ -26,7 +26,11 @@ tasks.register<JavaExec>("runClass") {
     group = "application"
     description = "Run a main class: ./gradlew runClass -PclassName=my.package.MyClass"
     classpath = sourceSets["main"].runtimeClasspath
-    mainClass.set(project.findProperty("className")?.toString() ?: "one.empty3.HelloWorld")
+    
+    val className = project.findProperty("className")?.toString() ?: "one.empty3.HelloWorld"
+    mainClass.set(className)
+    environment("MAIN_CLASS_NAME", className)
+    
     (project.findProperty("args") as? String)?.split(' ')?.let { args(it) }
 }
 
