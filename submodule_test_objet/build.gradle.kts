@@ -19,8 +19,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    //implementation("one.empty3:empty3-desktop-ux:2026.6.4-121")
-    implementation("..")
+    implementation("one.empty3:empty3-desktop-ux:2026.6.6-21")
 }
 
 tasks.test {
