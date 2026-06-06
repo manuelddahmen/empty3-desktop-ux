@@ -12,7 +12,7 @@ plugins {
 def artifactId = "empty3-desktop-ux"
 
 group = 'one.empty3'
-def version_date = '2026.6.4'
+def version_date = '2026.6.6'
 def JAVA_VERSION = 21
 
 kotlin {
