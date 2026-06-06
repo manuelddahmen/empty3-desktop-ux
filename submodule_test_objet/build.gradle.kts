@@ -1,5 +1,8 @@
+import org.gradle.initialization.Environment
+
 plugins {
     id("java")
+    kotlin("jvm") version "2.3.21"
     id("application") // enabling the plugin here
 }
 
@@ -16,7 +19,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    implementation("one.empty3:empty3-desktop-ux:2026.6.4-121")
+    //implementation("one.empty3:empty3-desktop-ux:2026.6.4-121")
+    implementation("..")
 }
 
 tasks.test {
@@ -24,14 +28,20 @@ tasks.test {
 }
 tasks.register<JavaExec>("runClass") {
     group = "application"
-    description = "Run a main class: ./gradlew runClass -PclassName=my.package.MyClass"
+    description = "Run a main class: ./gradlew runClass -P className=my.package.MyClass. Try also env variable : MAIN_CLASS_NAME"
     classpath = sourceSets["main"].runtimeClasspath
     
-    val className = project.findProperty("className")?.toString() ?: "one.empty3.HelloWorld"
-    mainClass.set(className)
-    environment("MAIN_CLASS_NAME", className)
-    
-    (project.findProperty("args") as? String)?.split(' ')?.let { args(it) }
+    var className = project.findProperty("className")?.toString() ?: "one.empty3.HelloWorld"
+    val mainClassName = ProcessBuilder().environment().getOrDefault("MAIN_CLASS_NAME", className)
+
+    if (mainClassName != null) {
+        println("Main class name from environment variable: $mainClassName")
+    } else {
+        println("Main class name from environment variable: (NOT FOUND)\nMAIN_CLASS_NAME=$mainClassName")
+    }
+    mainClass.set(mainClassName)
+    (project.findProperty("args") as? String)?.split(' ')?.let { args(it)
+    }
 }
 
 tasks.register<Exec>("buildDockerImage") {

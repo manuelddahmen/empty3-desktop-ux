@@ -48,6 +48,7 @@ public class MoonRotation4K extends TestObjetSub {
         // 1. Création de la scène
         scene = new Scene();
 
+
         // 2. Création de la sphère (Centre 0,0,0, Rayon 1.0)
         moon = new Sphere(Point3D.O0, 1.0);
 
@@ -72,6 +73,7 @@ public class MoonRotation4K extends TestObjetSub {
         // 4. Configuration de la caméra (Rule 7 & 8: Vecteur UP explicite pour éviter matrice nulle)
         // Positionnée à z=3 pour voir la sphère de rayon 1.0
         Camera camera = new Camera(new Point3D(0.0, 0.0, 5.0), Point3D.O0, Point3D.Y);
+        camera.angleXr(camera.angleX(), ((double)z().la/ z().ha)) {
         scene.cameraActive(camera);
     }
 
