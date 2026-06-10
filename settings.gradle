@@ -1,3 +1,4 @@
+import org.gradle.api.initialization.resolve.RepositoriesMode
 /*
  *
  *  *
@@ -45,9 +46,10 @@ pluginManagement {
         google()
         mavenCentral()
     }
+
+
 }
 dependencyResolutionManagement {
-
     /**
      * The dependencyResolutionManagement.repositories
      * block is where you configure the repositories and dependencies used by
@@ -59,7 +61,7 @@ dependencyResolutionManagement {
      * you select a template that requires some).
      */
 
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
@@ -80,4 +82,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = 'empty3-desktop-ux'
 
-
+include ':submodule_test_objet'

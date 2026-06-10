@@ -27,12 +27,15 @@
  *
  */
 
-package one.empty3.testagentcode_jvm;
+package one.empty3.tests.test_objet;
 
-import one.empty3.library.*;
+
+import one.empty3.apps.testobject.Resolution;
 import one.empty3.apps.testobject.TestObjetSub;
 import one.empty3.libs.Image;
+import one.empty3.library.*;
 import java.io.File;
+import java.util.logging.Logger;
 
 /**
  * Animation d'une sphère Moon en 4K pendant 20 secondes.
@@ -44,7 +47,7 @@ public class MoonRotation4K extends TestObjetSub {
 
     @Override
     public void ginit() {
-        frame = 0;
+        frame = 35;
         // 1. Création de la scène
         scene = new Scene();
 
@@ -64,7 +67,7 @@ public class MoonRotation4K extends TestObjetSub {
                 moon.texture(new ColorTexture(one.empty3.libs.Color.newCol(0.8f, 0.4f, 0.2f)));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getCanonicalName()).severe(e.toString());
         }
 
         // Ajout de la sphère à la scène
@@ -73,7 +76,7 @@ public class MoonRotation4K extends TestObjetSub {
         // 4. Configuration de la caméra (Rule 7 & 8: Vecteur UP explicite pour éviter matrice nulle)
         // Positionnée à z=3 pour voir la sphère de rayon 1.0
         Camera camera = new Camera(new Point3D(0.0, 0.0, 5.0), Point3D.O0, Point3D.Y);
-        camera.angleXY(((ZBufferImpl)z()).getDimx(), ((ZBufferImpl)z()).getDimy(), Math.PI/3, Axis.Y);
+        camera.angleXY(z().la(), z().ha(), Math.PI/3, Axis.Y);
         scene.cameraActive(camera);
     }
 
@@ -81,7 +84,7 @@ public class MoonRotation4K extends TestObjetSub {
     public void finit() {
         // 5. Animation de la rotation (Rule 2 & 5)
         // Calcul de l'angle en fonction de l'image actuelle (frame)
-        double totalFrames = (double) (DURATION_SECONDS * FPS);
+        double totalFrames =  (DURATION_SECONDS * FPS);
         double angle = 2.0 * Math.PI * (double) frame / totalFrames;
 
         // Rotation autour de l'axe Y : mise à jour des vecteurs d'orientation
@@ -99,10 +102,9 @@ public class MoonRotation4K extends TestObjetSub {
         MoonRotation4K animation = new MoonRotation4K();
         animation.setGenerate(GENERATE_IMAGE|GENERATE_MOVIE|GENERATE_SAVE_IMAGE);
         // Configuration du rendu
-        animation.setResx(3840); // 4K UHD
-        animation.setResy(2160);
+        animation.setDimension(new Resolution(3840, 2160)); // 4K UHD
         animation.setFps(FPS);
-        animation.setPublish(false);
+        animation.setPublish(true);
         // Nombre total d'images (20s * 25fps = 500 frames)
         animation.setMaxFrames(DURATION_SECONDS * FPS);
 
