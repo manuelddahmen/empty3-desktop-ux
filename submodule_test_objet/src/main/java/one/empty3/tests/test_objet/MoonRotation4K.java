@@ -47,7 +47,7 @@ public class MoonRotation4K extends TestObjetSub {
 
     @Override
     public void ginit() {
-        frame = 35;
+        frame = 200;
         // 1. Création de la scène
         scene = new Scene();
 
@@ -57,7 +57,7 @@ public class MoonRotation4K extends TestObjetSub {
 
         // 3. Application de la texture Moon (Rule 4 & 11)
         try {
-            File textureFile = new File("d:\\current\\moon.tif");
+            File textureFile = new File("./moon2.jpg");
             if (textureFile.exists()) {
                 Image img = new Image(textureFile);
                 ImageTexture texture = new ImageTexture(img);

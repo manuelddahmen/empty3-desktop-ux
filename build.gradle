@@ -288,7 +288,7 @@ dependencies {
     // Empty3 libraries
     implementation 'one.empty3.libs:partial-desktop:0.0.39-17'
     implementation 'one.empty3.libs:commons-mp:0.0.17-17'
-    implementation 'one.empty3:empty3-library-mp:2026.6.7'
+    implementation 'one.empty3:empty3-library-mp:2026.7.3'
 
     implementation 'org.jcodec:jcodec-javase:0.2.5'
     //implementation 'org.bytedeco:javacv-platform:1.5.10'

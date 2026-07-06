@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration name="MoonRotation4K Docker" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+    <deployment type="dockerfile">
+      <settings>
+        <option name="sourceFilePath" value="submodule_test_objet/Dockerfile" />
+        <option name="contextFolderPath" value="$PROJECT_DIR$" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>
