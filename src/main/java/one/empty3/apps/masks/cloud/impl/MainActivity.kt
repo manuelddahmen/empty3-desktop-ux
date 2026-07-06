@@ -20,11 +20,6 @@
 package one.empty3.apps.masks.cloud.impl
 
 import java.nio.charset.Charset
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import one.empty3.library.objloader.E3Model
 import one.empty3.libs.Image
 import java.awt.image.BufferedImage
@@ -57,62 +52,6 @@ public open class MainActivity {
 
     init {
         Log = Logger.getLogger(this.javaClass.canonicalName)
-    }
-
-    // Helper function for HTTP POST
-    private suspend fun callCreateTextFacePointsFunction(imageData: ByteArray): String? {
-        return withContext(Dispatchers.IO) {
-            var connection: HttpURLConnection? = null
-            try {
-                val base64EncodedImage = Base64.getEncoder().encode(imageData).contentToString()
-
-                // Create JSON payload
-                val hashMap = HashMap<String, JsonElement>()
-                hashMap["image"] = JsonPrimitive(base64EncodedImage)
-                val jsonPayload = JsonObject(hashMap)
-                val requestBody = jsonPayload.toString()
-
-                val url =
-                    URL("https://us-central1-meshmasks-1dd55.cloudfunctions.net/gen-text")
-                connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "POST"
-                connection.setRequestProperty(
-                    "Content-Type",
-                    "application/json"
-                ) // Set Content-Type to application/json
-                connection.setRequestProperty("Accept", "application/json")
-                connection.doOutput = true
-                connection.doInput = true
-
-                connection.outputStream.use { os ->
-                    os.write(requestBody.toByteArray(StandardCharsets.UTF_8)) // Send JSON string bytes
-                }
-
-                val responseCode = connection.responseCode
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    BufferedReader(
-                        InputStreamReader(
-                            connection.inputStream,
-                            StandardCharsets.UTF_8
-                        )
-                    ).use { reader ->
-                        return@withContext reader.readText()
-                    }
-                } else {
-                    Log.severe( "HTTP Error: $responseCode - ${connection.responseMessage}")
-                    // Optionally read error stream for more details
-                    val errorBody =
-                        connection.errorStream?.bufferedReader(StandardCharsets.UTF_8)?.readText()
-                    Log.severe("Error body: $errorBody")
-                    return@withContext null
-                }
-            } catch (e: Exception) {
-                Log.severe("Exception during HTTP call: ${'$'}{e.message}")
-                return@withContext null
-            } finally {
-                connection?.disconnect()
-            }
-        }
     }
 
     fun saveImageToPicturesLegacy(bitmap: BufferedImage, filename: String): Boolean {
