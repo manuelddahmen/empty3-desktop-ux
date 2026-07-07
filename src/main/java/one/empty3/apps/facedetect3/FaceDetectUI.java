@@ -32,6 +32,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.io.*;
+import java.util.Scanner;
+import one.empty3.library.Point3D;
 
 public class FaceDetectUI extends JFrame {
 
@@ -298,13 +300,21 @@ public class FaceDetectUI extends JFrame {
         loadModelItem.addActionListener(e -> load(false));
         fileMenu.add(loadModelItem);
 
-        JMenuItem savePointsItem = new JMenuItem("Save Points");
-        savePointsItem.addActionListener(e -> savePoints());
-        fileMenu.add(savePointsItem);
+        JMenuItem savePointsLeftItem = new JMenuItem("Save Points Left");
+        savePointsLeftItem.addActionListener(e -> savePoints(true));
+        fileMenu.add(savePointsLeftItem);
 
-        JMenuItem loadPointsItem = new JMenuItem("Load Points");
-        loadPointsItem.addActionListener(e -> loadPoints());
-        fileMenu.add(loadPointsItem);
+        JMenuItem savePointsRightItem = new JMenuItem("Save Points Right");
+        savePointsRightItem.addActionListener(e -> savePoints(false));
+        fileMenu.add(savePointsRightItem);
+
+        JMenuItem loadPointsLeftItem = new JMenuItem("Load Points Left");
+        loadPointsLeftItem.addActionListener(e -> loadPoints(true));
+        fileMenu.add(loadPointsLeftItem);
+
+        JMenuItem loadPointsRightItem = new JMenuItem("Load Points Right");
+        loadPointsRightItem.addActionListener(e -> loadPoints(false));
+        fileMenu.add(loadPointsRightItem);
 
         JMenuItem clearPointsItem = new JMenuItem("Clear Points");
         clearPointsItem.addActionListener(e -> clearPoints());
@@ -368,35 +378,90 @@ public class FaceDetectUI extends JFrame {
         }
     }
 
-    private void savePoints() {
+    private void savePoints(boolean isLeft) {
         JFileChooser fileChooser = new JFileChooser();
         if (lastDirectory != null) {
             fileChooser.setCurrentDirectory(lastDirectory);
         }
+        fileChooser.setDialogTitle("Save Points (" + (isLeft ? "Left Panel" : "Right Panel") + ")");
         int result = fileChooser.showSaveDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(selectedFile))) {
-                oos.writeObject(pointMatchTableModel.getPointMatches());
-            } catch (IOException e) {
+            try (PrintWriter dataWriter = new PrintWriter(selectedFile)) {
+                for (PointMatch pm : pointMatchTableModel.getPointMatches()) {
+                    Point3D p = isLeft ? pm.getLeftPoint() : pm.getRightPoint();
+                    if (p != null) {
+                        dataWriter.println(pm.getName());
+                        dataWriter.println(p.getX());
+                        dataWriter.println(p.getY());
+                        dataWriter.println();
+                    }
+                }
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error saving points file:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
             lastDirectory = selectedFile.getParentFile();
         }
     }
 
-    private void loadPoints() {
+    private void loadPoints(boolean isLeft) {
         JFileChooser fileChooser = new JFileChooser();
         if (lastDirectory != null) {
             fileChooser.setCurrentDirectory(lastDirectory);
         }
+        fileChooser.setDialogTitle("Load Points (" + (isLeft ? "Left Panel" : "Right Panel") + ")");
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(selectedFile))) {
-                pointMatchTableModel.setPointMatches((java.util.List<PointMatch>) ois.readObject());
-            } catch (IOException | ClassNotFoundException e) {
+            try (Scanner scanner = new Scanner(selectedFile)) {
+                java.util.List<PointMatch> matches = new java.util.ArrayList<>(pointMatchTableModel.getPointMatches());
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine().trim();
+                    if (!line.isEmpty()) {
+                        String name = line;
+                        if (scanner.hasNextLine()) {
+                            double x = Double.parseDouble(scanner.nextLine().trim());
+                            if (scanner.hasNextLine()) {
+                                double y = Double.parseDouble(scanner.nextLine().trim());
+                                // Skip blank line if present
+                                if (scanner.hasNextLine()) {
+                                    scanner.nextLine();
+                                }
+                                Point3D point = new Point3D(x, y, 0.0);
+                                // Find existing PointMatch by name
+                                PointMatch found = null;
+                                for (PointMatch pm : matches) {
+                                    if (name.equalsIgnoreCase(pm.getName())) {
+                                        found = pm;
+                                        break;
+                                    }
+                                }
+                                if (found != null) {
+                                    if (isLeft) {
+                                        found.setLeftPoint(point);
+                                    } else {
+                                        found.setRightPoint(point);
+                                    }
+                                } else {
+                                    PointMatch newPm;
+                                    if (isLeft) {
+                                        newPm = new PointMatch(point, null, name);
+                                    } else {
+                                        newPm = new PointMatch(null, point, name);
+                                    }
+                                    matches.add(newPm);
+                                }
+                            }
+                        }
+                    }
+                }
+                pointMatchTableModel.setPointMatches(matches);
+                imagePanel1.repaint();
+                imagePanel2.repaint();
+            } catch (Exception e) {
                 e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error loading points file:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
             lastDirectory = selectedFile.getParentFile();
         }
