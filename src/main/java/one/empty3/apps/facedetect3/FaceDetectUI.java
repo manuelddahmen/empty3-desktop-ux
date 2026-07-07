@@ -1,55 +1,59 @@
 /*
  *
+ *  * Copyright (c) 2026. Manuel Daniel Dahmen
  *  *
- *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
- *  *  *
- *  *  *
- *  *  *    Copyright 2026 Manuel Daniel Dahmen
- *  *  *
- *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *    you may not use this file except in compliance with the License.
- *  *  *    You may obtain a copy of the License at
- *  *  *
- *  *  *        http://www.apache.org/licenses/LICENSE-2.0
- *  *  *
- *  *  *    Unless required by applicable law or agreed to in writing, software
- *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *    See the License for the specific language governing permissions and
- *  *  *    limitations under the License.
+ *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *    you may not use this file except in compliance with the License.
+ *  *    You may obtain a copy of the License at
  *  *
+ *  *        http://www.apache.org/licenses/LICENSE-2.0
  *  *
- *  
- *
- *
- *  * Created by $user $date
- *  
+ *  *    Unless required by applicable law or agreed to in writing, software
+ *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *    See the License for the specific language governing permissions and
+ *  *    limitations under the License.
  *
  */
 package one.empty3.apps.facedetect3;
+
+import one.empty3.library.Point3D;
+import one.empty3.library.ZBufferImpl;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import one.empty3.library.Point3D;
 
 public class FaceDetectUI extends JFrame {
 
     private JPanel mainPanel;
-    private ImagePanel imagePanel1;
-    private ImagePanel imagePanel2;
-    private JTable pointMatchTable;
-    private PointMatchTableModel pointMatchTableModel;
+    private ImagePanel imagePanel;
+    private JTable pointTable;
+    private LandmarkTableModel landmarkTableModel;
     private File lastDirectory;
-    private ImagePanel lastClickedPanel;
-    private PanelType leftPanelType = PanelType.IMAGE;
-    private PanelType rightPanelType = PanelType.IMAGE;
+
+    private final List<FaceDetectView> views = new ArrayList<>();
+    private FaceDetectView currentView;
+
+    private JMenu viewsMenu;
+    private JMenu renderMenu;
+    private JRadioButtonMenuItem viewTypeImageRadio;
+    private JRadioButtonMenuItem viewTypeObjModelRadio;
+
+    // Render Targets
+    private FaceDetectView image1View;
+    private FaceDetectView modelView;
+    private FaceDetectView image3View;
+    private FaceDetectView text2View;
+
     private MasksRenderer masksRenderer;
 
     public FaceDetectUI() {
-        setTitle("FaceDetect3");
+        setTitle("FaceDetect3 - Multi-View");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         masksRenderer = new MasksRenderer(this);
@@ -76,26 +80,20 @@ public class FaceDetectUI extends JFrame {
         JCheckBox quickViewBox = new JCheckBox("Quick View", true);
 
         java.util.function.Consumer<java.util.function.Consumer<OBJModel>> applyToActiveModel = action -> {
-            if (lastClickedPanel != null && lastClickedPanel.getPanelType() == PanelType.OBJ_MODEL) {
-                OBJModel model = lastClickedPanel.getObjModel();
+            if (currentView != null && currentView.getPanelType() == PanelType.OBJ_MODEL) {
+                OBJModel model = currentView.getObjModel();
                 if (model != null) {
                     action.accept(model);
-                    ((ImagePanel) (lastClickedPanel)).setDisplayLines(quickViewBox.isSelected());
-                    lastClickedPanel.repaint();
+                    imagePanel.setDisplayLines(quickViewBox.isSelected());
+                    imagePanel.repaint();
                 }
             }
         };
 
         quickViewBox.addActionListener(e -> {
             boolean isQuick = quickViewBox.isSelected();
-            if (imagePanel1 != null && imagePanel1.getPanelType() == PanelType.OBJ_MODEL) {
-                imagePanel1.setDisplayLines(isQuick);
-                imagePanel1.repaint();
-            }
-            if (imagePanel2 != null && imagePanel2.getPanelType() == PanelType.OBJ_MODEL) {
-                imagePanel2.setDisplayLines(isQuick);
-                imagePanel2.repaint();
-            }
+            imagePanel.setDisplayLines(isQuick);
+            imagePanel.repaint();
         });
 
         double rotAngle = Math.PI / 12;
@@ -140,21 +138,12 @@ public class FaceDetectUI extends JFrame {
 
         mainPanel.add(navBar, BorderLayout.NORTH);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        mainPanel.add(splitPane, BorderLayout.CENTER);
+        imagePanel = new ImagePanel(this);
+        mainPanel.add(imagePanel, BorderLayout.CENTER);
 
-        imagePanel1 = new ImagePanel(panel -> lastClickedPanel = panel, this);
-        imagePanel2 = new ImagePanel(panel -> lastClickedPanel = panel, this);
-
-        splitPane.setLeftComponent(imagePanel1);
-        splitPane.setRightComponent(imagePanel2);
-
-        imagePanel1.setBorder(BorderFactory.createTitledBorder("Image"));
-        imagePanel2.setBorder(BorderFactory.createTitledBorder("Image"));
-
-        pointMatchTableModel = new PointMatchTableModel();
-        pointMatchTable = new JTable(pointMatchTableModel);
-        JScrollPane tableScrollPane = new JScrollPane(pointMatchTable);
+        landmarkTableModel = new LandmarkTableModel();
+        pointTable = new JTable(landmarkTableModel);
+        JScrollPane tableScrollPane = new JScrollPane(pointTable);
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(tableScrollPane, BorderLayout.CENTER);
@@ -165,20 +154,23 @@ public class FaceDetectUI extends JFrame {
         JButton deleteButton = new JButton("Delete");
 
         addButton.addActionListener(e -> {
-            pointMatchTableModel
-                    .addPointMatch(new PointMatch(null, null, "Point " + (pointMatchTableModel.getRowCount() + 1)));
-            int lastRow = pointMatchTableModel.getRowCount() - 1;
-            pointMatchTable.setRowSelectionInterval(lastRow, lastRow);
+            if (currentView != null) {
+                String defaultName = "Point " + (currentView.getLandmarkPoints().size() + 1);
+                landmarkTableModel.addLandmarkPoint(new LandmarkPoint(defaultName, null));
+                int lastRow = landmarkTableModel.getRowCount() - 1;
+                pointTable.setRowSelectionInterval(lastRow, lastRow);
+            }
         });
 
         modifyButton.addActionListener(e -> {
-            int selectedRow = pointMatchTable.getSelectedRow();
-            if (selectedRow != -1) {
-                String currentName = (String) pointMatchTableModel.getValueAt(selectedRow, 2);
+            int selectedRow = pointTable.getSelectedRow();
+            if (selectedRow != -1 && currentView != null) {
+                String currentName = currentView.getLandmarkPoints().get(selectedRow).getName();
                 String newName = JOptionPane.showInputDialog(FaceDetectUI.this, "Enter new name for the point:",
                         currentName);
-                if (newName != null) {
-                    pointMatchTableModel.setValueAt(newName, selectedRow, 2);
+                if (newName != null && !newName.trim().isEmpty()) {
+                    landmarkTableModel.setValueAt(newName.trim(), selectedRow, 0);
+                    imagePanel.repaint();
                 }
             } else {
                 JOptionPane.showMessageDialog(FaceDetectUI.this, "Please select a point from the list to modify.",
@@ -187,11 +179,10 @@ public class FaceDetectUI extends JFrame {
         });
 
         deleteButton.addActionListener(e -> {
-            int selectedRow = pointMatchTable.getSelectedRow();
+            int selectedRow = pointTable.getSelectedRow();
             if (selectedRow != -1) {
-                pointMatchTableModel.removePointMatch(selectedRow);
-                imagePanel1.repaint();
-                imagePanel2.repaint();
+                landmarkTableModel.removeLandmarkPoint(selectedRow);
+                imagePanel.repaint();
             } else {
                 JOptionPane.showMessageDialog(FaceDetectUI.this, "Please select a point from the list to delete.",
                         "No Selection", JOptionPane.WARNING_MESSAGE);
@@ -205,21 +196,70 @@ public class FaceDetectUI extends JFrame {
 
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-        pointMatchTable.getSelectionModel().addListSelectionListener(e -> {
+        pointTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                imagePanel1.repaint();
-                imagePanel2.repaint();
+                imagePanel.repaint();
             }
         });
 
+        // Setup Menus
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         JMenu editMenu = new JMenu("Edit");
-        menuBar.add(fileMenu);
-        menuBar.add(editMenu);
-
+        viewsMenu = new JMenu("Views");
+        renderMenu = new JMenu("Render Settings");
         JMenu masksMenu = new JMenu("Masks");
 
+        menuBar.add(fileMenu);
+        menuBar.add(editMenu);
+        menuBar.add(viewsMenu);
+        menuBar.add(renderMenu);
+        menuBar.add(masksMenu);
+
+        // File Menu Items
+        JMenuItem loadImageItem = new JMenuItem("Load Image");
+        loadImageItem.addActionListener(e -> loadImage());
+        fileMenu.add(loadImageItem);
+
+        JMenuItem loadModelItem = new JMenuItem("Load OBJ Model");
+        loadModelItem.addActionListener(e -> loadObjModel());
+        fileMenu.add(loadModelItem);
+
+        fileMenu.addSeparator();
+
+        JMenu viewTypeMenu = new JMenu("Select View Type");
+        ButtonGroup vtGroup = new ButtonGroup();
+        viewTypeImageRadio = new JRadioButtonMenuItem("Image", true);
+        viewTypeImageRadio.addActionListener(e -> setViewType(PanelType.IMAGE));
+        vtGroup.add(viewTypeImageRadio);
+        viewTypeMenu.add(viewTypeImageRadio);
+
+        viewTypeObjModelRadio = new JRadioButtonMenuItem("OBJ Model", false);
+        viewTypeObjModelRadio.addActionListener(e -> setViewType(PanelType.OBJ_MODEL));
+        vtGroup.add(viewTypeObjModelRadio);
+        viewTypeMenu.add(viewTypeObjModelRadio);
+        fileMenu.add(viewTypeMenu);
+
+        fileMenu.addSeparator();
+
+        JMenuItem savePointsItem = new JMenuItem("Save Points");
+        savePointsItem.addActionListener(e -> savePoints());
+        fileMenu.add(savePointsItem);
+
+        JMenuItem loadPointsItem = new JMenuItem("Load Points");
+        loadPointsItem.addActionListener(e -> loadPoints());
+        fileMenu.add(loadPointsItem);
+
+        // Edit Menu Items
+        JMenuItem clearPointsItem = new JMenuItem("Clear Points");
+        clearPointsItem.addActionListener(e -> clearPoints());
+        editMenu.add(clearPointsItem);
+
+        JMenuItem removeLastPointItem = new JMenuItem("Remove Last Point");
+        removeLastPointItem.addActionListener(e -> removeLastPoint());
+        editMenu.add(removeLastPointItem);
+
+        // Masks Menu Items
         JMenuItem renderLocalItem = new JMenuItem("Render Local");
         renderLocalItem.addActionListener(e -> masksRenderer.render(false));
         masksMenu.add(renderLocalItem);
@@ -230,20 +270,19 @@ public class FaceDetectUI extends JFrame {
 
         masksMenu.addSeparator();
 
-        // Algorithm Submenu
         JMenu algoMenu = new JMenu("Select Algorithm");
         ButtonGroup algoGroup = new ButtonGroup();
         String[] algoNames = {
-            "0: Disabled / Linear 1",
-            "1: Mini face icon (Linear 2)",
-            "2: Mini face icon 2 (Linear 3)",
-            "3: Project into another point's set (Linear 4)",
-            "4: Disabled / Linear 5",
-            "5: Disabled / Linear 6",
-            "6: Unknown (Linear 42)",
-            "7: Face on face 1 (Linear 43)",
-            "8: Face on face 2 (Linear 44_2 - Best)",
-            "9: Linear projection (u,v)"
+                "0: Disabled / Linear 1",
+                "1: Mini face icon (Linear 2)",
+                "2: Mini face icon 2 (Linear 3)",
+                "3: Project into another point's set (Linear 4)",
+                "4: Disabled / Linear 5",
+                "5: Disabled / Linear 6",
+                "6: Unknown (Linear 42)",
+                "7: Face on face 1 (Linear 43)",
+                "8: Face on face 2 (Linear 44_2 - Best)",
+                "9: Linear projection (u,v)"
         };
         for (int i = 0; i < algoNames.length; i++) {
             final int algoIdx = i;
@@ -254,7 +293,6 @@ public class FaceDetectUI extends JFrame {
         }
         masksMenu.add(algoMenu);
 
-        // Settings Submenu
         JMenu settingsMenu = new JMenu("Settings");
         JCheckBoxMenuItem hdTexturesItem = new JCheckBoxMenuItem("HD Textures", false);
         hdTexturesItem.addActionListener(e -> masksRenderer.setHdTextures(hdTexturesItem.isSelected()));
@@ -263,96 +301,59 @@ public class FaceDetectUI extends JFrame {
         JCheckBoxMenuItem bezierItem = new JCheckBoxMenuItem("Bezier Mode", false);
         bezierItem.addActionListener(e -> masksRenderer.setBezier(bezierItem.isSelected()));
         settingsMenu.add(bezierItem);
-
         masksMenu.add(settingsMenu);
 
-        menuBar.add(masksMenu);
+        // Create default views
+        FaceDetectView defaultView1 = new FaceDetectView("View 1");
+        views.add(defaultView1);
+        FaceDetectView defaultView2 = new FaceDetectView("Model View");
+        defaultView2.setPanelType(PanelType.OBJ_MODEL);
+        views.add(defaultView2);
 
-        JMenu leftPanelTypeMenu = new JMenu("Left Panel Type");
-        ButtonGroup leftPanelGroup = new ButtonGroup();
-        JRadioButtonMenuItem leftImageRadio = new JRadioButtonMenuItem("Image", true);
-        leftImageRadio.addActionListener(e -> setPanelType(true, PanelType.IMAGE));
-        leftPanelGroup.add(leftImageRadio);
-        leftPanelTypeMenu.add(leftImageRadio);
-        JRadioButtonMenuItem leftObjModelRadio = new JRadioButtonMenuItem("OBJ Model");
-        leftObjModelRadio.addActionListener(e -> setPanelType(true, PanelType.OBJ_MODEL));
-        leftPanelGroup.add(leftObjModelRadio);
-        leftPanelTypeMenu.add(leftObjModelRadio);
-        fileMenu.add(leftPanelTypeMenu);
+        image1View = defaultView1;
+        modelView = defaultView2;
+        text2View = defaultView2;
 
-        JMenu rightPanelTypeMenu = new JMenu("Right Panel Type");
-        ButtonGroup rightPanelGroup = new ButtonGroup();
-        JRadioButtonMenuItem rightImageRadio = new JRadioButtonMenuItem("Image", true);
-        rightImageRadio.addActionListener(e -> setPanelType(false, PanelType.IMAGE));
-        rightPanelGroup.add(rightImageRadio);
-        rightPanelTypeMenu.add(rightImageRadio);
-        JRadioButtonMenuItem rightObjModelRadio = new JRadioButtonMenuItem("OBJ Model");
-        rightObjModelRadio.addActionListener(e -> setPanelType(false, PanelType.OBJ_MODEL));
-        rightPanelGroup.add(rightObjModelRadio);
-        rightPanelTypeMenu.add(rightObjModelRadio);
-        fileMenu.add(rightPanelTypeMenu);
+        setCurrentView(defaultView1);
 
-        JMenuItem loadImageItem = new JMenuItem("Load Left");
-        loadImageItem.addActionListener(e -> load(true));
-        fileMenu.add(loadImageItem);
-
-        JMenuItem loadModelItem = new JMenuItem("Load Right");
-        loadModelItem.addActionListener(e -> load(false));
-        fileMenu.add(loadModelItem);
-
-        JMenuItem savePointsLeftItem = new JMenuItem("Save Points Left");
-        savePointsLeftItem.addActionListener(e -> savePoints(true));
-        fileMenu.add(savePointsLeftItem);
-
-        JMenuItem savePointsRightItem = new JMenuItem("Save Points Right");
-        savePointsRightItem.addActionListener(e -> savePoints(false));
-        fileMenu.add(savePointsRightItem);
-
-        JMenuItem loadPointsLeftItem = new JMenuItem("Load Points Left");
-        loadPointsLeftItem.addActionListener(e -> loadPoints(true));
-        fileMenu.add(loadPointsLeftItem);
-
-        JMenuItem loadPointsRightItem = new JMenuItem("Load Points Right");
-        loadPointsRightItem.addActionListener(e -> loadPoints(false));
-        fileMenu.add(loadPointsRightItem);
-
-        JMenuItem clearPointsItem = new JMenuItem("Clear Points");
-        clearPointsItem.addActionListener(e -> clearPoints());
-        editMenu.add(clearPointsItem);
-
-        JMenuItem removeLastPointItem = new JMenuItem("Remove Last Point");
-        removeLastPointItem.addActionListener(e -> removeLastPoint());
-        editMenu.add(removeLastPointItem);
+        rebuildViewsMenu();
+        rebuildRenderMenu();
 
         setJMenuBar(menuBar);
-
         getContentPane().add(mainPanel);
     }
 
-    private void setPanelType(boolean isLeft, PanelType type) {
-        if (isLeft) {
-            leftPanelType = type;
-            imagePanel1.setPanelType(type);
-            imagePanel1.setBorder(BorderFactory.createTitledBorder(type == PanelType.IMAGE ? "Image" : "OBJ Model"));
+    private void setCurrentView(FaceDetectView view) {
+        this.currentView = view;
+        imagePanel.setView(view);
+        if (view != null) {
+            landmarkTableModel.setLandmarkPoints(view.getLandmarkPoints());
+            if (view.getPanelType() == PanelType.IMAGE) {
+                viewTypeImageRadio.setSelected(true);
+            } else {
+                viewTypeObjModelRadio.setSelected(true);
+            }
+            imagePanel.setBorder(BorderFactory.createTitledBorder(view.getName() + " (" + (view.getPanelType() == PanelType.IMAGE ? "Image" : "OBJ Model") + ")"));
         } else {
-            rightPanelType = type;
-            imagePanel2.setPanelType(type);
-            imagePanel2.setBorder(BorderFactory.createTitledBorder(type == PanelType.IMAGE ? "Image" : "OBJ Model"));
+            landmarkTableModel.setLandmarkPoints(null);
+            imagePanel.setBorder(BorderFactory.createTitledBorder("No View"));
+        }
+        imagePanel.repaint();
+    }
+
+    private void setViewType(PanelType type) {
+        if (currentView != null) {
+            currentView.setPanelType(type);
+            currentView.setImage(null);
+            currentView.setImageFile(null);
+            currentView.setObjModel(null);
+            currentView.setModelFile(null);
+            setCurrentView(currentView);
         }
     }
 
-    private void load(boolean isLeft) {
-        PanelType type = isLeft ? leftPanelType : rightPanelType;
-        ImagePanel panel = isLeft ? imagePanel1 : imagePanel2;
-
-        if (type == PanelType.IMAGE) {
-            loadImage(panel);
-        } else {
-            loadObjModel(panel);
-        }
-    }
-
-    private void loadImage(ImagePanel panel) {
+    private void loadImage() {
+        if (currentView == null) return;
         JFileChooser fileChooser = new JFileChooser();
         if (lastDirectory != null) {
             fileChooser.setCurrentDirectory(lastDirectory);
@@ -360,12 +361,14 @@ public class FaceDetectUI extends JFrame {
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            panel.loadImage(selectedFile);
+            imagePanel.loadImage(selectedFile);
             lastDirectory = selectedFile.getParentFile();
+            setCurrentView(currentView);
         }
     }
 
-    private void loadObjModel(ImagePanel panel) {
+    private void loadObjModel() {
+        if (currentView == null) return;
         JFileChooser fileChooser = new JFileChooser();
         if (lastDirectory != null) {
             fileChooser.setCurrentDirectory(lastDirectory);
@@ -373,25 +376,27 @@ public class FaceDetectUI extends JFrame {
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            panel.loadObjModel(selectedFile);
+            imagePanel.loadObjModel(selectedFile);
             lastDirectory = selectedFile.getParentFile();
+            setCurrentView(currentView);
         }
     }
 
-    private void savePoints(boolean isLeft) {
+    private void savePoints() {
+        if (currentView == null) return;
         JFileChooser fileChooser = new JFileChooser();
         if (lastDirectory != null) {
             fileChooser.setCurrentDirectory(lastDirectory);
         }
-        fileChooser.setDialogTitle("Save Points (" + (isLeft ? "Left Panel" : "Right Panel") + ")");
+        fileChooser.setDialogTitle("Save Points (" + currentView.getName() + ")");
         int result = fileChooser.showSaveDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try (PrintWriter dataWriter = new PrintWriter(selectedFile)) {
-                for (PointMatch pm : pointMatchTableModel.getPointMatches()) {
-                    Point3D p = isLeft ? pm.getLeftPoint() : pm.getRightPoint();
+                for (LandmarkPoint lp : currentView.getLandmarkPoints()) {
+                    Point3D p = lp.getPoint();
                     if (p != null) {
-                        dataWriter.println(pm.getName());
+                        dataWriter.println(lp.getName());
                         dataWriter.println(p.getX());
                         dataWriter.println(p.getY());
                         dataWriter.println();
@@ -405,17 +410,18 @@ public class FaceDetectUI extends JFrame {
         }
     }
 
-    private void loadPoints(boolean isLeft) {
+    private void loadPoints() {
+        if (currentView == null) return;
         JFileChooser fileChooser = new JFileChooser();
         if (lastDirectory != null) {
             fileChooser.setCurrentDirectory(lastDirectory);
         }
-        fileChooser.setDialogTitle("Load Points (" + (isLeft ? "Left Panel" : "Right Panel") + ")");
+        fileChooser.setDialogTitle("Load Points (" + currentView.getName() + ")");
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             try (Scanner scanner = new Scanner(selectedFile)) {
-                java.util.List<PointMatch> matches = new java.util.ArrayList<>(pointMatchTableModel.getPointMatches());
+                List<LandmarkPoint> list = currentView.getLandmarkPoints();
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine().trim();
                     if (!line.isEmpty()) {
@@ -424,41 +430,28 @@ public class FaceDetectUI extends JFrame {
                             double x = Double.parseDouble(scanner.nextLine().trim());
                             if (scanner.hasNextLine()) {
                                 double y = Double.parseDouble(scanner.nextLine().trim());
-                                // Skip blank line if present
                                 if (scanner.hasNextLine()) {
                                     scanner.nextLine();
                                 }
                                 Point3D point = new Point3D(x, y, 0.0);
-                                // Find existing PointMatch by name
-                                PointMatch found = null;
-                                for (PointMatch pm : matches) {
-                                    if (name.equalsIgnoreCase(pm.getName())) {
-                                        found = pm;
+                                LandmarkPoint found = null;
+                                for (LandmarkPoint lp : list) {
+                                    if (name.equalsIgnoreCase(lp.getName())) {
+                                        found = lp;
                                         break;
                                     }
                                 }
                                 if (found != null) {
-                                    if (isLeft) {
-                                        found.setLeftPoint(point);
-                                    } else {
-                                        found.setRightPoint(point);
-                                    }
+                                    found.setPoint(point);
                                 } else {
-                                    PointMatch newPm;
-                                    if (isLeft) {
-                                        newPm = new PointMatch(point, null, name);
-                                    } else {
-                                        newPm = new PointMatch(null, point, name);
-                                    }
-                                    matches.add(newPm);
+                                    list.add(new LandmarkPoint(name, point));
                                 }
                             }
                         }
                     }
                 }
-                pointMatchTableModel.setPointMatches(matches);
-                imagePanel1.repaint();
-                imagePanel2.repaint();
+                landmarkTableModel.fireTableDataChanged();
+                imagePanel.repaint();
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error loading points file:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -468,33 +461,166 @@ public class FaceDetectUI extends JFrame {
     }
 
     private void clearPoints() {
-        pointMatchTableModel.clear();
-        imagePanel1.repaint();
-        imagePanel2.repaint();
+        landmarkTableModel.clear();
+        imagePanel.repaint();
     }
 
     private void removeLastPoint() {
-        if (pointMatchTableModel.getRowCount() > 0) {
-            pointMatchTableModel.removePointMatch(pointMatchTableModel.getRowCount() - 1);
-            imagePanel1.repaint();
-            imagePanel2.repaint();
+        if (landmarkTableModel.getRowCount() > 0) {
+            landmarkTableModel.removeLandmarkPoint(landmarkTableModel.getRowCount() - 1);
+            imagePanel.repaint();
         }
     }
 
-    public PointMatchTableModel getPointMatchTableModel() {
-        return pointMatchTableModel;
+    public LandmarkTableModel getLandmarkTableModel() {
+        return landmarkTableModel;
     }
 
-    public JTable getPointMatchTable() {
-        return pointMatchTable;
+    public JTable getPointTable() {
+        return pointTable;
     }
 
-    public ImagePanel getImagePanel1() {
-        return imagePanel1;
+    public ImagePanel getImagePanel() {
+        return imagePanel;
     }
 
-    public ImagePanel getImagePanel2() {
-        return imagePanel2;
+    private void rebuildViewsMenu() {
+        viewsMenu.removeAll();
+
+        JMenuItem addViewItem = new JMenuItem("Add View");
+        addViewItem.addActionListener(e -> {
+            String name = JOptionPane.showInputDialog(this, "Enter name for the new view:", "View " + (views.size() + 1));
+            if (name != null && !name.trim().isEmpty()) {
+                FaceDetectView newView = new FaceDetectView(name.trim());
+                views.add(newView);
+                setCurrentView(newView);
+                rebuildViewsMenu();
+                rebuildRenderMenu();
+            }
+        });
+        viewsMenu.add(addViewItem);
+
+        JMenuItem closeViewItem = new JMenuItem("Close Current View");
+        closeViewItem.addActionListener(e -> {
+            if (currentView != null) {
+                int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to close view '" + currentView.getName() + "'?", "Close View", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    views.remove(currentView);
+                    if (image1View == currentView) image1View = null;
+                    if (modelView == currentView) modelView = null;
+                    if (image3View == currentView) image3View = null;
+                    if (text2View == currentView) text2View = null;
+
+                    FaceDetectView nextView = null;
+                    if (!views.isEmpty()) {
+                        nextView = views.get(views.size() - 1);
+                    }
+                    setCurrentView(nextView);
+                    rebuildViewsMenu();
+                    rebuildRenderMenu();
+                }
+            }
+        });
+        viewsMenu.add(closeViewItem);
+
+        viewsMenu.addSeparator();
+
+        ButtonGroup bg = new ButtonGroup();
+        for (FaceDetectView v : views) {
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(v.getName(), v == currentView);
+            item.addActionListener(e -> setCurrentView(v));
+            bg.add(item);
+            viewsMenu.add(item);
+        }
+    }
+
+    private void rebuildRenderMenu() {
+        renderMenu.removeAll();
+
+        JMenu img1Menu = new JMenu("Image 1");
+        ButtonGroup bg1 = new ButtonGroup();
+        for (FaceDetectView v : views) {
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(v.getName(), v == image1View);
+            item.addActionListener(e -> {
+                image1View = v;
+                rebuildRenderMenu();
+            });
+            bg1.add(item);
+            img1Menu.add(item);
+        }
+        renderMenu.add(img1Menu);
+
+        JMenu modelMenu = new JMenu("Model");
+        ButtonGroup bgModel = new ButtonGroup();
+        for (FaceDetectView v : views) {
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(v.getName(), v == modelView);
+            item.addActionListener(e -> {
+                modelView = v;
+                rebuildRenderMenu();
+            });
+            bgModel.add(item);
+            modelMenu.add(item);
+        }
+        renderMenu.add(modelMenu);
+
+        JMenu img3Menu = new JMenu("Image 3");
+        ButtonGroup bg3 = new ButtonGroup();
+        JRadioButtonMenuItem noneItem = new JRadioButtonMenuItem("None", image3View == null);
+        noneItem.addActionListener(e -> {
+            image3View = null;
+            rebuildRenderMenu();
+        });
+        bg3.add(noneItem);
+        img3Menu.add(noneItem);
+        for (FaceDetectView v : views) {
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(v.getName(), v == image3View);
+            item.addActionListener(e -> {
+                image3View = v;
+                rebuildRenderMenu();
+            });
+            bg3.add(item);
+            img3Menu.add(item);
+        }
+        renderMenu.add(img3Menu);
+
+        renderMenu.addSeparator();
+
+        JMenuItem t1Item = new JMenuItem("Text 1 (Image 1 Landmarks): " + (image1View != null ? image1View.getName() : "None"));
+        t1Item.setEnabled(false);
+        renderMenu.add(t1Item);
+
+        JMenu t2Menu = new JMenu("Text 2 (Model Landmarks)");
+        ButtonGroup bgT2 = new ButtonGroup();
+        for (FaceDetectView v : views) {
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(v.getName(), v == text2View);
+            item.addActionListener(e -> {
+                text2View = v;
+                rebuildRenderMenu();
+            });
+            bgT2.add(item);
+            t2Menu.add(item);
+        }
+        renderMenu.add(t2Menu);
+
+        JMenuItem t3Item = new JMenuItem("Text 3 (Image 3 Landmarks): " + (image3View != null ? image3View.getName() : "None"));
+        t3Item.setEnabled(false);
+        renderMenu.add(t3Item);
+    }
+
+    public FaceDetectView getImage1View() {
+        return image1View;
+    }
+
+    public FaceDetectView getModelView() {
+        return modelView;
+    }
+
+    public FaceDetectView getImage3View() {
+        return image3View;
+    }
+
+    public FaceDetectView getText2View() {
+        return text2View;
     }
 
     public static void main(String[] args) {

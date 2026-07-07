@@ -1,7 +1,6 @@
 package one.empty3.apps.facedetect3;
 
 import com.google.gson.Gson;
-import one.empty3.apps.facedetect3.PointMatch;
 import one.empty3.library.Point3D;
 import one.empty3.library.ZBufferImpl;
 
@@ -24,7 +23,7 @@ import java.util.Map;
 public class MasksRenderer {
 
     private final FaceDetectUI ui;
-    private int selectedAlgorithm = 8; // Default to "Face on face 2 (best)"
+    private int selectedAlgorithm = 8;
     private boolean hdTextures = false;
     private boolean isBezier = false;
 
@@ -56,25 +55,13 @@ public class MasksRenderer {
         isBezier = bezier;
     }
 
-    public String getLeftPointsText() {
+    public String getPointsText(FaceDetectView view) {
+        if (view == null) return "";
         StringBuilder sb = new StringBuilder();
-        for (PointMatch pm : ui.getPointMatchTableModel().getPointMatches()) {
-            Point3D p = pm.getLeftPoint();
+        for (LandmarkPoint lp : view.getLandmarkPoints()) {
+            Point3D p = lp.getPoint();
             if (p != null) {
-                sb.append(pm.getName()).append("\n");
-                sb.append(p.getX()).append("\n");
-                sb.append(p.getY()).append("\n\n");
-            }
-        }
-        return sb.toString();
-    }
-
-    public String getRightPointsText() {
-        StringBuilder sb = new StringBuilder();
-        for (PointMatch pm : ui.getPointMatchTableModel().getPointMatches()) {
-            Point3D p = pm.getRightPoint();
-            if (p != null) {
-                sb.append(pm.getName()).append("\n");
+                sb.append(lp.getName()).append("\n");
                 sb.append(p.getX()).append("\n");
                 sb.append(p.getY()).append("\n\n");
             }
@@ -83,18 +70,23 @@ public class MasksRenderer {
     }
 
     public void render(boolean isRemote) {
-        ImagePanel leftPanel = ui.getImagePanel1();
-        ImagePanel rightPanel = ui.getImagePanel2();
+        FaceDetectView img1View = ui.getImage1View();
+        FaceDetectView modelView = ui.getModelView();
+        FaceDetectView img3View = ui.getImage3View();
+        FaceDetectView text2View = ui.getText2View();
 
-        if (leftPanel == null || leftPanel.getImage() == null) {
-            JOptionPane.showMessageDialog(ui, "Please load a base image in the left panel first.", "Missing Image",
-                    JOptionPane.WARNING_MESSAGE);
+        if (img1View == null || img1View.getImage() == null) {
+            JOptionPane.showMessageDialog(ui, "Please select an Image 1 view containing a loaded image first.", "Missing Image 1", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (rightPanel == null || rightPanel.getModelFile() == null) {
-            JOptionPane.showMessageDialog(ui, "Please load a 3D model in the right panel first.", "Missing Model",
-                    JOptionPane.WARNING_MESSAGE);
+        if (modelView == null || modelView.getModelFile() == null) {
+            JOptionPane.showMessageDialog(ui, "Please select a Model view containing a loaded OBJ model first.", "Missing Model", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (text2View == null) {
+            JOptionPane.showMessageDialog(ui, "Please select a view for Text 2 (Model landmarks) first.", "Missing Text 2 Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -111,26 +103,48 @@ public class MasksRenderer {
             protected byte[] doInBackground() throws Exception {
                 // 1. Prepare base image bytes
                 byte[] image1Bytes;
-                if (leftPanel.getImageFile() != null) {
-                    image1Bytes = Files.readAllBytes(leftPanel.getImageFile().toPath());
+                if (img1View.getImageFile() != null) {
+                    image1Bytes = Files.readAllBytes(img1View.getImageFile().toPath());
                 } else {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ImageIO.write(leftPanel.getImage(), "png", baos);
+                    ImageIO.write(img1View.getImage(), "png", baos);
                     image1Bytes = baos.toByteArray();
                 }
 
                 // 2. Prepare model bytes
-                byte[] modelBytes = Files.readAllBytes(rightPanel.getModelFile().toPath());
-                byte[] modelPathBytes = rightPanel.getModelFile().getAbsolutePath().getBytes(StandardCharsets.UTF_8);
+                byte[] modelBytes = Files.readAllBytes(modelView.getModelFile().toPath());
+                byte[] modelPathBytes = modelView.getModelFile().getAbsolutePath().getBytes(StandardCharsets.UTF_8);
 
-                // 3. Prepare landmarks
-                byte[] text1Bytes = getLeftPointsText().getBytes(StandardCharsets.UTF_8);
-                byte[] text2Bytes = getRightPointsText().getBytes(StandardCharsets.UTF_8);
+                // 3. Prepare Image 3 bytes (optional, default to clone of Image 1 if not selected)
+                byte[] image3Bytes = null;
+                if (img3View != null) {
+                    if (img3View.getImageFile() != null) {
+                        image3Bytes = Files.readAllBytes(img3View.getImageFile().toPath());
+                    } else if (img3View.getImage() != null) {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ImageIO.write(img3View.getImage(), "png", baos);
+                        image3Bytes = baos.toByteArray();
+                    }
+                }
+                if (image3Bytes == null) {
+                    image3Bytes = image1Bytes.clone();
+                }
+
+                // 4. Prepare landmarks
+                byte[] text1Bytes = getPointsText(img1View).getBytes(StandardCharsets.UTF_8);
+                byte[] text2Bytes = getPointsText(text2View).getBytes(StandardCharsets.UTF_8);
+                byte[] text3Bytes = null;
+                if (img3View != null) {
+                    text3Bytes = getPointsText(img3View).getBytes(StandardCharsets.UTF_8);
+                }
+                if (text3Bytes == null || text3Bytes.length == 0) {
+                    text3Bytes = text2Bytes.clone();
+                }
 
                 if (isRemote) {
-                    return renderRemote(image1Bytes, modelBytes, modelPathBytes, text1Bytes, text2Bytes);
+                    return renderRemote(image1Bytes, modelBytes, modelPathBytes, image3Bytes, text1Bytes, text2Bytes, text3Bytes);
                 } else {
-                    return renderLocal(image1Bytes, modelBytes, modelPathBytes, text1Bytes, text2Bytes);
+                    return renderLocal(image1Bytes, modelBytes, modelPathBytes, image3Bytes, text1Bytes, text2Bytes, text3Bytes);
                 }
             }
 
@@ -142,13 +156,11 @@ public class MasksRenderer {
                     if (pngBytes != null && pngBytes.length > 0) {
                         displayResult(pngBytes);
                     } else {
-                        JOptionPane.showMessageDialog(ui, "Rendering failed: returned empty result.", "Error",
-                                JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(ui, "Rendering failed: returned empty result.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    JOptionPane.showMessageDialog(ui, "Error during rendering:\n" + e.getMessage(), "Error",
-                            JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ui, "Error during rendering:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
@@ -157,8 +169,7 @@ public class MasksRenderer {
         progressDialog.setVisible(true);
     }
 
-    private byte[] renderLocal(byte[] image1Bytes, byte[] modelBytes, byte[] modelPathBytes, byte[] text1Bytes,
-            byte[] text2Bytes) throws Exception {
+    private byte[] renderLocal(byte[] image1Bytes, byte[] modelBytes, byte[] modelPathBytes, byte[] image3Bytes, byte[] text1Bytes, byte[] text2Bytes, byte[] text3Bytes) throws Exception {
         one.empty3.apps.masks.cloud.impl.MainActivity renderer = new one.empty3.apps.masks.cloud.impl.MainActivity();
         Map<String, Object> settings = new HashMap<>();
         settings.put("userId", "default");
@@ -168,27 +179,27 @@ public class MasksRenderer {
                 image1Bytes,
                 modelBytes,
                 modelPathBytes,
-                image1Bytes.clone(), // image3Bytes
+                image3Bytes,
                 text1Bytes,
                 text2Bytes,
-                text2Bytes.clone(), // text3Bytes
+                text3Bytes,
                 selectedAlgorithm,
                 hdTextures,
                 isBezier,
                 settings,
-                "default");
+                "default"
+        );
     }
 
-    private byte[] renderRemote(byte[] image1Bytes, byte[] modelBytes, byte[] modelPathBytes, byte[] text1Bytes,
-            byte[] text2Bytes) throws Exception {
+    private byte[] renderRemote(byte[] image1Bytes, byte[] modelBytes, byte[] modelPathBytes, byte[] image3Bytes, byte[] text1Bytes, byte[] text2Bytes, byte[] text3Bytes) throws Exception {
         RenderRequest req = new RenderRequest();
         req.image1 = Base64.getEncoder().encodeToString(image1Bytes);
         req.model = Base64.getEncoder().encodeToString(modelBytes);
         req.modelPath = Base64.getEncoder().encodeToString(modelPathBytes);
+        req.image3 = Base64.getEncoder().encodeToString(image3Bytes);
         req.text1 = Base64.getEncoder().encodeToString(text1Bytes);
         req.text2 = Base64.getEncoder().encodeToString(text2Bytes);
-        req.text3 = Base64.getEncoder().encodeToString(text2Bytes);
-        req.image3 = "" + req.image1;
+        req.text3 = Base64.getEncoder().encodeToString(text3Bytes);
         req.algorithm = selectedAlgorithm;
         req.hdTextures = hdTextures;
         req.isBezier = isBezier ? "B" : "";
@@ -236,8 +247,7 @@ public class MasksRenderer {
         try {
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(pngBytes));
             if (image == null) {
-                JOptionPane.showMessageDialog(ui, "Could not decode result image bytes.", "Decoding Error",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(ui, "Could not decode result image bytes.", "Decoding Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -264,12 +274,10 @@ public class MasksRenderer {
                 if (ret == JFileChooser.APPROVE_OPTION) {
                     try {
                         ImageIO.write(image, "png", fileChooser.getSelectedFile());
-                        JOptionPane.showMessageDialog(resultFrame, "Image saved successfully!", "Saved",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(resultFrame, "Image saved successfully!", "Saved", JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException ex) {
                         ex.printStackTrace();
-                        JOptionPane.showMessageDialog(resultFrame, "Failed to save image:\n" + ex.getMessage(), "Error",
-                                JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(resultFrame, "Failed to save image:\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
@@ -280,8 +288,7 @@ public class MasksRenderer {
             resultFrame.setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(ui, "Error displaying result image:\n" + e.getMessage(), "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ui, "Error displaying result image:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

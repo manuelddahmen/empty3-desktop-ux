@@ -1,29 +1,18 @@
 /*
  *
+ *  * Copyright (c) 2026. Manuel Daniel Dahmen
  *  *
- *  *  * Copyright (c) 2026. Manuel Daniel Dahmen
- *  *  *
- *  *  *
- *  *  *    Copyright 2026 Manuel Daniel Dahmen
- *  *  *
- *  *  *    Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *    you may not use this file except in compliance with the License.
- *  *  *    You may obtain a copy of the License at
- *  *  *
- *  *  *        http://www.apache.org/licenses/LICENSE-2.0
- *  *  *
- *  *  *    Unless required by applicable law or agreed to in writing, software
- *  *  *    distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *    See the License for the specific language governing permissions and
- *  *  *    limitations under the License.
+ *  *    Licensed under the Apache License, Version 2.0 (the "License");
+ *  *    you may not use this file except in compliance with the License.
+ *  *    You may obtain a copy of the License at
  *  *
+ *  *        http://www.apache.org/licenses/LICENSE-2.0
  *  *
- *  
- *
- *
- *  * Created by $user $date
- *  
+ *  *    Unless required by applicable law or agreed to in writing, software
+ *  *    distributed under the License is distributed on an "AS IS" BASIS,
+ *  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *    See the License for the specific language governing permissions and
+ *  *    limitations under the License.
  *
  */
 package one.empty3.apps.facedetect3;
@@ -41,81 +30,69 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ImagePanel extends JPanel {
-    private BufferedImage image;
-    private OBJModel objModel;
-    private PanelType panelType = PanelType.IMAGE;
-    private Consumer<ImagePanel> clickListener;
+    private FaceDetectView view;
     private FaceDetectUI faceDetectUI;
 
     private int draggedPointIndex = -1;
     private Point pressPoint = null;
     private boolean isDragging = false;
     private boolean displayLines = true;
-    private File imageFile;
-    private File modelFile;
 
-    public ImagePanel(Consumer<ImagePanel> clickListener, FaceDetectUI faceDetectUI) {
-        this.clickListener = clickListener;
+    public ImagePanel(FaceDetectUI faceDetectUI) {
         this.faceDetectUI = faceDetectUI;
 
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                if (view == null) return;
                 pressPoint = e.getPoint();
                 isDragging = false;
                 draggedPointIndex = getPointIndexNear(pressPoint);
                 if (draggedPointIndex != -1) {
-                    faceDetectUI.getPointMatchTable().setRowSelectionInterval(draggedPointIndex, draggedPointIndex);
+                    faceDetectUI.getPointTable().setRowSelectionInterval(draggedPointIndex, draggedPointIndex);
                     repaint();
                 }
-                clickListener.accept(ImagePanel.this);
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (draggedPointIndex != -1) {
-                    isDragging = true;
-                    Point3D newPoint = null;
-                    if (panelType == PanelType.IMAGE) {
-                        newPoint = new Point3D((double) e.getX() / getWidth(), (double) e.getY() / getHeight(), 0.0);
-                    } else if (panelType == PanelType.OBJ_MODEL && objModel != null) {
-                        ZBufferImpl zBuffer = objModel.getzBuffer();
-                        if (zBuffer != null && zBuffer.ime != null) {
-                            int x = Math.max(0, Math.min(getWidth() - 1, e.getX()));
-                            int y = Math.max(0, Math.min(getHeight() - 1, e.getY()));
-                            double u = zBuffer.ime.getuMap()[x][y];
-                            double v = zBuffer.ime.getvMap()[x][y];
-                            newPoint = new Point3D(u, v, 0.0);
-                        }
+                if (view == null || draggedPointIndex == -1) return;
+                isDragging = true;
+                Point3D newPoint = null;
+                if (view.getPanelType() == PanelType.IMAGE) {
+                    newPoint = new Point3D((double) e.getX() / getWidth(), (double) e.getY() / getHeight(), 0.0);
+                } else if (view.getPanelType() == PanelType.OBJ_MODEL && view.getObjModel() != null) {
+                    ZBufferImpl zBuffer = view.getObjModel().getzBuffer();
+                    if (zBuffer != null && zBuffer.ime != null) {
+                        int x = Math.max(0, Math.min(getWidth() - 1, e.getX()));
+                        int y = Math.max(0, Math.min(getHeight() - 1, e.getY()));
+                        double u = zBuffer.ime.getuMap()[x][y];
+                        double v = zBuffer.ime.getvMap()[x][y];
+                        newPoint = new Point3D(u, v, 0.0);
                     }
-                    if (newPoint != null) {
-                        PointMatchTableModel model = faceDetectUI.getPointMatchTableModel();
-                        if (ImagePanel.this == faceDetectUI.getImagePanel1()) {
-                            model.setValueAt(newPoint, draggedPointIndex, 0);
-                        } else {
-                            model.setValueAt(newPoint, draggedPointIndex, 1);
-                        }
-                        faceDetectUI.getImagePanel1().repaint();
-                        faceDetectUI.getImagePanel2().repaint();
-                    }
+                }
+                if (newPoint != null) {
+                    view.getLandmarkPoints().get(draggedPointIndex).setPoint(newPoint);
+                    faceDetectUI.getLandmarkTableModel().fireTableRowsUpdated(draggedPointIndex, draggedPointIndex);
+                    repaint();
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                if (view == null) return;
                 if (isDragging) {
                     isDragging = false;
                     draggedPointIndex = -1;
                 } else {
                     if (draggedPointIndex == -1) {
                         Point3D point = null;
-                        if (panelType == PanelType.IMAGE) {
+                        if (view.getPanelType() == PanelType.IMAGE) {
                             point = new Point3D((double) e.getX() / getWidth(), (double) e.getY() / getHeight(), 0.0);
-                        } else if (panelType == PanelType.OBJ_MODEL && objModel != null) {
-                            ZBufferImpl zBuffer = objModel.getzBuffer();
+                        } else if (view.getPanelType() == PanelType.OBJ_MODEL && view.getObjModel() != null) {
+                            ZBufferImpl zBuffer = view.getObjModel().getzBuffer();
                             if (zBuffer != null && zBuffer.ime != null) {
                                 int x = Math.max(0, Math.min(getWidth() - 1, e.getX()));
                                 int y = Math.max(0, Math.min(getHeight() - 1, e.getY()));
@@ -125,26 +102,16 @@ public class ImagePanel extends JPanel {
                             }
                         }
                         if (point != null) {
-                            int selectedRow = faceDetectUI.getPointMatchTable().getSelectedRow();
+                            int selectedRow = faceDetectUI.getPointTable().getSelectedRow();
                             if (selectedRow != -1) {
-                                PointMatchTableModel model = faceDetectUI.getPointMatchTableModel();
-                                if (ImagePanel.this == faceDetectUI.getImagePanel1()) {
-                                    model.setValueAt(point, selectedRow, 0);
-                                } else {
-                                    model.setValueAt(point, selectedRow, 1);
-                                }
+                                view.getLandmarkPoints().get(selectedRow).setPoint(point);
+                                faceDetectUI.getLandmarkTableModel().fireTableRowsUpdated(selectedRow, selectedRow);
                             } else {
-                                if (ImagePanel.this == faceDetectUI.getImagePanel1()) {
-                                    faceDetectUI.getPointMatchTableModel().addPointMatch(new PointMatch(point, null,
-                                            "Point " + (faceDetectUI.getPointMatchTableModel().getRowCount() + 1)));
-                                } else {
-                                    faceDetectUI.getPointMatchTableModel().addPointMatch(new PointMatch(null, point,
-                                            "Point " + (faceDetectUI.getPointMatchTableModel().getRowCount() + 1)));
-                                }
+                                String defaultName = "Point " + (view.getLandmarkPoints().size() + 1);
+                                view.getLandmarkPoints().add(new LandmarkPoint(defaultName, point));
+                                faceDetectUI.getLandmarkTableModel().fireTableDataChanged();
                             }
-                            faceDetectUI.getImagePanel1().repaint();
-                            faceDetectUI.getImagePanel2().repaint();
-                            clickListener.accept(ImagePanel.this);
+                            repaint();
                         }
                     }
                     draggedPointIndex = -1;
@@ -156,21 +123,15 @@ public class ImagePanel extends JPanel {
         addMouseMotionListener(mouseAdapter);
     }
 
-    public void setPanelType(PanelType panelType) {
-        this.panelType = panelType;
-        this.image = null;
-        this.objModel = null;
-        this.imageFile = null;
-        this.modelFile = null;
-        repaint();
-    }
-
     public void loadImage(File file) {
+        if (view == null) return;
         try {
-            image = ImageIO.read(file);
-            imageFile = file;
-            modelFile = null;
-            panelType = PanelType.IMAGE;
+            BufferedImage image = ImageIO.read(file);
+            view.setImage(image);
+            view.setImageFile(file);
+            view.setModelFile(null);
+            view.setObjModel(null);
+            view.setPanelType(PanelType.IMAGE);
             repaint();
         } catch (IOException e) {
             e.printStackTrace();
@@ -178,12 +139,15 @@ public class ImagePanel extends JPanel {
     }
 
     public void loadObjModel(File file) {
+        if (view == null) return;
         try {
-            objModel = new OBJModel(file);
+            OBJModel objModel = new OBJModel(file);
             objModel.setRepaintCallback(this::repaint);
-            modelFile = file;
-            imageFile = null;
-            panelType = PanelType.OBJ_MODEL;
+            view.setObjModel(objModel);
+            view.setModelFile(file);
+            view.setImageFile(null);
+            view.setImage(null);
+            view.setPanelType(PanelType.OBJ_MODEL);
             repaint();
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -191,12 +155,13 @@ public class ImagePanel extends JPanel {
     }
 
     private Point getPixelForPoint3D(Point3D point) {
-        if (panelType == PanelType.IMAGE) {
+        if (view == null) return null;
+        if (view.getPanelType() == PanelType.IMAGE) {
             int x = (int) (point.getX() * getWidth());
             int y = (int) (point.getY() * getHeight());
             return new Point(x, y);
-        } else if (panelType == PanelType.OBJ_MODEL && objModel != null) {
-            ZBufferImpl zBuffer = objModel.getzBuffer();
+        } else if (view.getPanelType() == PanelType.OBJ_MODEL && view.getObjModel() != null) {
+            ZBufferImpl zBuffer = view.getObjModel().getzBuffer();
             if (zBuffer == null || zBuffer.ime == null) {
                 return null;
             }
@@ -250,13 +215,13 @@ public class ImagePanel extends JPanel {
     }
 
     private int getPointIndexNear(Point clickPoint) {
-        if (faceDetectUI == null || faceDetectUI.getPointMatchTableModel() == null) {
+        if (view == null) {
             return -1;
         }
-        List<PointMatch> list = faceDetectUI.getPointMatchTableModel().getPointMatches();
+        List<LandmarkPoint> list = view.getLandmarkPoints();
         for (int i = 0; i < list.size(); i++) {
-            PointMatch pm = list.get(i);
-            Point3D p3d = (ImagePanel.this == faceDetectUI.getImagePanel1()) ? pm.getLeftPoint() : pm.getRightPoint();
+            LandmarkPoint lp = list.get(i);
+            Point3D p3d = lp.getPoint();
             if (p3d != null) {
                 Point p = getPixelForPoint3D(p3d);
                 if (p != null) {
@@ -273,41 +238,40 @@ public class ImagePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (panelType == PanelType.IMAGE && image != null) {
-            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-        } else if (panelType == PanelType.OBJ_MODEL && objModel != null) {
-            objModel.draw(g, getWidth(), getHeight(), displayLines ? ZBufferImpl.SURFACE_DISPLAY_LINES : ZBufferImpl.DISPLAY_ALL);
+        if (view == null) return;
+
+        if (view.getPanelType() == PanelType.IMAGE && view.getImage() != null) {
+            g.drawImage(view.getImage(), 0, 0, getWidth(), getHeight(), this);
+        } else if (view.getPanelType() == PanelType.OBJ_MODEL && view.getObjModel() != null) {
+            view.getObjModel().draw(g, getWidth(), getHeight(), displayLines ? ZBufferImpl.SURFACE_DISPLAY_LINES : ZBufferImpl.DISPLAY_ALL);
         }
 
-        if (faceDetectUI != null && faceDetectUI.getPointMatchTableModel() != null) {
-            List<PointMatch> list = faceDetectUI.getPointMatchTableModel().getPointMatches();
-            int selectedRow = faceDetectUI.getPointMatchTable() != null
-                    ? faceDetectUI.getPointMatchTable().getSelectedRow()
-                    : -1;
+        List<LandmarkPoint> list = view.getLandmarkPoints();
+        int selectedRow = faceDetectUI.getPointTable() != null
+                ? faceDetectUI.getPointTable().getSelectedRow()
+                : -1;
 
-            for (int i = 0; i < list.size(); i++) {
-                PointMatch pm = list.get(i);
-                Point3D p3d = (ImagePanel.this == faceDetectUI.getImagePanel1()) ? pm.getLeftPoint()
-                        : pm.getRightPoint();
-                if (p3d != null) {
-                    Point p = getPixelForPoint3D(p3d);
-                    if (p != null) {
-                        if (i == selectedRow) {
-                            g.setColor(Color.GREEN);
-                            g.fillOval(p.x - 7, p.y - 7, 14, 14);
-                            g.setColor(Color.BLACK);
-                            g.drawOval(p.x - 7, p.y - 7, 14, 14);
-                        } else {
-                            g.setColor(Color.RED);
-                            g.fillOval(p.x - 5, p.y - 5, 10, 10);
-                            g.setColor(Color.BLACK);
-                            g.drawOval(p.x - 5, p.y - 5, 10, 10);
-                        }
-                        g.setColor(Color.WHITE);
-                        g.drawString(
-                                pm.getName() != null && !pm.getName().isEmpty() ? pm.getName() : String.valueOf(i + 1),
-                                p.x + 8, p.y + 5);
+        for (int i = 0; i < list.size(); i++) {
+            LandmarkPoint lp = list.get(i);
+            Point3D p3d = lp.getPoint();
+            if (p3d != null) {
+                Point p = getPixelForPoint3D(p3d);
+                if (p != null) {
+                    if (i == selectedRow) {
+                        g.setColor(Color.GREEN);
+                        g.fillOval(p.x - 7, p.y - 7, 14, 14);
+                        g.setColor(Color.BLACK);
+                        g.drawOval(p.x - 7, p.y - 7, 14, 14);
+                    } else {
+                        g.setColor(Color.RED);
+                        g.fillOval(p.x - 5, p.y - 5, 10, 10);
+                        g.setColor(Color.BLACK);
+                        g.drawOval(p.x - 5, p.y - 5, 10, 10);
                     }
+                    g.setColor(Color.WHITE);
+                    g.drawString(
+                            lp.getName() != null && !lp.getName().isEmpty() ? lp.getName() : String.valueOf(i + 1),
+                            p.x + 8, p.y + 5);
                 }
             }
         }
@@ -315,13 +279,10 @@ public class ImagePanel extends JPanel {
 
     public List<Point> getPoints() {
         List<Point> result = new ArrayList<>();
-        if (faceDetectUI != null && faceDetectUI.getPointMatchTableModel() != null) {
-            List<PointMatch> list = faceDetectUI.getPointMatchTableModel().getPointMatches();
-            for (PointMatch pm : list) {
-                Point3D p3d = (ImagePanel.this == faceDetectUI.getImagePanel1()) ? pm.getLeftPoint()
-                        : pm.getRightPoint();
-                if (p3d != null) {
-                    Point p = getPixelForPoint3D(p3d);
+        if (view != null) {
+            for (LandmarkPoint lp : view.getLandmarkPoints()) {
+                if (lp.getPoint() != null) {
+                    Point p = getPixelForPoint3D(lp.getPoint());
                     if (p != null) {
                         result.add(p);
                     }
@@ -335,33 +296,27 @@ public class ImagePanel extends JPanel {
         return faceDetectUI;
     }
 
-    public OBJModel getObjModel() {
-        return objModel;
+    public FaceDetectView getView() {
+        return view;
     }
 
-    public PanelType getPanelType() {
-        return panelType;
+    public void setView(FaceDetectView view) {
+        this.view = view;
+        if (view != null) {
+            if (view.getObjModel() != null) {
+                view.getObjModel().setDisplayType(displayLines ? ZBufferImpl.SURFACE_DISPLAY_LINES : ZBufferImpl.DISPLAY_ALL);
+            }
+        }
+        repaint();
     }
 
     public void setDisplayLines(boolean b) {
         this.displayLines = b;
-        if (objModel != null) {
+        if (view != null && view.getObjModel() != null) {
             if (b)
-                objModel.setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
+                view.getObjModel().setDisplayType(ZBufferImpl.SURFACE_DISPLAY_LINES);
             else
-                objModel.setDisplayType(ZBufferImpl.DISPLAY_ALL);
+                view.getObjModel().setDisplayType(ZBufferImpl.DISPLAY_ALL);
         }
-    }
-
-    public File getImageFile() {
-        return imageFile;
-    }
-
-    public BufferedImage getImage() {
-        return image;
-    }
-
-    public File getModelFile() {
-        return modelFile;
     }
 }
