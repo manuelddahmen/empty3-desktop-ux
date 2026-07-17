@@ -28,5 +28,5 @@ After successful compilation, you can run the application using the following co
 ```bash
 java one.empty3.apps.facedetect3.Main
 ```
-
+FaceDetec3
 This will launch the graphical user interface for the application.

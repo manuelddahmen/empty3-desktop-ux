@@ -2,7 +2,6 @@ package one.empty3.apps.facedetect3;
 
 import com.google.gson.Gson;
 import one.empty3.library.Point3D;
-import one.empty3.library.ZBufferImpl;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -56,7 +55,8 @@ public class MasksRenderer {
     }
 
     public String getPointsText(FaceDetectView view) {
-        if (view == null) return "";
+        if (view == null)
+            return "";
         StringBuilder sb = new StringBuilder();
         for (LandmarkPoint lp : view.getLandmarkPoints()) {
             Point3D p = lp.getPoint();
@@ -76,17 +76,20 @@ public class MasksRenderer {
         FaceDetectView text2View = ui.getText2View();
 
         if (img1View == null || img1View.getImage() == null) {
-            JOptionPane.showMessageDialog(ui, "Please select an Image 1 view containing a loaded image first.", "Missing Image 1", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(ui, "Please select an Image 1 view containing a loaded image first.",
+                    "Missing Image 1", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         if (modelView == null || modelView.getModelFile() == null) {
-            JOptionPane.showMessageDialog(ui, "Please select a Model view containing a loaded OBJ model first.", "Missing Model", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(ui, "Please select a Model view containing a loaded OBJ model first.",
+                    "Missing Model", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         if (text2View == null) {
-            JOptionPane.showMessageDialog(ui, "Please select a view for Text 2 (Model landmarks) first.", "Missing Text 2 Selection", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(ui, "Please select a view for Text 2 (Model landmarks) first.",
+                    "Missing Text 2 Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -115,7 +118,8 @@ public class MasksRenderer {
                 byte[] modelBytes = Files.readAllBytes(modelView.getModelFile().toPath());
                 byte[] modelPathBytes = modelView.getModelFile().getAbsolutePath().getBytes(StandardCharsets.UTF_8);
 
-                // 3. Prepare Image 3 bytes (optional, default to clone of Image 1 if not selected)
+                // 3. Prepare Image 3 bytes (optional, default to clone of Image 1 if not
+                // selected)
                 byte[] image3Bytes = null;
                 if (img3View != null) {
                     if (img3View.getImageFile() != null) {
@@ -142,9 +146,11 @@ public class MasksRenderer {
                 }
 
                 if (isRemote) {
-                    return renderRemote(image1Bytes, modelBytes, modelPathBytes, image3Bytes, text1Bytes, text2Bytes, text3Bytes);
+                    return renderRemote(image1Bytes, modelBytes, modelPathBytes, image3Bytes, text1Bytes, text2Bytes,
+                            text3Bytes);
                 } else {
-                    return renderLocal(image1Bytes, modelBytes, modelPathBytes, image3Bytes, text1Bytes, text2Bytes, text3Bytes);
+                    return renderLocal(image1Bytes, modelBytes, modelPathBytes, image3Bytes, text1Bytes, text2Bytes,
+                            text3Bytes);
                 }
             }
 
@@ -156,11 +162,13 @@ public class MasksRenderer {
                     if (pngBytes != null && pngBytes.length > 0) {
                         displayResult(pngBytes);
                     } else {
-                        JOptionPane.showMessageDialog(ui, "Rendering failed: returned empty result.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(ui, "Rendering failed: returned empty result.", "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    JOptionPane.showMessageDialog(ui, "Error during rendering:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ui, "Error during rendering:\n" + e.getMessage(), "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
@@ -169,7 +177,8 @@ public class MasksRenderer {
         progressDialog.setVisible(true);
     }
 
-    private byte[] renderLocal(byte[] image1Bytes, byte[] modelBytes, byte[] modelPathBytes, byte[] image3Bytes, byte[] text1Bytes, byte[] text2Bytes, byte[] text3Bytes) throws Exception {
+    private byte[] renderLocal(byte[] image1Bytes, byte[] modelBytes, byte[] modelPathBytes, byte[] image3Bytes,
+            byte[] text1Bytes, byte[] text2Bytes, byte[] text3Bytes) throws Exception {
         one.empty3.apps.masks.cloud.impl.MainActivity renderer = new one.empty3.apps.masks.cloud.impl.MainActivity();
         Map<String, Object> settings = new HashMap<>();
         settings.put("userId", "default");
@@ -187,11 +196,11 @@ public class MasksRenderer {
                 hdTextures,
                 isBezier,
                 settings,
-                "default"
-        );
+                "default");
     }
 
-    private byte[] renderRemote(byte[] image1Bytes, byte[] modelBytes, byte[] modelPathBytes, byte[] image3Bytes, byte[] text1Bytes, byte[] text2Bytes, byte[] text3Bytes) throws Exception {
+    private byte[] renderRemote(byte[] image1Bytes, byte[] modelBytes, byte[] modelPathBytes, byte[] image3Bytes,
+            byte[] text1Bytes, byte[] text2Bytes, byte[] text3Bytes) throws Exception {
         RenderRequest req = new RenderRequest();
         req.image1 = Base64.getEncoder().encodeToString(image1Bytes);
         req.model = Base64.getEncoder().encodeToString(modelBytes);
@@ -213,8 +222,8 @@ public class MasksRenderer {
                 .build();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://mesh-masks-render-107769431845.europe-west1.run.app/renderImages1"))
-                .timeout(Duration.ofSeconds(60))
+                .uri(URI.create("https://mesh-masks-render-107769431845.us-central1.run.app/renderImages1"))
+                .timeout(Duration.ofSeconds(3600))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
@@ -247,7 +256,8 @@ public class MasksRenderer {
         try {
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(pngBytes));
             if (image == null) {
-                JOptionPane.showMessageDialog(ui, "Could not decode result image bytes.", "Decoding Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(ui, "Could not decode result image bytes.", "Decoding Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -274,10 +284,12 @@ public class MasksRenderer {
                 if (ret == JFileChooser.APPROVE_OPTION) {
                     try {
                         ImageIO.write(image, "png", fileChooser.getSelectedFile());
-                        JOptionPane.showMessageDialog(resultFrame, "Image saved successfully!", "Saved", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(resultFrame, "Image saved successfully!", "Saved",
+                                JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException ex) {
                         ex.printStackTrace();
-                        JOptionPane.showMessageDialog(resultFrame, "Failed to save image:\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(resultFrame, "Failed to save image:\n" + ex.getMessage(), "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
@@ -288,7 +300,8 @@ public class MasksRenderer {
             resultFrame.setVisible(true);
         } catch (IOException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(ui, "Error displaying result image:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(ui, "Error displaying result image:\n" + e.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 

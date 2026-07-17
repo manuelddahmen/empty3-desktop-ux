@@ -158,6 +158,12 @@ tasks.register('FaceDetect', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'one.empty3.apps.facedetect.JFrameEditPolygonsMappings'
 }
+tasks.register('FaceDetect3', JavaExec) {
+    group = "execution"
+    description = "Run the main class with Face on Face"
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'one.empty3.apps.facedetect3.Main'
+}
 tasks.register('Game', JavaExec) {
     group = "execution"
     description = "Run the main class with JavaExecTask"
@@ -271,6 +277,28 @@ tasks.register('extractDeps', Jar) {
     // Stratégie pour les fichiers dupliqués
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+tasks.register('prepareJPackageFiles', Copy) {
+    dependsOn 'jar'
+    group = "distribution"
+    description = "Prepares the files for jpackage."
+
+    def destDir = file("$buildDir/app-image")
+
+    // Clean the destination directory before copying
+    delete destDir
+    
+    // Copy the main application JAR
+    from(tasks.jar.outputs.files) {
+        into destDir
+    }
+
+    // Copy all runtime dependencies
+    from(configurations.runtimeClasspath) {
+        into destDir
+    }
+}
+
 
 //gradle runFunction -Prun.functionTarget=one.empty3.apps.facedetect.gcp.ImageProcessor  -Prun.port=8080
 //java --classpath 'build/libs' --target one.empty3.apps.facedetect.gcp.ImageProcessor com.google.cloud.functions.invoker.runner.Invoker

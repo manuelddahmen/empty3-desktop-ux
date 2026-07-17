@@ -23,6 +23,7 @@ import one.empty3.library.ZBufferImpl;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -605,6 +606,78 @@ public class FaceDetectUI extends JFrame {
         JMenuItem t3Item = new JMenuItem("Text 3 (Image 3 Landmarks): " + (image3View != null ? image3View.getName() : "None"));
         t3Item.setEnabled(false);
         renderMenu.add(t3Item);
+
+        renderMenu.addSeparator();
+
+        JMenuItem customRenderItem = new JMenuItem("Custom Render (Shrink)");
+        customRenderItem.addActionListener(e -> performCustomRender());
+        renderMenu.add(customRenderItem);
+    }
+
+    private void performCustomRender() {
+        if (currentView == null || currentView.getImage() == null) {
+            JOptionPane.showMessageDialog(this, "Please select a view with an image first.", "No Image", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 1. Create input dialog
+        JTextField widthField = new JTextField("100");
+        JTextField heightField = new JTextField("100");
+        JPanel panel = new JPanel(new GridLayout(0, 2));
+        panel.add(new JLabel("Max Width:"));
+        panel.add(widthField);
+        panel.add(new JLabel("Max Height:"));
+        panel.add(heightField);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Enter new dimensions", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                int maxWidth = Integer.parseInt(widthField.getText());
+                int maxHeight = Integer.parseInt(heightField.getText());
+
+                Image originalImage = currentView.getImage();
+                int originalWidth = originalImage.getWidth(null);
+                int originalHeight = originalImage.getHeight(null);
+
+                if(originalHeight<=0 || originalWidth<=0) {
+                    return;
+                }
+
+                double ratio = (double) originalWidth / originalHeight;
+
+                int newWidth = maxWidth;
+                int newHeight = (int) (newWidth / ratio);
+
+                if (newHeight > maxHeight) {
+                    newHeight = maxHeight;
+                    newWidth = (int) (newHeight * ratio);
+                }
+                if(newWidth<=0 || newHeight<=0) {
+                    return;
+                }
+
+                // 2. Perform resizing
+                BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = resizedImage.createGraphics();
+                g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
+                g.dispose();
+
+                // 3. Create a new view for the resized image
+                String newViewName = "Resized " + currentView.getName();
+                FaceDetectView newView = new FaceDetectView(newViewName);
+                newView.setImage(resizedImage);
+                newView.setPanelType(PanelType.IMAGE);
+
+                views.add(newView);
+                setCurrentView(newView);
+                rebuildViewsMenu();
+                rebuildRenderMenu();
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid dimensions. Please enter numbers only.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     public FaceDetectView getImage1View() {
