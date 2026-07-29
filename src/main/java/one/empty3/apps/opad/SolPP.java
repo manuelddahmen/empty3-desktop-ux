@@ -45,10 +45,7 @@ import one.empty3.library.LineSegment;
 import one.empty3.library.Point3D;
 import one.empty3.library.RepresentableConteneur;
 import one.empty3.library.core.nurbs.ParametricSurface;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-import java.awt.Dimension;
+import one.empty3.libs.Color;
 
 /*__
  *
@@ -80,12 +77,12 @@ public class SolPP {
                 Point3D p1 = sol.calculerPoint3D(j, i);
                 Point3D p2 = sol.calculerPoint3D(j + increment, i);
 
-                rc.add(new LineSegment(p1, p2, new ColorTexture( new Color(Color.WHITE))));
+                rc.add(new LineSegment(p1, p2, new ColorTexture(new Color(Color.WHITE))));
 
                 p1 = sol.calculerPoint3D(j, i);
                 p2 = sol.calculerPoint3D(j, i + increment);
 
-                rc.add(new LineSegment(p1, p2, new ColorTexture( new Color(Color.WHITE))));
+                rc.add(new LineSegment(p1, p2, new ColorTexture(new Color(Color.WHITE))));
             }
         }
 

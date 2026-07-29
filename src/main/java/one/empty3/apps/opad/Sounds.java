@@ -36,7 +36,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URL;
 
 public class Sounds {
 
@@ -46,12 +45,12 @@ public class Sounds {
                 try {
                     // Essayez d'abord de charger en tant que ressource de classe
                     InputStream myStream = Sounds.class.getResourceAsStream(resourcePath);
-                    
+
                     // Si null, essayez avec le classloader
                     if (myStream == null) {
                         myStream = Sounds.class.getClassLoader().getResourceAsStream(resourcePath);
                     }
-                    
+
                     // Si toujours null, essayez comme fichier local
                     if (myStream == null) {
                         File file = new File(resourcePath);
@@ -62,7 +61,7 @@ public class Sounds {
                             return;
                         }
                     }
-                    
+
                     // À ce stade, myStream ne devrait pas être null
                     AudioInputStream audio2 = AudioSystem.getAudioInputStream(myStream);
                     Clip clip = AudioSystem.getClip();

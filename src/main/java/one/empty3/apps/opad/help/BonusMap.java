@@ -34,9 +34,8 @@
  */
 package one.empty3.apps.opad.help;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-import java.awt.Dimension;
+import one.empty3.libs.Color;
+
 import java.util.HashMap;
 
 /*__
@@ -46,9 +45,7 @@ import java.util.HashMap;
 public class BonusMap {
     private static final HashMap<Class, Color> maps = new HashMap<>();
 
-    static
-
-    {
+    static {
 
         maps.put(Cheval_Licorne.class, new Color(0x000000FF));
         maps.put(Escargot.class, new Color(java.awt.Color.GRAY.getRGB()));

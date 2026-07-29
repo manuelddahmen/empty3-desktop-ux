@@ -30,11 +30,7 @@
 package one.empty3.apps.opad;
 
 import one.empty3.library.Point2D;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
-import java.awt.Dimension;
+import one.empty3.libs.Color;
 
 public class Plasma {
     public static double scale;
@@ -53,10 +49,10 @@ public class Plasma {
     }
 
     public static Color color(double x, double y, double t) {
-        return new Color(new java.awt.Color(
+        return Color.newCol(
                 (float) ((Math.cos(Math.PI * f(x, y, t) + 0.5 + t * t_factor) + 1) / 2),
                 (float) ((Math.cos(Math.PI * f(x, y, t) + 1.0 + t * t_factor + Math.PI / 2) + 1) / 2),
                 (float) ((Math.cos(Math.PI * f(x, y, t) + 1.5 + t * t_factor + Math.PI) + 1) / 2)
-        ));
+        );
     }
 }

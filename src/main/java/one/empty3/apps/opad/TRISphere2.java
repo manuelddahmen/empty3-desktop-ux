@@ -32,7 +32,6 @@ package one.empty3.apps.opad;
 import one.empty3.apps.opad.help.BonusClass;
 import one.empty3.library.Point3D;
 import one.empty3.library.Sphere;
-import one.empty3.library.core.tribase.TRISphere;
 
 /*__
  * Created by manuel on 19-05-17.

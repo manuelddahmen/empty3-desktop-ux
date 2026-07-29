@@ -30,9 +30,6 @@
 package one.empty3.apps.opad;
 
 import one.empty3.library.*;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
 import one.empty3.libs.Color;
 import one.empty3.libs.Image;
 
@@ -56,21 +53,24 @@ public class EcDrawer extends Drawer implements Runnable {
 
         this.component = darkFortress;
 
-        z = new ZBufferImpl(640, 480);
-        ((ZBufferImpl) z).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, 0.1));
-        ((ZBufferImpl) z).setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
+        initZ();
+
         darkFortress.setSize(640, 480);
         new Thread(this).start();
+
 
         initFrame(component);
 
     }
-
-    public void resize() {
+    private void initZ() {
         z = ZBufferFactory.instance(w, h);
-        z.couleurDeFond(new ColorTexture( new Color(Color.black)));
-        ((ZBufferImpl) z).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.NONE, 0.1));
+        z.couleurDeFond(new ColorTexture(new Color(Color.black)));
+        ((ZBufferImpl) z).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.1));
         ((ZBufferImpl) z).setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
+
+    }
+    public void resize() {
+        initZ();
         ah = h;
         aw = w;
     }
@@ -152,9 +152,9 @@ public class EcDrawer extends Drawer implements Runnable {
             } catch (Exception ex) {
                 System.err.println(ex);
             }
-            Image ri = z.image();
+            BufferedImage ri = z.image().getBi();
 
-            Graphics g2 = ((BufferedImage)ri).getGraphics();
+            Graphics g2 = ((BufferedImage) ri).getGraphics();
             g2.setColor(Color.WHITE);
             //g2.drawString("Score : " + mover.score(), 0, ri.getHeight() - 40);
 

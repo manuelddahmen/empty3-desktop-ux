@@ -47,10 +47,8 @@ import one.empty3.library.Point3D;
 import one.empty3.library.Representable;
 import one.empty3.library.Sphere;
 import one.empty3.library.core.tribase.TubulaireN;
+import one.empty3.libs.Color;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -63,7 +61,7 @@ public class Circuit extends TubulaireN {
 
     public Circuit(ArrayList<Point3D> listPoint3d) {
         listPoint3d.forEach(this::addPoint);
-        this.texture(new ColorTexture( new Color(Color.ORANGE)));
+        this.texture(new ColorTexture(new Color(Color.ORANGE)));
     }
 
     public Circuit(Bonus bonus) {
@@ -74,7 +72,7 @@ public class Circuit extends TubulaireN {
                 addPoint(((Sphere) next).getCircle().getCenter());
             }
 
-            this.texture(new ColorTexture( new Color(Color.ORANGE)));
+            this.texture(new ColorTexture(new Color(Color.ORANGE)));
         }
 
 

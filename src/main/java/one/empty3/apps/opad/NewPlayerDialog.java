@@ -30,11 +30,7 @@
 package one.empty3.apps.opad;
 
 import javax.swing.*;
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
 import java.awt.*;
-import java.awt.Color;
 
 /*__
  * Created by Win on 26-10-18.
@@ -46,21 +42,20 @@ public class NewPlayerDialog extends JDialog {
         super(owner, modal);
 
 
-
         FlowLayout flowLayout = new FlowLayout();
 
         flowLayout.setHgap(3);
 
         setLayout(flowLayout);
         JLabel jLabel = new JLabel("Player name");
-        jLabel.setSize(100,20);
+        jLabel.setSize(100, 20);
         add(jLabel);
         JTextField jTextFieldNewPlayer = new JTextField("");
-        jTextFieldNewPlayer.setSize(100,20);
+        jTextFieldNewPlayer.setSize(100, 20);
         add(jTextFieldNewPlayer);
 
         JButton ok = new JButton("Ok");
-        ok.setSize(100,20);
+        ok.setSize(100, 20);
 
         add(ok);
 
@@ -72,7 +67,6 @@ public class NewPlayerDialog extends JDialog {
 
         pack();
     }
-
 
 
 }

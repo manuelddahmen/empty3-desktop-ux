@@ -40,110 +40,109 @@ import java.util.logging.Logger;
 public class GameLogic {
 
 
- private double hauteur = 0.01;
- protected Point3D positionOrigine = Point3D.O0.plus(hauteur);
- protected Point3D position = positionOrigine;
- protected double positionIncrement = .01;
- protected double directionNorme = 1;
- protected Point3D directionOrigine = Point3D.Z;
- protected Point3D direction = directionOrigine;
- protected double angle = 0.0;
- private int score;
- private Bonus ennemi;
- protected static final int STATE_GAME_IN_PROGRESS = 1;
- private boolean gagne = false;
+    private double hauteur = 0.01;
+    protected Point3D positionOrigine = Point3D.O0.plus(hauteur);
+    protected Point3D position = positionOrigine;
+    protected double positionIncrement = .01;
+    protected double directionNorme = 1;
+    protected Point3D directionOrigine = Point3D.Z;
+    protected Point3D direction = directionOrigine;
+    protected double angle = 0.0;
+    private int score;
+    private Bonus ennemi;
+    protected static final int STATE_GAME_IN_PROGRESS = 1;
+    private boolean gagne = false;
 
- public GameLogic() {
- }
+    public GameLogic() {
+    }
 
- public void update() {
- }
+    public void update() {
+    }
 
- public void acc() {
+    public void acc() {
 
- position = position.plus(direction.mult(positionIncrement));
- }
+        position = position.plus(direction.mult(positionIncrement));
+    }
 
- public void dec() {
- position = position.moins(direction.mult(positionIncrement));
- }
+    public void dec() {
+        position = position.moins(direction.mult(positionIncrement));
+    }
 
- public int state() {
- return STATE_GAME_IN_PROGRESS;
- }
+    public int state() {
+        return STATE_GAME_IN_PROGRESS;
+    }
 
- public GameObject[] getObjects() {
- return null;
- }
+    public GameObject[] getObjects() {
+        return null;
+    }
 
- public Point3D position() {
- return position;
- }
+    public Point3D position() {
+        return position;
+    }
 
- public Point3D direction() {
- return direction;
- }
+    public Point3D direction() {
+        return direction;
+    }
 
- public void rotationGauche() {
- angle = angle + Math.PI * 2 / 360 * 10;
- direction =
- new Point3D(
- directionNorme * Math.sin(angle),
- hauteur,
- directionNorme * Math.cos(angle));
- }
+    public void rotationGauche() {
+        angle = angle + Math.PI * 2 / 360 * 10;
+        direction =
+                new Point3D(
+                        directionNorme * Math.sin(angle),
+                        hauteur,
+                        directionNorme * Math.cos(angle));
+    }
 
- public void rotationDroite() {
- angle = angle - Math.PI * 2 / 360 * 10;
- direction =
- new Point3D(
- directionNorme * Math.sin(angle),
- hauteur,
- directionNorme * Math.cos(angle));
+    public void rotationDroite() {
+        angle = angle - Math.PI * 2 / 360 * 10;
+        direction =
+                new Point3D(
+                        directionNorme * Math.sin(angle),
+                        hauteur,
+                        directionNorme * Math.cos(angle));
 
- }
+    }
 
- public void testCollision() {
- Iterator<Representable> it = ennemi.iterator();
+    public void testCollision() {
+        Iterator<Representable> it = ennemi.iterator();
 
- while (it.hasNext()) {
- Representable r = it.next();
+        while (it.hasNext()) {
+            Representable r = it.next();
 
- if (r instanceof TRISphere) {
- if (Point3D.distance(((TRISphere) r).getCentre(), position) < 0.1) {
- int points = 10;
- //Logger.getAnonymousLogger().log(Level.INFO, "POINTS" + points);
+            if (r instanceof TRISphere) {
+                if (Point3D.distance(((TRISphere) r).getCentre(), position) < 0.1) {
+                    int points = 10;
+                    //Logger.getAnonymousLogger().log(Level.INFO, "POINTS" + points);
 
- score += points;
+                    score += points;
 
- Logger.getAnonymousLogger().log(Level.INFO, ""+score);
+                    Logger.getAnonymousLogger().log(Level.INFO, "" + score);
 
- if(ennemi.removeBonus(r))
- win();
+                    if (ennemi.removeBonus(r))
+                        win();
 
- break;
- }
- }
+                    break;
+                }
+            }
 
- }
+        }
 
- }
+    }
 
- public void ennemi(Bonus e) {
- this.ennemi = e;
- }
+    public void ennemi(Bonus e) {
+        this.ennemi = e;
+    }
 
- public int score() {
- return score;
- }
+    public int score() {
+        return score;
+    }
 
- private void win() {
- gagne = true;
- }
+    private void win() {
+        gagne = true;
+    }
 
- public boolean estGagnant()
- {
- return gagne;
- }
+    public boolean estGagnant() {
+        return gagne;
+    }
 
 }

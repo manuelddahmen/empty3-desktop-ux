@@ -38,7 +38,7 @@ package one.empty3.apps.opad.help;
  *
  * @author Se7en
  */
-public class MouvementDirectionnel extends BonusClass{
+public class MouvementDirectionnel extends BonusClass {
     public MouvementDirectionnel() {
         super();
         value = Double.parseDouble(bundle.getString("fuite.point"));

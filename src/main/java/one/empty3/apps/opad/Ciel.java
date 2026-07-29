@@ -39,14 +39,14 @@ Global license :
 
 package one.empty3.apps.opad;
 
-import one.empty3.library.*;
+import one.empty3.library.ColorTexture;
+import one.empty3.library.ImageTexture;
+import one.empty3.library.Point3D;
+import one.empty3.library.Sphere;
+import one.empty3.libs.Color;
+import one.empty3.libs.Image;
 
 import javax.imageio.ImageIO;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.logging.Level;

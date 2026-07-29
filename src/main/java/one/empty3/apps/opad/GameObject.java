@@ -30,9 +30,6 @@
 package one.empty3.apps.opad;
 
 import one.empty3.library.Point;
-import one.empty3.libs.*;
-
-import java.awt.Dimension;
 
 public class GameObject {
     private Point position = new Point(0, 0);

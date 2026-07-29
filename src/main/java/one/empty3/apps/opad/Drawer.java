@@ -33,10 +33,7 @@ import one.empty3.apps.opad.menu.ToggleMenu;
 import one.empty3.library.LineSegment;
 import one.empty3.library.Point2D;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
-import java.awt.Frame;
+import java.awt.*;
 import java.util.logging.Logger;
 
 public abstract class Drawer {

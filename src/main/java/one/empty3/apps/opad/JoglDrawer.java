@@ -37,20 +37,16 @@ import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.awt.TextureRenderer;
 import one.empty3.apps.opad.help.PiloteAuto;
-import one.empty3.library.Polygon;
 import one.empty3.library.*;
+import one.empty3.library.Polygon;
 import one.empty3.library.core.nurbs.CourbeParametriquePolynomiale;
 import one.empty3.library.core.nurbs.ParametricCurve;
 import one.empty3.library.core.nurbs.ParametricSurface;
 import one.empty3.library.core.tribase.TRIObjetGenerateur;
+import one.empty3.libs.Color;
 
 import javax.swing.*;
 import javax.swing.Timer;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-import one.empty3.libs.Color;
-
 import java.awt.*;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -64,7 +60,7 @@ public class JoglDrawer extends Drawer implements GLEventListener {
     protected GLCanvas glCanvas;
     double INCR_AA = 0.1;
     protected final double maximize = INCR_AA / 10;
-    protected final double minimize = INCR_AA;
+    protected final double minimize = INCR_AA*4;
     double DISTANCE_MIN = 100;
     javax.swing.Timer timer;
     protected GLU glu;
@@ -135,8 +131,6 @@ public class JoglDrawer extends Drawer implements GLEventListener {
         if (!component.isVisible()) {
             glCanvas.setGL(gl);
         }
-        //timer = new javax.swing.Timer();
-        //timer.init();
         try {
             panel.add(glCanvas);
         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -144,7 +138,7 @@ public class JoglDrawer extends Drawer implements GLEventListener {
             System.err.println("Continue///");
         }
         ((JFrame) component).setContentPane(panel);
-        if (component.isVisible() == false)
+        if (!component.isVisible())
             component.setVisible(true);
 
     }
@@ -237,7 +231,7 @@ public class JoglDrawer extends Drawer implements GLEventListener {
         }
         if (toggleMenu.isDisplayCharacter()) {
             Cube object = vaisseau.getObject();
-            object.setPosition(mover.calcCposition());
+            object.setOrig(mover.calcCposition());
             draw(object, glu, gl);
             if (getPlotter3D() != null && getPlotter3D().isActive()) {
                 CourbeParametriquePolynomiale courbeParametriquePolynomiale = null;
@@ -390,8 +384,8 @@ public class JoglDrawer extends Drawer implements GLEventListener {
             // Iterates surface elements; draws two triangles each
             for (double j = s.getStartV(); j < s.getEndV(); j += s.getIncrV()) {
                 Polygon elementSurface = s.getElementSurface(i, s.getIncrU(), j, s.getIncrV());
-                double u = (i-s.getStartU())/(s.getEndU()-s.getStartU());
-                double v = (j-s.getStartV())/(s.getEndV()-s.getStartV());
+                double u = (i - s.getStartU()) / (s.getEndU() - s.getStartU());
+                double v = (j - s.getStartV()) / (s.getEndV() - s.getStartV());
                 // Draws first triangle from parametric surface element
                 draw2(new TRI(elementSurface.getPoints().getElem(0),
                         elementSurface.getPoints().getElem(1),
@@ -478,6 +472,7 @@ public class JoglDrawer extends Drawer implements GLEventListener {
             }
         }
     }
+
     protected void draw(Terrain t, ParametricSurface s, GLU glu, GL2 gl) {
         gl.glBegin(GL2.GL_TRIANGLES);
         for (double i = s.getStartU(); i < s.getEndU(); i += s.getIncrU()) {
@@ -594,8 +589,6 @@ public class JoglDrawer extends Drawer implements GLEventListener {
 //        courbeParametriquePolynomialeBezierTubulaireN22.curve(new CourbeParametriquePolynomialeBezier(arc[1]));
 //        courbeParametriquePolynomialeBezierTubulaireN22.texture(new ColorTexture(Color.GREEN));
 
-        // TODO draw(courbeParametriquePolynomialeBezierTubulaireN2, glu, gl);
-        // TODO draw(courbeParametriquePolynomialeBezierTubulaireN22, glu, gl);
 
     }
 
@@ -606,7 +599,7 @@ public class JoglDrawer extends Drawer implements GLEventListener {
 
     protected void displayGround(GLU glu, GL2 gl) {
         int nbrTriReduce = 0;
-        double maxDistance = 0.01;
+        double maxDistance = maximize;
         gl.glBegin(GL2.GL_TRIANGLES);
         for (double i = 0; i <= 1; i += INCR_AA) {
             for (double j = 0; j <= 1; j += INCR_AA) {
@@ -631,7 +624,7 @@ public class JoglDrawer extends Drawer implements GLEventListener {
 
                 index = 0;
                 for (TRI t : tris) {
-                    /*
+
                     if(index>=12)
                     {
                         INCR_AA = 0.01;
@@ -641,7 +634,7 @@ public class JoglDrawer extends Drawer implements GLEventListener {
                     {
                         INCR_AA = 0.1;
                     }
-                    */
+
                     Point3D[] point3D = new Point3D[6];
                     for (int p : new int[]{0, 1, 2}) {
                         Point3D[] p3 = new Point3D[]{t.getSommet().getElem(0),

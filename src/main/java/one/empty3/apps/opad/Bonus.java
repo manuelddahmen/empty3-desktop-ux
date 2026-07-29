@@ -36,11 +36,8 @@ import one.empty3.library.ColorTexture;
 import one.empty3.library.Point3D;
 import one.empty3.library.Representable;
 import one.empty3.library.RepresentableConteneur;
+import one.empty3.libs.Color;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
-import java.awt.Dimension;
 import java.util.Random;
 import java.util.ResourceBundle;
 

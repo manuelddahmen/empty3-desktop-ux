@@ -41,41 +41,37 @@ public class HumanoidModel extends Model {
     private Point3D position;
     private Point3D vectorVectical;
     private double feetSize, legSize,
-        armSize, bodySize, headSize
-        ;
+            armSize, bodySize, headSize;
 
 
-    public HumanoidModel()
-    {
+    public HumanoidModel() {
         timeStart = System.nanoTime();
     }
 
-    private long realTimeNano()
-    {
+    private long realTimeNano() {
         return System.nanoTime()
                 - timeStart; // TODO
     }
-    private long animationTimeNano(long timeEllapsed)
-    {
+
+    private long animationTimeNano(long timeEllapsed) {
         animationTime += timeEllapsed;
         return animationTime;
     }
-    public class Arete
-    {
+
+    public class Arete {
         LineSegment segmentDroite;
 
     }
-    public class BodyPart
-    {
+
+    public class BodyPart {
 
     }
 
-    public class BodyLink
-    {
+    public class BodyLink {
 
     }
-    public class Movement
-    {
+
+    public class Movement {
 
     }
 

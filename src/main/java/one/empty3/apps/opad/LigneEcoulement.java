@@ -51,15 +51,13 @@ public class LigneEcoulement implements Runnable {
     public static final double g = 9.8;
     private boolean running = true;
 
-    public LigneEcoulement(PositionMobile positionMobile, ParametricSurface parametricSurface)
-    {
+    public LigneEcoulement(PositionMobile positionMobile, ParametricSurface parametricSurface) {
         this.ps = parametricSurface;
         this.positionMobile = positionMobile;
         new Thread(this).start();
     }
 
-    public void setSurface(ParametricSurface ps)
-    {
+    public void setSurface(ParametricSurface ps) {
         this.ps = ps;
     }
 

@@ -40,10 +40,8 @@ Global license :
 package one.empty3.apps.opad;
 
 import one.empty3.library.Point3D;
+import one.empty3.libs.Color;
 
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 /*__

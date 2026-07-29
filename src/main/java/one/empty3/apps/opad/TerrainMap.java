@@ -29,11 +29,8 @@
 
 package one.empty3.apps.opad;
 
-import one.empty3.library.Point;
 import one.empty3.library.Rectangle;
-import one.empty3.libs.*;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 
 /*__

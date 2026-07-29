@@ -40,9 +40,9 @@ public class UIDPlayer {
     private String playerName; // Unique on @member server
     private String gameName; // Unique on @member server
     private Date gameStart; // Unique on @member server
-    private long id = 0 ;
+    private long id = 0;
 
     public String generateUIDFromFields() {
-        return server.toString()+"|"+playerName+"|"+gameName+"|"+gameStart.toInstant().toString()+"|"+id;
+        return server.toString() + "|" + playerName + "|" + gameName + "|" + gameStart.toInstant().toString() + "|" + id;
     }
 }

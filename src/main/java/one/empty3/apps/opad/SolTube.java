@@ -40,7 +40,7 @@ import java.util.Iterator;
 /*__
  * Created by manuel on 25-05-17.
  */
-public class SolTube extends Terrain  {
+public class SolTube extends Terrain {
     public SolTube(/*Game Game*/) {
         setDessineMurs(false);
         TubulaireN2 n2 = new TubulaireN2();

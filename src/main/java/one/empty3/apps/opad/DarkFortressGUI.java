@@ -30,17 +30,10 @@
 package one.empty3.apps.opad;
 
 import com.jogamp.newt.event.KeyListener;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLDrawableFactory;
-import com.jogamp.opengl.awt.GLCanvas;
 import one.empty3.apps.opad.menu.ToggleMenu;
 
 import javax.swing.*;
-
-import one.empty3.library.Point;
-import one.empty3.libs.*;
-
-import java.awt.Dimension;
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,17 +51,12 @@ public class DarkFortressGUI extends JFrame {
     Plotter3D plotter3D;
 
 
-    /*public Plotter3D getPlotter3D() {
-        return plotter3D;
-    }*/
-
     public DarkFortressGUI(Class<? extends Drawer> clazz) {
         super();
         this.clazz = clazz;
         this.drawerType = clazz;
         Title = "Dark Fortress ";
         setTitle(Title);
-        setExtendedState(JFrame.EXIT_ON_CLOSE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -77,14 +65,13 @@ public class DarkFortressGUI extends JFrame {
         try {
             Terrain t = sol.getConstructor().newInstance();
             mover = new PositionUpdateImpl(t, player);
-            new Thread(mover).start();
             gameKeyListener = new DarkFortressGUIKeyListener(mover);
             plotter3D = new Plotter3D(mover);
             mover.setPlotter3D(plotter3D);
-            new Thread(mover).start();
-            new Thread(gameKeyListener).start();
-            new Thread(plotter3D).start();
 
+            new Thread(mover, "PositionUpdate").start();
+            new Thread(gameKeyListener, "DarkFortressGUIKeyListener").start();
+            new Thread(plotter3D, "Plotter3D").start();
 
             Logger.getLogger(DarkFortressGUI.class.getName()).log(Level.INFO, drawerType.getSimpleName());
 
@@ -92,49 +79,42 @@ public class DarkFortressGUI extends JFrame {
             if (drawerType.equals(JoglDrawer.class)) {
                 Title += "with OpenGL bindings";
                 drawer = new JoglDrawer(this);
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
                 drawerType = JoglDrawer.class;
-
-
             } else if (drawerType.equals(EcDrawer.class)) {
                 Title += "with Empty Canvas rendering";
                 drawer = new EcDrawer(this);
-                drawerType = JoglDrawer.class;
+                drawerType = EcDrawer.class;
             }
 
+            setTitle(Title);
 
             drawer.setLogic(mover);
-            //drawer.setPlotter3D(plotter3D);
             drawer.setToggleMenu(new ToggleMenu());
             drawer.setLevel(sol);
-
-            //addKeyListener(plotter3D);
-
-
-            if (drawer instanceof JoglDrawer) {
-                ((JoglDrawer) drawer).getGlcanvas().display();
-                ((JoglDrawer) drawer).getGlcanvas().getAnimator().start();
-                mover.setMain(this);
-            }
 
             setMinimumSize(new Dimension(640, 480));
             setFocusable(true);
             addKeyListener(gameKeyListener);
-            //addKeyListener(plotter3D);
 
+            if (drawer instanceof JoglDrawer) {
+                mover.setMain(this);
+            }
 
+            setLocationRelativeTo(null);
             setVisible(true);
 
-
+            if (drawer instanceof JoglDrawer joglDrawer) {
+                SwingUtilities.invokeLater(() -> {
+                    joglDrawer.getGlcanvas().requestFocusInWindow();
+                    if (!joglDrawer.getAnimator().isStarted()) {
+                        joglDrawer.getAnimator().start();
+                    }
+                });
+            }
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
                  InvocationTargetException ex) {
             Logger.getLogger(DarkFortressGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
 

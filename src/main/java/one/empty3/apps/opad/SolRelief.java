@@ -49,8 +49,8 @@ public class SolRelief extends Terrain {
             public Point3D calculerPoint3D(double u, double v) {
                 double T = 6.;
                 double hauteurVague = 0.002;
-                return new Point3D(u, hauteurVague*Math.sin(2 * Math.PI * u*T )
-                        * Math.cos(2 * Math.PI * v*T), v);
+                return new Point3D(u, hauteurVague * Math.sin(2 * Math.PI * u * T)
+                        * Math.cos(2 * Math.PI * v * T), v);
             }
 
             @Override
