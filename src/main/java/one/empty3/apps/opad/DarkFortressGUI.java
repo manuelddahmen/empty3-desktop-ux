@@ -43,9 +43,9 @@ public class DarkFortressGUI extends JFrame {
     public PositionUpdateImpl positionUpdate;
     public PositionUpdate mover;
     //Plotter3D plotter3D;
-    Drawer drawer;
+    protected Drawer drawer;
     private Class<? extends Drawer> drawerType;
-    String Title;
+    protected String Title;
     private DarkFortressGUIKeyListener gameKeyListener;
     private Game game;
     Plotter3D plotter3D;
@@ -64,7 +64,7 @@ public class DarkFortressGUI extends JFrame {
         // Sets level; initializes and starts game components
         try {
             Terrain t = sol.getConstructor().newInstance();
-            mover = new PositionUpdateImpl(t, player);
+            mover = createMover(t, player);
             gameKeyListener = new DarkFortressGUIKeyListener(mover);
             plotter3D = new Plotter3D(mover);
             mover.setPlotter3D(plotter3D);
@@ -76,14 +76,11 @@ public class DarkFortressGUI extends JFrame {
             Logger.getLogger(DarkFortressGUI.class.getName()).log(Level.INFO, drawerType.getSimpleName());
 
             // Selects rendering backend; configures title and drawer
-            if (drawerType.equals(JoglDrawer.class)) {
-                Title += "with OpenGL bindings";
-                drawer = new JoglDrawer(this);
-                drawerType = JoglDrawer.class;
-            } else if (drawerType.equals(EcDrawer.class)) {
-                Title += "with Empty Canvas rendering";
-                drawer = new EcDrawer(this);
-                drawerType = EcDrawer.class;
+            drawer = createDrawer();
+            if (drawer == null) {
+                Logger.getLogger(DarkFortressGUI.class.getName()).log(Level.SEVERE,
+                        "No drawer available for {0}", drawerType);
+                return;
             }
 
             setTitle(Title);
@@ -118,8 +115,49 @@ public class DarkFortressGUI extends JFrame {
     }
 
 
+    /*__
+     * Creates the game logic that drives this window.
+     *
+     * <p>Subclasses override it to plug in another mover, for instance the
+     * server-synchronised {@code one.empty3.apps.opad.server.NetworkPositionUpdate}.</p>
+     */
+    protected PositionUpdate createMover(Terrain t, Player player) {
+        return new PositionUpdateImpl(t, player);
+    }
+
+    /*__
+     * Creates the rendering backend for {@link #getDrawerType()} and appends its name
+     * to the window title.
+     *
+     * @return the drawer, or {@code null} if the requested type is not supported
+     */
+    protected Drawer createDrawer() {
+        if (drawerType.equals(JoglDrawer.class)) {
+            Title += "with OpenGL bindings";
+            return new JoglDrawer(this);
+        }
+        if (drawerType.equals(EcDrawer.class)) {
+            Title += "with Empty Canvas rendering";
+            return new EcDrawer(this);
+        }
+        return null;
+    }
+
+    /*__ @return the rendering backend asked for at construction time */
+    protected Class<? extends Drawer> getDrawerType() {
+        return drawerType;
+    }
+
+    public Drawer getDrawer() {
+        return drawer;
+    }
+
     public KeyListener getGameKeyListener() {
         return (KeyListener) gameKeyListener;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public void setGame(Game game) {

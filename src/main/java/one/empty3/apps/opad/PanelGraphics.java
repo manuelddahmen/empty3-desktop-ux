@@ -34,6 +34,7 @@
 package one.empty3.apps.opad;
 
 import one.empty3.apps.opad.menu.LevelMenu;
+import one.empty3.apps.opad.server.GameClient;
 import one.empty3.library.Point3D;
 
 import javax.swing.*;
@@ -134,6 +135,7 @@ public class PanelGraphics extends JDialog {
         jLabel4 = new JLabel();
         jComboBoxTerrain = new JComboBox<>();
         jButtonStart = new JButton();
+        jButtonMulti = new JButton();
 
         //======== this ========
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -213,6 +215,7 @@ public class PanelGraphics extends JDialog {
         jButtonStart.setText(bundle.getString("PanelGraphics.jButtonStart.text"));
         jButtonStart.setName("jButton1");
         jButtonStart.addActionListener(this::jButton1ActionPerformed);
+        jButtonMulti.addActionListener(this::jButtonMultiActionPerformed);
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -316,13 +319,20 @@ public class PanelGraphics extends JDialog {
 
 
         df.setLevel(loadClass, game.getLocalPlayer());
+    }
 
+    private void jButtonMultiActionPerformed(ActionEvent evt) {
+        MultiplayerSettingsDialog dialog = new MultiplayerSettingsDialog(this);
+        dialog.setVisible(true);
+        GameClient client = dialog.getClient();
+        if (client != null) {
+            // Logic to start the game with the client
+        }
+    }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void formWindowClosed(WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+    private void formWindowClosed(WindowEvent evt) {
         System.exit(0);
-    }//GEN-LAST:event_formWindowClosed
+    }
 
     /*__
      * @param args the command line arguments
@@ -379,6 +389,7 @@ public class PanelGraphics extends JDialog {
     private JLabel jLabel4;
     private JComboBox<String> jComboBoxTerrain;
     private JButton jButtonStart;
+    private JButton jButtonMulti;
     // End of variables declaration//GEN-END:variables
     JComboBox<String> jComboBoxNom;
 }

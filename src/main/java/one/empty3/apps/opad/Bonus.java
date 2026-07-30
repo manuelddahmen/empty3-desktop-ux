@@ -65,6 +65,21 @@ public class Bonus extends RepresentableConteneur {
     private boolean locked = false;
 
     public Bonus() {
+        this(true);
+    }
+
+    /*__
+     * @param generate {@code false} leaves the container empty, for subclasses that
+     *                 fill it from an authoritative source instead of at random.
+     *                 See {@code one.empty3.apps.opad.server.SyncedBonus}.
+     */
+    protected Bonus(boolean generate) {
+        if (generate) {
+            generateBonuses();
+        }
+    }
+
+    private void generateBonuses() {
 
         for (int i = 0; i < SIZE; i++) {
             TRISphere2<SimpleBonus> s = new TRISphere2<SimpleBonus>(this, random(), Double.parseDouble(bundle.getString("bonus.scale")));

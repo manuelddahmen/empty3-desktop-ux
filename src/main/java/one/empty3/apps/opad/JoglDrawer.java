@@ -241,6 +241,8 @@ public class JoglDrawer extends Drawer implements GLEventListener {
             }
         }
 
+        drawExtraObjects(glu, gl);
+
         if (toggleMenu.isDisplayScore())
             draw("Score :  " + mover.score(), new Color(java.awt.Color.WHITE), glu, gl);
         if (toggleMenu.isDisplayEnergy())
@@ -818,8 +820,25 @@ public class JoglDrawer extends Drawer implements GLEventListener {
 
         vaisseau = new Vaisseau(mover);
         terrain = mover.getTerrain();
-        bonus = new Bonus();
+        bonus = createBonus(m);
         mover.ennemi(bonus);
+    }
+
+    /*__
+     * Builds the bonus container for this drawer.
+     *
+     * <p>Subclasses override it when bonuses come from the server instead of being
+     * generated locally. See {@code one.empty3.apps.opad.server.NetworkedJoglDrawer}.</p>
+     */
+    protected Bonus createBonus(PositionUpdate m) {
+        return new Bonus();
+    }
+
+    /*__
+     * Hook for subclasses to draw extra objects after the local ship, once per frame.
+     * See {@code one.empty3.apps.opad.server.NetworkedJoglDrawer}.
+     */
+    protected void drawExtraObjects(GLU glu, GL2 gl) {
     }
 
     protected boolean locked() {

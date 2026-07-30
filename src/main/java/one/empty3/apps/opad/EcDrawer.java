@@ -39,12 +39,12 @@ import java.awt.image.BufferedImage;
 public class EcDrawer extends Drawer implements Runnable {
 
     protected DarkFortressGUI component;
-    private Terrain terrain;
-    private Bonus bonus;
+    protected Terrain terrain;
+    protected Bonus bonus;
     protected ZBuffer z;
     protected int w, h, aw, ah;
-    private Vaisseau vaisseau;
-    private PositionUpdate mover;
+    protected Vaisseau vaisseau;
+    protected PositionUpdate mover;
 
     public EcDrawer(DarkFortressGUI darkFortress) {
 
@@ -81,8 +81,18 @@ public class EcDrawer extends Drawer implements Runnable {
         this.mover = m;
         vaisseau = new Vaisseau(mover);
         terrain = mover.getTerrain();
-        bonus = new Bonus();
+        bonus = createBonus(m);
         mover.ennemi(bonus);
+    }
+
+    /*__
+     * Builds the bonus container for this drawer.
+     *
+     * <p>Subclasses override it when bonuses come from the server instead of being
+     * generated locally. See {@code one.empty3.apps.opad.server.NetworkedEcDrawer}.</p>
+     */
+    protected Bonus createBonus(PositionUpdate m) {
+        return new Bonus();
     }
 
     @Override
@@ -119,6 +129,7 @@ public class EcDrawer extends Drawer implements Runnable {
                 //scene.add(terrain);
                 scene.add(bonus);
                 scene.add(vaisseau.getObject());
+                addExtraObjects(scene);
 
                 if (toggleMenu.isDisplayBonus()) {
                     bonus.getListRepresentable().forEach(representable -> {
@@ -161,6 +172,14 @@ public class EcDrawer extends Drawer implements Runnable {
             g.drawImage(ri, 0, 0, component.getWidth(), component.getHeight(), null);
 
         }
+    }
+
+    /*__
+     * Hook for subclasses to put their own objects in the scene being drawn, next to
+     * the local player's ship. Called on the drawing thread, once per frame.
+     * See {@code one.empty3.apps.opad.server.NetworkedEcDrawer}.
+     */
+    protected void addExtraObjects(Scene scene) {
     }
 
     public boolean isLocked() {
