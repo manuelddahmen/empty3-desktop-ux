@@ -248,6 +248,11 @@ public class JoglDrawer extends Drawer implements GLEventListener {
 
         drawTrajectory(getPlotter3D(), glu, gl);
 
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public PiloteAuto piloteAuto() {
