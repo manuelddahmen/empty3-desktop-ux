@@ -47,8 +47,8 @@ public class TRISphere2<T extends BonusClass> extends Sphere {
 
     public TRISphere2(Bonus bonus, Point3D c, double r) {
         super(c, r);
-        setIncrU(0.19);
-        setIncrV(0.19);
+        setIncrU(0.2);
+        setIncrV(0.2);
         setStartU(0.0);
         setStartV(0.0);
         setEndU(1.0);

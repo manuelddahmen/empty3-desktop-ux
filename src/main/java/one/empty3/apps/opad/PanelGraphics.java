@@ -322,7 +322,7 @@ public class PanelGraphics extends JDialog {
     }
 
     private void jButtonMultiActionPerformed(ActionEvent evt) {
-        MultiplayerSettingsDialog dialog = new MultiplayerSettingsDialog(this);
+        MultiplayerSettingsDialog dialog = new MultiplayerSettingsDialog((Frame) this.getParent());
         dialog.setVisible(true);
         GameClient client = dialog.getClient();
         if (client != null) {

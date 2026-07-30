@@ -53,24 +53,30 @@ public class EcDrawer extends Drawer implements Runnable {
 
         this.component = darkFortress;
 
-        initZ();
 
         darkFortress.setSize(640, 480);
         new Thread(this).start();
 
+        w = darkFortress.getWidth();
+        h = darkFortress.getHeight();
+
+        initZ();
 
         initFrame(component);
+
+
 
     }
     private void initZ() {
         z = ZBufferFactory.instance(w, h);
-        z.couleurDeFond(new ColorTexture(new Color(Color.black)));
-        ((ZBufferImpl) z).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MINIMUM_DETAIL, 0.1));
-        ((ZBufferImpl) z).setDisplayType(ZBufferImpl.SURFACE_DISPLAY_COL_QUADS);
+        ((ZBufferImpl) z).setIncrementOptimizer(new ZBufferImpl.IncrementOptimizer(ZBufferImpl.IncrementOptimizer.Strategy.ENSURE_MAXIMUM_PERFORMANCE, 1));
+        ((ZBufferImpl) z).setDisplayType(ZBufferImpl.SURFACE_DISPLAY_TEXT_QUADS);
 
     }
     public void resize() {
         initZ();
+        w = component.getWidth();
+        h = component.getHeight();
         ah = h;
         aw = w;
     }
@@ -166,9 +172,10 @@ public class EcDrawer extends Drawer implements Runnable {
             BufferedImage ri = z.image().getBi();
 
             Graphics g2 = ((BufferedImage) ri).getGraphics();
-            g2.setColor(Color.WHITE);
             //g2.drawString("Score : " + mover.score(), 0, ri.getHeight() - 40);
-
+            g2.setColor(Color.BLACK);
+            g.fillRect(0, 0, ri.getWidth(), ri.getHeight());
+            g2.setColor(Color.WHITE);
             g.drawImage(ri, 0, 0, component.getWidth(), component.getHeight(), null);
 
         }

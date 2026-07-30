@@ -94,7 +94,7 @@ public class Bonus extends RepresentableConteneur {
 
         for (int i = 0; i < licorne; i++) {
             TRISphere2<Cheval_Licorne> s;
-            s = new TRISphere2(this, random(), Double.parseDouble(bundle.getString("bonus.scale")));
+            s = new TRISphere2<Cheval_Licorne>(this, random(), Double.parseDouble(bundle.getString("bonus.scale")));
             s.texture(new ColorTexture(new Color(Color.BLUE)));
             s.setGameObject(new Cheval_Licorne());
             add(s);
@@ -109,7 +109,7 @@ public class Bonus extends RepresentableConteneur {
 
         }
         for (int i = 0; i < fuite; i++) {
-            TRISphere2 s = new TRISphere2<>(this, random(), Double.parseDouble(bundle.getString("bonus.scale")));
+            TRISphere2<MouvementDirectionnel> s = new TRISphere2<>(this, random(), Double.parseDouble(bundle.getString("bonus.scale")));
             s.texture(new ColorTexture(new Color(Color.GRAY)));
             s.setGameObject(new MouvementDirectionnel());
             add(s);
