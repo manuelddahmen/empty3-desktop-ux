@@ -82,6 +82,7 @@ public class JoglDrawer extends Drawer implements GLEventListener {
     protected long millis;
     protected long millis0;
     protected boolean wasAnimating = false;
+    private boolean logs = false;
 
     {
         Plasma.scale = 2;
@@ -151,7 +152,9 @@ public class JoglDrawer extends Drawer implements GLEventListener {
         }
 
         millis = System.currentTimeMillis();
+        if(logs) {
         Logger.getAnonymousLogger().log(Level.INFO, "FPS " + (millis - millis0));
+        }
         millis0 = millis;
 
         try {

@@ -141,7 +141,7 @@ public class PositionUpdateImpl implements PositionUpdate, Runnable, ActionListe
     }
 
     protected boolean isPositionOk(Point3D p, boolean repositionne) {
-        Logger.getAnonymousLogger().log(Level.INFO, "candidate new position : " + p + "\n" + getPositionMobile().getAngleVisee());
+        //Logger.getAnonymousLogger().log(Level.INFO, "candidate new position : " + p + "\n" + getPositionMobile().getAngleVisee());
         if (p.getX() >= -positionEpsilon && p.getX() <= 1 + positionEpsilon
                 && p.getY() >= -positionEpsilon && p.getY() <= 1 + positionEpsilon) {
             update();
@@ -170,11 +170,11 @@ public class PositionUpdateImpl implements PositionUpdate, Runnable, ActionListe
 
     @Override
     public void acc(long timeNano) {
-        Logger.getAnonymousLogger().log(Level.INFO, "ACC" + timeNano);
+        //Logger.getAnonymousLogger().log(Level.INFO, "ACC" + timeNano);
         Point3D direction2D = getVecDir2D().norme1().mult(1.0 * timeNano * 1E-9 * unitPerSec);
         accera += timeNano;
         Point3D p2 = positionMobile.getPositionSol().plus(direction2D);
-        Logger.getAnonymousLogger().log(Level.INFO, "acc:" + p2.toString());
+        //Logger.getAnonymousLogger().log(Level.INFO, "acc:" + p2.toString());
         if (isPositionOk(p2, false)) {
             positionMobile.setPositionSol(p2);
 
@@ -184,15 +184,16 @@ public class PositionUpdateImpl implements PositionUpdate, Runnable, ActionListe
 
     @Override
     public void dec(long timeNano) {
-        Logger.getAnonymousLogger().log(Level.INFO, "DEC" + timeNano);
+        //.getAnonymousLogger().log(Level.INFO, "DEC" + timeNano);
         Point3D direction2D = getVecDir2D().norme1().mult(1.0 * timeNano * 1E-9 * unitPerSec);
         accera -= timeNano;
         Point3D p2 = positionMobile.getPositionSol().moins(direction2D);
-        Logger.getAnonymousLogger().log(Level.INFO, "acc:" + p2.toString());
+        //Logger.getAnonymousLogger().log(Level.INFO, "acc:" + p2.toString());
         if (isPositionOk(p2, false)) {
             positionMobile.setPositionSol(p2);
-        } else
+        } else {
             Logger.getAnonymousLogger().log(Level.INFO, "OUT acc:" + p2.toString());
+        }
     }
 
     @Override
@@ -295,7 +296,7 @@ public class PositionUpdateImpl implements PositionUpdate, Runnable, ActionListe
                         };
                         mouvement.start();
 
-                        Logger.getAnonymousLogger().log(Level.INFO, "" + score);
+                       // Logger.getAnonymousLogger().log(Level.INFO, "" + score);
 
 
                         //circuit = new Circuit(bonus);
