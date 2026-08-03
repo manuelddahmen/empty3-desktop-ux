@@ -68,7 +68,9 @@ public class MultiplayerSettingsDialog extends JDialog {
             // Need to pass client to the game.
         } catch (IOException | NumberFormatException ex) {
             Logger.getLogger(MultiplayerSettingsDialog.class.getName()).log(Level.SEVERE, "Connection failed", ex);
-            JOptionPane.showMessageDialog(this, "Connection failed: " + ex.getMessage());
+            String message = "Connection failed: " + ex.getMessage() + "\n\n" +
+                             "If no game server exists, please start a new game server first.";
+            JOptionPane.showMessageDialog(this, message, "Connection Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     

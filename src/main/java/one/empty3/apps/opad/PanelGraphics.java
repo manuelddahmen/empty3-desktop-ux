@@ -33,6 +33,7 @@
  */
 package one.empty3.apps.opad;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import one.empty3.apps.opad.menu.LevelMenu;
 import one.empty3.apps.opad.server.GameClient;
 import one.empty3.library.Point3D;
@@ -215,7 +216,12 @@ public class PanelGraphics extends JDialog {
         jButtonStart.setText(bundle.getString("PanelGraphics.jButtonStart.text"));
         jButtonStart.setName("jButton1");
         jButtonStart.addActionListener(this::jButton1ActionPerformed);
+        //---- jButtonMulti ----
+        jButtonMulti.setFont(new Font("Tahoma", Font.PLAIN, 48));
+        jButtonMulti.setForeground(new Color(51, 0, 255));
+        jButtonMulti.setText("Multi");
         jButtonMulti.addActionListener(this::jButtonMultiActionPerformed);
+
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -242,7 +248,9 @@ public class PanelGraphics extends JDialog {
                                                 .addContainerGap())))
                         .addGroup(contentPaneLayout.createSequentialGroup()
                                 .addGap(47, 47, 47)
-                                .addComponent(jButtonStart, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE)
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                        .addComponent(jButtonStart, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonMulti, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 21, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
@@ -268,6 +276,8 @@ public class PanelGraphics extends JDialog {
                                         .addComponent(jLabel4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonStart, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonMulti, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
         setSize(670, 405);
@@ -326,7 +336,32 @@ public class PanelGraphics extends JDialog {
         dialog.setVisible(true);
         GameClient client = dialog.getClient();
         if (client != null) {
-            // Logic to start the game with the client
+            MultiplayerDarkFortressGUI df;
+            if (jRadioButtonECGraph.isSelected()) {
+                df = new MultiplayerDarkFortressGUI(EcDrawer.class, client);
+            } else {
+                df = new MultiplayerDarkFortressGUI(JoglDrawer.class, client);
+            }
+            
+            String mapName = client.getMapName();
+            if (mapName == null) {
+                mapName = one.empty3.apps.opad.server.MapCatalog.defaultMap();
+            }
+            Class<Terrain> terrainClass = one.empty3.apps.opad.server.MapCatalog.resolve(mapName);
+            
+            Player byName = null;
+            try {
+                byName = Player.getByName(jComboBoxNom.getSelectedItem().toString());
+            } catch (Exception ex) {
+            }
+            
+            Game game = new Game();
+            if (byName != null) {
+                game.setCurrentPlayer(byName);
+            }
+            df.setGame(game);
+            
+            df.setLevel(terrainClass, game.getLocalPlayer());
         }
     }
 
@@ -338,29 +373,7 @@ public class PanelGraphics extends JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbu
-	at java.desktop/java.awt.Component.setVisible(Component.java:1667)s look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PanelGraphics.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(PanelGraphics.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(PanelGraphics.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(PanelGraphics.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        FlatLightLaf.setup();
 
         /* Create and display the dialog */
         EventQueue.invokeLater(new Runnable() {

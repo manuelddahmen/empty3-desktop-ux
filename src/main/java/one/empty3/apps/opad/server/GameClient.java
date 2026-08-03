@@ -229,7 +229,26 @@ public class GameClient implements Closeable {
             close();
             throw new IOException("Cannot join the game: " + reason);
         }
+
+        if (joinError != null) {
+            String reason = joinError;
+            close();
+            throw new IOException("Cannot join the game: " + reason);
+        }
+
+        if (playerId <= 0) {
+            close();
+            throw new IOException("Cannot join the game: server did not assign a player id");
+        }
+
+        if (!MapCatalog.isKnown(mapName)) {
+            String receivedMapName = mapName;
+            close();
+            throw new IOException("Cannot join the game: server sent unknown map: " + receivedMapName);
+        }
     }
+
+
 
     private void readLoop() {
         String reason = "connection closed";
