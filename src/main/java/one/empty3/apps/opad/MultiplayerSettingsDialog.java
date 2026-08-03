@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 
 public class MultiplayerSettingsDialog extends JDialog {
     private JTextField ipField = new JTextField("localhost", 15);
-    private JTextField portField = new JTextField("8080", 5);
+    private JTextField portField = new JTextField("4712", 5);
     private JTextField nameField = new JTextField("Player1", 15);
     private JButton connectButton = new JButton("Connect");
     private GameClient client;
@@ -59,7 +59,7 @@ public class MultiplayerSettingsDialog extends JDialog {
     private void onConnect(ActionEvent e) {
         try {
             client = new GameClient(ipField.getText(), Integer.parseInt(portField.getText()), nameField.getText(), 0);
-            client.connect(5000); // 5 seconds timeout
+            client.connect(36000); // 5 seconds timeout
             
             // If connection is successful, close the dialog and start the game
             dispose();

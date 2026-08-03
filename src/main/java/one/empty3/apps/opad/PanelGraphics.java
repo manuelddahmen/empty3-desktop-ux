@@ -33,6 +33,7 @@
  */
 package one.empty3.apps.opad;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import one.empty3.apps.opad.menu.LevelMenu;
 import one.empty3.apps.opad.server.GameClient;
@@ -67,6 +68,7 @@ public class PanelGraphics extends JDialog {
         Point3D.useTreuVectorialProduct = true;
         initComponents();
         initPlayersList();
+        FlatLaf.updateUI();
         panelGraphics = this;
     }
 

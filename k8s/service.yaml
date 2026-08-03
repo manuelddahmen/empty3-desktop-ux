@@ -7,6 +7,6 @@ spec:
   selector:
     app: game-server
   ports:
-  - protocol: TCP
+  - protocol: UDP
     port: 4712
     targetPort: 4712

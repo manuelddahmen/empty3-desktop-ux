@@ -256,11 +256,12 @@ tasks.register('deployCloudFunctionCreateTxt', Exec) {
 tasks.register('extractDeps', Jar) {
     archiveFileName = 'empty3-library-mp-with-dependencies.jar'
     destinationDirectory = file('build/libs')
+
     manifest {
         attributes(
                 'Implementation-Title': 'Mesh Masks',
                 'Implementation-Version': '0.1',
-                'Main-Class': 'one.empty3.apps.facedetect.JFrameEditPolygonsMappings'
+                'Main-Class': 'one.empty3.apps.opad.server.GameServerMain'
         )
     }
     // Activer Zip64 pour gérer plus de 65535 entrées
