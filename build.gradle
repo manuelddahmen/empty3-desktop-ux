@@ -301,7 +301,7 @@ tasks.register('packageApp', Exec) {
             '--input', 'build/app-image',
             '--main-jar', 'empty3-desktop-ux.jar',
             '--main-class', 'one.empty3.apps.opad.PanelGraphics',
-            '--dest', 'build/distw',
+            '--dest', 'build/dist',
             '--name', 'Empty3Game',
             '--app-version', '1.0',
             '--type', 'app-image'

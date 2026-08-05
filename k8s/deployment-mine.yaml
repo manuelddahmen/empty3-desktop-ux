@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: game-server
-        image: us-central1-docker.pkg.dev/padel-server-504118/game-repo/game-server:0.2
+        image: us-central1-docker.pkg.dev/padel-server-504118/game-repo/game-server:0.5
         ports:
         - containerPort: 4712
