@@ -56,6 +56,11 @@ public final class GameServerMain {
         int tick = Protocol.DEFAULT_TICK_MILLIS;
         double tolerance = ServerGameSession.DEFAULT_PICK_TOLERANCE;
 
+        var ref = new Object() {
+            GameServer server = null;
+        };
+
+
         try {
             for (int i = 0; i < args.length; i++) {
                 switch (args[i]) {
@@ -88,34 +93,40 @@ public final class GameServerMain {
             System.exit(2);
             return;
         }
-
-        ServerGameSession session = new ServerGameSession(map, seed, tolerance);
-        GameServer server = new GameServer(port, session, tick);
-        HealthCheckServer healthCheckServer = new HealthCheckServer(8080);
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            server.stop();
-            healthCheckServer.stop();
-        }, "OpadGameServer-shutdown"));
-
         try {
-            server.start();
+            ServerGameSession session = new ServerGameSession(map, seed, tolerance);
+            ref.server = new GameServer(port, session, tick);
+            HealthCheckServer healthCheckServer = new HealthCheckServer(8080);
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                if(ref.server !=null)
+                    ref.server.stop();
+                healthCheckServer.stop();
+            }, "OpadGameServer-shutdown"));
+            ref.server.start();
             healthCheckServer.start();
+            System.out.println("Opad server ready on port " + ref.server.getPort()
+                    + " - map " + map + " - " + session.getBonusCount() + " bonuses");
+            System.out.println("Press Ctrl+C to stop.");
         } catch (IOException ex) {
             System.err.println("Cannot listen on port " + port + ": " + ex.getMessage());
             System.exit(1);
             return;
+        } catch (Exception ex) {
+            System.err.println("Cannot start server: " + ex.getMessage());
+            System.exit(1);
+            return;
+        } finally {
+            try {
+                if(ref.server !=null)
+                    ref.server.awaitTermination();
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                ref.server.stop();
+            }
+
         }
 
-        System.out.println("Opad server ready on port " + server.getPort()
-                + " - map " + map + " - " + session.getBonusCount() + " bonuses");
-        System.out.println("Press Ctrl+C to stop.");
 
-        try {
-            server.awaitTermination();
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-            server.stop();
-        }
     }
 
     private static void usage() {
