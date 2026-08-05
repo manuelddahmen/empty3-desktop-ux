@@ -1,13 +1,146 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+    networking.gke.io/target-pool: ac115aaf0ac904a99a313cc2bdefff9c
+  finalizers:
+    - gke.networking.io/l4-netlb-v1
+    - service.kubernetes.io/load-balancer-cleanup
+  managedFields:
+    - apiVersion: v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:networking.gke.io/target-pool: {}
+          f:finalizers:
+            .: {}
+            v:"gke.networking.io/l4-netlb-v1": {}
+            v:"service.kubernetes.io/load-balancer-cleanup": {}
+        f:status:
+          f:loadBalancer:
+            f:ingress: {}
+      manager: cloud-controller-manager
+      operation: Update
+      subresource: status
+      time: '2026-08-03T06:58:27Z'
+    - apiVersion: v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+        f:spec:
+          f:allocateLoadBalancerNodePorts: {}
+          f:externalTrafficPolicy: {}
+          f:internalTrafficPolicy: {}
+          f:ports:
+            .: {}
+            k:{"port":4712,"protocol":"UDP"}:
+              .: {}
+              f:nodePort: {}
+              f:port: {}
+              f:protocol: {}
+              f:targetPort: {}
+          f:selector: {}
+          f:sessionAffinity: {}
+          f:type: {}
+      manager: kubectl-client-side-apply
+      operation: Update
+      time: '2026-08-05T06:37:23Z'
   name: game-server
+  namespace: default
 spec:
-  type: LoadBalancer
-  loadBalancerIP: "34.170.12.255" # Insérez l'IP ici
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 34.118.229.15
+  clusterIPs:
+    - 34.118.229.15
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - nodePort: 31609
+      port: 4712
+      protocol: UDP
+      targetPort: 4712
   selector:
     app: game-server
+  sessionAffinity: None
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+    networking.gke.io/target-pool: ab2c50262444045fb937801a0565287e
+  finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    - gke.networking.io/l4-netlb-v1
+  managedFields:
+    - apiVersion: v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+        f:spec:
+          f:allocateLoadBalancerNodePorts: {}
+          f:externalTrafficPolicy: {}
+          f:internalTrafficPolicy: {}
+          f:ports:
+            .: {}
+            k:{"port":4712,"protocol":"UDP"}:
+              .: {}
+              f:port: {}
+              f:protocol: {}
+              f:targetPort: {}
+          f:selector: {}
+          f:sessionAffinity: {}
+          f:type: {}
+      manager: kubectl-client-side-apply
+      operation: Update
+      time: '2026-08-02T19:07:55Z'
+    - apiVersion: v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:networking.gke.io/target-pool: {}
+          f:finalizers:
+            .: {}
+            v:"gke.networking.io/l4-netlb-v1": {}
+            v:"service.kubernetes.io/load-balancer-cleanup": {}
+        f:status:
+          f:loadBalancer:
+            f:ingress: {}
+      manager: cloud-controller-manager
+      operation: Update
+      subresource: status
+      time: '2026-08-02T19:09:59Z'
+  name: game-server-service
+  namespace: default
+spec:
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 34.118.239.226
+  clusterIPs:
+    - 34.118.239.226
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
   ports:
-    - protocol: UDP
+    - nodePort: 30764
       port: 4712
+      protocol: UDP
       targetPort: 4712
+  selector:
+    app: game-server
+  sessionAffinity: None
+  type: LoadBalancer

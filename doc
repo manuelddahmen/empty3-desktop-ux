@@ -1,0 +1,57 @@
+[MODE_UPDATE] plan
+
+To check if traffic is reaching a specific endpoint, you need to be aware that **the `GameServer` implementation I examined uses TCP (`ServerSocket`)**, not UDP. If you send UDP traffic, the server will not respond or acknowledge it at the application layer.
+
+Here are the technical approaches to diagnose connectivity for both protocols:
+
+### 1. Connectivity Testing (Client Side)
+
+#### If you suspect UDP:
+You can use `nc` (netcat) or `nmap` to test if a packet reaches the destination, but keep in mind that UDP is connectionless; a "successful" test only means the packet was sent, not that the application received it.
+
+*   **Using `nmap` (Recommended for UDP):**
+    ```bash
+    # -sU for UDP scan, -p for port
+    nmap -sU -p 4712 34.170.12.255
+    ```
+    *Interpretation:* If it says `open|filtered`, it means no response was received, which is typical for UDP when the application is either not listening for UDP or is dropping packets.
+
+*   **Using `nc` (Netcat):**
+    ```bash
+    # -u for UDP, -z for zero-I/O mode (scanning)
+    nc -z -u -v 34.170.12.255 4712
+    ```
+
+#### If you want to test TCP (the protocol currently used by the server):
+```bash
+# -z for scanning, -v for verbose
+nc -z -v 34.170.12.255 4712
+```
+
+---
+
+### 2. Kubernetes-Side Debugging (Server Side)
+
+If connectivity fails, the issue is likely within the Kubernetes cluster configuration or the Pod itself.
+
+1.  **Verify the Service:**
+    Ensure the Service is correctly mapped to your Pods.
+    ```bash
+    kubectl get svc <service-name> -o yaml
+    # Check that 'type: LoadBalancer' is set and 'externalIP' is present.
+    ```
+
+2.  **Check Pod Logs:**
+    If packets are reaching the Pod, but the application isn't handling them, you should see logs or errors.
+    ```bash
+    kubectl logs <pod-name>
+    ```
+
+3.  **Capture Traffic (Definitive):**
+    To be 100% sure if traffic is hitting the Pod, use `tcpdump` inside the container or on the Node. If your Pod has `tcpdump` installed:
+    ```bash
+    kubectl exec <pod-name> -- tcpdump -i any port 4712
+    ```
+
+### Summary Recommendation
+If your application must support UDP, you **must** refactor `GameServer.java` to use `DatagramSocket` instead of `ServerSocket`. As it stands, testing for UDP connectivity will likely fail or show "filtered" because there is no listener for that protocol on the application level.
