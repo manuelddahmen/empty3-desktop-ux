@@ -287,6 +287,25 @@ tasks.register('extractDeps', Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+tasks.register('packageApp', Exec) {
+    dependsOn 'prepareJPackageFiles'
+    group = "distribution"
+
+    // Assurez-vous que le dossier de destination est propre
+    doFirst {
+        file("build/dist").deleteDir()
+    }
+
+    commandLine 'jpackage',
+            '--input', 'build/app-image',
+            '--main-jar', 'empty3-desktop-ux.jar',
+            '--main-class', 'one.empty3.apps.opad.PanelGraphics',
+            '--dest', 'build/dist',
+            '--name', 'Empty3Game',
+            '--type', 'app-image'
+}
+
+
 tasks.register('prepareJPackageFiles', Copy) {
     dependsOn 'jar'
     group = "distribution"

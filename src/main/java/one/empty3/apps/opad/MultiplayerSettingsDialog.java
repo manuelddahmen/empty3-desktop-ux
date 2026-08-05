@@ -38,7 +38,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MultiplayerSettingsDialog extends JDialog {
-    private JTextField ipField = new JTextField("localhost", 15);
+    private JTextField ipField = new JTextField("34.170.12.255", 15);
     private JTextField portField = new JTextField("4712", 5);
     private JTextField nameField = new JTextField("Player1", 15);
     private JButton connectButton = new JButton("Connect");
