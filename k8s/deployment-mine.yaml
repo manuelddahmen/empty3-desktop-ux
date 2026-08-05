@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-server
+  template:
+    metadata:
+      labels:
+        app: game-server
+    spec:
+      containers:
+      - name: game-server
+        image: us-central1-docker.pkg.dev/padel-server-504118/game-repo/game-server:0.2
+        ports:
+        - containerPort: 4712

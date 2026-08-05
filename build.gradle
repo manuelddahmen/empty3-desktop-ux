@@ -297,11 +297,13 @@ tasks.register('packageApp', Exec) {
     }
 
     commandLine 'jpackage',
+            '--verbose',
             '--input', 'build/app-image',
             '--main-jar', 'empty3-desktop-ux.jar',
             '--main-class', 'one.empty3.apps.opad.PanelGraphics',
-            '--dest', 'build/dist',
+            '--dest', 'build/distw',
             '--name', 'Empty3Game',
+            '--app-version', '1.0',
             '--type', 'app-image'
 }
 
