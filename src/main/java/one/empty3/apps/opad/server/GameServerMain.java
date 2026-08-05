@@ -91,10 +91,15 @@ public final class GameServerMain {
 
         ServerGameSession session = new ServerGameSession(map, seed, tolerance);
         GameServer server = new GameServer(port, session, tick);
-        Runtime.getRuntime().addShutdownHook(new Thread(server::stop, "OpadGameServer-shutdown"));
+        HealthCheckServer healthCheckServer = new HealthCheckServer(8080);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            server.stop();
+            healthCheckServer.stop();
+        }, "OpadGameServer-shutdown"));
 
         try {
             server.start();
+            healthCheckServer.start();
         } catch (IOException ex) {
             System.err.println("Cannot listen on port " + port + ": " + ex.getMessage());
             System.exit(1);
