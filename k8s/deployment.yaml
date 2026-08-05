@@ -38,7 +38,7 @@ metadata:
                   f:name: {}
                   f:ports:
                     .: {}
-                    k:{"containerPort":4712,"protocol":"TCP"}:
+                    k:{"containerPort":4712,"protocol":"UDP"}:
                       .: {}
                       f:containerPort: {}
                       f:protocol: {}
@@ -112,7 +112,7 @@ spec:
           name: game-server
           ports:
             - containerPort: 4712
-              protocol: TCP
+              protocol: UDP
           resources:
             limits:
               ephemeral-storage: 1Gi
@@ -230,7 +230,7 @@ metadata:
           f:internalTrafficPolicy: {}
           f:ports:
             .: {}
-            k:{"port":4712,"protocol":"TCP"}:
+            k:{"port":4712,"protocol":"UDP"}:
               .: {}
               f:port: {}
               f:protocol: {}
@@ -273,7 +273,7 @@ spec:
   ports:
     - nodePort: 30764
       port: 4712
-      protocol: TCP
+      protocol: UDP
       targetPort: 4712
   selector:
     app: game-server
