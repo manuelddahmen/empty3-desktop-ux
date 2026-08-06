@@ -70,3 +70,4 @@ spec:
     app: game-server
   sessionAffinity: None
   type: LoadBalancer
+  loadBalancerIP: 34.72.145.89
