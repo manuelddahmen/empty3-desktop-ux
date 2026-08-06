@@ -21,7 +21,7 @@ metadata:
           f:internalTrafficPolicy: {}
           f:ports:
             .: {}
-            k:{"port":4712,"protocol":"UDP"}:
+            k:{"port":4712,"protocol":"TCP"}:
               .: {}
               f:port: {}
               f:protocol: {}
@@ -64,7 +64,7 @@ spec:
   ports:
     - nodePort: 30764
       port: 4712
-      protocol: TCP  # Change UDP to TCP
+      protocol: TCP  # Change TCP to TCP
       targetPort: 4712
   selector:
     app: game-server

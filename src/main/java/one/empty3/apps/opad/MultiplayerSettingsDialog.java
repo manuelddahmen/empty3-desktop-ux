@@ -57,21 +57,38 @@ public class MultiplayerSettingsDialog extends JDialog {
     }
 
     private void onConnect(ActionEvent e) {
-        try {
-            client = new GameClient(ipField.getText(), Integer.parseInt(portField.getText()), nameField.getText(), 0);
-            client.connect(36000); // 5 seconds timeout
+        // Run in background to keep UI responsive
+        new Thread(() -> {
+            int maxRetries = 5;
+            int attempt = 0;
+            boolean connected = false;
             
-            // If connection is successful, close the dialog and start the game
-            dispose();
-            
-            // How to start the game?
-            // Need to pass client to the game.
-        } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(MultiplayerSettingsDialog.class.getName()).log(Level.SEVERE, "Connection failed", ex);
-            String message = "Connection failed: " + ex.getMessage() + "\n\n" +
-                             "If no game server exists, please start a new game server first.";
-            JOptionPane.showMessageDialog(this, message, "Connection Error", JOptionPane.ERROR_MESSAGE);
-        }
+            while (attempt < maxRetries && !connected) {
+                try {
+                    client = new GameClient(ipField.getText(), Integer.parseInt(portField.getText()), nameField.getText(), 0);
+                    client.connect(5000); // 5 seconds timeout per attempt
+                    
+                    connected = true;
+                    // Connection successful, switch to EDT to close dialog
+                    SwingUtilities.invokeLater(this::dispose);
+                    
+                } catch (IOException | NumberFormatException ex) {
+                    attempt++;
+                    if (attempt >= maxRetries) {
+                        SwingUtilities.invokeLater(() -> {
+                            JOptionPane.showMessageDialog(this, "Connection failed after " + maxRetries + " attempts: " + ex.getMessage(), "Connection Error", JOptionPane.ERROR_MESSAGE);
+                        });
+                    } else {
+                        try {
+                            Thread.sleep(attempt * 2000); // Exponential backoff: 2s, 4s, 6s...
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            return;
+                        }
+                    }
+                }
+            }
+        }).start();
     }
     
     public GameClient getClient() {
