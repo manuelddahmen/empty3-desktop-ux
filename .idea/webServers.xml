@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="26d56797-1bb4-45de-894c-5afaa5819f17" name="empty3.one" url="http://empty3.one">
-        <fileTransfer accessType="SFTP" sshConfigId="1da2a76d-449a-4951-85ee-5121ed75582a" sshConfig="empty3.one">
+        <fileTransfer accessType="SFTP" host="ftp.empty3.one" port="21" sshConfigId="1da2a76d-449a-4951-85ee-5121ed75582a" sshConfig="empty3.one">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
