@@ -176,8 +176,11 @@ public class ClientHandler implements Runnable {
             send(NetMessage.error("Join before picking"));
             return;
         }
+        // Use message.playerId if provided and valid, otherwise fallback to this.playerId
+        int effectivePlayerId = (message.playerId > 0) ? message.playerId : this.playerId;
+        
         ServerGameSession.PickResult result =
-                session.pick(playerId, message.bonusId, message.x, message.y, message.z);
+                session.pick(effectivePlayerId, message.bonusId, message.x, message.y, message.z);
         if (!result.accepted()) {
             LOGGER.log(Level.FINE, "Pick refused: {0}", result.reason());
             return;

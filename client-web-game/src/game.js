@@ -94,7 +94,7 @@ export class GameScene {
             // Increased threshold to 0.08 to be more generous than server's 0.05
             if (dist < 0.08 && !this.pendingPicks.has(id)) {
                 console.log("Collision detected with bonus:", id, "dist:", dist);
-                const message = { type: Protocol.PICK, bonusId: id, x: this.playerU, y: this.playerV, z: 0 };
+                const message = { type: Protocol.PICK, playerId: this.localPlayerId, bonusId: id, x: this.playerU, y: this.playerV, z: 0 };
                 console.log("Sending PICK message:", message);
                 this.pendingPicks.add(id);
                 this.network.send(message);
