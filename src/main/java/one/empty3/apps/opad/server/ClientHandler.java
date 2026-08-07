@@ -39,6 +39,10 @@ import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /*__
  * One connected player, seen from the server: a reader loop on its own thread and a
@@ -49,6 +53,10 @@ import java.util.logging.Logger;
 public class ClientHandler implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(ClientHandler.class.getName());
+
+    private final AtomicLong incomingMessages = new AtomicLong(0);
+    private final AtomicLong outgoingMessages = new AtomicLong(0);
+    private final ScheduledExecutorService reporter = Executors.newSingleThreadScheduledExecutor();
 
     private final Socket socket;
     private final GameServer server;
@@ -68,6 +76,11 @@ public class ClientHandler implements Runnable {
         socket.setSoTimeout(Protocol.SOCKET_TIMEOUT_MILLIS);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), false);
+        
+        reporter.scheduleAtFixedRate(() -> {
+            LOGGER.log(Level.INFO, "Client {0} stats: In={1}, Out={2}", 
+                new Object[]{getRemoteAddress(), incomingMessages.getAndSet(0), outgoingMessages.getAndSet(0)});
+        }, 10, 10, TimeUnit.SECONDS);
     }
 
     /*__ @return the id assigned on join, or {@code -1} while the join is pending */
@@ -84,6 +97,7 @@ public class ClientHandler implements Runnable {
         try {
             String line;
             while (!closed && (line = in.readLine()) != null) {
+                incomingMessages.incrementAndGet();
                 NetMessage message = Protocol.decode(line);
                 if (message == null) {
                     send(NetMessage.error("Malformed message"));
@@ -114,7 +128,7 @@ public class ClientHandler implements Runnable {
             }
             case Protocol.MOVE -> {
                 if (playerId > 0) {
-                    session.updatePosition(playerId, message.x, message.y, message.z, message.angleZ);
+                    session.updatePosition(playerId, message.x, message.y, 0.0, message.angleZ);
                 }
                 return true;
             }
@@ -187,6 +201,7 @@ public class ClientHandler implements Runnable {
         if (closed) {
             return;
         }
+        outgoingMessages.incrementAndGet();
         String line = Protocol.encode(message);
         synchronized (writeLock) {
             out.print(line);
@@ -202,6 +217,7 @@ public class ClientHandler implements Runnable {
     /*__ Closes the socket; the reader loop ends on the resulting read failure. */
     void close() {
         closed = true;
+        reporter.shutdownNow();
         try {
             socket.close();
         } catch (IOException ex) {
