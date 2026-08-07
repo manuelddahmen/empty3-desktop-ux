@@ -130,8 +130,9 @@ public class NetMessage {
      * A pick carries the position it was made from: the server validates the claim
      * against it instead of against a {@code move} that may still be in flight.
      */
-    public static NetMessage pick(String bonusId, double x, double y, double z) {
+    public static NetMessage pick(int playerId, String bonusId, double x, double y, double z) {
         NetMessage m = new NetMessage(Protocol.PICK);
+        m.playerId = playerId;
         m.bonusId = bonusId;
         m.x = x;
         m.y = y;

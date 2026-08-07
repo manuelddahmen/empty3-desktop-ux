@@ -354,7 +354,7 @@ public class GameClient implements Closeable {
      * {@link Protocol#BONUS_TAKEN} if the claim wins.
      */
     public void sendPick(String bonusId, double x, double y, double z) {
-        send(NetMessage.pick(bonusId, x, y, z));
+        send(NetMessage.pick(playerId, bonusId, x, y, z));
     }
 
     private void send(NetMessage message) {
