@@ -29,6 +29,7 @@
 
 import { NetworkHandler } from './network.js';
 import { GameScene } from './game.js';
+import { Protocol } from './protocol.ts';
 
 const network = new NetworkHandler('ws://localhost:8080'); // URL of your future proxy
 const scene = new GameScene(network);
@@ -38,6 +39,13 @@ network.onMessage = (message) => {
 };
 
 network.connect().then(() => {
-    // Optionally send join message here
-    // network.send({type: 'join', ...});
+    const urlParams = new URLSearchParams(window.location.search);
+    const playerName = urlParams.get('name') || "WebPlayer";
+    
+    network.send({
+        type: Protocol.JOIN,
+        protocolVersion: 1,
+        playerName: playerName,
+        colorRgb: 0 // Server pick
+    });
 });

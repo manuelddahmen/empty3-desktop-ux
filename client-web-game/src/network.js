@@ -39,8 +39,7 @@ export class NetworkHandler {
     connect() {
         return new Promise((resolve, reject) => {
             this.socket = new WebSocket(this.url);
-            var msgCount = 0;
-
+            this.buffer = ''; // Line buffer
 
             this.socket.onopen = () => {
                 console.log("Connected to WebSocket proxy");
@@ -48,17 +47,19 @@ export class NetworkHandler {
             };
 
             this.socket.onmessage = async (event) => {
-                msgCount++;
-                const text = await event.data.text();
-                console.log(`Msg ${msgCount}:`, text); // See what msg 594 looks like
-                // Convert Blob to string
-                console.log("Received raw data:", text); // Debug
+                const text = typeof event.data === 'string' ? event.data : await event.data.text();
+                this.buffer += text;
 
-                const message = Protocol.decode(text);
-                if (message && this.onMessage) {
-                    this.onMessage(message);
+                // Process complete lines
+                let lastNewlineIndex = this.buffer.lastIndexOf('\n');
+                if (lastNewlineIndex === -1) return; // Wait for more data
 
+                const completeData = this.buffer.substring(0, lastNewlineIndex);
+                this.buffer = this.buffer.substring(lastNewlineIndex + 1);
 
+                const messages = Protocol.decode(completeData);
+                if (this.onMessage) {
+                    messages.forEach(message => this.onMessage(message));
                 }
             };
 

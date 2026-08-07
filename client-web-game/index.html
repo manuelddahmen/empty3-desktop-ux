@@ -3,9 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <title>Opad Web Client</title>
+  <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
-<!-- The type="module" attribute is CRITICAL here -->
+<div id="hud">
+    <div id="status">Connecting...</div>
+    <div id="scoreboard"></div>
+    <div id="game-over" style="display:none">GAME OVER</div>
+</div>
 <script type="module" src="src/main.js"></script>
 </body>
 </html>

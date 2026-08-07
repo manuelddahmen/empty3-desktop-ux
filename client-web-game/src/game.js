@@ -1,191 +1,185 @@
 import * as THREE from 'three';
 import { createGroundMesh } from './ground.js';
+import { Maps } from './maps.js';
+import { Protocol } from './protocol.ts';
 
 export class GameScene {
     constructor(network) {
-        this.network = network; // Store reference to network
-        this.playerU = 0.5;    // Initial (u, v)
+        this.network = network;
+        this.mapName = 'SolPlan';
+        this.playerU = 0.5;
         this.playerV = 0.5;
-        this.playerAngle = 0;
-        this.speed = 0.01;
-        this.turnSpeed = 0.1;
-
-        // Add these to GameScene constructor:
-        this.localPlayerId = -1; // Track who I am
-
+        this.playerAngle = 0; // Turns
+        this.speed = 0.005;
+        this.turnSpeed = 0.01;
+        
+        this.localPlayerId = -1;
+        this.tickMillis = 50; // Default
+        this.lastMoveTime = 0;
+        
         this.keys = {};
         window.addEventListener('keydown', (e) => this.keys[e.key] = true);
         window.addEventListener('keyup', (e) => this.keys[e.key] = false);
 
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.renderer = new THREE.WebGLRenderer();
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 1000);
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
 
-        this.camera.position.set(0, 2, 2); // Closer
-        this.camera.lookAt(0, 0, 0);
-
-        // Basic light
         const light = new THREE.DirectionalLight(0xffffff, 1);
         light.position.set(1, 1, 1);
         this.scene.add(light);
-        this.scene.add(new THREE.AmbientLight(0x404040)); // Soft white light
+        this.scene.add(new THREE.AmbientLight(0x404040));
 
-        // Containers for entities
-        this.players = new Map(); // id -> THREE.Mesh
-        this.bonuses = new Map(); // id -> THREE.Mesh
-        // Example for SolPlan: f(u,v) = (u-0.5, 0, v-0.5)
-// Define the map's ground function (this must be updated based on the loaded map)
-// Example: f(u,v) = (u-0.5, 0, v-0.5)
-        const ground = createGroundMesh(this.calculerPoint3D );
-        this.scene.add(ground);
+        this.players = new Map();
+        this.bonuses = new Map();
+        this.ground = null;
 
+        this.rebuildGround();
         this.animate();
     }
-            // Helper to transform server coords
-// Helper to transform server coords
-    transformCoords(raw) {
-        // Assuming server raw.x is 'u' and raw.z is 'v'
-        // If raw coordinates are already in 3D, this function may need adjustment
-        return this.calculerPoint3D(raw.x, raw.z);
+
+    rebuildGround() {
+        if (this.ground) this.scene.remove(this.ground);
+        const calculator = (u, v) => Maps.calculerPoint3D(this.mapName, u, v);
+        this.ground = createGroundMesh(calculator);
+        this.scene.add(this.ground);
     }
 
-
-    // Inside your animate/update loop
     updateMovement() {
         let moved = false;
-        if (this.keys['ArrowUp']) {
-            this.playerU += Math.cos(this.playerAngle) * this.speed;
-            this.playerV += Math.sin(this.playerAngle) * this.speed;
-            moved = true;
-        }
-        if (this.keys['ArrowLeft']) {
-            this.playerAngle += this.turnSpeed;
-            moved = true;
-        }
-        if (this.keys['ArrowRight']) {
-            this.playerAngle -= this.turnSpeed;
-            moved = true;
-        }
+        const radAngle = this.playerAngle * 2 * Math.PI;
 
-        if (moved) {
+        if (this.keys['ArrowUp']) {
+            this.playerU += Math.cos(radAngle) * this.speed;
+            this.playerV += Math.sin(radAngle) * this.speed;
+            moved = true;
+        }
+        if (this.keys['ArrowLeft']) { this.playerAngle += this.turnSpeed; moved = true; }
+        if (this.keys['ArrowRight']) { this.playerAngle -= this.turnSpeed; moved = true; }
+
+        this.playerU = Math.max(0, Math.min(1, this.playerU));
+        this.playerV = Math.max(0, Math.min(1, this.playerV));
+
+        const now = Date.now();
+        if (moved && (now - this.lastMoveTime > this.tickMillis)) {
             this.sendMyPosition(this.playerU, this.playerV, this.playerAngle);
+            this.lastMoveTime = now;
         }
     }
 
-// Update the animate loop:
-    // Update the animate loop:
+    posCamera() {
+        const p3 = Maps.p3(this.mapName, this.playerU, this.playerV, 0.05);
+        const radAngle = this.playerAngle * 2 * Math.PI;
+        const dist = 0.2;
+        const camU = this.playerU - Math.cos(radAngle) * dist;
+        const camV = this.playerV - Math.sin(radAngle) * dist;
+        const camP3 = Maps.p3(this.mapName, camU, camV, 0.1);
+        
+        this.camera.position.set(camP3.x, camP3.y, camP3.z);
+        this.camera.lookAt(p3.x, p3.y, p3.z);
+    }
+
+    checkBonusCollisions() {
+        this.bonuses.forEach((mesh, id) => {
+            const dist = mesh.position.distanceTo(Maps.p3(this.mapName, this.playerU, this.playerV, 0));
+            if (dist < 0.05) { // Threshold
+                this.network.send({ type: Protocol.PICK, bonusId: id, x: this.playerU, y: this.playerV, z: 0 });
+            }
+        });
+    }
+
     animate() {
         requestAnimationFrame(() => this.animate());
-
-        // Update movement inputs
         this.updateMovement();
-
-        // Camera tracking
-        if (this.localPlayerId !== -1) {
-            const playerMesh = this.players.get(this.localPlayerId);
-            if (playerMesh) {
-                // Inside your animate() method in GameScene class
-
-                // Get player position and current angle
-                const pos = playerMesh.position;
-                const angle = this.playerAngle; // Ensure this is the angle in radians
-
-                // 1. Calculate camera position behind the player
-                // Based on: pos.x - cos(angle)*dist, pos.y - sin(angle)*dist
-                const dist = 0.5; // Adjust this distance for "rear" view
-                const camX = pos.x - Math.cos(angle) * dist;
-                const camY = pos.z - Math.sin(angle) * dist; // Note: In 3D (x,z), so mapping y-plane to z
-                const camZ = 0.2; // Fixed height as requested
-
-                // 2. Set camera position
-                this.camera.position.set(camX, camZ, camY);
-
-                // 3. Look at player's position
-                this.camera.lookAt(pos);
-            }
-        } else {
-            console.error("Unexpected state:", message);
-        }
-
+        this.checkBonusCollisions();
+        this.posCamera();
         this.renderer.render(this.scene, this.camera);
     }
 
     updateState(message) {
-        if (message.type === 'welcome') {
-            this.localPlayerId = message.playerId; // Assume welcome message has playerId
-            console.log("WELCOME:", message);
-            // Initialize bonuses
-            if (message.bonuses) {
-                message.bonuses.forEach(b => this.createBonus(b));
-            }
-        } else if (message.type === 'state') {
-            // Update player positions
-            if (message.players) {
-                message.players.forEach(p => this.updatePlayer(p));
-            }
+        const statusEl = document.getElementById('status');
+        const scoreboardEl = document.getElementById('scoreboard');
+        
+        switch(message.type) {
+            case 'welcome':
+                this.localPlayerId = message.playerId;
+                this.tickMillis = message.tickMillis || 50;
+                statusEl.innerText = `Map: ${message.mapName}`;
+                
+                if (message.mapName && message.mapName !== this.mapName) {
+                    this.mapName = message.mapName;
+                    this.rebuildGround();
+                }
+                if (message.bonuses) {
+                    message.bonuses.forEach(b => this.createBonus(b));
+                }
+                break;
+            case 'state':
+                if (message.players) {
+                    const activeIds = new Set();
+                    let scoreboardText = 'Players:<br>';
+                    message.players.forEach(p => {
+                        this.updatePlayer(p);
+                        activeIds.add(p.id);
+                        scoreboardText += `${p.playerName || p.id}: ${p.points || 0}<br>`;
+                    });
+                    scoreboardEl.innerHTML = scoreboardText;
+                    
+                    // Remove disconnected
+                    this.players.forEach((mesh, id) => {
+                        if (!activeIds.has(id)) {
+                            this.scene.remove(mesh);
+                            this.players.delete(id);
+                        }
+                    });
+                }
+                break;
+            case 'bonusTaken':
+                const mesh = this.bonuses.get(message.bonusId);
+                if (mesh) {
+                    this.scene.remove(mesh);
+                    this.bonuses.delete(message.bonusId);
+                }
+                break;
+            case 'gameOver':
+                document.getElementById('game-over').style.display = 'block';
+                break;
         }
     }
 
-
-// The map-specific ground function
-    calculerPoint3D(u, v) {
-        // Ported from SolPlan.java
-        return { x: u - 0.5, y: 0, z: v - 0.5 };
-    }
-
-// Transform (u, v) to world 3D position for Three.js
-    worldPosition(u, v) {
-        return this.calculerPoint3D(u, v);
-    }
-
-// 1. Rendering Bonuses:
     createBonus(bonus) {
-        const pos = this.worldPosition(bonus.x, bonus.z);
-        console.log("Creating bonus at:", pos); // LOG
-
-        const geometry = new THREE.SphereGeometry(0.5);
+        const pos = Maps.p3(this.mapName, bonus.x, bonus.y, 0); // Assuming x,z in protocol
+        const geometry = new THREE.SphereGeometry(0.005);
         const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.set(pos.x, pos.y, pos.z);
         this.scene.add(mesh);
         this.bonuses.set(bonus.id, mesh);
-        console.log("Bonus added to scene. Current scene children:", this.scene.children.length); // LOG
     }
 
     updatePlayer(player) {
-        // 1. Transform (u, v) -> (x, z) world position
-        const pos = this.worldPosition(player.x, player.z);
-
+        const pos = Maps.p3(this.mapName, player.x, player.y, 0.006);
         let mesh = this.players.get(player.id);
         if (!mesh) {
-            // Create player mesh
-            // In updatePlayer
-            const geometry = new THREE.BoxGeometry(0.5, 1.0, 0.5); // Changed 0.1, 0.2, 0.1 -> 0.5, 1.0, 0.5
-            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            const geometry = new THREE.BoxGeometry(0.006, 0.006, 0.006);
+            const material = new THREE.MeshBasicMaterial({ color: player.id === this.localPlayerId ? 0x00ff00 : 0xff0000 });
             mesh = new THREE.Mesh(geometry, material);
             this.scene.add(mesh);
             this.players.set(player.id, mesh);
         }
-
-        // 2. Update position
         mesh.position.set(pos.x, pos.y, pos.z);
-
-        // 3. Update orientation
-        // Assuming angleZ is in radians and maps to rotation around the Y-axis
-        mesh.rotation.y = player.angleZ;
+        mesh.rotation.y = player.angleZ * 2 * Math.PI;
     }
 
-
     sendMyPosition(u, v, angleZ) {
-        // Keep (u, v) as raw input, and angleZ as raw orientation
         this.network.send({
-            type: 'move',
-            x: u,      // u
-            y: v,      // v
-            z: 0,      // Likely placeholder if map is plane
+            type: Protocol.MOVE,
+            x: u,
+            y: v,
+            z: 0,
             angleZ: angleZ
         });
     }

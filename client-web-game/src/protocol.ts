@@ -28,9 +28,13 @@
  */
 
 // Mirror of Protocol.java for the web client
+export const VERSION = 1;
+
 export interface NetMessage {
     type: string;
-    // Add other fields present in your NetMessage class
+    protocolVersion?: number;
+    playerName?: string;
+    colorRgb?: number;
     playerId?: number;
     mapName?: string;
     tickMillis?: number;
@@ -40,6 +44,10 @@ export interface NetMessage {
     message?: string;
     bonusId?: string;
     points?: number;
+    x?: number;
+    y?: number;
+    z?: number;
+    angleZ?: number;
 }
 
 export const Protocol = {
@@ -53,16 +61,19 @@ export const Protocol = {
     GAME_OVER: "gameOver",
     ERROR: "error",
 
-    decode(data:any) {
-        try {
-            return JSON.parse(data);
-        } catch (e) {
-            console.error("Failed to decode message", e);
-            return null;
-        }
+    decode(data: string) {
+        const lines = data.split('\n').filter(line => line.trim().length > 0);
+        return lines.map(line => {
+            try {
+                return JSON.parse(line);
+            } catch (e) {
+                console.error("Failed to decode message", e, line);
+                return null;
+            }
+        }).filter(msg => msg !== null);
     },
 
-    encode(message:any) {
+    encode(message: any) {
         return JSON.stringify(message);
     }
 };
