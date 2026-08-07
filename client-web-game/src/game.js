@@ -35,6 +35,7 @@ export class GameScene {
 
         this.players = new Map();
         this.bonuses = new Map();
+        this.pendingPicks = new Set();
         this.ground = null;
 
         this.rebuildGround();
@@ -57,8 +58,13 @@ export class GameScene {
             this.playerV += Math.sin(radAngle) * this.speed;
             moved = true;
         }
-        if (this.keys['ArrowLeft']) { this.playerAngle += this.turnSpeed; moved = true; }
-        if (this.keys['ArrowRight']) { this.playerAngle -= this.turnSpeed; moved = true; }
+        if (this.keys['ArrowDown']) {
+            this.playerU -= Math.cos(radAngle) * this.speed;
+            this.playerV -= Math.sin(radAngle) * this.speed;
+            moved = true;
+        }
+        if (this.keys['ArrowLeft']) { this.playerAngle -= this.turnSpeed; moved = true; }
+        if (this.keys['ArrowRight']) { this.playerAngle += this.turnSpeed; moved = true; }
 
         this.playerU = Math.max(0, Math.min(1, this.playerU));
         this.playerV = Math.max(0, Math.min(1, this.playerV));
@@ -85,10 +91,19 @@ export class GameScene {
     checkBonusCollisions() {
         this.bonuses.forEach((mesh, id) => {
             const dist = mesh.position.distanceTo(Maps.p3(this.mapName, this.playerU, this.playerV, 0));
-            if (dist < 0.05) { // Threshold
-                this.network.send({ type: Protocol.PICK, bonusId: id, x: this.playerU, y: this.playerV, z: 0 });
+            // Increased threshold to 0.08 to be more generous than server's 0.05
+            if (dist < 0.08 && !this.pendingPicks.has(id)) {
+                console.log("Collision detected with bonus:", id, "dist:", dist);
+                const message = { type: Protocol.PICK, bonusId: id, x: this.playerU, y: this.playerV, z: 0 };
+                console.log("Sending PICK message:", message);
+                this.pendingPicks.add(id);
+                this.network.send(message);
             }
         });
+        /*for (let i = 0; i < this.pendingPicks.size; i++) {
+            this.bonuses.delete(this.pendingPicks[i]);
+        }
+        this.pendingPicks.clear();*/
     }
 
     animate() {
@@ -100,6 +115,7 @@ export class GameScene {
     }
 
     updateState(message) {
+        console.log("Received message:", message);
         const statusEl = document.getElementById('status');
         const scoreboardEl = document.getElementById('scoreboard');
         
@@ -137,8 +153,11 @@ export class GameScene {
                     });
                 }
                 break;
+            case 'pick':
             case 'bonusTaken':
+                console.log('picked');
                 const mesh = this.bonuses.get(message.bonusId);
+                this.pendingPicks.delete(message.bonusId); // Clear from throttle
                 if (mesh) {
                     this.scene.remove(mesh);
                     this.bonuses.delete(message.bonusId);
@@ -151,7 +170,7 @@ export class GameScene {
     }
 
     createBonus(bonus) {
-        const pos = Maps.p3(this.mapName, bonus.x, bonus.y, 0); // Assuming x,z in protocol
+        const pos = Maps.p3(this.mapName, bonus.x, bonus.y, 0); // Use y instead of z
         const geometry = new THREE.SphereGeometry(0.005);
         const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
         const mesh = new THREE.Mesh(geometry, material);

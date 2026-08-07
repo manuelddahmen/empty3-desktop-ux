@@ -31,21 +31,34 @@ import { NetworkHandler } from './network.js';
 import { GameScene } from './game.js';
 import { Protocol } from './protocol.ts';
 
-const network = new NetworkHandler('ws://localhost:8080'); // URL of your future proxy
+const network = new NetworkHandler('ws://localhost:8080');
 const scene = new GameScene(network);
 
 network.onMessage = (message) => {
+    if (message.type === Protocol.WELCOME) {
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('hud').style.display = 'block';
+    }
     scene.updateState(message);
 };
 
-network.connect().then(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const playerName = urlParams.get('name') || "WebPlayer";
+const handleJoin = (isNew) => {
+    const playerName = document.getElementById('playerName').value || "WebPlayer";
+    const roomId = document.getElementById('roomId').value;
+    const token = document.getElementById('authToken').value;
+    const mapName = document.getElementById('levelSelect').value;
     
-    network.send({
-        type: Protocol.JOIN,
-        protocolVersion: 1,
-        playerName: playerName,
-        colorRgb: 0 // Server pick
+    network.connect().then(() => {
+        network.send({
+            type: Protocol.JOIN,
+            protocolVersion: 1,
+            playerName: playerName,
+            token: token,
+            mapName: mapName,
+            colorRgb: 0
+        });
     });
-});
+};
+
+document.getElementById('btnNew').addEventListener('click', () => handleJoin(true));
+document.getElementById('btnJoin').addEventListener('click', () => handleJoin(false));

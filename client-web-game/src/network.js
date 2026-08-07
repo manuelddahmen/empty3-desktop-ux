@@ -56,8 +56,11 @@ export class NetworkHandler {
 
                 const completeData = this.buffer.substring(0, lastNewlineIndex);
                 this.buffer = this.buffer.substring(lastNewlineIndex + 1);
+                
+                console.log("Raw incoming data:", completeData);
 
                 const messages = Protocol.decode(completeData);
+                console.log("Decoded messages:", messages);
                 if (this.onMessage) {
                     messages.forEach(message => this.onMessage(message));
                 }

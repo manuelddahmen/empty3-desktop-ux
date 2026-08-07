@@ -29,14 +29,14 @@
 
 // Mirror of Protocol.java for the web client
 export const VERSION = 1;
-
 export interface NetMessage {
     type: string;
     protocolVersion?: number;
     playerName?: string;
     colorRgb?: number;
+    token?: string;
+    mapName?: string; // Add mapName
     playerId?: number;
-    mapName?: string;
     tickMillis?: number;
     bonuses?: any[];
     players?: any[];

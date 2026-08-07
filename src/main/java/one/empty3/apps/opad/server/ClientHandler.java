@@ -169,7 +169,10 @@ public class ClientHandler implements Runnable {
             return;
         }
 
-        server.broadcast(NetMessage.bonusTaken(result.bonusId(), result.playerId(), result.points()));
+        NetMessage bonusTaken = NetMessage.bonusTaken(result.bonusId(), result.playerId(), result.points());
+        LOGGER.log(Level.INFO, "Broadcasting bonus taken: {0}", bonusTaken);
+        server.broadcast(bonusTaken);
+        
         if (result.gameOver() && session.claimGameOverAnnouncement()) {
             LOGGER.log(Level.INFO, "Game over, {0} bonuses taken", session.getBonusCount());
             server.broadcast(NetMessage.gameOver(session.playerSnapshot()));

@@ -29,6 +29,8 @@
 
 package one.empty3.apps.opad.server;
 
+import one.empty3.libs.Color;
+
 /*__
  * One player as seen by everybody else.
  *
@@ -46,7 +48,7 @@ public class PlayerState {
     public int id;
     public String name;
     /*__ Ship colour, packed as {@code 0xRRGGBB}. */
-    public int colorRgb;
+    public int colorRgb = Color.newCol(0, 0.5f, 0).getRGB();
     public double x = 0.5;
     public double y = 0.5;
     public double z;

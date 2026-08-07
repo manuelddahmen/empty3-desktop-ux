@@ -1,3 +1,6 @@
 body { margin: 0; overflow: hidden; background: #000; color: #fff; font-family: sans-serif; }
 #hud { position: absolute; top: 10px; left: 10px; pointer-events: none; }
 #game-over { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; color: red; }
+#menu { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #222; padding: 20px; border: 1px solid #444; text-align: center; }
+#menu input { display: block; margin: 10px auto; padding: 5px; }
+#menu button { display: block; margin: 10px auto; padding: 10px 20px; }

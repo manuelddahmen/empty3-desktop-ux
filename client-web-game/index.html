@@ -6,8 +6,21 @@
   <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
-<div id="hud">
-    <div id="status">Connecting...</div>
+<div id="menu">
+    <h1>Opad Game</h1>
+    <input type="text" id="playerName" placeholder="Player Name">
+    <select id="levelSelect">
+        <option value="SolPlan">SolPlan</option>
+        <option value="SolRelief">SolRelief</option>
+        <option value="SolSphere">SolSphere</option>
+    </select>
+    <input type="text" id="roomId" placeholder="Room ID (Optional)">
+    <input type="text" id="authToken" placeholder="Auth Token (Optional)">
+    <button id="btnNew">New Game</button>
+    <button id="btnJoin">Join Game</button>
+</div>
+<div id="hud" style="display:none">
+    <div id="status"></div>
     <div id="scoreboard"></div>
     <div id="game-over" style="display:none">GAME OVER</div>
 </div>
