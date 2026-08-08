@@ -4,7 +4,7 @@ import net from 'net';
 
 // Configuration
 const WS_PORT = 8080;
-const TCP_SERVER_HOST = 'localhost';
+const TCP_SERVER_HOST = '34.170.12.255';
 const TCP_SERVER_PORT = 4712;
 
 const wss = new WebSocketServer({ port: WS_PORT });
