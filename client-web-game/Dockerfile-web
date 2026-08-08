@@ -19,3 +19,5 @@ RUN sed -i 's/listen       80;/listen       ${PORT};/' /etc/nginx/conf.d/default
 # because Nginx doesn't natively support environment variables in listen directives.
 # Alternatively, change the command to:
 CMD /bin/sh -c "sed -i 's/listen       80;/listen       '"$PORT"';/' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+EXPOSE 5173
+CMD ["nginx"]
