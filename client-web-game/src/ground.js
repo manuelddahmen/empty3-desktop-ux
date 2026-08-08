@@ -28,8 +28,9 @@
  */
 
 import * as THREE from 'three';
+import { Maps } from './maps.js';
 
-export function createGroundMesh(calculerPoint3D, resolution = 50) {
+export function createGroundMesh(mapName, resolution = 50) {
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
     const indices = [];
@@ -39,7 +40,7 @@ export function createGroundMesh(calculerPoint3D, resolution = 50) {
         for (let j = 0; j <= resolution; j++) {
             const u = i / resolution;
             const v = j / resolution;
-            const p = calculerPoint3D(u, v);
+            const p = Maps.p3(mapName, u, v, 0);
             vertices.push(p.x, p.y, p.z);
         }
     }

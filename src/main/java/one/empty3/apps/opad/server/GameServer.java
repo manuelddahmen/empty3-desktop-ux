@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
@@ -59,30 +61,31 @@ public class GameServer implements Closeable {
 
     private final int requestedPort;
     private final int tickMillis;
-    private final ServerGameSession session;
+    private final Map<String, ServerGameSession> sessions = new ConcurrentHashMap<>();
     private final List<ClientHandler> clients = new CopyOnWriteArrayList<>();
     private final CountDownLatch terminated = new CountDownLatch(1);
 
     private ServerSocket serverSocket;
     private volatile boolean running;
 
-    public GameServer(int port, ServerGameSession session) {
-        this(port, session, Protocol.DEFAULT_TICK_MILLIS);
+    public GameServer(int port) {
+        this(port, Protocol.DEFAULT_TICK_MILLIS);
     }
 
     /*__
      * @param port       TCP port to listen on, {@code 0} to let the system choose
-     * @param session    the authoritative state this server serves
      * @param tickMillis period of the {@link Protocol#STATE} broadcast
      */
-    public GameServer(int port, ServerGameSession session, int tickMillis) {
+    public GameServer(int port, int tickMillis) {
         this.requestedPort = port;
-        this.session = session;
         this.tickMillis = Math.max(10, tickMillis);
     }
 
-    public ServerGameSession getSession() {
-        return session;
+    public synchronized ServerGameSession getOrCreateSession(String mapName) {
+        return sessions.computeIfAbsent(mapName, name -> {
+            LOGGER.log(Level.INFO, "Creating new session for map: {0}", name);
+            return new ServerGameSession(name, System.currentTimeMillis());
+        });
     }
 
     public int getTickMillis() {
@@ -126,15 +129,15 @@ public class GameServer implements Closeable {
         tickThread.setDaemon(true);
         tickThread.start();
 
-        LOGGER.log(Level.INFO, "Opad server listening on port {0}, map {1}, {2} bonuses",
-                new Object[]{getPort(), session.getMapName(), session.getBonusCount()});
+        LOGGER.log(Level.INFO, "Opad server listening on port {0}", getPort());
     }
 
     private void acceptLoop() {
         while (running) {
             try {
                 Socket socket = serverSocket.accept();
-                ClientHandler handler = new ClientHandler(socket, this, session);
+                // Session will be assigned in ClientHandler during JOIN
+                ClientHandler handler = new ClientHandler(socket, this);
                 clients.add(handler);
                 Thread thread = new Thread(handler, "OpadClient-" + handler.getRemoteAddress());
                 thread.setDaemon(true);
@@ -156,21 +159,29 @@ public class GameServer implements Closeable {
                 Thread.currentThread().interrupt();
                 return;
             }
-            if (!clients.isEmpty()) {
-                broadcast(NetMessage.state(session.playerSnapshot(), session.isGameOver()));
+            // Broadcast state for each active session
+            for (ServerGameSession session : sessions.values()) {
+                if (!session.isEmpty()) {
+                    broadcastSessionState(session);
+                }
             }
         }
     }
 
-    /*__ Sends a message to every connected client. */
-    void broadcast(NetMessage message) {
+    public List<ClientHandler> getClients() {
+        return clients;
+    }
+
+    void broadcastToSession(ServerGameSession session, NetMessage message) {
         for (ClientHandler client : clients) {
-            client.send(message);
+            if (client.getSession() == session) {
+                client.send(message);
+            }
         }
     }
 
     /*__
-     * Removes a client, tells the others, and rearms the map once the last player of
+     * Removes a client, tells the others in the session, and rearms the map once the last player of
      * a finished game is gone.
      */
     void disconnect(ClientHandler handler) {
@@ -178,17 +189,18 @@ public class GameServer implements Closeable {
             return;
         }
         handler.close();
-        if (handler.getPlayerId() > 0) {
+        ServerGameSession session = handler.getSession();
+        if (session != null && handler.getPlayerId() > 0) {
             session.leave(handler.getPlayerId());
-        }
-        if (session.isEmpty()) {
-            if (session.isGameOver()) {
-                LOGGER.log(Level.INFO, "Last player left a finished game, generating a new map");
-                session.restart();
+            if (session.isEmpty()) {
+                if (session.isGameOver()) {
+                    LOGGER.log(Level.INFO, "Last player left a finished game in {0}, removing session", session.getMapName());
+                    sessions.remove(session.getMapName());
+                }
+                return;
             }
-            return;
+            broadcastSessionState(session);
         }
-        broadcast(NetMessage.state(session.playerSnapshot(), session.isGameOver()));
     }
 
     /*__ Blocks until the server stops. Used by {@link GameServerMain}. */
@@ -205,6 +217,7 @@ public class GameServer implements Closeable {
             client.close();
         }
         clients.clear();
+        sessions.clear();
         try {
             if (serverSocket != null) {
                 serverSocket.close();

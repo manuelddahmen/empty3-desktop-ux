@@ -60,7 +60,7 @@ public class ClientHandler implements Runnable {
 
     private final Socket socket;
     private final GameServer server;
-    private final ServerGameSession session;
+    private ServerGameSession session;
     private final BufferedReader in;
     private final PrintWriter out;
     private final Object writeLock = new Object();
@@ -68,10 +68,9 @@ public class ClientHandler implements Runnable {
     private volatile int playerId = -1;
     private volatile boolean closed;
 
-    ClientHandler(Socket socket, GameServer server, ServerGameSession session) throws IOException {
+    ClientHandler(Socket socket, GameServer server) throws IOException {
         this.socket = socket;
         this.server = server;
-        this.session = session;
         socket.setTcpNoDelay(true);
         socket.setSoTimeout(Protocol.SOCKET_TIMEOUT_MILLIS);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
@@ -81,6 +80,10 @@ public class ClientHandler implements Runnable {
             LOGGER.log(Level.INFO, "Client {0} stats: In={1}, Out={2}", 
                 new Object[]{getRemoteAddress(), incomingMessages.getAndSet(0), outgoingMessages.getAndSet(0)});
         }, 10, 10, TimeUnit.SECONDS);
+    }
+
+    public ServerGameSession getSession() {
+        return session;
     }
 
     /*__ @return the id assigned on join, or {@code -1} while the join is pending */
@@ -157,6 +160,12 @@ public class ClientHandler implements Runnable {
             return false;
         }
 
+        if (!MapCatalog.isKnown(message.mapName)) {
+            send(NetMessage.error("Unknown map: " + message.mapName));
+            return false;
+        }
+
+        this.session = server.getOrCreateSession(message.mapName);
         PlayerState me = session.join(message.playerName, message.colorRgb);
         playerId = me.id;
 
@@ -164,7 +173,10 @@ public class ClientHandler implements Runnable {
                 session.bonusSnapshot(), session.playerSnapshot(), session.isGameOver()));
 
         // Lets everybody see the newcomer without waiting for the next tick.
-        server.broadcast(NetMessage.state(session.playerSnapshot(), session.isGameOver()));
+        // Broadcast only to this session
+        NetMessage state = NetMessage.state(session.playerSnapshot(), session.isGameOver());
+        server.broadcastToSession(session, state);
+        
         if (session.isGameOver()) {
             send(NetMessage.gameOver(session.playerSnapshot()));
         }
@@ -188,11 +200,11 @@ public class ClientHandler implements Runnable {
 
         NetMessage bonusTaken = NetMessage.bonusTaken(result.bonusId(), result.playerId(), result.points());
         LOGGER.log(Level.INFO, "Broadcasting bonus taken: {0}", bonusTaken);
-        server.broadcast(bonusTaken);
+        server.broadcastToSession(session, bonusTaken);
         
         if (result.gameOver() && session.claimGameOverAnnouncement()) {
             LOGGER.log(Level.INFO, "Game over, {0} bonuses taken", session.getBonusCount());
-            server.broadcast(NetMessage.gameOver(session.playerSnapshot()));
+            server.broadcastToSession(session, NetMessage.gameOver(session.playerSnapshot()));
         }
     }
 

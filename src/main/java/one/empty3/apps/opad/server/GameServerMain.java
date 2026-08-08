@@ -95,7 +95,7 @@ public final class GameServerMain {
         }
         try {
             ServerGameSession session = new ServerGameSession(map, seed, tolerance);
-            ref.server = new GameServer(port, session, tick);
+            ref.server = new GameServer(port, /*session,*/ tick);
             HealthCheckServer healthCheckServer = new HealthCheckServer(8080);
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 if(ref.server !=null)

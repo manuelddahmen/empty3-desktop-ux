@@ -16,6 +16,7 @@ export class GameScene {
         this.localPlayerId = -1;
         this.tickMillis = 50; // Default
         this.lastMoveTime = 0;
+        this.localBonusManagement = true; // Toggle for debugging
         
         this.keys = {};
         window.addEventListener('keydown', (e) => this.keys[e.key] = true);
@@ -44,8 +45,7 @@ export class GameScene {
 
     rebuildGround() {
         if (this.ground) this.scene.remove(this.ground);
-        const calculator = (u, v) => Maps.calculerPoint3D(this.mapName, u, v);
-        this.ground = createGroundMesh(calculator);
+        this.ground = createGroundMesh(this.mapName);
         this.scene.add(this.ground);
     }
 
@@ -98,12 +98,30 @@ export class GameScene {
                 console.log("Sending PICK message:", message);
                 this.pendingPicks.add(id);
                 this.network.send(message);
+                
+                if (this.localBonusManagement) {
+                    const mesh = this.bonuses.get(id);
+                    if (mesh) {
+                        this.scene.remove(mesh);
+                        this.bonuses.delete(id);
+                    }
+                }
             }
         });
-        /*for (let i = 0; i < this.pendingPicks.size; i++) {
-            this.bonuses.delete(this.pendingPicks[i]);
+        let j = 0;
+        let i = 0;
+        while (j<this.bonuses.size) {
+            while ( i < this.pendingPicks.size) {
+                if (this.pendingPicks[i]===this.bonuses[j]) {
+                       this.bonuses.delete(this.pendingPicks[i]);
+                       this.pendingPicks.delete(this.pendingPicks[i]);
+                }
+                i++;
+            }
+            j++;
+            i = 0;
         }
-        this.pendingPicks.clear();*/
+        //this.pendingPicks.clear();
     }
 
     animate() {
@@ -115,7 +133,9 @@ export class GameScene {
     }
 
     updateState(message) {
-        console.log("Received message:", message);
+        if (message.type !== 'state') {
+            console.log("Received message:", message);
+        }
         const statusEl = document.getElementById('status');
         const scoreboardEl = document.getElementById('scoreboard');
         
@@ -123,6 +143,7 @@ export class GameScene {
             case 'welcome':
                 this.localPlayerId = message.playerId;
                 this.tickMillis = message.tickMillis || 50;
+                console.log("Welcome! Received map:", message.mapName);
                 statusEl.innerText = `Map: ${message.mapName}`;
                 
                 if (message.mapName && message.mapName !== this.mapName) {
@@ -153,9 +174,9 @@ export class GameScene {
                     });
                 }
                 break;
-            case 'pick':
             case 'bonusTaken':
-                console.log('picked');
+            case 'pick':
+                console.log('bonus taken:', message.bonusId);
                 const mesh = this.bonuses.get(message.bonusId);
                 this.pendingPicks.delete(message.bonusId); // Clear from throttle
                 if (mesh) {
