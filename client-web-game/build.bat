@@ -1,2 +1,2 @@
-docker build -t opad-proxy:0.1 -f Dockerfile-proxy .
-docker build -t opad-web:0.1 -f Dockerfile-web .
+docker build -t us-central1-docker.pkg.dev/padel-server-504118/opad-proxy:0.2 -f Dockerfile-proxy .
+docker build -t us-central1-docker.pkg.dev/padel-server-504118/opad-web:0.2 -f Dockerfile-web .
