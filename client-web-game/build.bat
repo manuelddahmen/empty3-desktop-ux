@@ -1,2 +1,2 @@
-docker build -t us-central1-docker.pkg.dev/padel-server-504118/game-repo/opad-proxy:0.16 -f Dockerfile-proxy .
-docker build -t us-central1-docker.pkg.dev/padel-server-504118/game-repo/opad-web:0.16 -f Dockerfile-web .
+docker build -t us-central1-docker.pkg.dev/padel-server-504118/game-repo/opad-proxy:0.17 -f Dockerfile-proxy .
+docker build -t us-central1-docker.pkg.dev/padel-server-504118/game-repo/opad-web:0.17 -f Dockerfile-web .
