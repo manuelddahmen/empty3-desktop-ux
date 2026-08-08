@@ -74,6 +74,7 @@ public class GameClient implements Closeable {
     private final int port;
     private final String playerName;
     private final int requestedColorRgb;
+    private final String requestedMapName;
 
     private final Map<Integer, PlayerState> players = new ConcurrentHashMap<>();
     private final List<GameClientListener> listeners = new CopyOnWriteArrayList<>();
@@ -99,10 +100,23 @@ public class GameClient implements Closeable {
      *                          the server pick a distinct one
      */
     public GameClient(String host, int port, String playerName, int requestedColorRgb) {
+        this(host, port, playerName, requestedColorRgb, MapCatalog.defaultMap());
+    }
+
+    /*__
+     * @param playerName        name shown to the other players
+     * @param requestedColorRgb wanted ship colour {@code 0xRRGGBB}, {@code 0} to let
+     *                          the server pick a distinct one
+     * @param mapName           map to join or create (one of {@link MapCatalog#MAPS});
+     *                          blank or unknown falls back to {@link MapCatalog#defaultMap()}
+     */
+    public GameClient(String host, int port, String playerName, int requestedColorRgb,
+                      String mapName) {
         this.host = host;
         this.port = port;
         this.playerName = playerName;
         this.requestedColorRgb = requestedColorRgb;
+        this.requestedMapName = MapCatalog.isKnown(mapName) ? mapName : MapCatalog.defaultMap();
     }
 
     public String getHost() {
@@ -122,7 +136,12 @@ public class GameClient implements Closeable {
         return playerId;
     }
 
-    /*__ @return the map the server chose; the local level selection does not apply */
+    /*__ @return the map name requested at construction time */
+    public String getRequestedMapName() {
+        return requestedMapName;
+    }
+
+    /*__ @return the map confirmed by the server welcome, or {@code null} before join */
     public String getMapName() {
         return mapName;
     }
@@ -214,7 +233,7 @@ public class GameClient implements Closeable {
         reader.setDaemon(true);
         reader.start();
 
-        send(NetMessage.join(playerName, requestedColorRgb));
+        send(NetMessage.join(playerName, requestedColorRgb, requestedMapName));
 
         boolean welcome;
         try {

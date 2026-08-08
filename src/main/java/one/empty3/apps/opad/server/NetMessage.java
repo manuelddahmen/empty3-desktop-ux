@@ -53,12 +53,16 @@ public class NetMessage {
     public String playerName;
     /*__ Requested ship colour {@code 0xRRGGBB}; {@code 0} lets the server pick one. */
     public int colorRgb;
+    /*__
+     * On {@link Protocol#JOIN}: the map the client wants to play on (one of
+     * {@link MapCatalog#MAPS}); the server opens or reuses a session for that name.
+     * On {@link Protocol#WELCOME}: the map that session actually uses.
+     */
+    public String mapName;
 
     // ---- welcome ----
     /*__ On {@code welcome} the id given to the receiver; on {@code bonusTaken} the taker. */
     public int playerId;
-    /*__ Simple class name of the {@code Terrain} everybody plays on. */
-    public String mapName;
     /*__ The full bonus list, sent once. Later changes come as {@code bonusTaken}. */
     public List<BonusState> bonuses;
     /*__ Server broadcast period, so the client can pace its own updates. */
@@ -90,12 +94,23 @@ public class NetMessage {
         this.type = type;
     }
 
-    public static NetMessage join(String playerName, int colorRgb) {
+    /*__
+     * @param playerName display name shown to other players
+     * @param colorRgb   wanted ship colour {@code 0xRRGGBB}, or {@code 0} for server pick
+     * @param mapName    simple class name of the terrain (see {@link MapCatalog#MAPS})
+     */
+    public static NetMessage join(String playerName, int colorRgb, String mapName) {
         NetMessage m = new NetMessage(Protocol.JOIN);
         m.protocolVersion = Protocol.VERSION;
         m.playerName = playerName;
         m.colorRgb = colorRgb;
+        m.mapName = mapName;
         return m;
+    }
+
+    /*__ Same as {@link #join(String, int, String)} on {@link MapCatalog#defaultMap()}. */
+    public static NetMessage join(String playerName, int colorRgb) {
+        return join(playerName, colorRgb, MapCatalog.defaultMap());
     }
 
     public static NetMessage welcome(PlayerState me, String mapName, int tickMillis,
