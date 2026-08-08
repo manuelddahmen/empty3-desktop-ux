@@ -130,7 +130,7 @@ public class ClientHandler implements Runnable {
                 return handleJoin(message);
             }
             case Protocol.MOVE -> {
-                if (playerId > 0) {
+                if (playerId > 0 && session != null) {
                     session.updatePosition(playerId, message.x, message.y, 0.0, message.angleZ);
                 }
                 return true;

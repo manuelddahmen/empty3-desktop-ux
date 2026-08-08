@@ -168,6 +168,11 @@ public class GameServer implements Closeable {
         }
     }
 
+    private void broadcastSessionState(ServerGameSession session) {
+        NetMessage state = NetMessage.state(session.playerSnapshot(), session.isGameOver());
+        broadcastToSession(session, state);
+    }
+
     public List<ClientHandler> getClients() {
         return clients;
     }
