@@ -49,6 +49,7 @@ const handleJoin = (isNew) => {
     const mapName = document.getElementById('levelSelect').value;
     
     network.connect().then(() => {
+        console.log("Sending JOIN request with mapName:", mapName);
         network.send({
             type: Protocol.JOIN,
             protocolVersion: 1,

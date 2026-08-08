@@ -27,7 +27,7 @@
 #
 #
 
-docker build -t us-central1-docker.pkg.dev/padel-server-504118/game-repo/game-server:0.13 .
-docker push us-central1-docker.pkg.dev/padel-server-504118/game-repo/game-server:0.13
+docker build -t us-central1-docker.pkg.dev/padel-server-504118/game-repo/game-server:0.14 .
+docker push us-central1-docker.pkg.dev/padel-server-504118/game-repo/game-server:0.14
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml

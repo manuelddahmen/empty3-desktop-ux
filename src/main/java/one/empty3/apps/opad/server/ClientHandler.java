@@ -150,6 +150,7 @@ public class ClientHandler implements Runnable {
     }
 
     private boolean handleJoin(NetMessage message) {
+        LOGGER.log(Level.INFO, "Join request received: playerName={0}, mapName={1}", new Object[]{message.playerName, message.mapName});
         if (playerId > 0) {
             send(NetMessage.error("Already joined as #" + playerId));
             return true;
