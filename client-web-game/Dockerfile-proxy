@@ -1,0 +1,17 @@
+# Use a lightweight Node.js image
+FROM node:18-slim
+
+WORKDIR /app
+
+# Install dependencies (ensure 'ws' is in package.json)
+COPY package*.json ./
+RUN npm install
+
+# Copy only the necessary files
+COPY src/proxy.js src/proxy.js
+COPY src/protocol.ts src/protocol.ts
+
+# Expose port for WebSocket
+EXPOSE 8080
+
+CMD ["node", "src/proxy.js"]
