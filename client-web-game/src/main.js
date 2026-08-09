@@ -31,7 +31,7 @@ import { NetworkHandler } from './network.js';
 import { GameScene } from './game.js';
 import { Protocol } from './protocol.ts';
 
-const network = new NetworkHandler('https://opad-proxy-225729514321.europe-west1.run.app:80');//'ws://localhost:8080
+const network = new NetworkHandler('https://opad-proxy-225729514321.europe-west1.run.app');//'ws://localhost:8080
 const scene = new GameScene(network);
 
 network.onMessage = (message) => {

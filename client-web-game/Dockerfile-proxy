@@ -7,11 +7,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy only the necessary files
 COPY src/proxy.js src/proxy.js
 COPY src/protocol.ts src/protocol.ts
-
-# Expose port for WebSocket
-EXPOSE 8080
-
+# Use the PORT environment variable provided by Cloud Run
+ENV PORT=8080
+EXPOSE $PORT
 CMD ["node", "src/proxy.js"]
