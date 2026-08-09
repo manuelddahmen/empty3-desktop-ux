@@ -7,7 +7,7 @@ const WS_PORT = process.env.PORT || 8080;
 const TCP_SERVER_HOST = '34.170.12.255';
 const TCP_SERVER_PORT = 4712;
 
-const wss = new WebSocketServer({ port: WS_PORT, host: TCP_SERVER_HOST});
+const wss = new WebSocketServer({ port: WS_PORT});
 
 wss.on('connection', (ws) => {
     console.log('Client connected via WebSocket');
