@@ -12,13 +12,17 @@ const wss = new WebSocketServer({ port: WS_PORT});
 wss.on('connection', (ws) => {
     console.log('Client connected via WebSocket');
 
-    // Create a TCP connection to the game server
     const tcpSocket = new net.Socket();
 
-    tcpSocket.connect(TCP_SERVER_PORT, TCP_SERVER_HOST, () => {
-        console.log('Connected to TCP Game Server');
+    // ADD THIS LOGGING
+    tcpSocket.on('error', (err) => {
+        console.error('TCP Connection Error (GKE server unreachable?):', err);
+        ws.close();
     });
 
+    tcpSocket.connect(TCP_SERVER_PORT, TCP_SERVER_HOST, () => {
+        console.log('Successfully connected to TCP Game Server at ' + TCP_SERVER_HOST);
+    });
     // Forward WebSocket data to TCP
     ws.on('message', (data) => {
         tcpSocket.write(data);
