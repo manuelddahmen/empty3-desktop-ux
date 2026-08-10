@@ -25,7 +25,10 @@ wss.on('connection', (ws) => {
     });
     // Forward WebSocket data to TCP
     ws.on('message', (data) => {
-        tcpSocket.write(data);
+        // Ensure the data ends with a newline character
+        const messageString = data.toString().trim() + "\n";
+        console.log('Sending to TCP:', messageString);
+        tcpSocket.write(messageString);
     });
 
     // Forward TCP data to WebSocket
