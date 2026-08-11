@@ -40,11 +40,11 @@ export const Maps = {
                 return new THREE.Vector3(nu, 0, nv);
             case 'SolRelief':
                 // T = 6 from plan
-                const y = 0.2 * Math.sin(2 * Math.PI * 6 * nu) * Math.cos(2 * Math.PI * 6 * nv);
+                const y = 0.05 * Math.sin(2 * Math.PI * 6 * nu) * Math.cos(2 * Math.PI * 6 * nv);
                 return new THREE.Vector3(nu, y, nv);
             case 'SolSphere':
                 // Approximation: radius 10
-                const radius = 10;
+                const radius = 1;
                 // Simple mapping: u, v -> angles
                 const theta = u * 2 * Math.PI;
                 const phi = v * Math.PI;
