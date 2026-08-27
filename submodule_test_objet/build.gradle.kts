@@ -2,7 +2,7 @@ import org.gradle.initialization.Environment
 
 plugins {
     id("java")
-    kotlin("jvm") version "2.4.0"
+    kotlin("jvm") version "2.4.10"
     id("application") // enabling the plugin here
 }
 val JAVA_VERSION = 25
@@ -49,7 +49,7 @@ dependencies {
     // Empty3 libraries
     implementation("one.empty3.libs:partial-desktop:0.0.39-17")
     implementation("one.empty3.libs:commons-mp:0.0.17-17")
-    implementation("one.empty3:empty3-library-mp:2026.6.7")
+    implementation("one.empty3:empty3-library-mp:2026.8.26-1")
  }
 
 tasks.test {

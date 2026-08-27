@@ -3,9 +3,9 @@ plugins {
     id 'java'
     id 'java-library'
     id 'maven-publish'
-    id 'org.jreleaser' version '1.20.0'
+    id 'org.jreleaser' version '1.24.0'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version "2.4.0"
+    id 'org.jetbrains.kotlin.jvm' version "2.4.10"
 //    id 'com.google.cloud.functions-framework' version '2.0.1'
 }
 
@@ -343,7 +343,7 @@ dependencies {
     // Empty3 libraries
     implementation 'one.empty3.libs:partial-desktop:0.0.40-17'
     implementation 'one.empty3.libs:commons-mp:0.0.17-17'
-    implementation 'one.empty3:empty3-library-mp:2026.8.11'
+    implementation 'one.empty3:empty3-library-mp:2026.8.26-1'
 
     implementation 'org.jcodec:jcodec-javase:0.2.5'
     //implementation 'org.bytedeco:javacv-platform:1.5.10'
