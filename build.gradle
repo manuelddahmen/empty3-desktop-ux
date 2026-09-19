@@ -6,7 +6,6 @@ plugins {
     id 'org.jreleaser' version '1.24.0'
     id 'signing'
     id 'org.jetbrains.kotlin.jvm' version "2.4.10"
-//    id 'com.google.cloud.functions-framework' version '2.0.1'
 }
 
 def artifactId = "empty3-desktop-ux"
@@ -338,12 +337,21 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
+    // Netty constraints to force version
+    constraints {
+        implementation('io.netty:netty-codec-http:4.2.17.Final')
+        implementation('com.fasterxml.jackson.core:jackson-core:2.21.4')
+        implementation('io.grpc:grpc-netty-shaded:1.75.0')
+        implementation('com.google.protobuf:protobuf-java:4.28.2')
+        implementation('com.google.android.gms:play-services-basement:18.0.2')
+    }
+
     implementation 'com.google.cloud:libraries-bom:26.32.0'
 
     // Empty3 libraries
     implementation 'one.empty3.libs:partial-desktop:0.0.40-17'
     implementation 'one.empty3.libs:commons-mp:0.0.17-17'
-    implementation 'one.empty3:empty3-library-mp:2026.8.26-1'
+    implementation 'one.empty3:empty3-library-mp:2026.9.19'
 
     implementation 'org.jcodec:jcodec-javase:0.2.5'
     //implementation 'org.bytedeco:javacv-platform:1.5.10'

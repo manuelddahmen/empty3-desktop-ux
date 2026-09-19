@@ -9,13 +9,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/submodule_test_objet" />
           </set>
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/submodule_test_objet" />
-        <option name="gradleJvm" value="21" />
+        <option name="gradleJvm" value="25 (2)" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/submodule_test_objet" />
