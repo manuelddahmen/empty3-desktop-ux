@@ -351,10 +351,9 @@ dependencies {
     // Empty3 libraries
     implementation 'one.empty3.libs:partial-desktop:0.0.40-17'
     implementation 'one.empty3.libs:commons-mp:0.0.17-17'
-    implementation 'one.empty3:empty3-library-mp:2026.9.19'
+    implementation 'one.empty3:empty3-library-mp:2026.9.19+doc-1'
 
     implementation 'org.jcodec:jcodec-javase:0.2.5'
-    //implementation 'org.bytedeco:javacv-platform:1.5.10'
 
     implementation 'com.google.cloud:google-cloud-pubsub:1.133.1' // Check for the latest version
     // Source: https://mvnrepository.com/artifact/com.google.cloud.functions/functions-framework-api

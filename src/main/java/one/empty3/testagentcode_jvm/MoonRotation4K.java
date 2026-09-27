@@ -55,14 +55,14 @@ public class MoonRotation4K extends TestObjetSub {
 
     @Override
     public void ginit() {
-        frame = 348;
+        frame = 196;
         // 1. Création de la scène
         scene = new Scene();
 
 
         File file1 = new File("res/img/planets3");
         if (file1.exists()) {
-            Object[] sorted = Arrays.stream(Objects.requireNonNull(new File("res/img/planets3/").list())).sorted().toArray();
+            Object[] sorted  = Arrays.stream(Objects.requireNonNull(new File("res/img/planets3/").list())).sorted().toArray();
             planetsImagesFile = new ArrayList<>();
             for (Object o : sorted) {
                 if (o != null && !o.equals("others") && !o.equals("stars.jpg")) {
