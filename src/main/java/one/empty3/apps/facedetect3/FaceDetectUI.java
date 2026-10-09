@@ -251,6 +251,10 @@ public class FaceDetectUI extends JFrame {
         loadPointsItem.addActionListener(e -> loadPoints());
         fileMenu.add(loadPointsItem);
 
+        JMenuItem executeFaceDetectorItem = new JMenuItem("Execute Face Detector");
+        executeFaceDetectorItem.addActionListener(e -> executeFaceDetector());
+        fileMenu.add(executeFaceDetectorItem);
+
         // Edit Menu Items
         JMenuItem clearPointsItem = new JMenuItem("Clear Points");
         clearPointsItem.addActionListener(e -> clearPoints());
@@ -458,6 +462,74 @@ public class FaceDetectUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Error loading points file:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
             lastDirectory = selectedFile.getParentFile();
+        }
+    }
+
+    private void executeFaceDetector() {
+        if (currentView == null || currentView.getImage() == null) {
+            JOptionPane.showMessageDialog(this, "Please select a view with an image first.", "No Image", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            String s1 = new one.empty3.apps.facedetect.LoadTxtFromImage().loadText(currentView.getImage());
+            File txtFile;
+            if (currentView.getImageFile() != null) {
+                txtFile = new File(currentView.getImageFile().getAbsolutePath() + ".txt");
+            } else {
+                JFileChooser fileChooser = new JFileChooser();
+                if (lastDirectory != null) {
+                    fileChooser.setCurrentDirectory(lastDirectory);
+                }
+                fileChooser.setDialogTitle("Save Detected Points (" + currentView.getName() + ")");
+                int result = fileChooser.showSaveDialog(this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    txtFile = fileChooser.getSelectedFile();
+                    lastDirectory = txtFile.getParentFile();
+                } else {
+                    return;
+                }
+            }
+            try (PrintWriter printWriter = new PrintWriter(txtFile)) {
+                printWriter.println(s1);
+                printWriter.flush();
+            }
+            try (Scanner scanner = new Scanner(txtFile)) {
+                List<LandmarkPoint> list = currentView.getLandmarkPoints();
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine().trim();
+                    if (!line.isEmpty()) {
+                        String name = line;
+                        if (scanner.hasNextLine()) {
+                            double x = Double.parseDouble(scanner.nextLine().trim());
+                            if (scanner.hasNextLine()) {
+                                double y = Double.parseDouble(scanner.nextLine().trim());
+                                if (scanner.hasNextLine()) {
+                                    scanner.nextLine();
+                                }
+                                Point3D point = new Point3D(x, y, 0.0);
+                                LandmarkPoint found = null;
+                                for (LandmarkPoint lp : list) {
+                                    if (name.equalsIgnoreCase(lp.getName())) {
+                                        found = lp;
+                                        break;
+                                    }
+                                }
+                                if (found != null) {
+                                    found.setPoint(point);
+                                } else {
+                                    list.add(new LandmarkPoint(name, point));
+                                }
+                            }
+                        }
+                    }
+                }
+                landmarkTableModel.fireTableDataChanged();
+                imagePanel.repaint();
+            }
+            JOptionPane.showMessageDialog(this, "Face detection completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error during face detection:\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -49,7 +49,7 @@ dependencies {
     // Empty3 libraries
     implementation("one.empty3.libs:partial-desktop:0.0.39-17")
     implementation("one.empty3.libs:commons-mp:0.0.17-17")
-    implementation("one.empty3:empty3-library-mp:2026.8.26-1")
+    implementation("one.empty3:empty3-library-mp:2026.10.1")
  }
 
 tasks.test {

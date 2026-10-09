@@ -55,7 +55,7 @@ public class MoonRotation4K extends TestObjetSub {
 
     @Override
     public void ginit() {
-        frame = 196;
+        frame = 0;
         // 1. Création de la scène
         scene = new Scene();
 
