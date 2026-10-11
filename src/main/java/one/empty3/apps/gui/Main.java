@@ -67,7 +67,6 @@ import java.util.logging.Logger;
  * Created by JFormDesigner on Thu Jun 27 11:40:57 CEST 2019
  */
 
-
 /**
  * My class description missing
  *
@@ -121,18 +120,17 @@ public class Main implements PropertyChangeListener {
         licence.add(area = new JTextArea("Création d'objets simples\n" +
                 "    Copyright (C) 2019-2021  Manuel Dahmen\n" +
                 "\n" +
-                "    This program is free software: you can redistribute it and/or modify\n" +
-                "    it under the terms of the GNU General Public License as published by\n" +
-                "    the Free Software Foundation, either version 3 of the License, or\n" +
-                "    (at your option) any later version.\n" +
+                "    Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
+                "    you may not use this file except in compliance with the License.\n" +
+                "    You may obtain a copy of the License at\n" +
                 "\n" +
-                "    This program is distributed in the hope that it will be useful,\n" +
-                "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
-                "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n" +
-                "    GNU General Public License for more details.\n" +
+                "        http://www.apache.org/licenses/LICENSE-2.0\n" +
                 "\n" +
-                "    You should have received a copy of the GNU General Public License\n" +
-                "    along with this program.  If not, see <https://www.gnu.org/licenses/>."));
+                "    Unless required by applicable law or agreed to in writing, software\n" +
+                "    distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
+                "    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
+                "    See the License for the specific language governing permissions and\n" +
+                "    limitations under the License."));
         licence.pack();
         area.addMouseListener(new MouseAdapter() {
             @Override
@@ -178,7 +176,6 @@ public class Main implements PropertyChangeListener {
     }
 
     private one.empty3.apps.gui.DataModel dataModel;
-
 
     private void menuItemNewActionPerformed(ActionEvent e) {
         dataModel = new one.empty3.apps.gui.DataModel();
@@ -413,7 +410,6 @@ public class Main implements PropertyChangeListener {
         }
         graphicalEdit2.setActiveGraphicalEdit(isSelected);
 
-
     }
 
     private void radioButton1ActionPerformed(ActionEvent e) {
@@ -424,7 +420,6 @@ public class Main implements PropertyChangeListener {
     public GraphicalEdit2 getGraphicalEdit2() {
         return graphicalEdit2;
     }
-
 
     public void setGraphicalEdit2(GraphicalEdit2 graphicalEdit2) {
         this.graphicalEdit2 = graphicalEdit2;
@@ -597,7 +592,6 @@ public class Main implements PropertyChangeListener {
     private void checkBoxActive2ActionPerformed() {
         // TODO add your code here
     }
-
 
     private class ThreadDrawingCoords extends Thread {
     }
@@ -1542,7 +1536,6 @@ public class Main implements PropertyChangeListener {
     private MyObservableList myObservableListSelOut;
     private BindingGroup bindingGroup;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
-
 
     public void setEditor(REditor editor) {
         this.editor = editor;

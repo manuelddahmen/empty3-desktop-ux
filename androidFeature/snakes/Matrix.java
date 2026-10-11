@@ -18,43 +18,6 @@
  *
  */
 
-/*
- *  This file is part of Empty3.
- *
- *     Empty3 is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     Empty3 is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with Empty3.  If not, see <https://www.gnu.org/licenses/>. 2
- */
-
-/*
- * This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
-
-/*
-
- Vous êtes libre de :
-
- */
 package one.empty3.androidFeature.snakes;
 
 import one.empty3.library.Point3D;
@@ -345,7 +308,6 @@ public class Matrix extends Representable {
         d = new StructureMatrix<>(1, Double.class);
         d.setAll(d1);
     }
-
 
     public Point3D[] getColVectors() {
         Point3D[] colVectors = new Point3D[3];

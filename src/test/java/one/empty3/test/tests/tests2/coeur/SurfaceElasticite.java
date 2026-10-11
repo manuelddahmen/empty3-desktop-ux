@@ -29,7 +29,6 @@
 
 /*__
  * *
- * Global license : * GNU GPL v3
  * <p>
  * author Manuel Dahmen <manuel.dahmen@gmx.com>
  * <p>
@@ -56,7 +55,6 @@ public class SurfaceElasticite extends ParametricSurface {
         this.b = b;
         this.c = c;
     }
-
 
     @Override
     public Point3D calculerPoint3D(double u, double v) {

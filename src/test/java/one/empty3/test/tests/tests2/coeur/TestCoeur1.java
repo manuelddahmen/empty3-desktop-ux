@@ -29,7 +29,6 @@
 
 /*__
  * *
- * Global license : * GNU GPL v3
  * <p>
  * author Manuel Dahmen <manuel.dahmen@gmx.com>
  * <p>

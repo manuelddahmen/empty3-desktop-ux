@@ -27,11 +27,6 @@
  *
  */
 
-/*
-
- Vous êtes libre de :
-
- */
 package one.empty3.apps.feature.snakes;
 
 import one.empty3.library.Point3D;
@@ -327,7 +322,6 @@ public class Matrix extends Representable {
         d = new StructureMatrix<>(1, Double.class);
         d.setAll(d1);
     }
-
 
     public Point3D[] getColVectors() {
         Point3D[] colVectors = new Point3D[3];

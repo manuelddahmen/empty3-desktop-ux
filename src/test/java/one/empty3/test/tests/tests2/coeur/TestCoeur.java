@@ -29,7 +29,6 @@
 
 /*__
  * *
- * Global license : * GNU GPL v3
  * <p>
  * author Manuel Dahmen <manuel.dahmen@gmx.com>
  * <p>
@@ -80,7 +79,6 @@ public class TestCoeur extends TestObjetSub {
         coeur.setMaxX(200);
         coeur.setMaxY(200);
 
-
         scene().cameraActive(new Camera(Point3D.Z.mult(-5d), Point3D.O0));
 
         scene().add(coeur);
@@ -90,7 +88,6 @@ public class TestCoeur extends TestObjetSub {
     @Override
     public void testScene() throws Exception {
         coeur.param01(1.0 * frame / getMaxFrames());
-
 
     }
 
