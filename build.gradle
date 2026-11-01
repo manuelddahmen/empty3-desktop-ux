@@ -149,10 +149,12 @@ tasks.register('copyDeps', Copy) {
     }
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
+
 jar {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
 }
-def load = properties
+
 java {
     withSourcesJar()
 }
@@ -625,8 +627,12 @@ publishing {
 }
 
 jreleaser {
+    release {
+        github {
+            token = load.get('release.github.token')
+        }
+    }
     signing {
-
         active = 'ALWAYS'
         armored = true
         mode = 'FILE'
@@ -637,8 +643,6 @@ jreleaser {
             File skFile = new File(secretKeyPath)
             secretKey = skFile.isAbsolute() ? secretKeyPath : new File(System.getProperty('user.home'), secretKeyPath).absolutePath
         }
-        release.github.token = load.get('release.github.token')
-
     }
     project {
         name = 'empty3-desktop-ux'
