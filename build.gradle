@@ -28,21 +28,22 @@
  */
 
 plugins {
-    id 'application' // enabling the plugin here
-    id 'java'
-    id 'java-library'
-    id 'maven-publish'
-    id 'org.jreleaser' version '1.24.0'
-    id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version "2.4.10"
+    id("application") // enabling the plugin here
+    id("java")
+    id("java-library")
+    id("maven-publish")
+    id("org.jreleaser") version("1.24.0")
+    id("signing")
+    id("org.jetbrains.kotlin.jvm") version("2.4.10")
+    id("org.sonatype.gradle.plugins.scan") version( "3.1.3")
 }
 
 def artifactId = "empty3-desktop-ux"
 
 group = 'one.empty3'
-def version_date = '2026.11.1'
+def version_date = '2026.11.2'
 def JAVA_VERSION = 25
-
+def moduleName = 'empty3_desktop_ux'
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
@@ -54,50 +55,51 @@ tasks.withType(JavaCompile).configureEach {
 configurations {
     desktopCompile
     androidCompile
+    testCompile
 
     compileOnly.extendsFrom desktopCompile
-    testCompile.extendsFrom desktopCompile // Assuming tests run on the desktop
+    testImplementation.extendsFrom desktopCompile
 
     desktop {
         extendsFrom desktopCompile
-        //extendsFrom runtime
     }
     android {
         extendsFrom androidCompile
-        //extendsFrom runtime
+    }
+    test {
+        extendsFrom testCompile
     }
 }
 
 sourceSets {
     main {
         java {
-            srcDirs 'src/main/java'
-            srcDirs 'src/test/java'
+            srcDirs = ['src/main/java']
         }
         resources {
-            srcDirs "src/main/resources", "src/main/configs", "src/main/java"
+            srcDirs = ['src/main/resources', 'src/main/configs', 'src/main/java']
         }
+
+        kotlin {
+            srcDirs = ['src/main/kotlin', 'src/main/java']
+        }
+
     }
+
     test {
         java {
-            srcDirs 'src/test/java'
-            srcDirs 'src/main/java'
+            srcDirs = ['src/test/java', 'src/main/java', 'src/test/kotlin']
         }
         resources {
-            srcDirs "src/test/resources", "src/test/configs", "src/test/java"
+            srcDirs = ['src/test/resources', 'src/test/configs', 'src/test/java']
         }
-        mainClasses {
-            "one.empty3.library1.tree.TestStringAnalyzer5"
-            "one.empty3.library1.tree.TestStringAnalyzer7"
-            "one.empty3.library1.tree.TestAlgebraicTreeVector"
+
+        kotlin {
+            srcDirs = ['src/test/kotlin', 'src/test/java', 'src/main/java']
         }
+
+
     }
-    main.kotlin.srcDirs += 'src/main/kotlin'
-    main.kotlin.srcDirs += 'src/main/java'
-    test.kotlin.srcDirs += 'test/main/kotlin'
-    test.kotlin.srcDirs += 'test/main/java'
-    test.java.srcDirs += 'src/test/java'
-    test.java.srcDirs += 'src/main/java'
 }
 
 configurations {
@@ -640,8 +642,8 @@ jreleaser {
         passphrase = load.get('signing.passphrase')
         def secretKeyPath = load.get('signing.secretKey')
         if (secretKeyPath) {
-            File skFile = new File(secretKeyPath)
-            secretKey = skFile.isAbsolute() ? secretKeyPath : new File(System.getProperty('user.home'), secretKeyPath).absolutePath
+            File skFile = new File(secretKeyPath as String)
+            secretKey = skFile.isAbsolute() ? secretKeyPath : new File(System.getProperty('user.home') as String, secretKeyPath as String).absolutePath
         }
     }
     project {
