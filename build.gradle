@@ -629,11 +629,7 @@ publishing {
 }
 
 jreleaser {
-    release {
-        github {
-            token = load.get('release.github.token')
-        }
-    }
+    outputDirectory = layout.buildDirectory.dir('jreleaser-output')
     signing {
         active = 'ALWAYS'
         armored = true
@@ -643,7 +639,12 @@ jreleaser {
         def secretKeyPath = load.get('signing.secretKey')
         if (secretKeyPath) {
             File skFile = new File(secretKeyPath as String)
-            secretKey = skFile.isAbsolute() ? secretKeyPath : new File(System.getProperty('user.home') as String, secretKeyPath as String).absolutePath
+            secretKey = skFile.isAbsolute() ? secretKeyPath : new File(System.getProperty('user.home'), secretKeyPath).absolutePath
+        }
+    }
+    release {
+        github {
+            token = load.get('release.github.token')
         }
     }
     project {
@@ -654,9 +655,8 @@ jreleaser {
         version = versionName
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
-        description = '3D rendering engine. Plus modelling. Expected glsl-like textures 3d and rendering' +
-                '3D primitives, and a lot of scenes\' samples to test.' +
-                '+ Game Jogl reworked, Calculator (numbers and vectors). Java code parser implementation starts (<=1.2)'
+        description = 'Implementation classes and tests, applications out of empty3-library-mp, multiplatoform\n' +
+                'here : desktop classes.'
         copyright = "Author : Manuel D. Dahmen, License: Apache-2"
         icon {
             // Publicly available URL. PNG format is preferred.
@@ -702,13 +702,13 @@ jreleaser {
                     active = 'ALWAYS'
                     url = 'https://central.sonatype.com/api/v1/publisher'
                     gitRootSearch = false
-                    stagingRepository('build/staging-deploy')
                     username = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_USERNAME')
+                    password = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_PASSWORD')
                     authorization = 'BASIC'
                     // Password for login into the MAVENCENTRAL service.
                     //
-                    password = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_PASSWORD')
                     // List of directories where staged artifacts can be found.
+                    stagingRepository('build/staging-deploy')
 
                     // Defines the connection timeout in seconds.
                     // Defaults to `20`.
