@@ -41,9 +41,9 @@ plugins {
 def artifactId = "empty3-desktop-ux"
 
 group = 'one.empty3'
-def version_date = '2026.11.2'
+def version_date = "2026.11.5"
 def JAVA_VERSION = 25
-def moduleName = 'empty3_desktop_ux'
+def moduleName = "empty3_desktop_ux"
 kotlin {
     jvmToolchain(JAVA_VERSION)
 }
@@ -376,7 +376,7 @@ dependencies {
     // Empty3 libraries
     implementation 'one.empty3.libs:partial-desktop:0.0.40-17'
     implementation 'one.empty3.libs:commons-mp:0.0.17-17'
-    implementation 'one.empty3:empty3-library-mp:2026.11.1'
+    implementation 'one.empty3:empty3-library-mp:2026.11.5'
 
     implementation 'org.jcodec:jcodec-javase:0.2.5'
 
@@ -629,7 +629,6 @@ publishing {
 }
 
 jreleaser {
-    outputDirectory = layout.buildDirectory.dir('jreleaser-output')
     signing {
         active = 'ALWAYS'
         armored = true
@@ -642,6 +641,7 @@ jreleaser {
             secretKey = skFile.isAbsolute() ? secretKeyPath : new File(System.getProperty('user.home'), secretKeyPath).absolutePath
         }
     }
+    //outputDirectory = layout.buildDirectory.dir('jreleaser-output')
     release {
         github {
             token = load.get('release.github.token')
