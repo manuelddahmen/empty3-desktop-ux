@@ -41,7 +41,7 @@ plugins {
 def artifactId = "empty3-desktop-ux"
 
 group = 'one.empty3'
-def version_date = "2026.11.5"
+def version_date = "2026.11.6"
 def JAVA_VERSION = 25
 def moduleName = "empty3_desktop_ux"
 kotlin {
@@ -119,11 +119,15 @@ Properties properties = new Properties()
 try {
     // Other configuration here
     File propertiesFile = new File(System.getProperty('user.dir') + '/../private.properties/gradle.properties')
-    propertiesFile.withInputStream {
-        properties.load(it)
+    if (propertiesFile.exists()) {
+        propertiesFile.withInputStream {
+            properties.load(it)
+        }
+    } else {
+        println "[JReleaser Notice] Private properties file not found at: ${propertiesFile.absolutePath}"
     }
 } catch (Exception ex) {
-    ex.printStackTrace()
+    println "[JReleaser Notice] Error loading private properties: ${ex.message}"
 }
 
 
@@ -131,11 +135,15 @@ Properties propertiesReleaseConfig = new Properties()
 try {
     // Other configuration here
     File propertiesFile = new File(System.getProperty('user.home') + '/.jreleaser/config.properties')
-    propertiesFile.withInputStream {
-        propertiesReleaseConfig.load(it)
+    if (propertiesFile.exists()) {
+        propertiesFile.withInputStream {
+            propertiesReleaseConfig.load(it)
+        }
+    } else {
+        println "[JReleaser Notice] JReleaser config properties file not found at: ${propertiesFile.absolutePath}"
     }
 } catch (Exception ex) {
-    ex.printStackTrace()
+    println "[JReleaser Notice] Error loading JReleaser config properties: ${ex.message}"
 }
 def load = properties
 
@@ -493,6 +501,24 @@ tasks.named('jar') {
     }
 }
 
+
+tasks.named('compileKotlin').configure {
+    destinationDirectory.set(sourceSets.main.java.destinationDirectory)
+}
+
+tasks.named('compileTestKotlin').configure {
+    destinationDirectory.set(sourceSets.test.java.destinationDirectory)
+}
+
+tasks.configureEach { task ->
+    if (task.class.name.contains('JReleaser')) {
+        if (task.hasProperty('outputDirectory')) {
+            task.outputDirectory = layout.buildDirectory.dir("jreleaser-out")
+        }
+    }
+}
+
+
 tasks.named("processTestResources") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
@@ -528,15 +554,16 @@ tasks.register('genText', Exec) {
     }
 }
 signing {
-    def signingKey = load.get("signing.keyId")
-    def signingPassword = load.get("signing.password")
-
-    useGpgCmd()
-    //useInMemoryPgpKeys(signingKey, signingPassword)
-
-    //sign publishing.publications
-    //sign configurations.archives
+    try {
+        def signingKey = load.get("signing.keyId")
+        def signingPassword = load.get("signing.password")
+        useGpgCmd()
+    } catch (Exception e) {
+        // Ignorer les erreurs de signature si les clés ne sont pas disponibles
+        logger.warn("Signature configuration is not complete, skipping signing: ${e.message}")
+    }
 }
+
 
 def versionName = version_date
 publishing {
@@ -630,21 +657,11 @@ publishing {
 
 jreleaser {
     signing {
-        active = 'ALWAYS'
-        armored = true
-        mode = 'FILE'
-        publicKey = load.get('signing.publicKeyPath')
-        passphrase = load.get('signing.passphrase')
-        def secretKeyPath = load.get('signing.secretKey')
-        if (secretKeyPath) {
-            File skFile = new File(secretKeyPath as String)
-            secretKey = skFile.isAbsolute() ? secretKeyPath : new File(System.getProperty('user.home'), secretKeyPath).absolutePath
-        }
+        active = 'NEVER'
     }
-    //outputDirectory = layout.buildDirectory.dir('jreleaser-output')
     release {
         github {
-            token = load.get('release.github.token')
+            token = load.get('release.github.token') ?: ''
         }
     }
     project {
@@ -705,6 +722,7 @@ jreleaser {
                     username = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_USERNAME')
                     password = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_PASSWORD')
                     authorization = 'BASIC'
+                    sign = false
                     // Password for login into the MAVENCENTRAL service.
                     //
                     // List of directories where staged artifacts can be found.
